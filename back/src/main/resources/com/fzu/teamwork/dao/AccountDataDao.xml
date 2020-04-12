@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fzu.teamwork.dao.AccountDataDao">
+  <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.AccountData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="experience_value" jdbcType="INTEGER" property="experienceValue" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="focus_num" jdbcType="INTEGER" property="focusNum" />
+    <result column="question_num" jdbcType="INTEGER" property="questionNum" />
+    <result column="response_num" jdbcType="INTEGER" property="responseNum" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, `level`, experience_value, score, focus_num, question_num, response_num
+  </sql>
+  <select id="selectByExample" parameterType="com.fzu.teamwork.model.AccountDataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from account_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from account_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from account_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fzu.teamwork.model.AccountDataExample">
+    delete from account_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.AccountData" useGeneratedKeys="true">
+    insert into account_data (user_id, `level`, experience_value, 
+      score, focus_num, question_num, 
+      response_num)
+    values (#{userId,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{experienceValue,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER}, #{focusNum,jdbcType=INTEGER}, #{questionNum,jdbcType=INTEGER}, 
+      #{responseNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.AccountData" useGeneratedKeys="true">
+    insert into account_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="level != null">
+        `level`,
+      </if>
+      <if test="experienceValue != null">
+        experience_value,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="focusNum != null">
+        focus_num,
+      </if>
+      <if test="questionNum != null">
+        question_num,
+      </if>
+      <if test="responseNum != null">
+        response_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="experienceValue != null">
+        #{experienceValue,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="focusNum != null">
+        #{focusNum,jdbcType=INTEGER},
+      </if>
+      <if test="questionNum != null">
+        #{questionNum,jdbcType=INTEGER},
+      </if>
+      <if test="responseNum != null">
+        #{responseNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fzu.teamwork.model.AccountDataExample" resultType="java.lang.Long">
+    select count(*) from account_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update account_data
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.level != null">
+        `level` = #{record.level,jdbcType=INTEGER},
+      </if>
+      <if test="record.experienceValue != null">
+        experience_value = #{record.experienceValue,jdbcType=INTEGER},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.focusNum != null">
+        focus_num = #{record.focusNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.questionNum != null">
+        question_num = #{record.questionNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.responseNum != null">
+        response_num = #{record.responseNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update account_data
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      `level` = #{record.level,jdbcType=INTEGER},
+      experience_value = #{record.experienceValue,jdbcType=INTEGER},
+      score = #{record.score,jdbcType=INTEGER},
+      focus_num = #{record.focusNum,jdbcType=INTEGER},
+      question_num = #{record.questionNum,jdbcType=INTEGER},
+      response_num = #{record.responseNum,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.AccountData">
+    update account_data
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        `level` = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="experienceValue != null">
+        experience_value = #{experienceValue,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="focusNum != null">
+        focus_num = #{focusNum,jdbcType=INTEGER},
+      </if>
+      <if test="questionNum != null">
+        question_num = #{questionNum,jdbcType=INTEGER},
+      </if>
+      <if test="responseNum != null">
+        response_num = #{responseNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.AccountData">
+    update account_data
+    set user_id = #{userId,jdbcType=INTEGER},
+      `level` = #{level,jdbcType=INTEGER},
+      experience_value = #{experienceValue,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER},
+      focus_num = #{focusNum,jdbcType=INTEGER},
+      question_num = #{questionNum,jdbcType=INTEGER},
+      response_num = #{responseNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
