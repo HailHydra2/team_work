@@ -11,6 +11,8 @@ public class User implements Serializable {
 
     private String account;
 
+    private String password;
+
     private String name;
 
     private String idCard;
@@ -37,6 +39,14 @@ public class User implements Serializable {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -93,6 +103,7 @@ public class User implements Serializable {
         User other = (User) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getAccount() == null ? other.getAccount() == null : this.getAccount().equals(other.getAccount()))
+            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getIdCard() == null ? other.getIdCard() == null : this.getIdCard().equals(other.getIdCard()))
             && (this.getIdentity() == null ? other.getIdentity() == null : this.getIdentity().equals(other.getIdentity()))
@@ -106,6 +117,7 @@ public class User implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getAccount() == null) ? 0 : getAccount().hashCode());
+        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getIdCard() == null) ? 0 : getIdCard().hashCode());
         result = prime * result + ((getIdentity() == null) ? 0 : getIdentity().hashCode());
@@ -122,6 +134,7 @@ public class User implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", account=").append(account);
+        sb.append(", password=").append(password);
         sb.append(", name=").append(name);
         sb.append(", idCard=").append(idCard);
         sb.append(", identity=").append(identity);

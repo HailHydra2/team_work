@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="id_card" jdbcType="VARCHAR" property="idCard" />
     <result column="identity" jdbcType="VARCHAR" property="identity" />
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, account, `name`, id_card, `identity`, phone_num, account_data_id
+    id, account, `password`, `name`, id_card, `identity`, phone_num, account_data_id
   </sql>
   <select id="selectByExample" parameterType="com.fzu.teamwork.model.UserExample" resultMap="BaseResultMap">
     select
@@ -110,18 +111,21 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.User" useGeneratedKeys="true">
-    insert into user (account, `name`, id_card, 
-      `identity`, phone_num, account_data_id
-      )
-    values (#{account,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
-      #{identity,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, #{accountDataId,jdbcType=INTEGER}
-      )
+    insert into user (account, `password`, `name`, 
+      id_card, `identity`, phone_num, 
+      account_data_id)
+    values (#{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{identity,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR}, 
+      #{accountDataId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.User" useGeneratedKeys="true">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="account != null">
         account,
+      </if>
+      <if test="password != null">
+        `password`,
       </if>
       <if test="name != null">
         `name`,
@@ -142,6 +146,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="account != null">
         #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -175,6 +182,9 @@
       <if test="record.account != null">
         account = #{record.account,jdbcType=VARCHAR},
       </if>
+      <if test="record.password != null">
+        `password` = #{record.password,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null">
         `name` = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -199,6 +209,7 @@
     update user
     set id = #{record.id,jdbcType=INTEGER},
       account = #{record.account,jdbcType=VARCHAR},
+      `password` = #{record.password,jdbcType=VARCHAR},
       `name` = #{record.name,jdbcType=VARCHAR},
       id_card = #{record.idCard,jdbcType=VARCHAR},
       `identity` = #{record.identity,jdbcType=VARCHAR},
@@ -213,6 +224,9 @@
     <set>
       <if test="account != null">
         account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
         `name` = #{name,jdbcType=VARCHAR},
@@ -235,6 +249,7 @@
   <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.User">
     update user
     set account = #{account,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=VARCHAR},
       id_card = #{idCard,jdbcType=VARCHAR},
       `identity` = #{identity,jdbcType=VARCHAR},
