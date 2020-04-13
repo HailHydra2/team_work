@@ -12,7 +12,7 @@ public class Reward implements Serializable {
 
     private Integer userId;
 
-    private String type;
+    private String type;//综测SyntheticTest,时长ServiceTime
 
     private Double rewardNum;
 
