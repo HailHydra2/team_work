@@ -1,22 +1,19 @@
 package com.fzu.teamwork.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * attention
+ * report_response
  * @author 
  */
-public class Attention implements Serializable {
+public class ReportResponse implements Serializable {
     private Integer id;
 
-    private Integer userId;
+    private Integer reportorId;
 
-    private Integer questionId;
+    private Integer responseId;
 
-    private Date createTime;
-
-    private Integer flag;//关注（1）  取消（0）
+    private Integer flag;
 
     private static final long serialVersionUID = 1L;
 
@@ -28,28 +25,20 @@ public class Attention implements Serializable {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getReportorId() {
+        return reportorId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setReportorId(Integer reportorId) {
+        this.reportorId = reportorId;
     }
 
-    public Integer getQuestionId() {
-        return questionId;
+    public Integer getResponseId() {
+        return responseId;
     }
 
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setResponseId(Integer responseId) {
+        this.responseId = responseId;
     }
 
     public Integer getFlag() {
@@ -71,11 +60,10 @@ public class Attention implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Attention other = (Attention) that;
+        ReportResponse other = (ReportResponse) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getQuestionId() == null ? other.getQuestionId() == null : this.getQuestionId().equals(other.getQuestionId()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getReportorId() == null ? other.getReportorId() == null : this.getReportorId().equals(other.getReportorId()))
+            && (this.getResponseId() == null ? other.getResponseId() == null : this.getResponseId().equals(other.getResponseId()))
             && (this.getFlag() == null ? other.getFlag() == null : this.getFlag().equals(other.getFlag()));
     }
 
@@ -84,9 +72,8 @@ public class Attention implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getQuestionId() == null) ? 0 : getQuestionId().hashCode());
-        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getReportorId() == null) ? 0 : getReportorId().hashCode());
+        result = prime * result + ((getResponseId() == null) ? 0 : getResponseId().hashCode());
         result = prime * result + ((getFlag() == null) ? 0 : getFlag().hashCode());
         return result;
     }
@@ -98,9 +85,8 @@ public class Attention implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
-        sb.append(", questionId=").append(questionId);
-        sb.append(", createTime=").append(createTime);
+        sb.append(", reportorId=").append(reportorId);
+        sb.append(", responseId=").append(responseId);
         sb.append(", flag=").append(flag);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

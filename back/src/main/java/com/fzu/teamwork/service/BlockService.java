@@ -1,4 +1,4 @@
 package com.fzu.teamwork.service;
 
-public interface ScoreService {
+public interface BlockService {
 }

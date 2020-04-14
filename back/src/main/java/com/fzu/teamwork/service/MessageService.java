@@ -1,4 +1,4 @@
 package com.fzu.teamwork.service;
 
-public class MessageService {
+public interface MessageService {
 }

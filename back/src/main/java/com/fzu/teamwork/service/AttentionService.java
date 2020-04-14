@@ -1,4 +1,4 @@
 package com.fzu.teamwork.service;
 
-public class AttentionService {
+public interface AttentionService {
 }

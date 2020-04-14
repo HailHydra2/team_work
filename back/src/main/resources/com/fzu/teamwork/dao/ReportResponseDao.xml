@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fzu.teamwork.dao.AttentionDao">
-  <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.Attention">
+<mapper namespace="com.fzu.teamwork.dao.ReportResponseDao">
+  <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.ReportResponse">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="question_id" jdbcType="INTEGER" property="questionId" />
-    <result column="create_time" jdbcType="TIME" property="createTime" />
+    <result column="reportor_id" jdbcType="INTEGER" property="reportorId" />
+    <result column="response_id" jdbcType="INTEGER" property="responseId" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -67,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, question_id, create_time, flag
+    id, reportor_id, response_id, flag
   </sql>
-  <select id="selectByExample" parameterType="com.fzu.teamwork.model.AttentionExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.fzu.teamwork.model.ReportResponseExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from attention
+    from report_response
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,76 +93,67 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from attention
+    from report_response
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from attention
+    delete from report_response
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fzu.teamwork.model.AttentionExample">
-    delete from attention
+  <delete id="deleteByExample" parameterType="com.fzu.teamwork.model.ReportResponseExample">
+    delete from report_response
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Attention" useGeneratedKeys="true">
-    insert into attention (user_id, question_id, create_time, 
-      flag)
-    values (#{userId,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{createTime,jdbcType=TIME}, 
-      #{flag,jdbcType=INTEGER})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.ReportResponse" useGeneratedKeys="true">
+    insert into report_response (reportor_id, response_id, flag
+      )
+    values (#{reportorId,jdbcType=INTEGER}, #{responseId,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Attention" useGeneratedKeys="true">
-    insert into attention
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.ReportResponse" useGeneratedKeys="true">
+    insert into report_response
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
+      <if test="reportorId != null">
+        reportor_id,
       </if>
-      <if test="questionId != null">
-        question_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="responseId != null">
+        response_id,
       </if>
       <if test="flag != null">
         flag,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="reportorId != null">
+        #{reportorId,jdbcType=INTEGER},
       </if>
-      <if test="questionId != null">
-        #{questionId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIME},
+      <if test="responseId != null">
+        #{responseId,jdbcType=INTEGER},
       </if>
       <if test="flag != null">
         #{flag,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fzu.teamwork.model.AttentionExample" resultType="java.lang.Long">
-    select count(*) from attention
+  <select id="countByExample" parameterType="com.fzu.teamwork.model.ReportResponseExample" resultType="java.lang.Long">
+    select count(*) from report_response
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update attention
+    update report_response
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
+      <if test="record.reportorId != null">
+        reportor_id = #{record.reportorId,jdbcType=INTEGER},
       </if>
-      <if test="record.questionId != null">
-        question_id = #{record.questionId,jdbcType=INTEGER},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIME},
+      <if test="record.responseId != null">
+        response_id = #{record.responseId,jdbcType=INTEGER},
       </if>
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=INTEGER},
@@ -174,27 +164,23 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update attention
+    update report_response
     set id = #{record.id,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      question_id = #{record.questionId,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIME},
+      reportor_id = #{record.reportorId,jdbcType=INTEGER},
+      response_id = #{record.responseId,jdbcType=INTEGER},
       flag = #{record.flag,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.Attention">
-    update attention
+  <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.ReportResponse">
+    update report_response
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="reportorId != null">
+        reportor_id = #{reportorId,jdbcType=INTEGER},
       </if>
-      <if test="questionId != null">
-        question_id = #{questionId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIME},
+      <if test="responseId != null">
+        response_id = #{responseId,jdbcType=INTEGER},
       </if>
       <if test="flag != null">
         flag = #{flag,jdbcType=INTEGER},
@@ -202,11 +188,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.Attention">
-    update attention
-    set user_id = #{userId,jdbcType=INTEGER},
-      question_id = #{questionId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIME},
+  <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.ReportResponse">
+    update report_response
+    set reportor_id = #{reportorId,jdbcType=INTEGER},
+      response_id = #{responseId,jdbcType=INTEGER},
       flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
