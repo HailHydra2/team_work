@@ -18,13 +18,29 @@ import java.util.*;
 
 @Slf4j
 @RestController
-public class LoginController {
+public class LoginController_test {
 
-    @Resource(name = "loginServiceImpl")
+    @Resource(name = "loginServiceImpl_test")
     LoginService loginService;
 
-    @GetMapping("/user")
-    public @ResponseBody AjaxResponse getUser(@RequestBody User user) {
-        return AjaxResponse.success(loginService.getUser(user));
+    @GetMapping("/tuser")
+    public @ResponseBody AjaxResponse getUser(@RequestBody User user){
+        UserVO userVO=loginService.getUser(user);
+
+        //no account
+        if(userVO.getUser().getMark()==0)
+        {
+            return AjaxResponse.noaccount();
+        }
+        //error password
+        else if(userVO.getUser().getMark()==1)
+        {
+            return AjaxResponse.errorpassword();
+        }
+        //success
+        else
+        {
+            return AjaxResponse.success(userVO);
+        }
     }
 }

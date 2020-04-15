@@ -16,6 +16,12 @@ public interface UserService {
     //通过account查找用户
     public User getUserByAccount(String account);
 
+    //delete user
+    public void deleteUsers(int id);
+
+    //add user
+    public void addUsers(User user);
+
     //更新用户信息(包括基本信息和账户信息)
     public User updateUser(UserVO userVO);
 }

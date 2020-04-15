@@ -12,43 +12,31 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl_test implements UserService{
     @Resource
     private UserDao userDao;
 
+    private static Integer maxGetNum=100;//最大查找人数
+
     public ArrayList<User> getUsers(){
-        ArrayList<User> userArrayList=new ArrayList<>();
-        User u1=new User();
-        u1.setAccount("221701316");
-        u1.setName("lch");
-        u1.setPassword("123456");
-        u1.setIdCard("123");
-        u1.setIdentity("student");
-        u1.setPhoneNum("123456");
-        User u2=new User();
-        u2.setAccount("221701319");
-        u2.setName("lll");
-        u2.setPassword("123456");
-        u2.setIdCard("123");
-        u2.setIdentity("student");
-        u2.setPhoneNum("123456");
-        userArrayList.add(u1);
-        userArrayList.add(u2);
-        return userArrayList;
+        ArrayList<User> users=new ArrayList<>();
+        for(int i=1;i<maxGetNum;i++)//假设同时查找maxGetNum个user
+        {
+            if(userDao.selectByPrimaryKey(i)!=null)
+            {
+                users.add(userDao.selectByPrimaryKey(i));
+            }
+        }
+        return users;
     }
 
+    //delete user
+    @Override
+    public void deleteUsers(int id) { userDao.deleteByPrimaryKey(id); }
 
-    //注意接口没写！！！！
-    public void deleteUsers(int id)
-    {
-        userDao.deleteByPrimaryKey(id);
-    }
-
-    //注意接口没写！！！！
-    public void addUsers(User user)
-    {
-        userDao.insert(user);
-    }
+    //add user
+    @Override
+    public void addUsers(User user) { userDao.insert(user); }
 
     @Override
     public User getUserById(int id){
@@ -60,8 +48,8 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
+    //updata password
     @Override
-    //更新用户信息(包括基本信息和账户信息)
     public User updateUser(UserVO userVO){
         String newPassWord=userVO.getUser().getPassword();
         UserExample userExample = new UserExample();

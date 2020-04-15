@@ -16,37 +16,38 @@ import java.util.*;
 
 @Slf4j
 @RestController
-public class UserController {
+public class UserController_test {
 
-
-    @Resource(name = "userServiceImpl")
-    UserServiceImpl userService;
+    @Resource(name = "userServiceImpl_test")
+    UserService userService;
 
     //get users
-    @GetMapping("/users")
-    public ArrayList<User> getUser(){
+    @GetMapping("/tusers")
+    public ArrayList<User> getUser()
+    {
         return userService.getUsers();
     }
 
     //delete user
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/tusers/{id}")
     public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
-        //userServiceImpl.deleteUsers(id);
+        userService.deleteUsers(id);
         return AjaxResponse.success();
     }
 
     //add user
-    @PostMapping("/users")
+    @PostMapping("/tusers")
     public @ResponseBody AjaxResponse addUser(@RequestBody User user){
-        //userServiceImpl.addUsers(user);
+        userService.addUsers(user);
         return AjaxResponse.success();
     }
 
     //update password
-    @PutMapping("/user")
+    @PutMapping("/tuser")
     public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
-
+        UserVO userVO=new UserVO();
+        userVO.setUser(user);
+        userService.updateUser(userVO);
         return AjaxResponse.success();
     }
-
 }

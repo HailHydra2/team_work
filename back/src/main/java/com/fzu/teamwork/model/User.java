@@ -36,7 +36,7 @@ public class User implements Serializable {
     public void setMark(Integer mark) { this.mark = mark; }
 
     public Integer getId() {
-        return mark;
+        return id;
     }
 
     public void setId(Integer id) {
