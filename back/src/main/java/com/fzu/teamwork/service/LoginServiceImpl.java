@@ -1,38 +1,35 @@
-package com.fzu.teamwork.controller;
+package com.fzu.teamwork.service;
 
 
 import com.fzu.teamwork.dao.UserDao;
-import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
-import com.fzu.teamwork.service.LoginServiceImpl;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.List;
 
 @Slf4j
+@Service
 @RestController
-public class LoginController {
+
+
+public class LoginServiceImpl implements LoginService{
 
     @Resource
-    private UserDao userDao;
+    public UserDao userDao;
 
-/*
-    @GetMapping("/user")
-    public @ResponseBody AjaxResponse getUser(@RequestBody User user){
-        LoginServiceImpl loginServiceImpl=new LoginServiceImpl();
-        //System.out.println(loginServiceImpl.getUser(user));
-        return AjaxResponse.success(loginServiceImpl.getUser(user));
-    }
+    //获取用户
+    @Override
+    public User getUser(User user)
+    {
 
-*/
-    @GetMapping("/user")
-    public @ResponseBody AjaxResponse getUser(@RequestBody User user){
         //从数据库中找到对应的user
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria=userExample.createCriteria();
@@ -48,7 +45,10 @@ public class LoginController {
         //UserVO userVO=new UserVO();
         //userVO.setUser(userFromDb);
         //userVO.setAccountData();
-        return AjaxResponse.success(userFromDb);
+
+
+
+        return userFromDb;
     }
 
 
