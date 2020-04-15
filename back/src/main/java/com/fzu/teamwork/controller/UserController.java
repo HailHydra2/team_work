@@ -49,7 +49,7 @@ public class UserController {
 
     @PostMapping("/users")
     public @ResponseBody AjaxResponse addUser(@RequestBody User user){
-        userServiceImpl.addUsers(user);
+        //userServiceImpl.addUsers(user);
         return AjaxResponse.success();
     }
 }

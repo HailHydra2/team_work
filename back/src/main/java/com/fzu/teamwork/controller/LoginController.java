@@ -1,6 +1,7 @@
 package com.fzu.teamwork.controller;
 
 
+import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.view.UserVO;
@@ -18,6 +19,18 @@ public class LoginController {
     public @ResponseBody
     AjaxResponse getUser(@RequestBody User user){
         UserVO userVO=new UserVO();
+
+        AccountData accountData=new AccountData();
+        accountData.setLevel(10);
+        accountData.setScore(11);
+        accountData.setExperienceValue(99);
+        accountData.setFocusNum(15);
+        accountData.setQuestionNum(18);
+        accountData.setResponseNum(20);
+
+        userVO.setUser(user);
+        userVO.setAccountData(accountData);
+        
         return AjaxResponse.success(userVO);
     }
 
