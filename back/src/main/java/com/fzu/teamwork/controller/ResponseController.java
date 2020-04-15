@@ -37,7 +37,7 @@ public class ResponseController {
         return AjaxResponse.success(responses);
     }
 
-    @DeleteMapping("/responses/{id}")
+    @DeleteMapping("/response/{id}")
     public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){
         System.out.println("删除" + id + "号response");
         return AjaxResponse.success();
