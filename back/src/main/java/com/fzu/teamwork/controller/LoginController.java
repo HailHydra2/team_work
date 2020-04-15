@@ -32,11 +32,5 @@ public class LoginController {
         return AjaxResponse.success(userVO);
     }
 
-    //修改密码
-    @PutMapping("/user")
-    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
-
-        return AjaxResponse.success();
-    }
 
 }
