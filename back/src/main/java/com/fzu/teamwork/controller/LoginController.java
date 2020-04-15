@@ -17,7 +17,7 @@ public class LoginController {
     @GetMapping("/user")
     public @ResponseBody
     AjaxResponse getUser(@RequestBody User user){
-        UserVO userVO=new UserVO(user);
+        UserVO userVO=new UserVO();
         return AjaxResponse.success(userVO);
     }
 

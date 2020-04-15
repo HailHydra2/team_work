@@ -13,6 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserVO{
-    private User userInfo;
+    private User user;
     private AccountData accountData;
 }

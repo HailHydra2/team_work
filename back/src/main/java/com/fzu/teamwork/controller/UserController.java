@@ -17,8 +17,8 @@ import java.util.*;
 @RestController
 public class UserController {
 
-   @Resource
-   private UserDao userDao;
+    @Resource
+    private UserDao userDao;
 
     UserServiceImpl userServiceImpl=new UserServiceImpl();
 

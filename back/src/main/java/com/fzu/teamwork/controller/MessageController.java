@@ -22,6 +22,8 @@ public class MessageController {
         list.add(1);
         list.add(2);
         page.setButtonList(list);
+        page.setHasPrevious(false);
+        page.setHasNext(true);
         return AjaxResponse.success(page);
     }
 }
