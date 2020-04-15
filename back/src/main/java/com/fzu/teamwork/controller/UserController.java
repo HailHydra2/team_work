@@ -52,4 +52,12 @@ public class UserController {
         //userServiceImpl.addUsers(user);
         return AjaxResponse.success();
     }
+
+
+    //修改密码
+    @PutMapping("/user")
+    public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
+
+        return AjaxResponse.success();
+    }
 }
