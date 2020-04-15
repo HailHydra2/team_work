@@ -35,5 +35,23 @@ public class AjaxResponse {
         return resultBean;
     }
 
+    //on account
+    public static AjaxResponse noaccount() {
+        AjaxResponse resultBean = new AjaxResponse();
+        resultBean.setIsok(true);
+        resultBean.setCode(400);
+        resultBean.setMessage("error");
+        return resultBean;
+    }
+
+    public static AjaxResponse errorpassword() {
+        AjaxResponse resultBean = new AjaxResponse();
+        resultBean.setIsok(true);
+        resultBean.setCode(401);
+        resultBean.setMessage("error");
+        return resultBean;
+    }
+
+
 
 }

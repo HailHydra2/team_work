@@ -7,6 +7,10 @@ import java.io.Serializable;
  * @author 
  */
 public class User implements Serializable {
+
+    //判断用户存在情况，如no account、error password等等
+    private Integer mark;//no account--0，error password--1 success--3
+
     private Integer id;
 
     private String account;
@@ -25,8 +29,14 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) { this.mark = mark; }
+
     public Integer getId() {
-        return id;
+        return mark;
     }
 
     public void setId(Integer id) {

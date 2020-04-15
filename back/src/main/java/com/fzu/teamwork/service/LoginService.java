@@ -6,7 +6,7 @@ import com.fzu.teamwork.view.UserVO;
 
 public interface LoginService {
     //获取用户信息
-    public User getUser(User user);
+    public UserVO getUser(User user);
 
 
 }

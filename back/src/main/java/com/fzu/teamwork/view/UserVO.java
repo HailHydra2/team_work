@@ -16,7 +16,6 @@ public class UserVO{
     private User user;
     private AccountData accountData;
 
-
     //使用user构造userVO对象（实例化accountData）
     public UserVO(User user){
 

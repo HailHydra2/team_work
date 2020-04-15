@@ -1,10 +1,9 @@
 package com.fzu.teamwork.service;
 
 
+import com.fzu.teamwork.dao.AccountDataDao;
 import com.fzu.teamwork.dao.UserDao;
-import com.fzu.teamwork.model.AjaxResponse;
-import com.fzu.teamwork.model.User;
-import com.fzu.teamwork.model.UserExample;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,33 +19,53 @@ import java.util.List;
 @Service
 @RestController
 
-public class LoginServiceImpl implements LoginService{
+public class LoginServiceImpl implements LoginService {
 
     @Resource
     public UserDao userDao;
-/*
+
+    @Resource
+    AccountDataDao accountDataDao;
+
     //获取用户
     @Override
-    public  User getUser(User user)
-    {
+    public UserVO getUser(User user) {
         //从数据库中找到对应的user
-        UserExample userExample=new UserExample();
-        UserExample.Criteria criteria=userExample.createCriteria();
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andAccountEqualTo(user.getAccount());
-        List<User> users=userDao.selectByExample(userExample);
-        //因为列表唯一，就一个user
-        User userFromDb=users.get(0);
-        //UserVO userVO=new UserVO();
-        //userVO.setUser(userFromDb);
-        //userVO.setAccountData();
-        return userFromDb;
-    }
-*/
-    @Override
-    public  User getUser(User user)
-    {
-        return userDao.selectByPrimaryKey(2);
-    }
+        List<User> users = userDao.selectByExample(userExample);
 
+        UserVO userVO = new UserVO();
 
+        //no account
+        if (users.size() == 0)
+        {
+            System.out.println("no account!");
+            user.setMark(0);//设置mark
+            userVO.setUser(user);
+            return userVO;
+        }
+
+        // error password
+        else if (!user.getPassword().equals(users.get(0).getPassword()))
+        {
+            System.out.println("error password!");
+            user.setMark(1);//设置mark
+            userVO.setUser(user);
+            return userVO;
+        }
+
+        //succese
+        else
+        {
+            //获取对应的AccountData
+            AccountData accountData=accountDataDao.selectByPrimaryKey(users.get(0).getAccountDataId());
+            //封装uesrVO
+            users.get(0).setMark(3);//设置mark
+            userVO.setUser(users.get(0));
+            userVO.setAccountData(accountData);
+            return userVO;
+        }
+    }
 }
