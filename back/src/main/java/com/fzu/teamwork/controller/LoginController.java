@@ -19,10 +19,7 @@ import java.util.*;
 @RestController
 public class LoginController {
 
-    @Resource
-    private UserDao userDao;
 
-/*
     @GetMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user){
         LoginServiceImpl loginServiceImpl=new LoginServiceImpl();
@@ -30,7 +27,9 @@ public class LoginController {
         return AjaxResponse.success(loginServiceImpl.getUser(user));
     }
 
-*/
+
+
+/*
     @GetMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user){
         //从数据库中找到对应的user
@@ -50,7 +49,7 @@ public class LoginController {
         //userVO.setAccountData();
         return AjaxResponse.success(userFromDb);
     }
-
+*/
 
 
 }

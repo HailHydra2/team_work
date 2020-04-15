@@ -7,6 +7,7 @@ import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,38 +20,33 @@ import java.util.List;
 @Service
 @RestController
 
-
 public class LoginServiceImpl implements LoginService{
 
     @Resource
     public UserDao userDao;
-
+/*
     //获取用户
     @Override
-    public User getUser(User user)
+    public  User getUser(User user)
     {
-
         //从数据库中找到对应的user
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria=userExample.createCriteria();
         criteria.andAccountEqualTo(user.getAccount());
         List<User> users=userDao.selectByExample(userExample);
-
-        System.out.println("hello");
-
         //因为列表唯一，就一个user
         User userFromDb=users.get(0);
-
-        System.out.println("usser="+userFromDb.getAccount());
         //UserVO userVO=new UserVO();
         //userVO.setUser(userFromDb);
         //userVO.setAccountData();
-
-
-
         return userFromDb;
     }
-
+*/
+    @Override
+    public  User getUser(User user)
+    {
+        return userDao.selectByPrimaryKey(2);
+    }
 
 
 }
