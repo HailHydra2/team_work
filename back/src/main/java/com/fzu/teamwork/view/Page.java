@@ -1,7 +1,13 @@
 package com.fzu.teamwork.view;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
+
+@Data
+@Slf4j
 public class Page {
     private int pageIndex;//当前页号
     private int count;//本页要展示的最大条数
