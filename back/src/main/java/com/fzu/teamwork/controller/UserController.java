@@ -20,11 +20,12 @@ public class UserController {
     @Resource
     private UserDao userDao;
 
-    UserServiceImpl userServiceImpl=new UserServiceImpl();
+    @Resource(name = "userServiceImpl")
+    UserServiceImpl userService;
 
     @GetMapping("/users")
     public ArrayList<User> getUser(){
-        return userServiceImpl.getUsers();
+        return userService.getUsers();
     }
 
     @DeleteMapping("/users/{id}")

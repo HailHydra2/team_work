@@ -6,6 +6,7 @@ import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
+import com.fzu.teamwork.service.LoginService;
 import com.fzu.teamwork.service.LoginServiceImpl;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +20,13 @@ import java.util.*;
 @RestController
 public class LoginController {
 
+    @Resource(name = "loginServiceImpl")
+    LoginService loginService;
 
     @GetMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user){
-        LoginServiceImpl loginServiceImpl=new LoginServiceImpl();
         //System.out.println(loginServiceImpl.getUser(user));
-        return AjaxResponse.success(loginServiceImpl.getUser(user));
+        return AjaxResponse.success(loginService.getUser(user));
     }
 
 
