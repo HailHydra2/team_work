@@ -21,9 +21,17 @@ public class MessageController {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
+        list.add(3);
         page.setButtonList(list);
         page.setHasPrevious(false);
         page.setHasNext(true);
+        List<Message> messages = new ArrayList<>();
+        for(int i = 0; i < page.getCount(); i++){
+            Message message = new Message();
+            message.setDescription("message" + i);
+            messages.add(message);
+        }
+        page.setMessages(messages);
         return AjaxResponse.success(page);
     }
 }
