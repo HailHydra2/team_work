@@ -2,10 +2,15 @@ package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.User;
+import com.fzu.teamwork.view.UserVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
 
+@Slf4j
+@Service
 public class UserServiceImpl implements UserService{
     @Resource
     private UserDao userDao;
@@ -43,14 +48,31 @@ public class UserServiceImpl implements UserService{
         return userArrayList;
     }
 
+    //注意接口没写！！！！
     public void deleteUsers(int id)
     {
         userDao.deleteByPrimaryKey(id);
     }
 
+    //注意接口没写！！！！
     public void addUsers(User user)
     {
         userDao.insert(user);
     }
 
+    @Override
+    public User getUserById(int id){
+        return null;
+    }
+
+    @Override
+    public User getUserByAccount(String account){
+        return null;
+    }
+
+    @Override
+    //更新用户信息(包括基本信息和账户信息)
+    public User updateUser(UserVO userVO){
+        return null;
+    }
 }
