@@ -26,20 +26,6 @@ public class UserController {
     public ArrayList<User> getUser(){
         return userServiceImpl.getUsers();
     }
-/*
-    @GetMapping("/users")
-    public ArrayList<User> getUser(){
-
-        ArrayList<User> userArrayList=new ArrayList<>();
-
-        for(int i=1;i<=2;i++)
-        {
-            System.out.println("iiiiiii="+i);
-            userArrayList.add(userDao.selectByPrimaryKey(i));
-        }
-        return userArrayList;
-    }
-*/
 
     @DeleteMapping("/users/{id}")
     public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
@@ -52,7 +38,6 @@ public class UserController {
         //userServiceImpl.addUsers(user);
         return AjaxResponse.success();
     }
-
 
     //修改密码
     @PutMapping("/user")
