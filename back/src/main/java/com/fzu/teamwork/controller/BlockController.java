@@ -13,7 +13,7 @@ public class BlockController {
     @PostMapping("/block")
     public @ResponseBody
     AjaxResponse addBlock(@RequestBody Block block){
-        return AjaxResponse.success(block);
+        return AjaxResponse.success();
     }
 
     @DeleteMapping("/block")
