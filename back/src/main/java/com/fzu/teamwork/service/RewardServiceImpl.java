@@ -2,6 +2,7 @@ package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.RewardDao;
 import com.fzu.teamwork.model.Reward;
+import com.fzu.teamwork.model.RewardExample;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.util.RewardType;
 import com.fzu.teamwork.view.UserVO;
@@ -74,6 +75,8 @@ public class RewardServiceImpl implements RewardService{
     //获取奖励申请列表
     @Override
     public List<Reward> getRewardList(){
+        RewardExample example = new RewardExample();
+        example.setOrderByClause("'APPLY_TIME' ASC");
         List<Reward> rewardsList = rewardDao.selectByExample(null);
         return null;
     }
