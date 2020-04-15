@@ -1,13 +1,15 @@
 package com.fzu.teamwork.controller;
 
 
+import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Reward;
+import com.fzu.teamwork.model.User;
+import com.fzu.teamwork.util.UserIdentity;
 import com.fzu.teamwork.view.RewardVO;
+import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,5 +35,25 @@ public class RewardController {
             rewardVOS.add(rewardVO);
         }
         return  rewardVOS;
+    }
+
+    @PostMapping("/reward")
+    public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
+        UserVO userVO = new UserVO();
+        userVO.setUser(new User());
+        userVO.getUser().setAccount("221701421");
+        userVO.getUser().setIdCard("123");
+        userVO.getUser().setId(reward.getUserId());
+        userVO.getUser().setIdentity(UserIdentity.student);
+        userVO.setAccountData(new AccountData());
+        userVO.getAccountData().setId(10);
+        userVO.getAccountData().setUserId(reward.getUserId());
+        userVO.getAccountData().setExperienceValue(100);
+        userVO.getAccountData().setFocusNum(1);
+        userVO.getAccountData().setLevel(10);
+        userVO.getAccountData().setQuestionNum(10);
+        userVO.getAccountData().setScore(100);
+        userVO.getAccountData().setResponseNum(12);
+        return AjaxResponse.success(userVO);
     }
 }
