@@ -79,7 +79,7 @@ public class RewardServiceImpl implements RewardService{
     @Override
     public List<Reward> getRewardList(){
         RewardExample example = new RewardExample();
-        example.setOrderByClause("'APPLY_TIME' ASC");
+        example.setOrderByClause("`APPLY_TIME` DESC");
         List<Reward> rewardsList = rewardDao.selectByExample(example);
         return rewardsList;
     }

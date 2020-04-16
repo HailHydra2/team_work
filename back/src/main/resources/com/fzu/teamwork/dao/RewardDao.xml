@@ -6,7 +6,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="reward_num" jdbcType="DOUBLE" property="rewardNum" />
-    <result column="apply_time" jdbcType="TIME" property="applyTime" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -111,7 +111,7 @@
     insert into reward (user_id, `type`, reward_num, 
       apply_time)
     values (#{userId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{rewardNum,jdbcType=DOUBLE}, 
-      #{applyTime,jdbcType=TIME})
+      #{applyTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Reward" useGeneratedKeys="true">
     insert into reward
@@ -140,7 +140,7 @@
         #{rewardNum,jdbcType=DOUBLE},
       </if>
       <if test="applyTime != null">
-        #{applyTime,jdbcType=TIME},
+        #{applyTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -166,7 +166,7 @@
         reward_num = #{record.rewardNum,jdbcType=DOUBLE},
       </if>
       <if test="record.applyTime != null">
-        apply_time = #{record.applyTime,jdbcType=TIME},
+        apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -179,7 +179,7 @@
       user_id = #{record.userId,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=VARCHAR},
       reward_num = #{record.rewardNum,jdbcType=DOUBLE},
-      apply_time = #{record.applyTime,jdbcType=TIME}
+      apply_time = #{record.applyTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,7 +197,7 @@
         reward_num = #{rewardNum,jdbcType=DOUBLE},
       </if>
       <if test="applyTime != null">
-        apply_time = #{applyTime,jdbcType=TIME},
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -207,7 +207,7 @@
     set user_id = #{userId,jdbcType=INTEGER},
       `type` = #{type,jdbcType=VARCHAR},
       reward_num = #{rewardNum,jdbcType=DOUBLE},
-      apply_time = #{applyTime,jdbcType=TIME}
+      apply_time = #{applyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
