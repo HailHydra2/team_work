@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-04-14 19:50:10
+Date: 2020-04-16 21:04:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,7 +45,7 @@ CREATE TABLE `attention` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
-  `create_time` time NOT NULL,
+  `create_time` datetime NOT NULL,
   `flag` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `attention_user_id` (`user_id`),
@@ -64,7 +64,7 @@ CREATE TABLE `attention` (
 DROP TABLE IF EXISTS `block`;
 CREATE TABLE `block` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `block_name` varchar(20) NOT NULL,
+  `block_name` varchar(50) NOT NULL,
   `key_word` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -111,7 +111,7 @@ DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_id` int(11) NOT NULL,
-  `way` varchar(10) NOT NULL,
+  `way` varchar(30) NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `message_object_id` (`object_id`),
@@ -131,7 +131,7 @@ CREATE TABLE `question` (
   `auther_id` int(11) NOT NULL,
   `response_num` int(11) NOT NULL DEFAULT '0',
   `report_num` int(11) NOT NULL DEFAULT '0',
-  `create_time` time NOT NULL,
+  `create_time` datetime NOT NULL,
   `title_id` int(11) NOT NULL,
   `content_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -199,7 +199,7 @@ CREATE TABLE `response` (
   `like_num` int(11) NOT NULL DEFAULT '0',
   `dislike_num` int(11) NOT NULL DEFAULT '0',
   `report_num` int(11) NOT NULL DEFAULT '0',
-  `create_time` time NOT NULL,
+  `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `response_author_id` (`author_id`),
   KEY `response_question_id` (`question_id`),
@@ -220,13 +220,13 @@ DROP TABLE IF EXISTS `reward`;
 CREATE TABLE `reward` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `type` varchar(10) NOT NULL,
+  `type` varchar(30) NOT NULL,
   `reward_num` double NOT NULL,
-  `apply_time` time NOT NULL,
+  `apply_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `reward_user_id` (`user_id`),
   CONSTRAINT `reward_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of reward

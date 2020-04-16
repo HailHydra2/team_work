@@ -42,6 +42,11 @@ public class RewardController {
         return  rewardVOS;
     }
 
+    @GetMapping("/testRewards")
+    public @ResponseBody List<Reward> testGetRewards(){
+        return rewardService.getRewardList();
+    }
+
     @PostMapping("/reward")
     public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
         UserVO userVO = new UserVO();
@@ -60,6 +65,12 @@ public class RewardController {
         userVO.getAccountData().setScore(100);
         userVO.getAccountData().setResponseNum(12);
         rewardService.insertReward(reward);
+        return AjaxResponse.success(userVO);
+    }
+
+    @PostMapping("/testReward")
+    public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
+        UserVO userVO = rewardService.insertReward(reward);
         return AjaxResponse.success(userVO);
     }
 }

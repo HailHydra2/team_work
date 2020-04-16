@@ -31,18 +31,20 @@ public class RewardServiceImpl implements RewardService{
         User user = userServiceImpl.getUserById(reward.getUserId());
         //获取用户的账户信息（将user对象转换为userVO对象）
         userVO = new UserVO(user);
+        //计算用户所需积分（若积分充足返回所需积分，不足返回-1）
         int needScore = doesLeagal(reward);
-        if(needScore > 0){
+        //判断用户积分是否充足
+        if(needScore > 0) {
             //积分充足
+            //用户当前积分
             int score = userVO.getAccountData().getScore();
+            //扣除兑换积分
             userVO.getAccountData().setScore(score - needScore);
             //更新用户数据
             userServiceImpl.updateUser(userVO);
-            return userVO;
-        }else{
-            //积分不足
-            return userVO;
         }
+        //返回用户信息
+        return userVO;
     }
 
 
@@ -59,6 +61,7 @@ public class RewardServiceImpl implements RewardService{
         }
     }
 
+    //计算申请的积分数（类别兑换规则*数量），若类别非法返回-1
     public int calculateScore(String rewardType, double num){
         if(rewardType.equals(RewardType.ServiceTime)){
             //申请类别为党员服务时长
@@ -77,8 +80,8 @@ public class RewardServiceImpl implements RewardService{
     public List<Reward> getRewardList(){
         RewardExample example = new RewardExample();
         example.setOrderByClause("'APPLY_TIME' ASC");
-        List<Reward> rewardsList = rewardDao.selectByExample(null);
-        return null;
+        List<Reward> rewardsList = rewardDao.selectByExample(example);
+        return rewardsList;
     }
 
 }
