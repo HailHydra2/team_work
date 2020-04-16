@@ -9,7 +9,7 @@
     <result column="like_num" jdbcType="INTEGER" property="likeNum" />
     <result column="dislike_num" jdbcType="INTEGER" property="dislikeNum" />
     <result column="report_num" jdbcType="INTEGER" property="reportNum" />
-    <result column="create_time" jdbcType="TIME" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -116,7 +116,7 @@
       create_time)
     values (#{questionId,jdbcType=INTEGER}, #{authorId,jdbcType=INTEGER}, #{contentId,jdbcType=INTEGER}, 
       #{likeNum,jdbcType=INTEGER}, #{dislikeNum,jdbcType=INTEGER}, #{reportNum,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIME})
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Response" useGeneratedKeys="true">
     insert into response
@@ -163,7 +163,7 @@
         #{reportNum,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIME},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -198,7 +198,7 @@
         report_num = #{record.reportNum,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIME},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -214,7 +214,7 @@
       like_num = #{record.likeNum,jdbcType=INTEGER},
       dislike_num = #{record.dislikeNum,jdbcType=INTEGER},
       report_num = #{record.reportNum,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIME}
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -241,7 +241,7 @@
         report_num = #{reportNum,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIME},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -254,7 +254,7 @@
       like_num = #{likeNum,jdbcType=INTEGER},
       dislike_num = #{dislikeNum,jdbcType=INTEGER},
       report_num = #{reportNum,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIME}
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

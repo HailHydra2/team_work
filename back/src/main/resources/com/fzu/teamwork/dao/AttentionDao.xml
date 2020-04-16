@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="question_id" jdbcType="INTEGER" property="questionId" />
-    <result column="create_time" jdbcType="TIME" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -110,7 +110,7 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Attention" useGeneratedKeys="true">
     insert into attention (user_id, question_id, create_time, 
       flag)
-    values (#{userId,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{createTime,jdbcType=TIME}, 
+    values (#{userId,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{flag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Attention" useGeneratedKeys="true">
@@ -137,7 +137,7 @@
         #{questionId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIME},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="flag != null">
         #{flag,jdbcType=INTEGER},
@@ -163,7 +163,7 @@
         question_id = #{record.questionId,jdbcType=INTEGER},
       </if>
       <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIME},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=INTEGER},
@@ -178,7 +178,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
       question_id = #{record.questionId,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIME},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
       flag = #{record.flag,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -194,7 +194,7 @@
         question_id = #{questionId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIME},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="flag != null">
         flag = #{flag,jdbcType=INTEGER},
@@ -206,7 +206,7 @@
     update attention
     set user_id = #{userId,jdbcType=INTEGER},
       question_id = #{questionId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIME},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

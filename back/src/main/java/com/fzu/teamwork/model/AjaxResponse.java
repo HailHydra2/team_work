@@ -35,8 +35,8 @@ public class AjaxResponse {
         return resultBean;
     }
 
-    //on account
-    public static AjaxResponse noaccount() {
+    //登录界面账号不存在
+    public static AjaxResponse noAccount() {
         AjaxResponse resultBean = new AjaxResponse();
         resultBean.setIsok(true);
         resultBean.setCode(400);
@@ -44,7 +44,9 @@ public class AjaxResponse {
         return resultBean;
     }
 
-    public static AjaxResponse errorpassword() {
+
+    //登录界面密码错误
+    public static AjaxResponse errorPassword() {
         AjaxResponse resultBean = new AjaxResponse();
         resultBean.setIsok(true);
         resultBean.setCode(401);

@@ -16,7 +16,7 @@ public class Attention implements Serializable {
 
     private Date createTime;
 
-    private Integer flag;//关注（1）  取消（0）
+    private Integer flag;
 
     private static final long serialVersionUID = 1L;
 
