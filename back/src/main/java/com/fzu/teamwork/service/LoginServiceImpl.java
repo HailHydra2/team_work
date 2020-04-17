@@ -21,23 +21,51 @@ import java.util.List;
 
 public class LoginServiceImpl implements LoginService {
 
+    @Resource
+    private UserDao userDao;
+
+    @Resource
+    AccountDataDao accountDataDao;
 
     //获取用户
     @Override
     public UserVO getUser(User user) {
+        //从数据库中找到对应的user
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andAccountEqualTo(user.getAccount());
+        List<User> users = userDao.selectByExample(userExample);
 
         UserVO userVO = new UserVO();
-        AccountData accountData=new AccountData();
-        accountData.setLevel(10);
-        accountData.setScore(10);
-        accountData.setExperienceValue(99);
-        accountData.setFocusNum(16);
-        accountData.setQuestionNum(18);
-        accountData.setResponseNum(25);
 
-        userVO.setUser(user);
-        userVO.setAccountData(accountData);
+        //no account
+        if (users.size() == 0)
+        {
+            System.out.println("no account!");
+            user.setMark(0);//设置mark
+            userVO.setUser(user);
+            return userVO;
+        }
 
-        return userVO;
+        // error password
+        else if (!user.getPassword().equals(users.get(0).getPassword()))
+        {
+            System.out.println("error password!");
+            user.setMark(1);//设置mark
+            userVO.setUser(user);
+            return userVO;
+        }
+
+        //succese
+        else
+        {
+            //获取对应的AccountData
+            AccountData accountData=accountDataDao.selectByPrimaryKey(users.get(0).getAccountDataId());
+            //封装uesrVO
+            users.get(0).setMark(3);//设置mark
+            userVO.setUser(users.get(0));
+            userVO.setAccountData(accountData);
+            return userVO;
+        }
     }
 }
