@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-04-17 08:13:32
+Date: 2020-04-17 16:18:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -81,11 +81,14 @@ CREATE TABLE `content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of content
 -- ----------------------------
+INSERT INTO `content` VALUES ('1', 'content1');
+INSERT INTO `content` VALUES ('2', 'content2');
+INSERT INTO `content` VALUES ('3', 'content3');
 
 -- ----------------------------
 -- Table structure for `like`
@@ -138,11 +141,13 @@ CREATE TABLE `question` (
   KEY `question_content_id` (`content_id`),
   CONSTRAINT `question_auther_id` FOREIGN KEY (`auther_id`) REFERENCES `user` (`id`),
   CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of question
 -- ----------------------------
+INSERT INTO `question` VALUES ('1', '1', '0', '0', '2020-04-16 08:49:49', '1');
+INSERT INTO `question` VALUES ('2', '1', '0', '0', '2020-04-10 14:06:27', '2');
 
 -- ----------------------------
 -- Table structure for `question_title`
@@ -223,11 +228,13 @@ CREATE TABLE `response` (
   CONSTRAINT `response_author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`),
   CONSTRAINT `response_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`),
   CONSTRAINT `response_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of response
 -- ----------------------------
+INSERT INTO `response` VALUES ('1', '1', '1', '2', '0', '0', '0', '2020-04-16 09:10:02');
+INSERT INTO `response` VALUES ('3', '2', '1', '1', '0', '0', '0', '2020-04-16 14:13:19');
 
 -- ----------------------------
 -- Table structure for `reward`
