@@ -257,7 +257,11 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectSublistByQuestionId" parameterType="Map" resultType="com.fzu.teamwork.model.Response">
-        select * from response where author_id = #{autherId} limit #{start},#{size}
+  <select id="selectSublistByQuestionId" parameterType="Map" resultType="com.fzu.teamwork.model.Response" resultMap="BaseResultMap">
+    select * from response where question_id=#{questionId} limit #{start},#{count}
+  </select>
+
+  <select id="test" resultType="com.fzu.teamwork.model.Response">
+    select * from response;
   </select>
 </mapper>

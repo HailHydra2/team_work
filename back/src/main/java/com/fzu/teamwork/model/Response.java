@@ -1,5 +1,7 @@
 package com.fzu.teamwork.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * response
  * @author 
  */
+@Data
 public class Response implements Serializable {
     private Integer id;
 

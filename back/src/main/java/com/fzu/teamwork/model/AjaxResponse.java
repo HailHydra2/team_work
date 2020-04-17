@@ -35,6 +35,15 @@ public class AjaxResponse {
         return resultBean;
     }
 
+    //code是状态码，message描述信息
+    public static AjaxResponse error(int code, String message){
+        AjaxResponse resultBean = new AjaxResponse();
+        resultBean.setIsok(true);
+        resultBean.setCode(code);
+        resultBean.setMessage(message);
+        return resultBean;
+    }
+
     //登录界面账号不存在
     public static AjaxResponse noAccount() {
         AjaxResponse resultBean = new AjaxResponse();
@@ -43,6 +52,7 @@ public class AjaxResponse {
         resultBean.setMessage("error");
         return resultBean;
     }
+
 
 
     //登录界面密码错误

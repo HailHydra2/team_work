@@ -30,12 +30,12 @@ public class LoginController_test {
         //no account
         if(userVO.getUser().getMark()==0)
         {
-            return AjaxResponse.noaccount();
+            return AjaxResponse.noAccount();
         }
         //error password
         else if(userVO.getUser().getMark()==1)
         {
-            return AjaxResponse.errorpassword();
+            return AjaxResponse.errorPassword();
         }
         //success
         else

@@ -55,5 +55,14 @@ public class ResponseController {
         return AjaxResponse.success();
     }
 
-
+    //根据回复id删除回复记录
+    @DeleteMapping("/testResponse/{id}")
+    public @ResponseBody AjaxResponse testDeleteResponse(@PathVariable int id){
+        if(responseService.deleteResponseById(id) > 0){
+            //删除成功
+            return AjaxResponse.success();
+        }else{
+            return AjaxResponse.error(400,"数据库删除失败");
+        }
+    }
 }

@@ -31,4 +31,6 @@ public interface ResponseDao {
     int updateByPrimaryKey(Response record);
 
     List<Response> selectSublistByQuestionId(Map<String, Integer> map);
+
+    List<Response> test();
 }

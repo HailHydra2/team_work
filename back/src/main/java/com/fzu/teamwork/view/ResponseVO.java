@@ -19,8 +19,4 @@ public class ResponseVO {
     @Resource(name = "contentServiceImpl")
     ContentService contentService;
 
-    public ResponseVO(Response r){
-        response = r;
-        content = contentService.getContentById(response.getContentId());
-    }
 }

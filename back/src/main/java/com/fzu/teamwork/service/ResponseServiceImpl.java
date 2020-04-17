@@ -2,6 +2,7 @@ package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.Response;
+import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
@@ -29,12 +30,20 @@ public class ResponseServiceImpl implements ResponseService{
     @Override
     public ResponsePage getResponsePage(int questionId, ResponsePage p){
         page = p;
+        //log.info("page:{}",page);
         Map<String, Integer> map = new HashMap<>();
         map.put("questionId",questionId);
-        map.put("start",page.getPageIndex());
+        //获取该页第一个回复的索引[（页码-1）*一页所包含的数量]
+        int firstIndex = (page.getPageIndex() - 1) * page.getCount();
+        map.put("start",firstIndex);
         map.put("count",page.getCount());
         //查找id=questionId列表中start到start+count的子列表
         List<Response> responses = responseDao.selectSublistByQuestionId(map);
+        //List<Response> responses = responseDao.test();
+        //responses = responseDao.selectByExample(null);
+        for(Response response : responses){
+            log.info("response:{}",response);
+        }
         //将查询的List<Response>转化为List<ResponseVO>，并保存到page中
         page.setResponses(convertToVOList(responses));
         return page;
@@ -50,7 +59,7 @@ public class ResponseServiceImpl implements ResponseService{
         //设置responseVO对象的response属性
         responseVO.setResponse(response);
         //根据外键contentId获取回复对象所对应的内容
-        String content = contentService.getContentById(response.getContentId());
+        String content = contentService.getContentById(1);
         //将内容赋到responseVO的content属性
         responseVO.setContent(content);
         return  responseVO;
@@ -67,5 +76,17 @@ public class ResponseServiceImpl implements ResponseService{
             responseVOList.add(responseVO);
         }
         return responseVOList;
+    }
+
+    @Override
+    public int deleteResponseById(int id){
+        try{
+            responseDao.deleteByPrimaryKey(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("回复记录删除失败");
+            return -1;
+        }
+        return 1;
     }
 }
