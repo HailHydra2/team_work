@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-04-16 21:04:40
+Date: 2020-04-17 08:13:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -132,19 +132,35 @@ CREATE TABLE `question` (
   `response_num` int(11) NOT NULL DEFAULT '0',
   `report_num` int(11) NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL,
-  `title_id` int(11) NOT NULL,
   `content_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question_auther_id` (`auther_id`),
-  KEY `question_title_id` (`title_id`),
   KEY `question_content_id` (`content_id`),
   CONSTRAINT `question_auther_id` FOREIGN KEY (`auther_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`),
-  CONSTRAINT `question_title_id` FOREIGN KEY (`title_id`) REFERENCES `title` (`id`)
+  CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of question
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `question_title`
+-- ----------------------------
+DROP TABLE IF EXISTS `question_title`;
+CREATE TABLE `question_title` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) NOT NULL,
+  `title_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `title_question_id` (`question_id`),
+  KEY `question_title_id` (`title_id`),
+  CONSTRAINT `title_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`),
+  CONSTRAINT `question_title_id` FOREIGN KEY (`title_id`) REFERENCES `title` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of question_title
 -- ----------------------------
 
 -- ----------------------------
@@ -226,11 +242,15 @@ CREATE TABLE `reward` (
   PRIMARY KEY (`id`),
   KEY `reward_user_id` (`user_id`),
   CONSTRAINT `reward_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of reward
 -- ----------------------------
+INSERT INTO `reward` VALUES ('1', '1', 'SyntheticTest', '10', '2020-04-22 21:06:37');
+INSERT INTO `reward` VALUES ('2', '1', 'ServiceTime', '21', '2020-04-15 21:07:39');
+INSERT INTO `reward` VALUES ('3', '1', 'SyntheticTest', '2', '2020-03-12 01:12:42');
+INSERT INTO `reward` VALUES ('4', '1', 'SyntheticTest', '13', '2020-05-31 21:13:13');
 
 -- ----------------------------
 -- Table structure for `title`
@@ -238,11 +258,8 @@ CREATE TABLE `reward` (
 DROP TABLE IF EXISTS `title`;
 CREATE TABLE `title` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `title_question_id` (`question_id`),
-  CONSTRAINT `title_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
