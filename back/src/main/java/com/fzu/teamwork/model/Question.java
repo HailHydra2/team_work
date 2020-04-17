@@ -18,8 +18,6 @@ public class Question implements Serializable {
 
     private Date createTime;
 
-    private Integer titleId;
-
     private Integer contentId;
 
     private static final long serialVersionUID = 1L;
@@ -64,14 +62,6 @@ public class Question implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getTitleId() {
-        return titleId;
-    }
-
-    public void setTitleId(Integer titleId) {
-        this.titleId = titleId;
-    }
-
     public Integer getContentId() {
         return contentId;
     }
@@ -97,7 +87,6 @@ public class Question implements Serializable {
             && (this.getResponseNum() == null ? other.getResponseNum() == null : this.getResponseNum().equals(other.getResponseNum()))
             && (this.getReportNum() == null ? other.getReportNum() == null : this.getReportNum().equals(other.getReportNum()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getTitleId() == null ? other.getTitleId() == null : this.getTitleId().equals(other.getTitleId()))
             && (this.getContentId() == null ? other.getContentId() == null : this.getContentId().equals(other.getContentId()));
     }
 
@@ -110,7 +99,6 @@ public class Question implements Serializable {
         result = prime * result + ((getResponseNum() == null) ? 0 : getResponseNum().hashCode());
         result = prime * result + ((getReportNum() == null) ? 0 : getReportNum().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
-        result = prime * result + ((getTitleId() == null) ? 0 : getTitleId().hashCode());
         result = prime * result + ((getContentId() == null) ? 0 : getContentId().hashCode());
         return result;
     }
@@ -126,7 +114,6 @@ public class Question implements Serializable {
         sb.append(", responseNum=").append(responseNum);
         sb.append(", reportNum=").append(reportNum);
         sb.append(", createTime=").append(createTime);
-        sb.append(", titleId=").append(titleId);
         sb.append(", contentId=").append(contentId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

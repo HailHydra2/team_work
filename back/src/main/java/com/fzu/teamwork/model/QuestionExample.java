@@ -425,66 +425,6 @@ public class QuestionExample {
             return (Criteria) this;
         }
 
-        public Criteria andTitleIdIsNull() {
-            addCriterion("title_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdIsNotNull() {
-            addCriterion("title_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdEqualTo(Integer value) {
-            addCriterion("title_id =", value, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdNotEqualTo(Integer value) {
-            addCriterion("title_id <>", value, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdGreaterThan(Integer value) {
-            addCriterion("title_id >", value, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("title_id >=", value, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdLessThan(Integer value) {
-            addCriterion("title_id <", value, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("title_id <=", value, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdIn(List<Integer> values) {
-            addCriterion("title_id in", values, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdNotIn(List<Integer> values) {
-            addCriterion("title_id not in", values, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdBetween(Integer value1, Integer value2) {
-            addCriterion("title_id between", value1, value2, "titleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andTitleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("title_id not between", value1, value2, "titleId");
-            return (Criteria) this;
-        }
-
         public Criteria andContentIdIsNull() {
             addCriterion("content_id is null");
             return (Criteria) this;

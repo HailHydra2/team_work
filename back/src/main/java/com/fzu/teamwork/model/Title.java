@@ -9,8 +9,6 @@ import java.io.Serializable;
 public class Title implements Serializable {
     private Integer id;
 
-    private Integer questionId;
-
     private String title;
 
     private static final long serialVersionUID = 1L;
@@ -21,14 +19,6 @@ public class Title implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
     }
 
     public String getTitle() {
@@ -52,7 +42,6 @@ public class Title implements Serializable {
         }
         Title other = (Title) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getQuestionId() == null ? other.getQuestionId() == null : this.getQuestionId().equals(other.getQuestionId()))
             && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()));
     }
 
@@ -61,7 +50,6 @@ public class Title implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getQuestionId() == null) ? 0 : getQuestionId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         return result;
     }
@@ -73,7 +61,6 @@ public class Title implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", questionId=").append(questionId);
         sb.append(", title=").append(title);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

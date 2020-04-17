@@ -7,7 +7,6 @@
     <result column="response_num" jdbcType="INTEGER" property="responseNum" />
     <result column="report_num" jdbcType="INTEGER" property="reportNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="title_id" jdbcType="INTEGER" property="titleId" />
     <result column="content_id" jdbcType="INTEGER" property="contentId" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -69,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, auther_id, response_num, report_num, create_time, title_id, content_id
+    id, auther_id, response_num, report_num, create_time, content_id
   </sql>
   <select id="selectByExample" parameterType="com.fzu.teamwork.model.QuestionExample" resultMap="BaseResultMap">
     select
@@ -111,11 +110,9 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
     insert into question (auther_id, response_num, report_num, 
-      create_time, title_id, content_id
-      )
+      create_time, content_id)
     values (#{autherId,jdbcType=INTEGER}, #{responseNum,jdbcType=INTEGER}, #{reportNum,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{titleId,jdbcType=INTEGER}, #{contentId,jdbcType=INTEGER}
-      )
+      #{createTime,jdbcType=TIMESTAMP}, #{contentId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
     insert into question
@@ -131,9 +128,6 @@
       </if>
       <if test="createTime != null">
         create_time,
-      </if>
-      <if test="titleId != null">
-        title_id,
       </if>
       <if test="contentId != null">
         content_id,
@@ -151,9 +145,6 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="titleId != null">
-        #{titleId,jdbcType=INTEGER},
       </if>
       <if test="contentId != null">
         #{contentId,jdbcType=INTEGER},
@@ -184,9 +175,6 @@
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.titleId != null">
-        title_id = #{record.titleId,jdbcType=INTEGER},
-      </if>
       <if test="record.contentId != null">
         content_id = #{record.contentId,jdbcType=INTEGER},
       </if>
@@ -202,7 +190,6 @@
       response_num = #{record.responseNum,jdbcType=INTEGER},
       report_num = #{record.reportNum,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      title_id = #{record.titleId,jdbcType=INTEGER},
       content_id = #{record.contentId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -223,9 +210,6 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="titleId != null">
-        title_id = #{titleId,jdbcType=INTEGER},
-      </if>
       <if test="contentId != null">
         content_id = #{contentId,jdbcType=INTEGER},
       </if>
@@ -238,7 +222,6 @@
       response_num = #{responseNum,jdbcType=INTEGER},
       report_num = #{reportNum,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      title_id = #{titleId,jdbcType=INTEGER},
       content_id = #{contentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

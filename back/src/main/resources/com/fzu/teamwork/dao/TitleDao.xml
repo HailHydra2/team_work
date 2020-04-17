@@ -3,7 +3,6 @@
 <mapper namespace="com.fzu.teamwork.dao.TitleDao">
   <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.Title">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="question_id" jdbcType="INTEGER" property="questionId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -65,7 +64,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, question_id, title
+    id, title
   </sql>
   <select id="selectByExample" parameterType="com.fzu.teamwork.model.TitleExample" resultMap="BaseResultMap">
     select
@@ -106,23 +105,17 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Title" useGeneratedKeys="true">
-    insert into title (question_id, title)
-    values (#{questionId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR})
+    insert into title (title)
+    values (#{title,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Title" useGeneratedKeys="true">
     insert into title
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="questionId != null">
-        question_id,
-      </if>
       <if test="title != null">
         title,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="questionId != null">
-        #{questionId,jdbcType=INTEGER},
-      </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
@@ -140,9 +133,6 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.questionId != null">
-        question_id = #{record.questionId,jdbcType=INTEGER},
-      </if>
       <if test="record.title != null">
         title = #{record.title,jdbcType=VARCHAR},
       </if>
@@ -154,7 +144,6 @@
   <update id="updateByExample" parameterType="map">
     update title
     set id = #{record.id,jdbcType=INTEGER},
-      question_id = #{record.questionId,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -163,9 +152,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.Title">
     update title
     <set>
-      <if test="questionId != null">
-        question_id = #{questionId,jdbcType=INTEGER},
-      </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
@@ -174,8 +160,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.Title">
     update title
-    set question_id = #{questionId,jdbcType=INTEGER},
-      title = #{title,jdbcType=VARCHAR}
+    set title = #{title,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
