@@ -2,6 +2,8 @@ package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.Response;
+import com.fzu.teamwork.model.ResponseInAQuestion;
+import com.fzu.teamwork.model.ResponseStrategy;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.ResponsePage;
@@ -18,39 +20,42 @@ import java.util.Map;
 @Slf4j
 @Service
 public class ResponseServiceImpl implements ResponseService{
-    private ResponsePage page;
-
     @Resource
     ResponseDao responseDao;
 
     @Resource(name = "contentServiceImpl")
     ContentService contentService;
 
-    //分页获取对应问题的回复列表
-    @Override
-    public ResponsePage getResponsePage(int questionId, ResponsePage p){
-        page = p;
-        //log.info("page:{}",page);
-        Map<String, Integer> map = new HashMap<>();
-        map.put("questionId",questionId);
-        //获取该页第一个回复的索引[（页码-1）*一页所包含的数量]
-        int firstIndex = (page.getPageIndex() - 1) * page.getCount();
-        map.put("start",firstIndex);
-        map.put("count",page.getCount());
-        //查找id=questionId列表中start到start+count的子列表
-        List<Response> responses = responseDao.selectSublistByQuestionId(map);
-        //List<Response> responses = responseDao.test();
-        //responses = responseDao.selectByExample(null);
-        for(Response response : responses){
-            log.info("response:{}",response);
+    //回复分页
+    private ResponsePage page;
+    //所属问题id
+    private int questionId;
+    //获取问题列表的策略类
+    private ResponseStrategy responseStrategy;
+
+
+
+    //创建所需的列表获取策略类(type=1:获取某个问题回复列表)
+    private void createResponseStrategy(int type){
+        if(type == 1){//获取某个问题回复列表的策略对象
+            //实例化对应策略对象
+            responseStrategy = new ResponseInAQuestion(questionId, page, responseDao);
         }
-        //将查询的List<Response>转化为List<ResponseVO>，并保存到page中
-        page.setResponses(convertToVOList(responses));
-        return page;
     }
 
-    public List<Response> getResponses(){
-        return null;
+    //分页获取对应问题的回复列表
+    @Override
+    public ResponsePage getResponsePage(int questionId, ResponsePage page){
+        this.questionId = questionId;
+        this.page = page;
+        //创建获取回复列表的策略
+        createResponseStrategy(1);
+        //获取对应的问题列表
+        List<Response> responses = responseStrategy.getResponseList();
+        //将查询的List<Response>转化为List<ResponseVO>，并保存到page中
+        page.setResponses(convertToVOList(responses));
+        //返回所需的回复page
+        return page;
     }
 
     //将Response对象转换为ResponseVO对象
@@ -78,6 +83,7 @@ public class ResponseServiceImpl implements ResponseService{
         return responseVOList;
     }
 
+    //删除编号为id的回复
     @Override
     public int deleteResponseById(int id){
         try{
