@@ -21,6 +21,9 @@ import java.util.List;
 
 public class LoginServiceImpl implements LoginService {
 
+    @Resource(name = "userServiceImpl")
+    UserServiceImpl userService;
+
     @Resource
     private UserDao userDao;
 
@@ -30,17 +33,12 @@ public class LoginServiceImpl implements LoginService {
     //获取用户
     @Override
     public UserVO getUser(User user) {
-        //从数据库中找到对应的user
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andAccountEqualTo(user.getAccount());
-        List<User> users = userDao.selectByExample(userExample);
 
-        UserVO userVO = new UserVO();
 
         //no account
-        if (users.size() == 0)
+        if (userService.getUserByAccount(user.getAccount()).size() == 0)
         {
+            UserVO userVO = new UserVO();
             System.out.println("no account!");
             user.setMark(0);//设置mark
             userVO.setUser(user);
@@ -48,8 +46,9 @@ public class LoginServiceImpl implements LoginService {
         }
 
         // error password
-        else if (!user.getPassword().equals(users.get(0).getPassword()))
+        else if (!user.getPassword().equals(userService.getUserByAccount(user.getAccount()).get(0).getPassword()))
         {
+            UserVO userVO = new UserVO();
             System.out.println("error password!");
             user.setMark(1);//设置mark
             userVO.setUser(user);
@@ -59,12 +58,8 @@ public class LoginServiceImpl implements LoginService {
         //succese
         else
         {
-            //获取对应的AccountData
-            AccountData accountData=accountDataDao.selectByPrimaryKey(users.get(0).getAccountDataId());
-            //封装uesrVO
-            users.get(0).setMark(3);//设置mark
-            userVO.setUser(users.get(0));
-            userVO.setAccountData(accountData);
+            UserVO userVO=userService.convertToUserVo(userService.getUserByAccount(user.getAccount()).get(0));
+            userVO.getUser().setMark(3);
             return userVO;
         }
     }

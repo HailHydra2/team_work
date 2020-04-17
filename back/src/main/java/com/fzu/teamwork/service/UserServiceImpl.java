@@ -1,23 +1,47 @@
 package com.fzu.teamwork.service;
 
+import com.fzu.teamwork.dao.AccountDataDao;
 import com.fzu.teamwork.dao.UserDao;
+import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.*;
 
 @Slf4j
 @Service
+@RestController
 public class UserServiceImpl implements UserService{
     @Resource
     private UserDao userDao;
+    @Resource
+    private AccountDataDao accountDataDao;
 
     private static Integer maxGetNum=100;//最大查找人数
 
+    //user变成userVO
+    public UserVO convertToUserVo(User user) {
+        UserVO userVO=new UserVO();
+        AccountData accountData=new AccountData();
+        //获取对应的AccountData
+        if(user.getAccountDataId()!=null) {
+            accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
+        }
+        else
+            System.out.println("该用户没有外键account_id");
+
+        //封装uesrVO
+        userVO.setUser(user);
+        userVO.setAccountData(accountData);
+        return userVO;
+    }
+
+    //获取所有用户
     public ArrayList<User> getUsers(){
         ArrayList<User> users=new ArrayList<>();
         for(int i=1;i<maxGetNum;i++)//假设同时查找maxGetNum个user
@@ -40,12 +64,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserById(int id){
-        return null;
+        return userDao.selectByPrimaryKey(id);
     }
 
     @Override
-    public User getUserByAccount(String account){
-        return null;
+    public List<User> getUserByAccount(String account){
+
+        //从数据库中找到对应的user
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andAccountEqualTo(account);
+        List<User> users = userDao.selectByExample(userExample);
+
+        return users;
     }
 
     //updata password

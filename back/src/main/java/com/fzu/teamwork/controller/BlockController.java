@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 @RestController
 public class BlockController {
 
-
     @Resource(name = "blockServiceImpl")
     BlockService blockService;
 

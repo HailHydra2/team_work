@@ -27,7 +27,10 @@ public class UserVO{
 
     //使用user构造userVO对象（实例化accountData）
     public UserVO(User user){
+        //System.out.println("accountid="+user.getAccountDataId());
         this.setUser(user);
         this.setAccountData(accountDataService.getById(user.getAccountDataId()));
+        //System.out.println("mark="+user.getAccountDataId()));
+
     }
 }

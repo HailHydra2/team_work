@@ -22,7 +22,7 @@ public class UserController {
     @Resource(name = "userServiceImpl")
     UserServiceImpl userService;
 
-    //static
+    //static get
     @GetMapping("/users")
     public ArrayList<User> getUser(){
         ArrayList<User> userArrayList=new ArrayList<>();
@@ -45,6 +45,24 @@ public class UserController {
         return userArrayList;
     }
 
+    //static delete
+    @DeleteMapping("/users/{id}")
+    public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
+        return AjaxResponse.success();
+    }
+
+    //static add
+    @PostMapping("/users")
+    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
+        return AjaxResponse.success();
+    }
+
+    //static update
+    @PutMapping("/user")
+    public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
+        return AjaxResponse.success();
+    }
+
     //获取所有用户
     @GetMapping("/tusers")
     public ArrayList<User> getUser_test()
@@ -54,21 +72,21 @@ public class UserController {
 
     //按id删除用户
     @DeleteMapping("/tusers/{id}")
-    public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
+    public @ResponseBody AjaxResponse deleteUser_test(@PathVariable int id){
         userService.deleteUsers(id);
         return AjaxResponse.success();
     }
 
     //添加用户
     @PostMapping("/tusers")
-    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
+    public @ResponseBody AjaxResponse addUser_test(@RequestBody User user){
         userService.addUsers(user);
         return AjaxResponse.success();
     }
 
     //更新密码
     @PutMapping("/tuser")
-    public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
+    public @ResponseBody AjaxResponse updatePassword_test(@RequestBody User user){
         UserVO userVO=new UserVO();
         userVO.setUser(user);
         userService.updateUser(userVO);
