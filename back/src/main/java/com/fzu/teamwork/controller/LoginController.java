@@ -23,8 +23,44 @@ public class LoginController {
     @Resource(name = "loginServiceImpl")
     LoginService loginService;
 
+    //static
     @GetMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user) {
-        return AjaxResponse.success(loginService.getUser(user));
+
+        UserVO userVO = new UserVO();
+        AccountData accountData=new AccountData();
+        accountData.setLevel(10);
+        accountData.setScore(10);
+        accountData.setExperienceValue(99);
+        accountData.setFocusNum(16);
+        accountData.setQuestionNum(18);
+        accountData.setResponseNum(25);
+
+        userVO.setUser(user);
+        userVO.setAccountData(accountData);
+
+        return AjaxResponse.success(userVO);
+    }
+
+    //login根据账号密码获取用户信息
+    @GetMapping("/tuser")
+    public @ResponseBody AjaxResponse getUser_test(@RequestBody User user){
+        UserVO userVO=loginService.getUser(user);
+
+        //no account
+        if(userVO.getUser().getMark()==0)
+        {
+            return AjaxResponse.noAccount();
+        }
+        //error password
+        else if(userVO.getUser().getMark()==1)
+        {
+            return AjaxResponse.errorPassword();
+        }
+        //success
+        else
+        {
+            return AjaxResponse.success(userVO);
+        }
     }
 }
