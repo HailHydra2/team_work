@@ -21,6 +21,7 @@ public class ResponseInAQuestion extends ResponseStrategy{
 
     private ResponseDao responseDao;
 
+    //构造函数
     public ResponseInAQuestion(int questionId, ResponsePage page, ResponseDao responseDao){
         this.questionId = questionId;
         this.page = page;

@@ -261,6 +261,10 @@
     select * from response where question_id=#{questionId} limit #{start},#{count}
   </select>
 
+  <select id="selectSublistBeReported" parameterType="Map" resultType="com.fzu.teamwork.model.Response" resultMap="BaseResultMap">
+    select * from response where report_num >= #{minReportedNum} order by report_num desc 
+  </select>
+
   <select id="test" resultType="com.fzu.teamwork.model.Response">
     select * from response;
   </select>

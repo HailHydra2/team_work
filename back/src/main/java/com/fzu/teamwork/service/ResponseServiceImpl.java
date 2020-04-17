@@ -1,10 +1,7 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.ResponseDao;
-import com.fzu.teamwork.model.Response;
-import com.fzu.teamwork.model.ResponseInAQuestion;
-import com.fzu.teamwork.model.ResponseStrategy;
-import com.fzu.teamwork.model.User;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
@@ -35,11 +32,17 @@ public class ResponseServiceImpl implements ResponseService{
 
 
 
-    //创建所需的列表获取策略类(type=1:获取某个问题回复列表)
+    /*创建所需的列表获取策略类
+    *type=1:获取某个问题回复列表
+    *type=2:
+    */
     private void createResponseStrategy(int type){
         if(type == 1){//获取某个问题回复列表的策略对象
-            //实例化对应策略对象
+            //实例化对应类型策略对象
             responseStrategy = new ResponseInAQuestion(questionId, page, responseDao);
+        }else if(type == 2){//获取被举报的问题列表的策略对象
+            //实例化对应类型策略对象
+            responseStrategy = new ResponseBeReported(responseDao);
         }
     }
 
@@ -48,9 +51,9 @@ public class ResponseServiceImpl implements ResponseService{
     public ResponsePage getResponsePageByQuestionId(int questionId, ResponsePage page){
         this.questionId = questionId;
         this.page = page;
-        //创建获取回复列表的策略
+        //创建获取回复列表的策略对象
         createResponseStrategy(1);
-        //获取对应的问题列表
+        //获取对应的回复列表
         List<Response> responses = responseStrategy.getResponseList();
         //将查询的List<Response>转化为List<ResponseVO>，并保存到page中
         page.setResponses(convertToVOList(responses));
@@ -59,8 +62,13 @@ public class ResponseServiceImpl implements ResponseService{
     }
 
     //获取回复列表（投诉列表）
-    public ResponsePage getResponsePageBeReported(ResponsePage page){
-        return null;
+    @Override
+    public List<Response> getResponsePageBeReported(){
+        //创建获取回复列表的策略对象
+        createResponseStrategy(2);
+        //获取对应的回复列表
+        List<Response> responses = responseStrategy.getResponseList();
+        return responses;
     }
 
 

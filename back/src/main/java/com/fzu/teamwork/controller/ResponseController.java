@@ -76,4 +76,11 @@ public class ResponseController {
             return AjaxResponse.error(400,"数据库删除失败");
         }
     }
+
+    //测试举报回复列表获取
+    @GetMapping("/testResponseReports")
+    public List<Response> getResponseReported(){
+        return responseService.getResponsePageBeReported();
+    }
+
 }
