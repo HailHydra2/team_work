@@ -1,6 +1,7 @@
 package com.fzu.teamwork.controller;
 
 import com.fzu.teamwork.model.AjaxResponse;
+import com.fzu.teamwork.model.Response;
 import com.fzu.teamwork.service.ResponseService;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
@@ -41,10 +42,20 @@ public class ResponseController {
         return AjaxResponse.success(responses);
     }
 
+    @GetMapping("/response/{id}")
+    public @ResponseBody AjaxResponse getResponse(@PathVariable int id){
+        ResponseVO responseVO = new ResponseVO();
+        responseVO.setResponse(new Response());
+        responseVO.getResponse().setId(id);
+        responseVO.setContent("response1");
+        responseVO.getResponse().setQuestionId(1);
+        return AjaxResponse.success(responseVO);
+    }
+
     //获取问题的回复列表，id是所属问题id
     @GetMapping("/testResponses/{id}")
     public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
-        responseService.getResponsePage(id,page);
+        responseService.getResponsePageByQuestionId(id,page);
         return AjaxResponse.success(page);
     }
 

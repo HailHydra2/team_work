@@ -45,7 +45,7 @@ public class ResponseServiceImpl implements ResponseService{
 
     //分页获取对应问题的回复列表
     @Override
-    public ResponsePage getResponsePage(int questionId, ResponsePage page){
+    public ResponsePage getResponsePageByQuestionId(int questionId, ResponsePage page){
         this.questionId = questionId;
         this.page = page;
         //创建获取回复列表的策略
@@ -57,6 +57,12 @@ public class ResponseServiceImpl implements ResponseService{
         //返回所需的回复page
         return page;
     }
+
+    //获取回复列表（投诉列表）
+    public ResponsePage getResponsePageBeReported(ResponsePage page){
+        return null;
+    }
+
 
     //将Response对象转换为ResponseVO对象
     public ResponseVO convertToVo(Response response){
