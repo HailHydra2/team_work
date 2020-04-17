@@ -3,7 +3,7 @@
 <mapper namespace="com.fzu.teamwork.dao.QuestionDao">
   <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.Question">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="auther_id" jdbcType="INTEGER" property="autherId" />
+    <result column="author_id" jdbcType="INTEGER" property="authorId" />
     <result column="response_num" jdbcType="INTEGER" property="responseNum" />
     <result column="report_num" jdbcType="INTEGER" property="reportNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, auther_id, response_num, report_num, create_time, content_id
+    id, author_id, response_num, report_num, create_time, content_id
   </sql>
   <select id="selectByExample" parameterType="com.fzu.teamwork.model.QuestionExample" resultMap="BaseResultMap">
     select
@@ -109,16 +109,16 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
-    insert into question (auther_id, response_num, report_num, 
+    insert into question (author_id, response_num, report_num, 
       create_time, content_id)
-    values (#{autherId,jdbcType=INTEGER}, #{responseNum,jdbcType=INTEGER}, #{reportNum,jdbcType=INTEGER}, 
+    values (#{authorId,jdbcType=INTEGER}, #{responseNum,jdbcType=INTEGER}, #{reportNum,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{contentId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
     insert into question
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="autherId != null">
-        auther_id,
+      <if test="authorId != null">
+        author_id,
       </if>
       <if test="responseNum != null">
         response_num,
@@ -134,8 +134,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="autherId != null">
-        #{autherId,jdbcType=INTEGER},
+      <if test="authorId != null">
+        #{authorId,jdbcType=INTEGER},
       </if>
       <if test="responseNum != null">
         #{responseNum,jdbcType=INTEGER},
@@ -163,8 +163,8 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.autherId != null">
-        auther_id = #{record.autherId,jdbcType=INTEGER},
+      <if test="record.authorId != null">
+        author_id = #{record.authorId,jdbcType=INTEGER},
       </if>
       <if test="record.responseNum != null">
         response_num = #{record.responseNum,jdbcType=INTEGER},
@@ -186,7 +186,7 @@
   <update id="updateByExample" parameterType="map">
     update question
     set id = #{record.id,jdbcType=INTEGER},
-      auther_id = #{record.autherId,jdbcType=INTEGER},
+      author_id = #{record.authorId,jdbcType=INTEGER},
       response_num = #{record.responseNum,jdbcType=INTEGER},
       report_num = #{record.reportNum,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -198,8 +198,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.Question">
     update question
     <set>
-      <if test="autherId != null">
-        auther_id = #{autherId,jdbcType=INTEGER},
+      <if test="authorId != null">
+        author_id = #{authorId,jdbcType=INTEGER},
       </if>
       <if test="responseNum != null">
         response_num = #{responseNum,jdbcType=INTEGER},
@@ -218,7 +218,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.Question">
     update question
-    set auther_id = #{autherId,jdbcType=INTEGER},
+    set author_id = #{authorId,jdbcType=INTEGER},
       response_num = #{responseNum,jdbcType=INTEGER},
       report_num = #{reportNum,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

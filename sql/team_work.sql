@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-04-17 16:20:40
+Date: 2020-04-17 17:14:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -131,23 +131,21 @@ CREATE TABLE `message` (
 DROP TABLE IF EXISTS `question`;
 CREATE TABLE `question` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `auther_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
   `response_num` int(11) NOT NULL DEFAULT '0',
   `report_num` int(11) NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL,
   `content_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `question_auther_id` (`auther_id`),
+  KEY `question_author_id` (`author_id`),
   KEY `question_content_id` (`content_id`),
-  CONSTRAINT `question_auther_id` FOREIGN KEY (`auther_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`)
+  CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`),
+  CONSTRAINT `question_author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of question
 -- ----------------------------
-INSERT INTO `question` VALUES ('1', '1', '0', '0', '2020-04-16 08:49:49', '1');
-INSERT INTO `question` VALUES ('2', '1', '0', '0', '2020-04-10 14:06:27', '2');
 
 -- ----------------------------
 -- Table structure for `question_title`
@@ -233,8 +231,6 @@ CREATE TABLE `response` (
 -- ----------------------------
 -- Records of response
 -- ----------------------------
-INSERT INTO `response` VALUES ('1', '1', '1', '2', '0', '0', '0', '2020-04-16 09:10:02');
-INSERT INTO `response` VALUES ('3', '2', '1', '1', '0', '0', '0', '2020-04-16 14:13:19');
 
 -- ----------------------------
 -- Table structure for `reward`

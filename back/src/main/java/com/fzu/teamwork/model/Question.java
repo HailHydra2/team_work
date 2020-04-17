@@ -1,5 +1,7 @@
 package com.fzu.teamwork.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,10 +9,11 @@ import java.util.Date;
  * question
  * @author 
  */
+@Data
 public class Question implements Serializable {
     private Integer id;
 
-    private Integer autherId;
+    private Integer authorId;
 
     private Integer responseNum;
 
@@ -30,12 +33,12 @@ public class Question implements Serializable {
         this.id = id;
     }
 
-    public Integer getAutherId() {
-        return autherId;
+    public Integer getAuthorId() {
+        return authorId;
     }
 
-    public void setAutherId(Integer autherId) {
-        this.autherId = autherId;
+    public void setAuthorId(Integer authorId) {
+        this.authorId = authorId;
     }
 
     public Integer getResponseNum() {
@@ -83,7 +86,7 @@ public class Question implements Serializable {
         }
         Question other = (Question) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getAutherId() == null ? other.getAutherId() == null : this.getAutherId().equals(other.getAutherId()))
+            && (this.getAuthorId() == null ? other.getAuthorId() == null : this.getAuthorId().equals(other.getAuthorId()))
             && (this.getResponseNum() == null ? other.getResponseNum() == null : this.getResponseNum().equals(other.getResponseNum()))
             && (this.getReportNum() == null ? other.getReportNum() == null : this.getReportNum().equals(other.getReportNum()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -95,7 +98,7 @@ public class Question implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getAutherId() == null) ? 0 : getAutherId().hashCode());
+        result = prime * result + ((getAuthorId() == null) ? 0 : getAuthorId().hashCode());
         result = prime * result + ((getResponseNum() == null) ? 0 : getResponseNum().hashCode());
         result = prime * result + ((getReportNum() == null) ? 0 : getReportNum().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -110,7 +113,7 @@ public class Question implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", autherId=").append(autherId);
+        sb.append(", authorId=").append(authorId);
         sb.append(", responseNum=").append(responseNum);
         sb.append(", reportNum=").append(reportNum);
         sb.append(", createTime=").append(createTime);

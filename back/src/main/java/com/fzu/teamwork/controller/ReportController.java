@@ -18,12 +18,12 @@ public class ReportController {
         List<Question> questionList= new ArrayList<>();
         Question question1 = new Question();
         question1.setId(1);
-        question1.setAutherId(1);
+        question1.setAuthorId(1);
         question1.setReportNum(1);
         questionList.add(question1);
         Question question2 = new Question();
         question2.setId(2);
-        question2.setAutherId(1);
+        question2.setAuthorId(1);
         question2.setReportNum(1);
         questionList.add(question2);
         return questionList;

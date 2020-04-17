@@ -141,7 +141,7 @@ public class QuestionController {
         QuestionVO questionVO = new QuestionVO();
         Question question = new Question();
         question.setId(Integer.getInteger(id));
-        question.setAutherId(1);
+        question.setAuthorId(1);
         question.setResponseNum(5);
         question.setReportNum(3);
 
