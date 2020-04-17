@@ -1,13 +1,13 @@
 package com.fzu.teamwork.controller;
 
 import com.fzu.teamwork.model.AjaxResponse;
-import com.fzu.teamwork.model.Message;
-import com.fzu.teamwork.model.Response;
+import com.fzu.teamwork.service.ResponseService;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +16,10 @@ import java.util.List;
 @RestController
 public class ResponseController {
 
+    @Resource(name = "responseServiceImpl")
+    ResponseService responseService;
+
+    //获取问题的回复列表，id是所属问题id(静态数据)
     @GetMapping("/responses/{id}")
     public @ResponseBody  AjaxResponse getResponsePage(@PathVariable int id, @RequestBody ResponsePage page) {
         page.setPageNum(10);
@@ -36,6 +40,14 @@ public class ResponseController {
         page.setResponses(responses);
         return AjaxResponse.success(responses);
     }
+
+    //获取问题的回复列表，id是所属问题id
+    @GetMapping("/testResponses/{id}")
+    public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
+        responseService.getResponsePage(id,page);
+        return AjaxResponse.success(page);
+    }
+
 
     @DeleteMapping("/response/{id}")
     public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){

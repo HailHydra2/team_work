@@ -24,6 +24,7 @@ public class RewardController {
     @Resource(name = "rewardServiceImpl")
     RewardService rewardService;
 
+    //管理员界面获取奖励申请记录列表（静态数据）
     @GetMapping("/rewards")
     public @ResponseBody List<RewardVO> getRewards(){
         List<RewardVO> rewardVOS = new ArrayList<>();
@@ -42,11 +43,14 @@ public class RewardController {
         return  rewardVOS;
     }
 
+    //管理员界面获取奖励申请记录列表
     @GetMapping("/testRewards")
     public @ResponseBody List<Reward> testGetRewards(){
         return rewardService.getRewardList();
     }
 
+
+    //奖励兑换页面申请兑换奖励（静态数据）
     @PostMapping("/reward")
     public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
         UserVO userVO = new UserVO();
@@ -68,6 +72,8 @@ public class RewardController {
         return AjaxResponse.success(userVO);
     }
 
+
+    //奖励兑换页面申请兑换奖励
     @PostMapping("/testReward")
     public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
         UserVO userVO = rewardService.insertReward(reward);

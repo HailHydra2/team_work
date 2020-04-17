@@ -3,6 +3,7 @@ package com.fzu.teamwork.dao;
 import com.fzu.teamwork.model.Reward;
 import com.fzu.teamwork.model.RewardExample;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface RewardDao {
@@ -27,4 +28,5 @@ public interface RewardDao {
     int updateByPrimaryKeySelective(Reward record);
 
     int updateByPrimaryKey(Reward record);
+
 }

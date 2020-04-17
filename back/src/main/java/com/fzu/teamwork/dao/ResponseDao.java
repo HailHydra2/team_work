@@ -3,6 +3,8 @@ package com.fzu.teamwork.dao;
 import com.fzu.teamwork.model.Response;
 import com.fzu.teamwork.model.ResponseExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ResponseDao {
@@ -27,4 +29,6 @@ public interface ResponseDao {
     int updateByPrimaryKeySelective(Response record);
 
     int updateByPrimaryKey(Response record);
+
+    List<Response> selectSublistByQuestionId(Map<String, Integer> map);
 }
