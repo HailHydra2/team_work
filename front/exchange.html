@@ -85,12 +85,25 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							 <a href="message.html">🔔</a>
+							 <a href="Mymessage.html">🔔</a>
+						</li>
+						
+						<li class="">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<img class="nav-user-photo" src="pic/stuIcon.jpg" alt="photo" width="20px" height="20px"/>
+								<span class="user-info">
+									<small>欢迎回来</small>
+								</span>
+								<i class="icon-caret-down"></i>
+							</a>
 						</li>
 						<li class="active">
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
+					
+
+
 				</div>
 				
 
@@ -139,21 +152,53 @@
 				</li>
 			</ul>
 			<!-- 内容写在这里！！！ -->
-			
-			<select class="combobox">
-				<option></option>
-				<option value="PA">Pennsylvania</option>
-				<option value="CT">Connecticut</option>
-				<option value="NY">New York</option>
-				<option value="MD">Maryland</option>
-				<option value="VA">Virginia</option>
-			  </select>
-			  <script type="text/javascript">
-				$(document).ready(function(){
-				  $('.combobox').combobox();
-				});
-			  </script>
+			<br/>
+			<div class="container">
+				<div class="row clearfix">
+					<div class="col-md-7 column">
+						<div class="alert alert-success alert-dismissable">
+							 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h4>
+								奖励兑换
+							</h4> <strong>注意!</strong>你可以使用积分来兑换综测成绩或者志愿服务时长，积分只能整数兑换。 <a href="#" class="alert-link">兑换规则</a>
+						</div>
+					</div>
+				</div>
+			</div>
 
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> 综测成绩
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">志愿时长
+				</label>
+			</div>
+
+			<form role="form">
+				<div class="form-group" >
+				  <label for="name">兑换积分值</label>
+				  <select class="form-control">
+					<option>100</option>
+					<option>200</option>
+					<option>300</option>
+					<option>400</option>
+					<option>500</option>
+				  </select>
+				</div>
+			  </form>
+
+			  <div class="container">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						 <button type="button" class="btn btn-default btn-primary">确认兑换</button>
+					</div>
+				</div>
+			</div>
+			
+		
 
 
 
