@@ -7,7 +7,7 @@ import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
 import io.swagger.models.auth.In;
 
-//MessageService对回复问题消息进行处理的策略类
+//MessageService对回复问题消息进行处理的策略类(RQ: Response Question)
 public class MessageRQStrategy extends MessageOperateStrategy{
 
     //操作消息
@@ -33,16 +33,15 @@ public class MessageRQStrategy extends MessageOperateStrategy{
     //根据消息进行处理
     @Override
     public Message operate(){
-        //回复者
+        //获取回复者对象实体
         User user = userService.getUserById(internalMessage.getOperator_id());
         respondents = userService.convertToUserVo(user);
+        //获取问题对象实体
+        Question q = questionService.getQuestionById(internalMessage.getObject_id());
+        question = questionService.convertToVO(q);
         //问题作者
-        user = userService.getUserById(internalMessage.getObject_id());
+        user = userService.getUserById(q.getAuthorId());
         questionAuthor = userService.convertToUserVo(user);
-        /****************
-         * 注意question的对象的获取接口还未实现
-         * 还未根据questionId获取question对象
-         */
 
         //更新回复者账号数据（积分经验值等）
         updateRespondents();
@@ -84,12 +83,13 @@ public class MessageRQStrategy extends MessageOperateStrategy{
 
     //对问题数据进行更新
     private void updateQuestion(){
+        //获取问题当前回复数
         int responseNum = question.getQuestion().getResponseNum();
+        //更新问题的回复数
         responseNum++;
         question.getQuestion().setResponseNum(responseNum);
-        /*************************************
-         * 注意更新问题数据的接口还未实现，没有调用
-         */
+        //更新数据库数据
+        questionService.updateQuestion(question);
     }
 
     //创建最终要返回的消息对象
