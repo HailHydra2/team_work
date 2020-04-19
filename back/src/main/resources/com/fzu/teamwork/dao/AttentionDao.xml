@@ -210,4 +210,8 @@
       flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getAttentionQuestionList" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select question_id from attention where user_id=#{uid,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -27,4 +27,7 @@ public interface AttentionDao {
     int updateByPrimaryKeySelective(Attention record);
 
     int updateByPrimaryKey(Attention record);
+
+    //获取编号为uid用户的关注问题id列表
+    List<Integer> getAttentionQuestionList(Integer uid);
 }

@@ -18,7 +18,7 @@ public class ResponseBeReported extends ResponseStrategy{
     //构造函数
     public ResponseBeReported(ResponseDao responseDao){
         this.responseDao = responseDao;
-        minReportedNum = 10;//列表中被举报数的最小值（查找举报数超过几条的回复）
+        minReportedNum = 15;//列表中被举报数的最小值（查找举报数超过几条的回复）
     }
 
     //获取回复列表

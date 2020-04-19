@@ -43,7 +43,7 @@ public class RewardController {
         return  rewardVOS;
     }
 
-    //管理员界面获取奖励申请记录列表
+    //管理员界面获取奖励申请记录列表(具体实现)
     @GetMapping("/testRewards")
     public @ResponseBody List<Reward> testGetRewards(){
         return rewardService.getRewardList();
@@ -73,7 +73,7 @@ public class RewardController {
     }
 
 
-    //奖励兑换页面申请兑换奖励
+    //奖励兑换页面申请兑换奖励（具体实现）
     @PostMapping("/testReward")
     public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
         UserVO userVO = rewardService.insertReward(reward);

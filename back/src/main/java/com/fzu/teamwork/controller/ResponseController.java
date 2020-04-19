@@ -42,6 +42,7 @@ public class ResponseController {
         return AjaxResponse.success(responses);
     }
 
+    //获取编号为id的回复信息(静态数据)
     @GetMapping("/response/{id}")
     public @ResponseBody AjaxResponse getResponse(@PathVariable int id){
         ResponseVO responseVO = new ResponseVO();
@@ -52,21 +53,21 @@ public class ResponseController {
         return AjaxResponse.success(responseVO);
     }
 
-    //获取问题的回复列表，id是所属问题id
+    //获取问题的回复列表，id是所属问题id（具体实现接口）
     @GetMapping("/testResponses/{id}")
     public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
         responseService.getResponsePageByQuestionId(id,page);
         return AjaxResponse.success(page);
     }
 
-
+    //删除编号为id的回复（静态接口）
     @DeleteMapping("/response/{id}")
     public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){
         System.out.println("删除" + id + "号response");
         return AjaxResponse.success();
     }
 
-    //根据回复id删除回复记录
+    //根据回复id删除回复记录（实现接口）
     @DeleteMapping("/testResponse/{id}")
     public @ResponseBody AjaxResponse testDeleteResponse(@PathVariable int id){
         if(responseService.deleteResponseById(id) > 0){
@@ -77,10 +78,20 @@ public class ResponseController {
         }
     }
 
-    //测试举报回复列表获取
+    //测试举报回复列表获取（实现接口）
     @GetMapping("/testResponseReports")
     public List<Response> getResponseReported(){
         return responseService.getResponsePageBeReported();
     }
 
+    //获取编号为id的回复（实现接口）
+    @GetMapping("/testResponse/{id}")
+    public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){
+        ResponseVO responseVO = responseService.getResponseById(id);
+        if(responseVO != null){
+            return AjaxResponse.success(responseVO);
+        }else {
+            return AjaxResponse.error(501,"编号为id的回复不存在");
+        }
+    }
 }

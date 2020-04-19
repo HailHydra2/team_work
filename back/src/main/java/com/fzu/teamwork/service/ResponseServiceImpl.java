@@ -109,4 +109,18 @@ public class ResponseServiceImpl implements ResponseService{
         }
         return 1;
     }
+
+    //获取编号为id的回复
+    @Override
+    public ResponseVO getResponseById(int id){
+        Response response = responseDao.selectByPrimaryKey(id);
+        ResponseVO responseVO;
+        if(response != null){
+            responseVO = convertToVo(response);
+        }else{
+            log.info("编号为id的回复不存在");
+            responseVO = null;
+        }
+        return responseVO;
+    }
 }
