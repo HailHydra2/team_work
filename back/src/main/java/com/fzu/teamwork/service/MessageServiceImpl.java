@@ -40,11 +40,14 @@ public class MessageServiceImpl implements MessageService{
     }
 
     /* 创建根据消息对实体数据进行处理的策略对象
-     * type=1：对回复问题消息的处理策略对象
+     * type=1：对回复问题消息处理的策略对象
+     * type=2：对关注问题消息处理的策略对象
      */
     public void createMessageOperateStrategy(int type, InternalMessage message){
         if(type == 1){//对回复问题消息的处理策略对象
             operateStrategy = new MessageRQStrategy(message,userService,questionService);
+        }else if(type == 2){//对关注问题消息处理的策略对象
+            operateStrategy = new MessageAQStrategy(message,userService);
         }
     }
 
@@ -74,13 +77,20 @@ public class MessageServiceImpl implements MessageService{
     public void updateInfoByMessage(InternalMessage internalMessage){
         //判断消息类型，创建需要的策略对象
         if(internalMessage.getWay().equals(MessageWay.response)){
-            //是回复问题消息
+            //回复问题消息
             createMessageOperateStrategy(1, internalMessage);
+        }else if(internalMessage.getWay().equals(MessageWay.attention)){
+            //关注问题消息
+            createMessageOperateStrategy(2, internalMessage);
         }
 
         //根据消息对实体对象的数据进行处理更新,并获取要保存的消息
         Message message = operateStrategy.operate();
+
         //将消息插入数据库保存
-        messageDao.insert(message);
+        if(message != null){
+            //需要保存的消息
+            messageDao.insert(message);
+        }
     }
 }
