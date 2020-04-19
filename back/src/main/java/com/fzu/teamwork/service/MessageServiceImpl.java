@@ -3,6 +3,7 @@ package com.fzu.teamwork.service;
 import com.fzu.teamwork.dao.MessageDao;
 import com.fzu.teamwork.model.Message;
 import com.fzu.teamwork.model.MessageByUid;
+import com.fzu.teamwork.model.MessageExample;
 import com.fzu.teamwork.model.MessageStrategy;
 import com.fzu.teamwork.view.MessagePage;
 import lombok.extern.slf4j.Slf4j;
@@ -44,5 +45,15 @@ public class MessageServiceImpl implements MessageService{
         List<Message> messageList = messageStrategy.getMessageList();
         page.setMessages(messageList);
         return page;
+    }
+
+    //删除某个用户的所有消息(返回删除消息条数)
+    @Override
+    public int deleteUserMessage(int uid){
+        MessageExample example = new MessageExample();
+        example.createCriteria().andObjectIdEqualTo(uid);
+        //删除object_id为uid(被操作者为udi)的消息，并返回删除条数
+        int num = messageDao.deleteByExample(example);
+        return num;
     }
 }

@@ -26,6 +26,15 @@ public class AjaxResponse {
         return resultBean;
     }
 
+    public static AjaxResponse success(String message){
+        AjaxResponse resultBean = new AjaxResponse();
+        resultBean.setIsok(true);
+        resultBean.setCode(200);
+        resultBean.setMessage(message);
+        resultBean.setData(null);
+        return resultBean;
+    }
+
     public static AjaxResponse success(Object data) {
         AjaxResponse resultBean = new AjaxResponse();
         resultBean.setIsok(true);
@@ -34,6 +43,7 @@ public class AjaxResponse {
         resultBean.setData(data);
         return resultBean;
     }
+
 
     //code是状态码，message描述信息
     public static AjaxResponse error(int code, String message){
