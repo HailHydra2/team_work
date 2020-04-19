@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Message implements Serializable {
     private Integer id;
 
+    //被操作用户id
     private Integer objectId;
 
     private String way;

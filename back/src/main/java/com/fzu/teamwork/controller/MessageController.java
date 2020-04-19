@@ -3,16 +3,22 @@ package com.fzu.teamwork.controller;
 
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Message;
+import com.fzu.teamwork.service.MessageService;
+import com.fzu.teamwork.service.MessageServiceImpl;
 import com.fzu.teamwork.view.MessagePage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RestController
 public class MessageController {
+
+    @Resource(name = "messageServiceImpl")
+    private MessageService messageService;
 
     @GetMapping("/userMessages/{uid}")
     public @ResponseBody
@@ -32,6 +38,12 @@ public class MessageController {
             messages.add(message);
         }
         page.setMessages(messages);
+        return AjaxResponse.success(page);
+    }
+
+    @GetMapping("/testUserMessage/{uid}")
+    public @ResponseBody AjaxResponse testGetMessagePage(@PathVariable int uid, @RequestBody MessagePage page){
+        messageService.getMessagePageByUid(uid, page);
         return AjaxResponse.success(page);
     }
 }

@@ -57,7 +57,6 @@ public class QuestionController {
 
         AccountData accountData = new AccountData();
         accountData.setId(1);
-        accountData.setUserId(1);
         accountData.setLevel(10);
         accountData.setScore(10);
         accountData.setExperienceValue(99/100);

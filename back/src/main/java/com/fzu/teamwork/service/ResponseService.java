@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ResponseService {
 
-    //获取回复列表(对应问题id所拥有的问题列表)
+    //获取某个回复分页(对应问题id所拥有的回复的某个页面)
     public ResponsePage getResponsePageByQuestionId(int questionId, ResponsePage page);
     //获取回复列表（投诉列表）
     public List<Response> getResponsePageBeReported();

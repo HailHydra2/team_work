@@ -61,7 +61,6 @@ public class RewardController {
         userVO.getUser().setIdentity(UserIdentity.student);
         userVO.setAccountData(new AccountData());
         userVO.getAccountData().setId(10);
-        userVO.getAccountData().setUserId(reward.getUserId());
         userVO.getAccountData().setExperienceValue(100);
         userVO.getAccountData().setFocusNum(1);
         userVO.getAccountData().setLevel(10);
