@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/*MessageService用于获取消息列表的策略类
+ *用于获取object_id为uid的消息（操作对象的编号为uid的）记录子列表
+ */
 public class MessageByUid extends MessageStrategy{
 
     //消息所属user的id

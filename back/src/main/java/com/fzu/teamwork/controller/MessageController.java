@@ -49,7 +49,7 @@ public class MessageController {
     }
 
 
-    //*******************文档没写的接口
+    //*******************文档没写的接口******************
     //删除某个用户所有的消息
     @DeleteMapping("/testUserMessage/{uid}")
     public @ResponseBody AjaxResponse deleteUserMessage(@PathVariable int uid){
