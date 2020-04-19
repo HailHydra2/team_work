@@ -3,7 +3,6 @@
 <mapper namespace="com.fzu.teamwork.dao.AccountDataDao">
   <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.AccountData">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="level" jdbcType="INTEGER" property="level" />
     <result column="experience_value" jdbcType="INTEGER" property="experienceValue" />
     <result column="score" jdbcType="INTEGER" property="score" />
@@ -70,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, `level`, experience_value, score, focus_num, question_num, response_num
+    id, `level`, experience_value, score, focus_num, question_num, response_num
   </sql>
   <select id="selectByExample" parameterType="com.fzu.teamwork.model.AccountDataExample" resultMap="BaseResultMap">
     select
@@ -111,19 +110,16 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.AccountData" useGeneratedKeys="true">
-    insert into account_data (user_id, `level`, experience_value, 
-      score, focus_num, question_num, 
-      response_num)
-    values (#{userId,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{experienceValue,jdbcType=INTEGER}, 
-      #{score,jdbcType=INTEGER}, #{focusNum,jdbcType=INTEGER}, #{questionNum,jdbcType=INTEGER}, 
-      #{responseNum,jdbcType=INTEGER})
+    insert into account_data (`level`, experience_value, score, 
+      focus_num, question_num, response_num
+      )
+    values (#{level,jdbcType=INTEGER}, #{experienceValue,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, 
+      #{focusNum,jdbcType=INTEGER}, #{questionNum,jdbcType=INTEGER}, #{responseNum,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.AccountData" useGeneratedKeys="true">
     insert into account_data
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
-      </if>
       <if test="level != null">
         `level`,
       </if>
@@ -144,9 +140,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
-      </if>
       <if test="level != null">
         #{level,jdbcType=INTEGER},
       </if>
@@ -179,9 +172,6 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
       <if test="record.level != null">
         `level` = #{record.level,jdbcType=INTEGER},
       </if>
@@ -208,7 +198,6 @@
   <update id="updateByExample" parameterType="map">
     update account_data
     set id = #{record.id,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
       `level` = #{record.level,jdbcType=INTEGER},
       experience_value = #{record.experienceValue,jdbcType=INTEGER},
       score = #{record.score,jdbcType=INTEGER},
@@ -222,9 +211,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.AccountData">
     update account_data
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
       <if test="level != null">
         `level` = #{level,jdbcType=INTEGER},
       </if>
@@ -248,8 +234,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.AccountData">
     update account_data
-    set user_id = #{userId,jdbcType=INTEGER},
-      `level` = #{level,jdbcType=INTEGER},
+    set `level` = #{level,jdbcType=INTEGER},
       experience_value = #{experienceValue,jdbcType=INTEGER},
       score = #{score,jdbcType=INTEGER},
       focus_num = #{focusNum,jdbcType=INTEGER},

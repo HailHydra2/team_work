@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-04-17 17:14:02
+Date: 2020-04-19 15:30:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,16 +21,13 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `account_data`;
 CREATE TABLE `account_data` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
   `level` int(11) NOT NULL,
   `experience_value` int(11) NOT NULL,
   `score` int(11) NOT NULL,
   `focus_num` int(11) NOT NULL,
   `question_num` int(11) NOT NULL,
   `response_num` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_data_user_id` (`user_id`),
-  CONSTRAINT `account_data_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -52,11 +49,13 @@ CREATE TABLE `attention` (
   KEY `attention_question_id` (`question_id`),
   CONSTRAINT `attention_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`),
   CONSTRAINT `attention_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of attention
 -- ----------------------------
+INSERT INTO `attention` VALUES ('1', '1', '1', '2020-10-21 20:19:08', '1');
+INSERT INTO `attention` VALUES ('2', '1', '2', '2020-10-21 20:19:08', '1');
 
 -- ----------------------------
 -- Table structure for `block`
@@ -146,6 +145,8 @@ CREATE TABLE `question` (
 -- ----------------------------
 -- Records of question
 -- ----------------------------
+INSERT INTO `question` VALUES ('1', '1', '5', '0', '2020-04-07 21:31:21', '2');
+INSERT INTO `question` VALUES ('2', '1', '1', '0', '2020-04-14 21:31:41', '1');
 
 -- ----------------------------
 -- Table structure for `question_title`
@@ -231,6 +232,8 @@ CREATE TABLE `response` (
 -- ----------------------------
 -- Records of response
 -- ----------------------------
+INSERT INTO `response` VALUES ('1', '1', '1', '1', '3', '2', '72', '2020-04-22 21:32:38');
+INSERT INTO `response` VALUES ('2', '2', '1', '2', '1', '32', '18', '2020-04-01 21:33:11');
 
 -- ----------------------------
 -- Table structure for `reward`

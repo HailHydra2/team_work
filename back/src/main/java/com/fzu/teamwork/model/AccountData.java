@@ -9,8 +9,6 @@ import java.io.Serializable;
 public class AccountData implements Serializable {
     private Integer id;
 
-    private Integer userId;
-
     private Integer level;
 
     private Integer experienceValue;
@@ -31,14 +29,6 @@ public class AccountData implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getLevel() {
@@ -102,7 +92,6 @@ public class AccountData implements Serializable {
         }
         AccountData other = (AccountData) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getLevel() == null ? other.getLevel() == null : this.getLevel().equals(other.getLevel()))
             && (this.getExperienceValue() == null ? other.getExperienceValue() == null : this.getExperienceValue().equals(other.getExperienceValue()))
             && (this.getScore() == null ? other.getScore() == null : this.getScore().equals(other.getScore()))
@@ -116,7 +105,6 @@ public class AccountData implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getLevel() == null) ? 0 : getLevel().hashCode());
         result = prime * result + ((getExperienceValue() == null) ? 0 : getExperienceValue().hashCode());
         result = prime * result + ((getScore() == null) ? 0 : getScore().hashCode());
@@ -133,7 +121,6 @@ public class AccountData implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
         sb.append(", level=").append(level);
         sb.append(", experienceValue=").append(experienceValue);
         sb.append(", score=").append(score);
