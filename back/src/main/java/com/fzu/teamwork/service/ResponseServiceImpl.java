@@ -73,7 +73,8 @@ public class ResponseServiceImpl implements ResponseService{
 
 
     //将Response对象转换为ResponseVO对象
-    public ResponseVO convertToVo(Response response){
+    @Override
+    public ResponseVO convertToVO(Response response){
         ResponseVO responseVO = new ResponseVO();
         //设置responseVO对象的response属性
         responseVO.setResponse(response);
@@ -90,7 +91,7 @@ public class ResponseServiceImpl implements ResponseService{
         List<ResponseVO> responseVOList = new ArrayList<>();
         for(Response response : responses){
             //将response转换为responseVO
-            ResponseVO responseVO = convertToVo(response);
+            ResponseVO responseVO = convertToVO(response);
             //将转换后的responseVO添加到返回列表
             responseVOList.add(responseVO);
         }
@@ -112,15 +113,15 @@ public class ResponseServiceImpl implements ResponseService{
 
     //获取编号为id的回复
     @Override
-    public ResponseVO getResponseById(int id){
+    public Response getResponseById(int id){
         Response response = responseDao.selectByPrimaryKey(id);
-        ResponseVO responseVO;
-        if(response != null){
-            responseVO = convertToVo(response);
-        }else{
-            log.info("编号为id的回复不存在");
-            responseVO = null;
-        }
-        return responseVO;
+        return response;
+    }
+
+    //根据ResponseVO更新数据(因为没有更改内容功能，暂时只更新response的数据，不更新内容)
+    @Override
+    public void updateResponse(ResponseVO responseVO){
+        //更新数据
+        responseDao.updateByPrimaryKey(responseVO.getResponse());
     }
 }

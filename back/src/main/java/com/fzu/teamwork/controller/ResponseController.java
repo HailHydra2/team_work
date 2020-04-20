@@ -87,7 +87,8 @@ public class ResponseController {
     //获取编号为id的回复（实现接口）
     @GetMapping("/testResponse/{id}")
     public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){
-        ResponseVO responseVO = responseService.getResponseById(id);
+        Response response = responseService.getResponseById(id);
+        ResponseVO responseVO = responseService.convertToVO(response);
         if(responseVO != null){
             return AjaxResponse.success(responseVO);
         }else {

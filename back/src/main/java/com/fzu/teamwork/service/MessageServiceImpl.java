@@ -23,6 +23,9 @@ public class MessageServiceImpl implements MessageService{
     @Resource(name = "questionServiceImpl")
     private QuestionService questionService;
 
+    @Resource(name = "responseServiceImpl")
+    private ResponseService responseService;
+
     //用于获取消息列表的策略类
     private MessageStrategy messageStrategy;
     //用于存储消息列表的某个分页
@@ -48,6 +51,8 @@ public class MessageServiceImpl implements MessageService{
             operateStrategy = new MessageRQStrategy(message,userService,questionService);
         }else if(type == 2){//对关注问题消息处理的策略对象
             operateStrategy = new MessageAQStrategy(message,userService);
+        }else if(type ==3){//投诉某条回复
+            operateStrategy = new MessageRRStrategy(message, userService, responseService);
         }
     }
 
@@ -82,6 +87,9 @@ public class MessageServiceImpl implements MessageService{
         }else if(internalMessage.getWay().equals(MessageWay.attention)){
             //关注问题消息
             createMessageOperateStrategy(2, internalMessage);
+        }else if(internalMessage.getWay().equals(MessageWay.reportResponse)){
+            //投诉某个问题
+            createMessageOperateStrategy(3,internalMessage);
         }
 
         //根据消息对实体对象的数据进行处理更新,并获取要保存的消息
