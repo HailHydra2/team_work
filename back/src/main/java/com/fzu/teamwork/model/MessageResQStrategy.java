@@ -7,8 +7,8 @@ import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
 import io.swagger.models.auth.In;
 
-//MessageService对回复问题消息进行处理的策略类(RQ: Response Question)
-public class MessageRQStrategy extends MessageOperateStrategy{
+//MessageService对回复问题消息进行处理的策略类(ResQ: Response Question)
+public class MessageResQStrategy extends MessageOperateStrategy{
 
     //操作消息
     private InternalMessage internalMessage;
@@ -24,7 +24,7 @@ public class MessageRQStrategy extends MessageOperateStrategy{
     private QuestionVO question;
 
     //构造函数
-    public MessageRQStrategy(InternalMessage message, UserService userService, QuestionService questionService){
+    public MessageResQStrategy(InternalMessage message, UserService userService, QuestionService questionService){
         this.internalMessage = message;
         this.userService = userService;
         this.questionService = questionService;

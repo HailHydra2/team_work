@@ -12,10 +12,11 @@ public class MessageAQStrategy extends MessageOperateStrategy{
     private UserVO user;
 
     public MessageAQStrategy(InternalMessage message, UserService userService){
+        this.userService = userService;
         //根据消息中关注者的id获得用户对象
         User u = userService.getUserById(message.getOperator_id());
         user = userService.convertToUserVo(u);
-        this.userService = userService;
+
 
     }
 

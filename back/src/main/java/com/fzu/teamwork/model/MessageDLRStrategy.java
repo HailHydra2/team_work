@@ -3,10 +3,8 @@ package com.fzu.teamwork.model;
 import com.fzu.teamwork.service.ResponseService;
 import com.fzu.teamwork.view.ResponseVO;
 
-import java.util.List;
-
-//MessageService点灭某个回复消息进行处理的策略类（DR:Dislike Response）
-public class MessageDRStrategy extends MessageOperateStrategy{
+//MessageService点灭某个回复消息进行处理的策略类（DLR:Dislike Response）
+public class MessageDLRStrategy extends MessageOperateStrategy{
 
     private ResponseService responseService;
 
@@ -14,7 +12,7 @@ public class MessageDRStrategy extends MessageOperateStrategy{
     private ResponseVO responseVO;
 
     //构造函数
-    public MessageDRStrategy(InternalMessage message, ResponseService responseService){
+    public MessageDLRStrategy(InternalMessage message, ResponseService responseService){
         //获取被点灭的回复实体
         Response r = responseService.getResponseById(message.getObject_id());
         responseVO = responseService.convertToVO(r);
