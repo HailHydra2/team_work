@@ -53,6 +53,8 @@ public class MessageServiceImpl implements MessageService{
             operateStrategy = new MessageAQStrategy(message,userService);
         }else if(type ==3){//投诉某条回复
             operateStrategy = new MessageRRStrategy(message, userService, responseService);
+        }else if(type == 4) {//点灭某条回复
+            operateStrategy = new MessageDRStrategy(message,responseService);
         }
     }
 
@@ -90,6 +92,9 @@ public class MessageServiceImpl implements MessageService{
         }else if(internalMessage.getWay().equals(MessageWay.reportResponse)){
             //投诉某个问题
             createMessageOperateStrategy(3,internalMessage);
+        }else if(internalMessage.getWay().equals(MessageWay.dislikeResponse)){
+            //点灭某条回复
+            createMessageOperateStrategy(4,internalMessage);
         }
 
         //根据消息对实体对象的数据进行处理更新,并获取要保存的消息
