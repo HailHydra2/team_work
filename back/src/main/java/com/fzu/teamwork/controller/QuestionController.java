@@ -23,7 +23,7 @@ public class QuestionController {
     @Resource
     private QuestionDao questionDao;
 
-    @GetMapping("/questions")
+    @PostMapping("/questions")
     public @ResponseBody AjaxResponse getQuestionPage(@RequestBody QuestionPage questionPage){
         questionPage.setPageNum(10);
         List<Integer> buttonList = new ArrayList<>();
@@ -80,7 +80,7 @@ public class QuestionController {
         return AjaxResponse.success(userVO);
     }
 
-    @GetMapping("/userQuestions/{uid}")
+    @PostMapping("/userQuestions/{uid}")
     public @ResponseBody AjaxResponse getUserQuestionPage(@PathVariable String uid,  @RequestBody QuestionPage questionPage){
         questionPage.setPageNum(10);
         List<Integer> buttonList = new ArrayList<>();
@@ -116,7 +116,7 @@ public class QuestionController {
         return AjaxResponse.success(questionPage);
     }
 
-    @GetMapping("/userResponseQuestions/{uid}")
+    @PostMapping("/userResponseQuestions/{uid}")
     public @ResponseBody AjaxResponse getUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
         questionPage.setPageNum(10);
         List<Integer> buttonList = new ArrayList<>();

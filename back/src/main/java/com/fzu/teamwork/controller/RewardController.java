@@ -67,7 +67,7 @@ public class RewardController {
         userVO.getAccountData().setQuestionNum(10);
         userVO.getAccountData().setScore(100);
         userVO.getAccountData().setResponseNum(12);
-        rewardService.insertReward(reward);
+        //rewardService.insertReward(reward);
         return AjaxResponse.success(userVO);
     }
 

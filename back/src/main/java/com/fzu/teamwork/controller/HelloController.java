@@ -41,4 +41,16 @@ public class HelloController {
     public @ResponseBody AjaxResponse getUser(@PathVariable int id){
         return AjaxResponse.success(userDao.selectByPrimaryKey(id));
     }
+
+    @GetMapping("/getUserTest")
+    public @ResponseBody AjaxResponse getUserTest(@RequestParam int index, @RequestParam int b){
+        log.info("index{}, b{}", index, b);
+        return AjaxResponse.success(userDao.selectByPrimaryKey(1));
+    }
+
+    @GetMapping("/testPut")
+    public @ResponseBody AjaxResponse testPut(@RequestParam User u){
+        log.info("user{}",u);
+        return AjaxResponse.success();
+    }
 }

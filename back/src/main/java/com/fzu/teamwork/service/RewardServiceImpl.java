@@ -30,7 +30,7 @@ public class RewardServiceImpl implements RewardService{
         //查找申请用户
         User user = userServiceImpl.getUserById(reward.getUserId());
         //获取用户的账户信息（将user对象转换为userVO对象）
-        userVO = new UserVO(user);
+        userVO = userServiceImpl.convertToUserVo(user);
         //计算用户所需积分（若积分充足返回所需积分，不足返回-1）
         int needScore = doesLeagal(reward);
         //判断用户积分是否充足
@@ -43,6 +43,7 @@ public class RewardServiceImpl implements RewardService{
             //更新用户数据
             userServiceImpl.updateUser(userVO);
         }
+        rewardDao.insert(reward);
         //返回用户信息
         return userVO;
     }

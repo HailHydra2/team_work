@@ -21,7 +21,7 @@ public class ResponseController {
     ResponseService responseService;
 
     //获取问题的回复列表，id是所属问题id(静态数据)
-    @GetMapping("/responses/{id}")
+    @PostMapping("/responses/{id}")
     public @ResponseBody  AjaxResponse getResponsePage(@PathVariable int id, @RequestBody ResponsePage page) {
         page.setPageNum(10);
         List<Integer> list = new ArrayList<>();
@@ -85,7 +85,7 @@ public class ResponseController {
     }
 
     //获取编号为id的回复（实现接口）
-    @GetMapping("/testResponse/{id}")
+    @PostMapping("/testResponse/{id}")
     public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){
         Response response = responseService.getResponseById(id);
         ResponseVO responseVO = responseService.convertToVO(response);

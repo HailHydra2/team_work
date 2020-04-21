@@ -20,7 +20,7 @@ public class MessageController {
     @Resource(name = "messageServiceImpl")
     private MessageService messageService;
 
-    @GetMapping("/userMessages/{uid}")
+    @PostMapping("/userMessages/{uid}")
     public @ResponseBody
     AjaxResponse getMessagePage(@PathVariable int uid, @RequestBody MessagePage page){
         page.setPageNum(10);
