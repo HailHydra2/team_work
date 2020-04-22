@@ -195,4 +195,7 @@
       flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectAllQuestion" resultType="java.lang.Integer">
+    select question from report_question
+  </select>
 </mapper>

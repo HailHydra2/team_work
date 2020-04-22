@@ -268,4 +268,8 @@
   <select id="test" resultType="com.fzu.teamwork.model.Response">
     select * from response;
   </select>
+
+  <select id="selectQuestionIdByAuthorId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select question_id from response where user_id=#{uid}
+  </select>
 </mapper>

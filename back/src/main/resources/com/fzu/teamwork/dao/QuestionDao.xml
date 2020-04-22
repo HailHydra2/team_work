@@ -109,8 +109,7 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
-    insert into question (author_id, response_num, report_num, 
-      create_time, content_id)
+    insert into question (author_id, response_num, report_num, create_time, content_id)
     values (#{authorId,jdbcType=INTEGER}, #{responseNum,jdbcType=INTEGER}, #{reportNum,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{contentId,jdbcType=INTEGER})
   </insert>
@@ -225,4 +224,10 @@
       content_id = #{contentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectQuestion" parameterType="int" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select * from question limit #{start},#{count}
+  </select>
+  <select id="selectUserQuestion" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select * from question where author_id=#{uid} limit #{start},#{count}
+  </select>
 </mapper>

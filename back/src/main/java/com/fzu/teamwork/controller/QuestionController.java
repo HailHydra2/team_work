@@ -1,9 +1,9 @@
 package com.fzu.teamwork.controller;
 
 
-import com.fzu.teamwork.dao.QuestionDao;
+import com.fzu.teamwork.dao.*;
 import com.fzu.teamwork.model.*;
-import com.fzu.teamwork.view.MessagePage;
+import com.fzu.teamwork.service.*;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
@@ -20,8 +20,24 @@ import java.util.List;
 @Slf4j
 @RestController
 public class QuestionController {
+
+    @Resource
+    private QuestionService questionService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ContentDao contentDao;
+
     @Resource
     private QuestionDao questionDao;
+
+    @Resource
+    private TitleDao titleDao;
+
+    public QuestionController() {
+    }
 
     @PostMapping("/questions")
     public @ResponseBody AjaxResponse getQuestionPage(@RequestBody QuestionPage questionPage){
@@ -43,6 +59,13 @@ public class QuestionController {
         questionList.add(question2);
         questionPage.setQuestions(questionList);
         return AjaxResponse.success(questionPage);
+    }
+
+    //新增获取问题列表接口
+    @PostMapping("/testQuestions")
+    public @ResponseBody AjaxResponse testGetQuestionPage(@RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPage(questionPage);
+        return AjaxResponse.success(page);
     }
 
     @PostMapping("/question")
@@ -80,6 +103,12 @@ public class QuestionController {
         return AjaxResponse.success(userVO);
     }
 
+    //实现新增问题接口
+    @PostMapping("/testQuestion")
+    public  @ResponseBody AjaxResponse testAddQuestion(@RequestBody QuestionVO questionVO){
+        return AjaxResponse.success(questionService.addQuestion(questionVO));
+    }
+
     @PostMapping("/userQuestions/{uid}")
     public @ResponseBody AjaxResponse getUserQuestionPage(@PathVariable String uid,  @RequestBody QuestionPage questionPage){
         questionPage.setPageNum(10);
@@ -96,6 +125,13 @@ public class QuestionController {
         questionList.add(question1);
         questionPage.setQuestions(questionList);
         return AjaxResponse.success(questionPage);
+    }
+
+    //实现获取用户问题列表接口
+    @PostMapping("/testUserQuestions/{uid}")
+    public @ResponseBody AjaxResponse testGetUserQuestionPage(@PathVariable String uid,  @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPage(uid,questionPage);
+        return AjaxResponse.success(page);
     }
 
     @GetMapping("/userAttentions/{uid}")
@@ -116,6 +152,13 @@ public class QuestionController {
         return AjaxResponse.success(questionPage);
     }
 
+    //实现获取关注问题列表接口
+    @GetMapping("/testUserAttentions/{uid}")
+    public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable String uid, @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPageByIdList(uid, questionPage);
+        return AjaxResponse.success(page);
+    }
+
     @PostMapping("/userResponseQuestions/{uid}")
     public @ResponseBody AjaxResponse getUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
         questionPage.setPageNum(10);
@@ -132,6 +175,13 @@ public class QuestionController {
         questionList.add(question1);
         questionPage.setQuestions(questionList);
         return AjaxResponse.success(questionPage);
+    }
+
+    //实现获取用户回答过的问题列表接口
+    @PostMapping("/testUserResponseQuestions/{uid}")
+    public @ResponseBody AjaxResponse TestGetUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getResponseQuestion(uid,questionPage);
+        return AjaxResponse.success(page);
     }
 
     @SneakyThrows
@@ -152,8 +202,24 @@ public class QuestionController {
         return  AjaxResponse.success(questionVO);
     }
 
+    //实现获取问题详细信息接口
+    @SneakyThrows
+    @GetMapping("/testQuestion/{id}")
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
+        Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
+        QuestionVO questionVO = questionService.convertToVO(question);
+        return AjaxResponse.success(questionVO);
+    }
+
     @DeleteMapping("/question/{id}")
     public @ResponseBody AjaxResponse deleteQuestion(@PathVariable String id){
+        return AjaxResponse.success();
+    }
+
+    //实现删除问题接口
+    @DeleteMapping("/testQuestion/{id}")
+    public @ResponseBody AjaxResponse testDeleteQuestion(@PathVariable String id){
+        questionService.deleteQuestionById(id);
         return AjaxResponse.success();
     }
 }

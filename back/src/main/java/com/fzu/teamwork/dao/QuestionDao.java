@@ -3,6 +3,8 @@ package com.fzu.teamwork.dao;
 import com.fzu.teamwork.model.Question;
 import com.fzu.teamwork.model.QuestionExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface QuestionDao {
@@ -27,4 +29,10 @@ public interface QuestionDao {
     int updateByPrimaryKeySelective(Question record);
 
     int updateByPrimaryKey(Question record);
+
+    //获取问题列表（map: {"start":子列表开始位置索引, "count":子列表长度}）
+    public List<Question> selectQuestion(Map<String, Integer> map);
+
+    //获取用户问题列表（map: {"user":用户ID，"start":子列表开始位置索引, "count":子列表长度}）
+    public List<Question> selectUserQuestion(Map<String, Integer> map);
 }

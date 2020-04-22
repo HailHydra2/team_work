@@ -27,4 +27,6 @@ public interface ReportResponseDao {
     int updateByPrimaryKeySelective(ReportResponse record);
 
     int updateByPrimaryKey(ReportResponse record);
+
+    List<Integer> selectAllResponse();
 }

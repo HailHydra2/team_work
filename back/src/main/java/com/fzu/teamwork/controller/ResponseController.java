@@ -77,13 +77,13 @@ public class ResponseController {
             return AjaxResponse.error(400,"数据库删除失败");
         }
     }
-
+/*
     //测试举报回复列表获取（实现接口）
     @GetMapping("/testResponseReports")
     public List<Response> getResponseReported(){
         return responseService.getResponsePageBeReported();
     }
-
+*/
     //获取编号为id的回复（实现接口）
     @PostMapping("/testResponse/{id}")
     public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){

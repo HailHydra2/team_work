@@ -27,4 +27,6 @@ public interface ReportQuestionDao {
     int updateByPrimaryKeySelective(ReportQuestion record);
 
     int updateByPrimaryKey(ReportQuestion record);
+
+    List<Integer> selectAllQuestion();
 }

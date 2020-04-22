@@ -163,4 +163,13 @@
     set title = #{title,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectTitleByQuestionID" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select title_id from question_title where question_id=#{questionID}
+  </select>
+    <insert id="insertQuestionTitle">
+        insert into question_title (question_id, title_id) value (#{questionID}, #{titleID})
+    </insert>
+    <delete id="deleteQuestionTitle" parameterType="java.lang.Integer">
+      delete from question_title where question_id=#{questionID}
+    </delete>
 </mapper>

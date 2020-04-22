@@ -1,6 +1,10 @@
 package com.fzu.teamwork.controller;
 
 
+import com.fzu.teamwork.dao.QuestionDao;
+import com.fzu.teamwork.dao.ReportQuestionDao;
+import com.fzu.teamwork.dao.ReportResponseDao;
+import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.Question;
 import com.fzu.teamwork.model.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +17,11 @@ import java.util.List;
 @Slf4j
 @RestController
 public class ReportController {
+    private QuestionDao questionDao;
+    private ResponseDao responseDao;
+    private ReportQuestionDao reportQuestionDao;
+    private ReportResponseDao reportResponseDao;
+
     @GetMapping("/questionReports")
     public List<Question> getReportQuestion(){
         List<Question> questionList= new ArrayList<>();
@@ -29,6 +38,17 @@ public class ReportController {
         return questionList;
     }
 
+    //实现获取所有被举报的问题接口
+    @GetMapping("/testQuestionReports")
+    public List<Question> testGetReportQuestion(){
+        List<Question> questionList = new ArrayList<>();
+        List<Integer> questionIdList = reportQuestionDao.selectAllQuestion();
+        for (int id:questionIdList){
+            questionList.add(questionDao.selectByPrimaryKey(id));
+        }
+        return questionList;
+    }
+
     @GetMapping("/responseReports")
     public List<Response> getReportResponse(){
         List<Response> responseList = new ArrayList<>();
@@ -42,6 +62,17 @@ public class ReportController {
         response2.setAuthorId(1);
         response2.setReportNum(1);
         responseList.add(response2);
+        return responseList;
+    }
+
+    //实现获取所有被举报的回复接口
+    @GetMapping("/testResponseReports")
+    public List<Response> testGetReportResponse(){
+        List<Response> responseList = new ArrayList<>();
+        List<Integer> responseIdList = reportResponseDao.selectAllResponse();
+        for(int id:responseIdList){
+            responseList.add(responseDao.selectByPrimaryKey(id));
+        }
         return responseList;
     }
 }

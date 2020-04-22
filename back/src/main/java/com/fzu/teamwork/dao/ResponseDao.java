@@ -37,4 +37,6 @@ public interface ResponseDao {
     List<Response> selectSublistBeReported(Map<String, Integer> map);
 
     List<Response> test();
+
+    List<Integer> selectQuestionIdByAuthorId(int authorId);
 }
