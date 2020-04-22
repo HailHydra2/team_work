@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
    <head>
       	<title>校园帮帮网-主页</title>
       	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -7,6 +7,7 @@
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="js/util.js"></script>
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
       	<link rel="shortcut icon" href="pic/favicon.ico">
    </head>
@@ -101,85 +102,25 @@
 					首页 <small></small>
 				</h1>
 			</div>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
-			<blockquote>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-				</p> <small>Someone famous <cite>Source Title</cite></small>
-			</blockquote>
+			<!--页面主要内容容器-->
+			<div id="questionDiv">
+				<!--问题列表容器-->
+				<div id="quetionList">
 
-			<ul class="pagination pagination-lg">
-				<li>
-					 <a href="#">前页</a>
-				</li>
-				<li>
-					 <a href="#">1</a>
-				</li>
-				<li>
-					 <a href="#">2</a>
-				</li>
-				<li>
-					 <a href="#">3</a>
-				</li>
-				<li>
-					 <a href="#">4</a>
-				</li>
-				<li>
-					 <a href="#">5</a>
-				</li>
-				<li>
-					 <a href="#">后页</a>
-				</li>
-			</ul>
+				</div>
+	
+				<ul class="pagination pagination-lg" id="pageButtons">
+					<li>
+						 <a id="previous">前页</a>
+					</li>
+					<li>
+						 <a href="#">1</a>
+					</li>
+					<li>
+						 <a id="next">后页</a>
+					</li>
+				</ul>
+			</div>
 
 		</div>
 	</div>
@@ -187,4 +128,95 @@
 
 
    </body>
+
+   
+<script>
+    //问题容器
+    var questionDiv = document.getElementById("questionDiv");
+    //存放问题列表的div
+	var questionList = document.getElementById("quetionList");
+	//分页的按钮列表
+    var pageButtons = document.getElementById("pageButtons");
+	//上一页按钮
+	var preButton = document.getElementById("previous");
+    //下一页按钮
+    var nextButton = document.getElementById("next");
+    //当前页面显示的数据(传递给后端的数据)
+    var page = {
+            "pageIndex":1,
+            "count":10,
+            "keyWord":"",
+            sortApproach:"sortByHeat",
+        };
+
+	//请求后端的url
+    var path = "http://localhost:8888/questions";
+
+
+    //页面加载时启动页面
+    $(document).ready(function(e) {
+        //首页按时间排序
+        changeQuestionPage(page, path);
+    });
+
+    //上一页点击事件
+    $(previous).click(function(e){
+        questionDiv.removeChild(questionList);
+        questionList = document.createElement("div");
+        questionDiv.insertBefore(questionList, pageButtons);
+        questionList.setAttribute("id","quetionList");
+        page.pageIndex--;
+        changeQuestionPage(page, path);
+    })
+
+    //下一页点击事件
+    $(next).click(function(e){
+        questionDiv.removeChild(questionList);
+        questionList = document.createElement("div");
+        questionDiv.insertBefore(questionList, pageButtons);
+        questionList.setAttribute("id","quetionList");
+        //pageButtons.removeAttribute("disabled");
+        page.pageIndex++;
+        changeQuestionPage(page, path);
+    })
+
+    //更新问题列表
+    function updateList(p){
+        page = p;
+        var list = page.questions;
+        list = Array.prototype.slice.call(list);
+        for(var i = 0; i < list.length; i++){
+            //创建存放单个问题的blockquote
+            var questionBlock = document.createElement("blockquote");
+            //创建存放问题标题的a标签
+            var title = document.createElement("a");
+            title.innerHTML = "标题：" + list[i].title;//问题标题
+            title.setAttribute("href", "详情页面.html?id=1");//问题标题对应的详情页面
+            //创建存放问题描述的p标签
+            var content = document.createElement("small");
+            content.innerHTML = "问题描述：" + list[i].content;//问题描述
+            questionBlock.appendChild(title);
+            questionBlock.appendChild(content);
+			questionList.appendChild(questionBlock);
+			
+			//更新分页按钮
+			updatePageButtons();
+        }
+	}
+	
+	//更新分页按钮
+	function updatePageButtons(){
+		if(page.hasPrevious == true){//有上一页
+			console.info("有上一页");
+		}else{//没有上一页
+			console.info("没有上一页");
+		}
+
+		if(page.hasNext == true){//有下一页
+			console.info("有下一页");
+		}else{
+			console.info("没有下一页");
+		}
+	}
+</script>
 </html>

@@ -18,5 +18,11 @@ public interface ResponseService {
     public int deleteResponseById(int id);
 
     //获取编号为id的回复
-    public ResponseVO getResponseById(int id);
+    public Response getResponseById(int id);
+
+    //将Response对象实体转换为ResponseVO对象实体
+    public ResponseVO convertToVO(Response response);
+
+    //根据ResponseVO更新数据(因为没有更改内容功能，暂时只更新response的数据，不更新内容)
+    public void updateResponse(ResponseVO responseVO);
 }
