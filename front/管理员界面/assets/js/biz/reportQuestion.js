@@ -1,29 +1,3 @@
-var grid_data = [
-  {
-    id: "1",
-    link: "123213",
-    num: "1",
-    userid: "123"
-  },
-  {
-    id: "2",
-    link: "123213",
-    num: "1",
-    userid: "123"
-  },
-  {
-    id: "3",
-    link: "123213",
-    num: "1",
-    userid: "123"
-  }, {
-    id: "4",
-    link: "123213",
-    num: "1",
-    userid: "123"
-  },
-];
-
 var HOST = 'http://localhost:8888';
 //var HOST = '';
 
@@ -207,7 +181,7 @@ jQuery(function ($) {
   jQuery(grid_selector).jqGrid('navGrid', pager_selector, { //navbar options
     edit: false,
     editicon: 'icon-pencil blue',
-    add: true,
+    add: false,
     addicon: 'icon-plus-sign purple',
     del: true,
     delicon: 'icon-trash red',
