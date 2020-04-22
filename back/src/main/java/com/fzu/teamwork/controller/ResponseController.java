@@ -39,11 +39,11 @@ public class ResponseController {
             responses.add(responseVO);
         }
         page.setResponses(responses);
-        return AjaxResponse.success(responses);
+        return AjaxResponse.success(page);
     }
 
     //获取编号为id的回复信息(静态数据)
-    @GetMapping("/response/{id}")
+    @PostMapping("/response/{id}")
     public @ResponseBody AjaxResponse getResponse(@PathVariable int id){
         ResponseVO responseVO = new ResponseVO();
         responseVO.setResponse(new Response());
