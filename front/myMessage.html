@@ -7,6 +7,7 @@
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="js/util.js"></script>
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
       	<link rel="shortcut icon" href="pic/favicon.ico">
    </head>
@@ -28,8 +29,8 @@
 					 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 											<h4>提问须知</h4>
 											<strong>注意！</strong>
-											请提出有意义的问题，请勿发表灌水内容。
-											<a href="#" class="alert-link">【问题管理条例】</a>
+											请提出有意义的消息，请勿发表灌水内容。
+											<a href="#" class="alert-link">【消息管理条例】</a>
 									</div>
 								</div>
 							</div>
@@ -37,7 +38,7 @@
 					<form class="form-horizontal" role="form">
 							
 						<div class="form-group">
-								<label for="inputQue" class="col-sm-2 control-label">问题</label>
+								<label for="inputQue" class="col-sm-2 control-label">消息</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" id="inputQue" />
 								</div>
@@ -107,7 +108,7 @@
 		<div class="col-md-8 column">
 			<ul class="nav nav-tabs">
 				<li>
-					 <a href="usrInfo.html">关注问题</a>
+					 <a href="usrInfo.html">关注消息</a>
 				</li>
 				<li>
 					 <a href="myAnswer.html">我的回答</a>
@@ -139,88 +140,138 @@
 				</li>
 			</ul>
 			<!-- 内容写在这里！！！ -->
-			
+			<!--页面主要内容容器-->
+			<div id="messageDiv">
+				<!--消息列表容器-->
+				<div id="messageList">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+				</div>
+	
+				<ul class="pagination pagination-lg" id="pageButtons">
+					<li>
+						 <a id="previous">前页</a>
+					</li>
+					<li>
+						 <a href="#">1</a>
+					</li>
+					<li>
+						 <a id="next">后页</a>
+					</li>
+				</ul>
+			</div>
 
 			<!-- 内容写在这里！！！ -->
 		</div>
 		<div class="col-md-4 column">
 			<img alt="140x140" src="http://cdn.ibootstrap.cn/lorempixel.com/140/140/default.jpg" class="img-circle" />
 			<dl>
-				<dt>
-					姓名
-				</dt>
-				<dd>
-					张三
-				</dd>
-				<dt>
-					学号
-				</dt>
-				<dd>
-					221701300
-				</dd>
+				<dt>姓名</dt>
+				<dd>张三</dd>
+				<dt>学号</dt>
+				<dd>221701300</dd>
 			</dl>
 			<dl>
-				<dt>
-					等级
-				</dt>
-				<dd>
-					0
-				</dd>
-				<dt>
-					积分
-				</dt>
-				<dd>
-					0
-				</dd>
+				<dt>等级</dt>
+				<dd>0</dd>
+				<dt>积分</dt>
+				<dd>0</dd>
 			</dl>
 			<dl>
-
-				<dt>
-					提问
-				</dt>
-				<dd>
-					3
-				</dd>
-				<dt>
-					回答
-				</dt>
-				<dd>
-					0
-				</dd>
-				<dt>
-					关注
-				</dt>
-				<dd>
-					0
-				</dd>
-
+				<dt>提问</dt>
+				<dd>3</dd>
+				<dt>回答</dt>
+				<dd>0</dd>
+				<dt>关注</dt>
+				<dd>0</dd>
 			</dl>
 		</div>
 	</div>
-
-
-
-
-
-
 
 	</div>
 
 
    </body>
+      
+<script>
+    //消息容器
+    var messageDiv = document.getElementById("messageDiv");
+    //存放消息列表的div
+	var messageList = document.getElementById("messageList");
+	//分页的按钮列表
+    var pageButtons = document.getElementById("pageButtons");
+	//上一页按钮
+	var preButton = document.getElementById("previous");
+    //下一页按钮
+    var nextButton = document.getElementById("next");
+    //当前页面显示的数据(传递给后端的数据)
+    var page = {
+            "pageIndex":1,
+            "count":10,
+        };
+
+	//请求后端的url
+    var path = "http://localhost:8888/userMessages/1";
+
+
+    //页面加载时启动页面
+    $(document).ready(function(e) {
+        //首页按时间排序
+        changeQuestionPage(page, path);
+    });
+
+    //上一页点击事件
+    $(previous).click(function(e){
+        messageDiv.removeChild(messageList);
+        messageList = document.createElement("div");
+        messageDiv.insertBefore(messageList, pageButtons);
+        messageList.setAttribute("id","messageList");
+        page.pageIndex--;
+        changeQuestionPage(page, path);
+    })
+
+    //下一页点击事件
+    $(next).click(function(e){
+        messageDiv.removeChild(messageList);
+        messageList = document.createElement("div");
+        messageDiv.insertBefore(messageList, pageButtons);
+        messageList.setAttribute("id","messageList");
+        //pageButtons.removeAttribute("disabled");
+        page.pageIndex++;
+        changeQuestionPage(page, path);
+    })
+
+    //更新消息列表
+    function updateList(p){
+        page = p;
+        var list = page.messages;
+        list = Array.prototype.slice.call(list);
+        for(var i = 0; i < list.length; i++){
+            //创建存放单个消息的blockquote
+            var messageBlock = document.createElement("blockquote");
+            //创建存放消息描述的p标签
+            var content = document.createElement("small");
+            content.innerHTML = "消息描述：" + list[i].description;//消息描述
+            messageBlock.appendChild(content);
+			messageList.appendChild(messageBlock);
+			
+			//更新分页按钮
+			updatePageButtons();
+        }
+	}
+	
+	//更新分页按钮
+	function updatePageButtons(){
+		if(page.hasPrevious == true){//有上一页
+			console.info("有上一页");
+		}else{//没有上一页
+			console.info("没有上一页");
+		}
+
+		if(page.hasNext == true){//有下一页
+			console.info("有下一页");
+		}else{
+			console.info("没有下一页");
+		}
+	}
+</script>
 </html>

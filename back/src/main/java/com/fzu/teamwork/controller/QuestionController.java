@@ -98,7 +98,7 @@ public class QuestionController {
         return AjaxResponse.success(questionPage);
     }
 
-    @GetMapping("/userAttentions/{uid}")
+    @PostMapping("/userAttentions/{uid}")
     public @ResponseBody AjaxResponse getAttentionQuestionPage(@PathVariable String uid, @RequestBody QuestionPage questionPage){
         questionPage.setPageNum(10);
         List<Integer> buttonList = new ArrayList<>();
