@@ -29,6 +29,7 @@ public class UserController {
         User u1=new User();
         u1.setAccount("221701316");
         u1.setName("lch");
+        u1.setId(1);
         u1.setPassword("123456");
         u1.setIdCard("123");
         u1.setIdentity("student");
@@ -36,6 +37,7 @@ public class UserController {
         User u2=new User();
         u2.setAccount("221701319");
         u2.setName("lll");
+        u2.setId(2);
         u2.setPassword("123456");
         u2.setIdCard("123");
         u2.setIdentity("student");
