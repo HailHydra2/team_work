@@ -196,6 +196,6 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectAllResponse" resultType="java.lang.Integer">
-    select response from report_response
+    select response_id from report_response
   </select>
 </mapper>

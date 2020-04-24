@@ -23,15 +23,10 @@ public class QuestionServiceImpl implements QuestionService{
     private QuestionDao questionDao;
 
     @Resource
-    private QuestionService questionService;
-
-    @Resource
     private UserService userService;
 
     @Resource
     private AttentionService attentionService;
-
-    private QuestionPage questionPage = new QuestionPage();
 
     @Resource
     private TitleDao titleDao;
@@ -93,7 +88,6 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     //获取问题的某个分页
     public QuestionPage getQuestionPage(QuestionPage questionPage){
-        this.questionPage = questionPage;
         QuestionStrategy questionStrategy;
         questionStrategy = new getQuestion(questionPage,questionDao);
         List<Question> questionList = questionStrategy.getQuestionList();
@@ -107,7 +101,6 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionPage getQuestionPage(String userId, QuestionPage questionPage){
-        this.questionPage = questionPage;
         QuestionStrategy questionStrategy;
         questionStrategy = new getUsersQuestion(Integer.parseInt(userId),questionPage,questionDao);
         List<Question> questionList = questionStrategy.getQuestionList();
@@ -121,7 +114,6 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionPage getQuestionPageByIdList(String userId, QuestionPage questionPage){
-        this.questionPage = questionPage;
         List<Question> questionList = null;
         List<Integer> idList =  attentionService.getAttentionQuestionList(Integer.parseInt(userId));
         for (int id:idList){
@@ -137,7 +129,6 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionPage getResponseQuestion(String userId, QuestionPage questionPage){
-        this.questionPage = questionPage;
         QuestionStrategy questionStrategy;
         questionStrategy = new getResponseQuestion(Integer.parseInt(userId),questionDao);
         List<Question> questionList = questionStrategy.getQuestionList();

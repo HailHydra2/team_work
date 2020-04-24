@@ -7,20 +7,21 @@ import com.fzu.teamwork.dao.ReportResponseDao;
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.Question;
 import com.fzu.teamwork.model.Response;
+import com.fzu.teamwork.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RestController
 public class ReportController {
-    private QuestionDao questionDao;
-    private ResponseDao responseDao;
-    private ReportQuestionDao reportQuestionDao;
-    private ReportResponseDao reportResponseDao;
+
+    @Resource
+    private ReportService reportService;
 
     @GetMapping("/questionReports")
     public List<Question> getReportQuestion(){
@@ -41,12 +42,7 @@ public class ReportController {
     //实现获取所有被举报的问题接口
     @GetMapping("/testQuestionReports")
     public List<Question> testGetReportQuestion(){
-        List<Question> questionList = new ArrayList<>();
-        List<Integer> questionIdList = reportQuestionDao.selectAllQuestion();
-        for (int id:questionIdList){
-            questionList.add(questionDao.selectByPrimaryKey(id));
-        }
-        return questionList;
+        return reportService.getReportQuestion();
     }
 
     @GetMapping("/responseReports")
@@ -68,11 +64,6 @@ public class ReportController {
     //实现获取所有被举报的回复接口
     @GetMapping("/testResponseReports")
     public List<Response> testGetReportResponse(){
-        List<Response> responseList = new ArrayList<>();
-        List<Integer> responseIdList = reportResponseDao.selectAllResponse();
-        for(int id:responseIdList){
-            responseList.add(responseDao.selectByPrimaryKey(id));
-        }
-        return responseList;
+        return reportService.getReportResponse();
     }
 }
