@@ -31,8 +31,7 @@ public class QuestionServiceImpl implements QuestionService{
     @Resource
     private AttentionService attentionService;
 
-    @Resource
-    private QuestionPage questionPage;
+    private QuestionPage questionPage = new QuestionPage();
 
     @Resource
     private TitleDao titleDao;
