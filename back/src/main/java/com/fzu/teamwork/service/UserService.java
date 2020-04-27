@@ -18,7 +18,7 @@ public interface UserService {
     public User getUserById(int id);
 
     //通过account查找用户
-    public List<User> getUserByAccount(String account);
+    public User getUserByAccount(String account);
 
     //delete user
     public void deleteUsers(int id);

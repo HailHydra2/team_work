@@ -53,4 +53,10 @@ public class HelloController {
         log.info("user{}",u);
         return AjaxResponse.success();
     }
+
+    @DeleteMapping("/deleteArray")
+    public @ResponseBody AjaxResponse testDelete(@RequestBody int []a){
+        log.info("a{}",a);
+        return AjaxResponse.success(a);
+    }
 }

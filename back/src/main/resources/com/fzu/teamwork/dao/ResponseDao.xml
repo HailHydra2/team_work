@@ -270,6 +270,6 @@
   </select>
 
   <select id="selectQuestionIdByAuthorId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select question_id from response where user_id=#{uid}
+    select question_id from response where author_id=#{uid}
   </select>
 </mapper>

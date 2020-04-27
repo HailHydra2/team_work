@@ -3,6 +3,7 @@ package com.fzu.teamwork.service;
 import com.fzu.teamwork.dao.AccountDataDao;
 import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.AccountData;
+import com.fzu.teamwork.model.AccountDataExample;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
 import com.fzu.teamwork.view.UserVO;
@@ -29,13 +30,8 @@ public class UserServiceImpl implements UserService{
         UserVO userVO=new UserVO();
         AccountData accountData=new AccountData();
         //获取对应的AccountData
-        if(user.getAccountDataId()!=null) {
-            accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
-        }
-        else
-            System.out.println("该用户没有外键account_id");
-
-        //封装uesrVO
+        accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
+        //封装userVO
         userVO.setUser(user);
         userVO.setAccountData(accountData);
         return userVO;
@@ -68,25 +64,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> getUserByAccount(String account){
+    public User getUserByAccount(String account){
 
         //从数据库中找到对应的user
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andAccountEqualTo(account);
         List<User> users = userDao.selectByExample(userExample);
-
-        return users;
+        if(users.size() == 0){//账户不存在
+            return null;
+        }else{//账户存在
+            return users.get(0);
+        }
     }
 
-    //updata password
+    //update password
     @Override
     public User updateUser(UserVO userVO){
-        String newPassWord=userVO.getUser().getPassword();
-        UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andAccountEqualTo(userVO.getUser().getAccount());
-        userDao.updateByExampleSelective(userVO.getUser(),userExample);
+        //更新用户信息
+        userDao.updateByPrimaryKey(userVO.getUser());
+        //更新账户数据
+        accountDataDao.updateByPrimaryKey(userVO.getAccountData());
         return null;
     }
 }

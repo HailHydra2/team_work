@@ -24,43 +24,25 @@ public class LoginServiceImpl implements LoginService {
     @Resource(name = "userServiceImpl")
     UserServiceImpl userService;
 
-    @Resource
-    private UserDao userDao;
-
-    @Resource
-    AccountDataDao accountDataDao;
-
     //获取用户
     @Override
     public UserVO getUser(User user) {
-
-
-        //no account
-        if (userService.getUserByAccount(user.getAccount()).size() == 0)
-        {
-            UserVO userVO = new UserVO();
-            System.out.println("no account!");
+        User u = userService.getUserByAccount(user.getAccount());
+        UserVO userVO = new UserVO();
+        if (u == null){
+            //账户不存在
             user.setMark(0);//设置mark
             userVO.setUser(user);
-            return userVO;
+        } else{//账户存在
+            if(user.getPassword().equals(u.getPassword())){
+                //密码正确
+                u.setMark(2);//标记位
+                userVO = userService.convertToUserVo(u);
+            }else{//密码错误
+                user.setMark(1);//设置mark
+                userVO.setUser(user);
+            }
         }
-
-        // error password
-        else if (!user.getPassword().equals(userService.getUserByAccount(user.getAccount()).get(0).getPassword()))
-        {
-            UserVO userVO = new UserVO();
-            System.out.println("error password!");
-            user.setMark(1);//设置mark
-            userVO.setUser(user);
-            return userVO;
-        }
-
-        //succese
-        else
-        {
-            UserVO userVO=userService.convertToUserVo(userService.getUserByAccount(user.getAccount()).get(0));
-            userVO.getUser().setMark(3);
-            return userVO;
-        }
+        return userVO;
     }
 }

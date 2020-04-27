@@ -41,6 +41,7 @@ public class RewardServiceImpl implements RewardService{
             //扣除兑换积分
             userVO.getAccountData().setScore(score - needScore);
             //更新用户数据
+            log.info("userVO:{}",userVO.getAccountData());
             userServiceImpl.updateUser(userVO);
         }
         rewardDao.insert(reward);
@@ -66,10 +67,10 @@ public class RewardServiceImpl implements RewardService{
     public int calculateScore(String rewardType, double num){
         if(rewardType.equals(RewardType.ServiceTime)){
             //申请类别为党员服务时长
-            return (int)(num*20);//一个时长对应20积分
+            return (int)(num*100);//一个时长对应100积分
         }else if(rewardType.equals(RewardType.SyntheticTest)){
             //兑换类别为综测
-            return (int)(num*30);//一分综测对应30积分
+            return (int)(num*100);//一分综测对应100积分
         }else{
             log.info("申请类别输入错误：{}",rewardType);
             return -1;

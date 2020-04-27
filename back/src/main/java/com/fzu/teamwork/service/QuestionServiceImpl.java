@@ -1,8 +1,6 @@
 package com.fzu.teamwork.service;
 
-import com.fzu.teamwork.dao.ContentDao;
-import com.fzu.teamwork.dao.QuestionDao;
-import com.fzu.teamwork.dao.TitleDao;
+import com.fzu.teamwork.dao.*;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.QuestionVO;
@@ -23,6 +21,9 @@ public class QuestionServiceImpl implements QuestionService{
     private QuestionDao questionDao;
 
     @Resource
+    private ResponseDao responseDao;
+
+    @Resource
     private UserService userService;
 
     @Resource
@@ -34,6 +35,7 @@ public class QuestionServiceImpl implements QuestionService{
     @Resource
     private ContentDao contentDao;
 
+
     //根据question的id主键获取问题
     @Override
     public Question getQuestionById(int id){
@@ -43,7 +45,7 @@ public class QuestionServiceImpl implements QuestionService{
     //将question对象转换为QuestionVO对象
     @Override
     public QuestionVO convertToVO(Question question){
-        QuestionVO questionVO = null;
+        QuestionVO questionVO = new QuestionVO();
         questionVO.setQuestion(question);
         int questionID = question.getId();
         int titleID = titleDao.selectTitleByQuestionID(questionID);
@@ -51,7 +53,7 @@ public class QuestionServiceImpl implements QuestionService{
         Title title = titleDao.selectByPrimaryKey(titleID);
         Content content = contentDao.selectByPrimaryKey(contentID);
         questionVO.setTitle(title.getTitle());
-        questionVO.setTitle(content.getContent());
+        questionVO.setContent(content.getContent());
         return questionVO;
     }
 
@@ -63,20 +65,22 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public UserVO addQuestion(QuestionVO questionVO){
-        Content content = null;
+        Content content = new Content();
         content.setContent(questionVO.getContent());
         contentDao.insert(content);
         int contentId = content.getId();
 
         Question question = questionVO.getQuestion();
+        //System.out.println(question);
         question.setResponseNum(0);
         question.setReportNum(0);
         question.setContentId(contentId);
         questionDao.insert(question);
 
-        Title title = null;
+        Title title = new Title();
         title.setTitle(questionVO.getTitle());
         titleDao.insert(title);
+        System.out.println("queId" + question.getId() + "  titleId: " + title.getId());
         titleDao.insertQuestionTitle(question.getId(),title.getId());
 
         int userID = question.getAuthorId();
@@ -91,7 +95,7 @@ public class QuestionServiceImpl implements QuestionService{
         QuestionStrategy questionStrategy;
         questionStrategy = new getQuestion(questionPage,questionDao);
         List<Question> questionList = questionStrategy.getQuestionList();
-        List<QuestionVO> questionVOList = null;
+        List<QuestionVO> questionVOList = new ArrayList<>();
         for(Question question : questionList) {
             questionVOList.add(convertToVO(question));
         }
@@ -104,7 +108,7 @@ public class QuestionServiceImpl implements QuestionService{
         QuestionStrategy questionStrategy;
         questionStrategy = new getUsersQuestion(Integer.parseInt(userId),questionPage,questionDao);
         List<Question> questionList = questionStrategy.getQuestionList();
-        List<QuestionVO> questionVOList = null;
+        List<QuestionVO> questionVOList = new ArrayList<>();
         for(Question question : questionList) {
             questionVOList.add(convertToVO(question));
         }
@@ -114,12 +118,12 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public QuestionPage getQuestionPageByIdList(String userId, QuestionPage questionPage){
-        List<Question> questionList = null;
+        List<Question> questionList = new ArrayList<>();
         List<Integer> idList =  attentionService.getAttentionQuestionList(Integer.parseInt(userId));
         for (int id:idList){
             questionList.add(getQuestionById(id));
         }
-        List<QuestionVO> questionVOList = null;
+        List<QuestionVO> questionVOList = new ArrayList<>();
         for(Question question : questionList) {
             questionVOList.add(convertToVO(question));
         }
@@ -130,9 +134,9 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public QuestionPage getResponseQuestion(String userId, QuestionPage questionPage){
         QuestionStrategy questionStrategy;
-        questionStrategy = new getResponseQuestion(Integer.parseInt(userId),questionDao);
+        questionStrategy = new getResponseQuestion(Integer.parseInt(userId),questionDao, responseDao);
         List<Question> questionList = questionStrategy.getQuestionList();
-        List<QuestionVO> questionVOList = null;
+        List<QuestionVO> questionVOList = new ArrayList<>();
         for(Question question : questionList) {
             questionVOList.add(convertToVO(question));
         }
@@ -143,7 +147,6 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public void deleteQuestionById(String id){
         int questionId = Integer.parseInt(id);
-        System.out.println(questionId);
         int titleId = titleDao.selectTitleByQuestionID(questionId);
         int contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
         titleDao.deleteQuestionTitle(questionId);

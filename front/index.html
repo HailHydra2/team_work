@@ -35,7 +35,7 @@
 								</div>
 							</div>
 						</div>
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" target="iframe">
 							
 						<div class="form-group">
 								<label for="inputQue" class="col-sm-2 control-label">问题</label>
@@ -50,15 +50,15 @@
 								</div>
   							</div>
 							<div style="text-align:center">
-								<button type="button" class="btn btn-primary">提 交</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">关 闭</button>
+								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
 							</div>
 						</form>
+						<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-
     <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -144,7 +144,7 @@
     //当前页面显示的数据(传递给后端的数据)
     var page = {
             "pageIndex":1,
-            "count":10,
+            "count":2,
             "keyWord":"",
             sortApproach:"sortByHeat",
         };

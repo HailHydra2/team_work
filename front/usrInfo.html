@@ -35,25 +35,26 @@
 								</div>
 							</div>
 						</div>
-					<form class="form-horizontal" role="form">
+						<form class="form-horizontal" role="form" target="iframe">
 							
-						<div class="form-group">
-								<label for="inputQue" class="col-sm-2 control-label">问题</label>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" id="inputQue" />
-								</div>
-							</div>
 							<div class="form-group">
-    							<label for="describeQue" class="col-sm-2 control-label">描述</label>
-								<div class="col-sm-9">
-    								<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+									<label for="inputQue" class="col-sm-2 control-label">问题</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="inputQue" />
+									</div>
 								</div>
-  							</div>
-							<div style="text-align:center">
-								<button type="button" class="btn btn-primary">提 交</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">关 闭</button>
-							</div>
-						</form>
+								<div class="form-group">
+									<label for="describeQue" class="col-sm-2 control-label">描述</label>
+									<div class="col-sm-9">
+										<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+									</div>
+								  </div>
+								<div style="text-align:center">
+									<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+								</div>
+							</form>
+							<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
@@ -166,23 +167,23 @@
 			<img alt="140x140" src="http://cdn.ibootstrap.cn/lorempixel.com/140/140/default.jpg" class="img-circle" />
 			<dl>
 				<dt>姓名</dt>
-				<dd>张三</dd>
+				<dd id="infoName">张三</dd>
 				<dt>学号</dt>
-				<dd>221701300</dd>
+				<dd id="infoAccount">221701300</dd>
 			</dl>
 			<dl>
 				<dt>等级</dt>
-				<dd>0</dd>
+				<dd id="infoLevel">0</dd>
 				<dt>积分</dt>
-				<dd>0</dd>
+				<dd id="infoScore">0</dd>
 			</dl>
 			<dl>
 				<dt>提问</dt>
-				<dd>3</dd>
+				<dd id="infoQuesNum">3</dd>
 				<dt>回答</dt>
-				<dd>0</dd>
+				<dd id="infoRespNum">0</dd>
 				<dt>关注</dt>
-				<dd>0</dd>
+				<dd id="infoFocusNum">0</dd>
 			</dl>
 		</div>
 	</div>
@@ -219,8 +220,22 @@
     //页面加载时启动页面
     $(document).ready(function(e) {
         //首页按时间排序
-        changeQuestionPage(page, path);
-    });
+		changeQuestionPage(page, path);
+		//获取当前登录用户
+		var userVO = localStorage.getExpire("userVO");
+		if(userVO == null){//登录过期，返回登录页面
+			window.location.href = "login.html";
+		}else{
+			var b = document.getElementById("infoName");
+			b.innerHTML = userVO.user.name;
+			//console.info($(infoName).innerHTML);
+			//$(infoName).innerHTML = userVO.user.name;
+			console.info(userVO.user.name);
+			initInfo(userVO);
+		}
+	});
+	
+	
 
     //上一页点击事件
     $(previous).click(function(e){

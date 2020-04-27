@@ -51,29 +51,29 @@ public class RewardController {
 
 
     //奖励兑换页面申请兑换奖励（静态数据）
-    @PostMapping("/reward")
-    public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
-        UserVO userVO = new UserVO();
-        userVO.setUser(new User());
-        userVO.getUser().setAccount("221701421");
-        userVO.getUser().setIdCard("123");
-        userVO.getUser().setId(reward.getUserId());
-        userVO.getUser().setIdentity(UserIdentity.student);
-        userVO.setAccountData(new AccountData());
-        userVO.getAccountData().setId(10);
-        userVO.getAccountData().setExperienceValue(100);
-        userVO.getAccountData().setFocusNum(1);
-        userVO.getAccountData().setLevel(10);
-        userVO.getAccountData().setQuestionNum(10);
-        userVO.getAccountData().setScore(100);
-        userVO.getAccountData().setResponseNum(12);
-        //rewardService.insertReward(reward);
-        return AjaxResponse.success(userVO);
-    }
+//    @PostMapping("/reward")
+//    public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
+//        UserVO userVO = new UserVO();
+//        userVO.setUser(new User());
+//        userVO.getUser().setAccount("221701421");
+//        userVO.getUser().setIdCard("123");
+//        userVO.getUser().setId(reward.getUserId());
+//        userVO.getUser().setIdentity(UserIdentity.student);
+//        userVO.setAccountData(new AccountData());
+//        userVO.getAccountData().setId(10);
+//        userVO.getAccountData().setExperienceValue(100);
+//        userVO.getAccountData().setFocusNum(1);
+//        userVO.getAccountData().setLevel(10);
+//        userVO.getAccountData().setQuestionNum(10);
+//        userVO.getAccountData().setScore(100);
+//        userVO.getAccountData().setResponseNum(12);
+//        //rewardService.insertReward(reward);
+//        return AjaxResponse.success(userVO);
+//    }
 
 
     //奖励兑换页面申请兑换奖励（具体实现）
-    @PostMapping("/testReward")
+    @PostMapping("/reward")
     public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
         UserVO userVO = rewardService.insertReward(reward);
         return AjaxResponse.success(userVO);

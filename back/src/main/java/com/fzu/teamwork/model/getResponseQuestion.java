@@ -5,6 +5,7 @@ import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.QuestionVO;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,12 +13,15 @@ import java.util.Map;
 
 public class getResponseQuestion extends QuestionStrategy{
     private int userId;
+
     private QuestionDao questionDao;
+
     private ResponseDao responseDao;
 
-    public getResponseQuestion(int userId, QuestionDao questionDao){
+    public getResponseQuestion(int userId, QuestionDao questionDao, ResponseDao responseDao){
         this.userId = userId;
         this.questionDao = questionDao;
+        this.responseDao = responseDao;
     }
 
     @Override
