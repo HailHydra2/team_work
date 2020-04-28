@@ -6,30 +6,38 @@ var Service = {
   /* 删除记录 */
   delete(id) {
     return $.ajax({
-      url: HOST + '/response/' + id,
+      url: HOST + '/question/' + id,
       type: 'delete',
     });
   },
   batchDelete(data) {
     return $.ajax({
-      url: HOST + '/reponse/',
+      url: HOST + '/questions/',
       type: 'delete',
       data:JSON.stringify(data),
       contentType: 'application/json;charset=utf-8',
     });
   },
-  getResponse(id) {
+  getQuestion(id) {
     return $.ajax({
-      url: HOST + '/response/' + id,
+      url: HOST + '/question/' + id,
       type: 'get',
+    })
+  },
+  appendData(data) {
+    return $.ajax({
+      url: HOST + '/user',
+      type: 'post',
+      data: JSON.stringify(data),
+      contentType: 'application/json;charset=utf-8',
     })
   }
 };
 
 var Biz = {
-  getResponse(id) {
-    Service.getResponse(id).then(function (data) {
-      alert("\n" + "内容:" + data.data.content);
+  getQuestion(id) {
+    Service.getQuestion(id).then(function (data) {
+      alert("标题：" + data.data.title + "\n" + "内容:" + data.data.content);
       console.log(data);
     });
   }
@@ -112,7 +120,7 @@ jQuery(function ($) {
       sortable: false,
       editable: false,
       formatter: function (cellvalue, options, rowObject) {
-        return "<a href='javascript:void(0);' onclick='Biz.getResponse(" + rowObject.id + ");'>回答链接</span>";
+        return "<a href='javascript:void(0);' onclick='Biz.getQuestion(" + rowObject.id + ");'>问题链接</span>";
       }
     },
 
@@ -143,7 +151,7 @@ jQuery(function ($) {
 
     //editurl: 'server.php', //nothing is saved
     editurl: $path_base, //nothing is saved
-    caption: "举报信息操作",
+    caption: "举报问题操作",
     autowidth: true
   });
 
