@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fzu.teamwork.dao.LikeDao">
-  <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.Like">
+<mapper namespace="com.fzu.teamwork.dao.LikesDao">
+  <resultMap id="BaseResultMap" type="com.fzu.teamwork.model.Likes">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="response_id" jdbcType="INTEGER" property="responseId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -65,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, response_id, flag
+    id, response_id, user_id, flag
   </sql>
-  <select id="selectByExample" parameterType="com.fzu.teamwork.model.LikeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.fzu.teamwork.model.LikesExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from like
+    from likes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,28 +93,33 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from like
+    from likes
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from like
+    delete from likes
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fzu.teamwork.model.LikeExample">
-    delete from like
+  <delete id="deleteByExample" parameterType="com.fzu.teamwork.model.LikesExample">
+    delete from likes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Like" useGeneratedKeys="true">
-    insert into like (response_id, flag)
-    values (#{responseId,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Likes" useGeneratedKeys="true">
+    insert into likes (response_id, user_id, flag
+      )
+    values (#{responseId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Like" useGeneratedKeys="true">
-    insert into like
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Likes" useGeneratedKeys="true">
+    insert into likes
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="responseId != null">
         response_id,
+      </if>
+      <if test="userId != null">
+        user_id,
       </if>
       <if test="flag != null">
         flag,
@@ -123,25 +129,31 @@
       <if test="responseId != null">
         #{responseId,jdbcType=INTEGER},
       </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
       <if test="flag != null">
         #{flag,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fzu.teamwork.model.LikeExample" resultType="java.lang.Long">
-    select count(*) from like
+  <select id="countByExample" parameterType="com.fzu.teamwork.model.LikesExample" resultType="java.lang.Long">
+    select count(*) from likes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update like
+    update likes
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.responseId != null">
         response_id = #{record.responseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=INTEGER},
@@ -152,19 +164,23 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update like
+    update likes
     set id = #{record.id,jdbcType=INTEGER},
       response_id = #{record.responseId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
       flag = #{record.flag,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.Like">
-    update like
+  <update id="updateByPrimaryKeySelective" parameterType="com.fzu.teamwork.model.Likes">
+    update likes
     <set>
       <if test="responseId != null">
         response_id = #{responseId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="flag != null">
         flag = #{flag,jdbcType=INTEGER},
@@ -172,9 +188,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.Like">
-    update like
+  <update id="updateByPrimaryKey" parameterType="com.fzu.teamwork.model.Likes">
+    update likes
     set response_id = #{responseId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
       flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

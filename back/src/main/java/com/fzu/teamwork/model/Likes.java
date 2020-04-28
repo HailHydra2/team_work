@@ -3,15 +3,17 @@ package com.fzu.teamwork.model;
 import java.io.Serializable;
 
 /**
- * like
+ * likes
  * @author 
  */
-public class Like implements Serializable {
+public class Likes implements Serializable {
     private Integer id;
 
     private Integer responseId;
 
-    private Integer flag;//点赞（1）  取消（0）  点灭（-1）
+    private Integer userId;
+
+    private Integer flag;
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +31,14 @@ public class Like implements Serializable {
 
     public void setResponseId(Integer responseId) {
         this.responseId = responseId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getFlag() {
@@ -50,9 +60,10 @@ public class Like implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Like other = (Like) that;
+        Likes other = (Likes) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getResponseId() == null ? other.getResponseId() == null : this.getResponseId().equals(other.getResponseId()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getFlag() == null ? other.getFlag() == null : this.getFlag().equals(other.getFlag()));
     }
 
@@ -62,6 +73,7 @@ public class Like implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getResponseId() == null) ? 0 : getResponseId().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getFlag() == null) ? 0 : getFlag().hashCode());
         return result;
     }
@@ -74,6 +86,7 @@ public class Like implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", responseId=").append(responseId);
+        sb.append(", userId=").append(userId);
         sb.append(", flag=").append(flag);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

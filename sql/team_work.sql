@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-04-27 18:45:30
+Date: 2020-04-28 16:09:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -51,11 +51,15 @@ CREATE TABLE `attention` (
   KEY `attention_question_id` (`question_id`),
   CONSTRAINT `attention_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`),
   CONSTRAINT `attention_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of attention
 -- ----------------------------
+INSERT INTO `attention` VALUES ('1', '3', '15', '2020-10-21 20:19:08', '1');
+INSERT INTO `attention` VALUES ('2', '2', '16', '2020-10-21 20:19:08', '1');
+INSERT INTO `attention` VALUES ('3', '1', '16', '2020-10-21 20:19:08', '1');
+INSERT INTO `attention` VALUES ('4', '1', '15', '2020-10-21 20:19:08', '0');
 
 -- ----------------------------
 -- Table structure for `block`
@@ -85,25 +89,31 @@ CREATE TABLE `content` (
 -- ----------------------------
 -- Records of content
 -- ----------------------------
+INSERT INTO `content` VALUES ('1', '1');
 INSERT INTO `content` VALUES ('18', 'content1');
 INSERT INTO `content` VALUES ('19', 'content2');
 
 -- ----------------------------
--- Table structure for `like`
+-- Table structure for `likes`
 -- ----------------------------
-DROP TABLE IF EXISTS `like`;
-CREATE TABLE `like` (
+DROP TABLE IF EXISTS `likes`;
+CREATE TABLE `likes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `response_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `flag` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `like_response_id` (`response_id`),
-  CONSTRAINT `like_response_id` FOREIGN KEY (`response_id`) REFERENCES `response` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `like_user_id` (`user_id`),
+  CONSTRAINT `like_response_id` FOREIGN KEY (`response_id`) REFERENCES `response` (`id`),
+  CONSTRAINT `like_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of like
+-- Records of likes
 -- ----------------------------
+INSERT INTO `likes` VALUES ('1', '1', '1', '0');
+INSERT INTO `likes` VALUES ('2', '1', '2', '-1');
 
 -- ----------------------------
 -- Table structure for `message`
@@ -233,6 +243,7 @@ CREATE TABLE `response` (
 -- ----------------------------
 -- Records of response
 -- ----------------------------
+INSERT INTO `response` VALUES ('1', '15', '1', '1', '0', '0', '0', '2020-04-28 15:56:59');
 
 -- ----------------------------
 -- Table structure for `reward`
