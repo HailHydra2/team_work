@@ -54,6 +54,18 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUsers(int id) { userDao.deleteByPrimaryKey(id); }
 
+    //delete all user
+    @Override
+    public void deleteUsersAll(int id[])
+    {
+
+        for(int i=0;i<id.length;i++)
+        {
+            deleteUsers(id[i]);
+        }
+    }
+
+
     //add user
     @Override
     public void addUsers(User user) { userDao.insert(user); }
