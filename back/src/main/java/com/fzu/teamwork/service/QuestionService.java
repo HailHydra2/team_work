@@ -31,5 +31,9 @@ public interface QuestionService {
     //获取用户回答过的问题分页
     public QuestionPage getResponseQuestion(String userId, QuestionPage questionPage);
 
+    //根据问题ID删除单个问题
     public void deleteQuestionById(String userId);
+
+    //根据问题ID批量删除问题
+    public void deleteQuestionsById(int[] questionIdList);
 }

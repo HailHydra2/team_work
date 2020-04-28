@@ -23,6 +23,9 @@ public interface UserService {
     //delete user
     public void deleteUsers(int id);
 
+    //delete all user
+    public void deleteUsersAll(int id[]);
+
     //add user
     public void addUsers(User user);
 

@@ -79,6 +79,13 @@ public class UserController {
         return AjaxResponse.success();
     }
 
+    //按id数组批量删除用户
+    @DeleteMapping("/tusers")
+    public @ResponseBody AjaxResponse deleteUserAll_test(@RequestBody int[] userIdList){
+        userService.deleteUsersAll(userIdList);
+        return AjaxResponse.success();
+    }
+
     //添加用户
     @PostMapping("/tusers")
     public @ResponseBody AjaxResponse addUser_test(@RequestBody User user){

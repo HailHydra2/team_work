@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>校园帮帮网-版块处理</title>
+    <title>校园帮帮网-新增用户</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -80,15 +80,9 @@
                         </a>
 
                         <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                            <li>
-                                <a href="#">
-                                    <i class="icon-cog"></i>
-                                    设置
-                                </a>
-                            </li>
 
                             <li>
-                                <a href="个人信息.html">
+                                <a href="personalInfo.html">
                                     <i class="icon-user"></i>
                                     个人信息
                                 </a>
@@ -144,14 +138,14 @@
 
                         <ul class="submenu">
                             <li>
-                                <a href="举报问题管理.html">
+                                <a href="reportQuestion.html">
                                     <i class="icon-double-angle-right"></i>
                                     举报问题列表
                                 </a>
                             </li>
 
                             <li>
-                                <a href="举报回答管理.html">
+                                <a href="reportAnswer.html">
                                     <i class="icon-double-angle-right"></i>
                                     举报回答列表
                                 </a>
@@ -160,72 +154,54 @@
                     </li>
 
 
+
                     <li>
-                        <a href="用户管理.html" class="dropdown-toggle">
+                        <a href="#" class="dropdown-toggle">
                             <i class="icon-desktop"></i>
                             <span class="menu-text"> 用户信息管理 </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="积分管理.html">
-                            <i class="icon-list-alt"></i>
-                            <span class="menu-text"> 积分兑换管理 </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="calendar.html">
-                            <i class="icon-calendar"></i>
-
-                            <span class="menu-text">
-                                日历
-                                <span class="badge badge-transparent tooltip-error"
-                                    title="2&nbsp;Important&nbsp;Events">
-                                    <i class="icon-warning-sign red bigger-130"></i>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="block.html">
-                            <i class="icon-picture"></i>
-                            <span class="menu-text"> 临时板块管理 </span>
-                        </a>
-                    </li>
-
-
-                    <li class="active open">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="icon-file-alt"></i>
-
-                            <span class="menu-text">
-                                其他页面
-
-                            </span>
 
                             <b class="arrow icon-angle-down"></b>
                         </a>
 
                         <ul class="submenu">
                             <li>
-                                <a href="faq.html">
+                                <a href="user.html">
                                     <i class="icon-double-angle-right"></i>
-                                    帮助
+                                    用户信息操作
                                 </a>
                             </li>
 
-
-
-                            <li class="active">
-                                <a href="blank.html">
+                            <li>
+                                <a href="addUser.html">
                                     <i class="icon-double-angle-right"></i>
-                                    空白页面
+                                    新增用户
                                 </a>
                             </li>
                         </ul>
                     </li>
+
+
+
+
+
+                    <li>
+                        <a href="reward.html">
+                            <i class="icon-list-alt"></i>
+                            <span class="menu-text"> 积分兑换管理 </span>
+                        </a>
+                    </li>
+
+
+
+                    <li>
+                        <a href="block.html">
+                            <i class="icon-picture"></i>
+                            <span class="menu-text"> 临时版块管理 </span>
+                        </a>
+                    </li>
+
+
+
                     </li><!-- /.nav-list -->
 
                     <div class="sidebar-collapse" id="sidebar-collapse">
@@ -240,51 +216,80 @@
 
             <div class="main-content">
 
-               <br/>
-               <br/>
-               <br/>
-               <br/>
+
                 <div class="page-content">
-                    
+                    <div class="page-header">
+                        <h1>
+                            用户管理
+                            <small>
+                                <i class="icon-double-angle-right"></i>
+                                新增用户
+                            </small>
+                        </h1>
+                    </div><!-- /.page-header -->
+
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
-                           	
-                            <form class="form-horizontal" role="form">
+
+
+                            <form id="form1"  action="##" method="post" class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 版块名： </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 账号：
+                                    </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" id="form-field-1" placeholder="BlockName"
-                                            class="col-xs-10 col-sm-5" />
+                                        <input type="text" id="account" placeholder="输入账号" class="col-xs-10 col-sm-5" />
                                     </div>
                                 </div>
 
                                 <div class="space-4"></div>
 
-                                <br/>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 关键词：</label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-2"> 身份：
+                                    </label>
 
                                     <div class="col-sm-9">
-                                        <input type="password" id="form-field-2" placeholder="keywords"
-                                            class="col-xs-10 col-sm-5" />
+                                        <select class="select" data-placeholder="选择身份" id="identity">
+                                            <option value="student">学生</option>
+                                            <option value="teacher">教师</option>
+                                            <option value="administrator">管理员</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </form>
-                           
-                            <br/>
-                            <br/>
-                            
-                                <div class="col-md-offset-3 col-md-9">
-                                    <input class="btn btn-info" value="新增临时模块" type="button" id="addBlock">           
-        
-                                    &nbsp; &nbsp; &nbsp;
-                                    <input class="btn" value="撤销临时模块" type="button" id="deleteBlock">
-                                       
-                                 
+
+                                <div class="space-4"></div>
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-3"> 姓名：
+                                    </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="name" placeholder="输入姓名" class="col-xs-10 col-sm-5" />
+                                    </div>
                                 </div>
-                         
+
+                                <div class="space-4"></div>
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-4">
+                                        身份证：</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" id="idCard" placeholder="输入身份证" class="col-xs-10 col-sm-5" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-offset-3 col-md-9">
+                                    <input class="btn btn-info" value="确认新增" type="button" id="addUser" onClick="submit()">
+                                </div>
+                            </form>
+
+                            
+
+                           
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -385,11 +390,22 @@
     <script src="assets/js/ace.min.js"></script>
 
     <!-- inline scripts related to this page -->
-    <script>
-document.getElementById("addBlock").onclick()=>{
+    <script type="text/javascript">
+        function submit() {
+            $.ajax({
+                type: 'POST',
+                dataType: "json",
+                url: "http://localhost:8888/user",
+                data: $('#form1').serialize(),
+                success: function (result) {
+                  console.log(data);
+                  if(result.code==200)
+                    alert("成功");
+                }
+            });
 
+        }
 
-}
     </script>
 </body>
 
