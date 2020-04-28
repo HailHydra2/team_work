@@ -4,6 +4,7 @@ import com.fzu.teamwork.model.Response;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
+import org.omg.CORBA.INTERNAL;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ public interface ResponseService {
     //将Response对象实体转换为ResponseVO对象实体
     public ResponseVO convertToVO(Response response);
 
-    //根据ResponseVO更新数据(因为没有更改内容功能，暂时只更新response的数据，不更新内容)
+    //根据ResponseVO更新数据(因为前端没有更改内容功能，暂时只更新response的数据，不更新内容)
     public void updateResponse(ResponseVO responseVO);
+
+    //根据回复id数组批量删除回复(返回删除回复条数)
+    public int deleteResponseList(int[] idList);
 }

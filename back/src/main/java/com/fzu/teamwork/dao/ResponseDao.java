@@ -36,7 +36,8 @@ public interface ResponseDao {
     //查询被举报回复的子列表(map: {"minReportedNum":最小被举报数})
     List<Response> selectSublistBeReported(Map<String, Integer> map);
 
-    List<Response> test();
-
     List<Integer> selectQuestionIdByAuthorId(int authorId);
+
+    //根据int[]参数批量删除回复记录
+    int deleteResponseInList(int[] arrays);
 }

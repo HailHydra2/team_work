@@ -154,4 +154,16 @@ public class QuestionServiceImpl implements QuestionService{
         questionDao.deleteByPrimaryKey(questionId);
         contentDao.deleteByPrimaryKey(contentId);
     }
+
+    @Override
+    public void deleteQuestionsById(int[] questionIdList){
+        for (int questionId:questionIdList){
+            int titleId = titleDao.selectTitleByQuestionID(questionId);
+            int contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
+            titleDao.deleteQuestionTitle(questionId);
+            titleDao.deleteByPrimaryKey(titleId);
+            questionDao.deleteByPrimaryKey(questionId);
+            contentDao.deleteByPrimaryKey(contentId);
+        }
+    }
 }

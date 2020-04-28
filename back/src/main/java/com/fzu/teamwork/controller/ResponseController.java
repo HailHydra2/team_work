@@ -95,4 +95,11 @@ public class ResponseController {
             return AjaxResponse.error(501,"编号为id的回复不存在");
         }
     }
+
+    //批量删除回复
+    @DeleteMapping("responses")
+    public @ResponseBody AjaxResponse deleteResponseList(@RequestBody int[] responseIdList){
+        int delNum = responseService.deleteResponseList(responseIdList);
+        return AjaxResponse.success("成功删除记录" + delNum + "条");
+    }
 }

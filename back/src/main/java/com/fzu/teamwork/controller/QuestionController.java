@@ -223,4 +223,11 @@ public class QuestionController {
         questionService.deleteQuestionById(id);
         return AjaxResponse.success();
     }
+
+    //批量删除问题
+    @DeleteMapping("/questions")
+    public @ResponseBody AjaxResponse deleteQuestions(@RequestBody int[] questionIdList){
+        questionService.deleteQuestionsById(questionIdList);
+        return AjaxResponse.success();
+    }
 }

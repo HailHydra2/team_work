@@ -9,10 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -123,5 +121,12 @@ public class ResponseServiceImpl implements ResponseService{
     public void updateResponse(ResponseVO responseVO){
         //更新数据
         responseDao.updateByPrimaryKey(responseVO.getResponse());
+    }
+
+    //根据回复id数组批量删除回复(返回删除回复条数)
+    @Override
+    public int deleteResponseList(int[] idList){
+        int delNum = responseDao.deleteResponseInList(idList);
+        return delNum;
     }
 }
