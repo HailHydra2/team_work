@@ -5,6 +5,8 @@ import com.fzu.teamwork.dao.ReportQuestionDao;
 import com.fzu.teamwork.dao.ReportResponseDao;
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.Question;
+import com.fzu.teamwork.model.ReportQuestion;
+import com.fzu.teamwork.model.ReportResponse;
 import com.fzu.teamwork.model.Response;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,15 @@ public class ReportServiceImpl implements ReportService{
             responseList.add(responseDao.selectByPrimaryKey(id));
         }
         return responseList;
+    }
+
+    @Override
+    public void addQuestionReport(ReportQuestion reportQuestion){
+        reportQuestionDao.insert(reportQuestion);
+    }
+
+    @Override
+    public void addResponseReport(ReportResponse reportResponse){
+        reportResponseDao.insert(reportResponse);
     }
 }

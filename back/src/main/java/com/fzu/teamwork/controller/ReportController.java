@@ -5,12 +5,10 @@ import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.dao.ReportQuestionDao;
 import com.fzu.teamwork.dao.ReportResponseDao;
 import com.fzu.teamwork.dao.ResponseDao;
-import com.fzu.teamwork.model.Question;
-import com.fzu.teamwork.model.Response;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.service.ReportService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -65,5 +63,19 @@ public class ReportController {
     @GetMapping("/testResponseReports")
     public List<Response> testGetReportResponse(){
         return reportService.getReportResponse();
+    }
+
+    //实现举报问题接口
+    @PostMapping("questionReport")
+    public @ResponseBody AjaxResponse addQuestionReport(@RequestBody ReportQuestion reportQuestion){
+        reportService.addQuestionReport(reportQuestion);
+        return AjaxResponse.success();
+    }
+
+    //实现举报回复接口
+    @PostMapping("/responseReport")
+    public @ResponseBody AjaxResponse addResponseReport(@RequestBody ReportResponse reportResponse){
+        reportService.addResponseReport(reportResponse);
+        return AjaxResponse.success();
     }
 }
