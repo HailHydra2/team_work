@@ -18,7 +18,7 @@ public class AttentionController {
     AttentionService attentionService;
 
     //关注/取消关注（实现类）
-    @PostMapping("/testAttention")
+    @PostMapping("/attention")
     public @ResponseBody AjaxResponse testAddAttention(@RequestBody Attention attention){
         attentionService.insertAttention(attention);
         return AjaxResponse.success();
