@@ -265,11 +265,16 @@
     select * from response where report_num >= #{minReportedNum} order by report_num desc
   </select>
 
-  <select id="test" resultType="com.fzu.teamwork.model.Response">
-    select * from response;
-  </select>
-
   <select id="selectQuestionIdByAuthorId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select question_id from response where author_id=#{uid}
   </select>
+
+  <!-- 批量删除 -->
+  <delete id="deleteResponseInList" parameterType="int[]">
+    delete from response where id in
+    <foreach collection="array" item="id" index="no" open="("
+             separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>
