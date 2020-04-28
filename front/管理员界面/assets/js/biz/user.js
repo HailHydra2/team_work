@@ -1,3 +1,29 @@
+var grid_data = [
+  {
+    id: "1",
+    link: "123213",
+    num: "1",
+    userid: "123"
+  },
+  {
+    id: "2",
+    link: "123213",
+    num: "1",
+    userid: "123"
+  },
+  {
+    id: "3",
+    link: "123213",
+    num: "1",
+    userid: "123"
+  }, {
+    id: "4",
+    link: "123213",
+    num: "1",
+    userid: "123"
+  },
+];
+
 var HOST = 'http://localhost:8888';
 //var HOST = '';
 
@@ -6,53 +32,31 @@ var Service = {
   /* 删除记录 */
   delete(id) {
     return $.ajax({
-      url: HOST + '/response/' + id,
+      url: HOST + '/question/' + id,
       type: 'delete',
     });
-  },
-  batchDelete(data) {
-    return $.ajax({
-      url: HOST + '/reponse/',
-      type: 'delete',
-      data:JSON.stringify(data),
-      contentType: 'application/json;charset=utf-8',
-    });
-  },
-  getResponse(id) {
-    return $.ajax({
-      url: HOST + '/response/' + id,
-      type: 'get',
-    })
   },
   getQuestion(id) {
     return $.ajax({
       url: HOST + '/question/' + id,
       type: 'get',
-      datatype:'json'
     })
   },
-
+  appendData(data) {
+    return $.ajax({
+      url: HOST + '/user',
+      type: 'post',
+      data: JSON.stringify(data),
+      contentType: 'application/json;charset=utf-8',
+    })
+  }
 };
-
-var question={
-getQuestion(id){
-  Service.getQuestion(id).then(function (data) {
-  console.log(data);
-});
-}
-};
-
 
 var Biz = {
-  getResponse(id) {
-    Service.getResponse(id).then(function (data) {
-     // var object = Service.getQuestion(data.data.response.questionId);
-     // var jsonString = JSON.toJSONString(object);
-      alert("问题标题："+
-      Service.getQuestion(data.data.response.questionId) +"\n" +
-       "内容:" + data.data.content);
+  getQuestion(id) {
+    Service.getQuestion(id).then(function (data) {
+        alert("标题："+data.data.title+"\n"+"内容:"+data.data.content);
       console.log(data);
-      console.log(Service.getQuestion(data.data.response.questionId));
     });
   }
 };
@@ -64,7 +68,7 @@ jQuery(function ($) {
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://localhost:8888/questionReports",
+    url: "http://localhost:8888/users",
     loadonce: true,
     mtype: "get",
     //	data: grid_data,
@@ -72,7 +76,7 @@ jQuery(function ($) {
     //    mtype:"POST",
     //datatype:"local",
     height: 250,
-    colNames: [' ', '编号', '被举报人ID', '举报人数', '举报回答原文'],
+    colNames: [' ', '编号', '账号', '姓名','密码','身份证号','身份','电话号码'],
     colModel: [{
       name: 'myac',
       index: '',
@@ -114,31 +118,42 @@ jQuery(function ($) {
       editable: true
     },
     {
-      name: 'authorId',
-      index: 'authorId',
-      sorttype: "int",
+      name: 'account',
+      index: 'account',
       width: 100,
-      editable: true,
-    },
-    {
-      name: 'reportNum',
-      index: 'reportNum',
-      width: 100,
-      sorttype: "int",
       editable: true
     },
     {
-      name: 'link',
-      index: 'link',
-      width: 200,
-      sortable: false,
-      editable: false,
-      formatter: function (cellvalue, options, rowObject) {
-        return "<a href='javascript:void(0);' onclick='Biz.getResponse(" + rowObject.id + ");'>回答链接</span>";
-      }
+      name: 'name',
+      index: 'name',
+      width: 100,
+      editable: true
     },
-
-
+    {
+      name: 'password',
+      index: 'password',
+      width: 100,
+      editable: true
+    },
+    {
+      name: 'idCard',
+      index: 'idCard',
+      width: 100,
+      editable: true
+    },
+    {
+      name: 'identity',
+      index: 'identity',
+      width: 100,
+      editable: true
+    },
+    {
+      name: 'phoneNum',
+      index: 'phoneNum',
+      width: 100,
+      editable: true
+    },
+   
     ],
     viewrecords: true,
     rowNum: 10,
@@ -165,7 +180,7 @@ jQuery(function ($) {
 
     //editurl: 'server.php', //nothing is saved
     editurl: $path_base, //nothing is saved
-    caption: "举报回答操作",
+    caption: "举报信息操作",
     autowidth: true
   });
 
@@ -189,13 +204,13 @@ jQuery(function ($) {
           .datepicker({format:'yyyy-mm-dd' , autoclose:true});
     }, 0);
   }
- 
+
 */
   //navButtons
   jQuery(grid_selector).jqGrid('navGrid', pager_selector, { //navbar options
     edit: false,
     editicon: 'icon-pencil blue',
-    add: false,
+    add: true,
     addicon: 'icon-plus-sign purple',
     del: true,
     delicon: 'icon-trash red',
@@ -261,15 +276,15 @@ jQuery(function ($) {
           var sel_id = [];
           sel_id = $(grid_selector).jqGrid('getGridParam',
             'selarrrow');
-         /* var value = '';
+          var value = '';
           for (var i = 0; i < sel_id.length; i++) {
             value = value + ',' + $(grid_selector).jqGrid('getCell',
               sel_id[i], 'id');
           }
           if (value.charAt(0) == ',') {
             value = value.substr(1);
-          }*/
-          Service.batchDelete(sel_id).then(function (data) {
+          }
+          Service.delete(value).then(function (data) {
             console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
           });
@@ -383,8 +398,8 @@ jQuery(function ($) {
       $(table).find('input:checkbox').addClass('ace')
       .wrap('<label />')
       .after('<span class="lbl align-top" />')
- 
- 
+
+
       $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
       .find('input.cbox[type=checkbox]').addClass('ace')
       .wrap('<label />').after('<span class="lbl align-top" />');
