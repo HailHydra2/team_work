@@ -20,7 +20,7 @@ public class likeController {
     private LikeService likeService;
 
     //点赞回复/取消点赞/点灭回复
-    @PostMapping("likeResponse")
+    @PostMapping("/likeResponse")
     public @ResponseBody AjaxResponse likeResponse(@RequestBody Likes like){
         likeService.insertLikeInfo(like);
         return AjaxResponse.success();
