@@ -185,27 +185,27 @@ public class QuestionController {
         return AjaxResponse.success(page);
     }
 
-    @SneakyThrows
-    @GetMapping("/question/{id}")
-    public @ResponseBody AjaxResponse getQuestion(@PathVariable String id){
-        QuestionVO questionVO = new QuestionVO();
-        Question question = new Question();
-        question.setId(Integer.getInteger(id));
-        question.setAuthorId(1);
-        question.setResponseNum(5);
-        question.setReportNum(3);
-
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2020-04-15 15:30:00");
-        question.setCreateTime(date);
-        questionVO.setQuestion(question);
-        questionVO.setTitle("hello");
-        questionVO.setContent("hello world");
-        return  AjaxResponse.success(questionVO);
-    }
+//    @SneakyThrows
+//    @GetMapping("/question/{id}")
+//    public @ResponseBody AjaxResponse getQuestion(@PathVariable String id){
+//        QuestionVO questionVO = new QuestionVO();
+//        Question question = new Question();
+//        question.setId(Integer.getInteger(id));
+//        question.setAuthorId(1);
+//        question.setResponseNum(5);
+//        question.setReportNum(3);
+//
+//        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2020-04-15 15:30:00");
+//        question.setCreateTime(date);
+//        questionVO.setQuestion(question);
+//        questionVO.setTitle("hello");
+//        questionVO.setContent("hello world");
+//        return  AjaxResponse.success(questionVO);
+//    }
 
     //实现获取问题详细信息接口
     @SneakyThrows
-    @GetMapping("/testQuestion/{id}")
+    @GetMapping("/question/{id}")
     public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
         Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
         QuestionVO questionVO = questionService.convertToVO(question);

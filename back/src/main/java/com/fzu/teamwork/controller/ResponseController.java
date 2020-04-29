@@ -2,9 +2,12 @@ package com.fzu.teamwork.controller;
 
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Response;
+import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.service.ResponseService;
+import com.fzu.teamwork.service.UserService;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
+import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,27 +23,30 @@ public class ResponseController {
     @Resource(name = "responseServiceImpl")
     ResponseService responseService;
 
+    @Resource(name = "userServiceImpl")
+    UserService userService;
+
     //获取问题的回复列表，id是所属问题id(静态数据)
-    @PostMapping("/responses/{id}")
-    public @ResponseBody  AjaxResponse getResponsePage(@PathVariable int id, @RequestBody ResponsePage page) {
-        page.setPageNum(10);
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        page.setButtonList(list);
-        page.setHasPrevious(false);
-        page.setHasNext(true);
-        List<ResponseVO> responses = new ArrayList<>();
-        for(int i = 0; i < page.getCount(); i++){
-            ResponseVO responseVO = new ResponseVO();
-            responseVO.setContent("content" + i);
-            responseVO.setQuality(0);
-            responses.add(responseVO);
-        }
-        page.setResponses(responses);
-        return AjaxResponse.success(page);
-    }
+//    @PostMapping("/responses/{id}")
+//    public @ResponseBody  AjaxResponse getResponsePage(@PathVariable int id, @RequestBody ResponsePage page) {
+//        page.setPageNum(10);
+//        List<Integer> list = new ArrayList<>();
+//        list.add(1);
+//        list.add(2);
+//        list.add(3);
+//        page.setButtonList(list);
+//        page.setHasPrevious(false);
+//        page.setHasNext(true);
+//        List<ResponseVO> responses = new ArrayList<>();
+//        for(int i = 0; i < page.getCount(); i++){
+//            ResponseVO responseVO = new ResponseVO();
+//            responseVO.setContent("content" + i);
+//            responseVO.setQuality(0);
+//            responses.add(responseVO);
+//        }
+//        page.setResponses(responses);
+//        return AjaxResponse.success(page);
+//    }
 
     //获取编号为id的回复信息(静态数据)
     @GetMapping("/response/{id}")
@@ -54,7 +60,7 @@ public class ResponseController {
     }
 
     //获取问题的回复列表，id是所属问题id（具体实现接口）
-    @GetMapping("/testResponses/{id}")
+    @PostMapping("/responses/{id}")
     public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
         responseService.getResponsePageByQuestionId(id,page);
         return AjaxResponse.success(page);
@@ -101,5 +107,14 @@ public class ResponseController {
     public @ResponseBody AjaxResponse deleteResponseList(@RequestBody int[] responseIdList){
         int delNum = responseService.deleteResponseList(responseIdList);
         return AjaxResponse.success("成功删除记录" + delNum + "条");
+    }
+
+    @PostMapping("/response")
+    public @ResponseBody AjaxResponse addResponse(@RequestBody ResponseVO responseVO){
+        //log.info("responseVO{}", responseVO);
+        responseService.insertResponse(responseVO);
+        User user = userService.getUserById(responseVO.getResponse().getAuthorId());
+        UserVO userVO = userService.convertToUserVo(user);
+        return AjaxResponse.success(userVO);
     }
 }

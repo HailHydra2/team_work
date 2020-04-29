@@ -30,17 +30,11 @@ public class AttentionServiceImpl implements AttentionService{
 
         List<Attention> attentionList = attentionDao.selectByExample(example);
 
-        for(Attention attention : attentionList){
-            log.info("attention: {}", attention);
-        }
-
         //判断数据库中是否已经有该记录
         if(attentionList.size() == 0){
             //没有
-            System.out.println("empty");
             attentionDao.insert(record);
         }else{
-            System.out.println("not empty");
             Attention attention = attentionList.get(0);
             record.setId(attention.getId());
             //根据条件更新用户id和关注问题id与本次记录一样的记录

@@ -1,5 +1,6 @@
 package com.fzu.teamwork.service;
 
+import com.fzu.teamwork.dao.ContentDao;
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.view.QuestionPage;
@@ -17,6 +18,9 @@ import java.util.*;
 public class ResponseServiceImpl implements ResponseService{
     @Resource
     ResponseDao responseDao;
+
+    @Resource
+    ContentDao contentDao;
 
     @Resource(name = "contentServiceImpl")
     ContentService contentService;
@@ -77,7 +81,7 @@ public class ResponseServiceImpl implements ResponseService{
         //设置responseVO对象的response属性
         responseVO.setResponse(response);
         //根据外键contentId获取回复对象所对应的内容
-        String content = contentService.getContentById(1);
+        String content = contentService.getContentById(response.getContentId());
         //将内容赋到responseVO的content属性
         responseVO.setContent(content);
         return  responseVO;
@@ -128,5 +132,21 @@ public class ResponseServiceImpl implements ResponseService{
     public int deleteResponseList(int[] idList){
         int delNum = responseDao.deleteResponseInList(idList);
         return delNum;
+    }
+
+    //向数据库中插入一条回复记录
+    @Override
+    public void insertResponse(ResponseVO responseVO){
+        log.info("responseVO{}",responseVO);
+        Response response = responseVO.getResponse();
+        //获取内容，先将内容插入内容表
+        Content content = new Content();
+        content.setContent(responseVO.getContent());
+        //插入并获取内容id作为response外键
+        contentDao.insert(content);
+        int contentId = content.getId();
+        response.setContentId(contentId);
+        //插入回复记录
+        responseDao.insert(response);
     }
 }

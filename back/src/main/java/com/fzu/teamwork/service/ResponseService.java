@@ -4,6 +4,7 @@ import com.fzu.teamwork.model.Response;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
+import com.fzu.teamwork.view.UserVO;
 import org.omg.CORBA.INTERNAL;
 
 import java.util.List;
@@ -29,4 +30,7 @@ public interface ResponseService {
 
     //根据回复id数组批量删除回复(返回删除回复条数)
     public int deleteResponseList(int[] idList);
+
+    //向数据库中插入一条回复记录
+    public void insertResponse(ResponseVO responseVO);
 }

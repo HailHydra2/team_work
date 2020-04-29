@@ -19,11 +19,11 @@ public class Response implements Serializable {
 
     private Integer contentId;
 
-    private Integer likeNum;
+    private Integer likeNum = 0;
 
-    private Integer dislikeNum;
+    private Integer dislikeNum = 0;
 
-    private Integer reportNum;
+    private Integer reportNum = 0;
 
     private Date createTime;
 
