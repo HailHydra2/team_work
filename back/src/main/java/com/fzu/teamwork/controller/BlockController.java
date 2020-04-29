@@ -41,7 +41,20 @@ public class BlockController {
     //delete block
     @DeleteMapping("/tblock")
     public @ResponseBody AjaxResponse deleteBlock_test(){
-        blockService.deletebBlock();
+        blockService.deleteBlock();
         return AjaxResponse.success();
+    }
+
+    //获取临时板块
+    @GetMapping("/block")
+    public @ResponseBody AjaxResponse getBlock(){
+        Block block = blockService.getBlock();
+        if(block == null){
+            //没有临时板块
+            return AjaxResponse.success(201,"没有临时板块");
+        }else{
+            //有临时板块
+            return AjaxResponse.success(block);
+        }
     }
 }

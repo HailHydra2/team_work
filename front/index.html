@@ -70,7 +70,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
 					<ul class="nav navbar-nav">
 						<li class="active">
-							 <a href="#">首页</a>
+							 <a href="index.html">首页</a>
 						</li>
 						<li>
 							 <a href="#" data-toggle="modal" data-target="#myModal">提问</a>
@@ -78,6 +78,9 @@
 						<li class="dropdown">
 							<a href="questionList.html">等你来答</a>
 						</li>
+						<li>
+							<a href="temp.html"  id="tempBlock"></a>
+					   </li>
 					</ul>
 					<form class="navbar-form navbar-left" role="search">
 						<div class="form-group">
@@ -156,7 +159,9 @@
     //页面加载时启动页面
     $(document).ready(function(e) {
         //首页按时间排序
-        changeQuestionPage(page, path);
+		changeQuestionPage(page, path);
+		//获取临时板块
+		getBlock();
     });
 
     //上一页点击事件
@@ -217,6 +222,30 @@
 		}else{
 			console.info("没有下一页");
 		}
+	}
+
+	//判断后台是否有临时板块（有则显示，无则隐藏）
+	function getBlock(){
+		var tempBlock = document.getElementById("tempBlock");
+		$.ajax({
+			url: "http://localhost:8888/block",
+			type: "get", 
+			contentType: 'application/json;charset=utf-8',
+			success: function (data) {
+				if(data.code == 200){
+					block = data.data;
+					//有临时板块
+					//展示临时板块按钮
+					tempBlock.removeAttribute("style");
+					tempBlock.innerHTML = block.blockName;
+					//console.info(block);
+				}else if(data.code == 201){
+					//没有临时板块
+					//隐藏临时板块按钮
+					tempBlock.setAttribute("style","display:none");
+				}
+			}
+		});
 	}
 </script>
 </html>
