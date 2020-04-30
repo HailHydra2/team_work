@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService{
     private MessageOperateStrategy operateStrategy;
 
     /*创建获取消息列表的策略器(uid是用户id)
-    *type=1：获取某个用户的问题列表
+    *type=1：获取某个用户的消息列表
     */
     public void createMessageStrategy(int type, int uid){
         if(type == 1){

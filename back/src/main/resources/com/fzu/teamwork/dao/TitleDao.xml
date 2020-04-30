@@ -172,4 +172,5 @@
     <delete id="deleteQuestionTitle" parameterType="java.lang.Integer">
       delete from question_title where question_id=#{questionID}
     </delete>
+
 </mapper>

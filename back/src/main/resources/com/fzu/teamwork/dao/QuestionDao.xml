@@ -230,4 +230,19 @@
   <select id="selectUserQuestion" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
     select * from question where author_id=#{uid} limit #{start},#{count}
   </select>
+
+  <select id="selectQuestionByHeat" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select * from question order by response_num desc limit #{start},#{count}
+  </select>
+
+  <select id="selectQuestionByTime" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select * from question order by create_time desc limit #{start},#{count}
+  </select>
+
+  <select id="selectQuestionByKeyWord" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select t1.id, author_id, response_num, report_num, create_time, content_id
+    from question t1 left join question_title qt on t1.id = qt.question_id
+    left join title t on qt.title_id = t.id
+    where (t.title like #{keyWord}) order by create_time desc limit #{start}, #{count}
+  </select>
 </mapper>

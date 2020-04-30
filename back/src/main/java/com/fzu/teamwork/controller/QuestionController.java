@@ -36,31 +36,6 @@ public class QuestionController {
     @Resource
     private TitleDao titleDao;
 
-    public QuestionController() {
-    }
-
-//    @PostMapping("/questions")
-//    public @ResponseBody AjaxResponse getQuestionPage(@RequestBody QuestionPage questionPage){
-//        questionPage.setPageNum(10);
-//        List<Integer> buttonList = new ArrayList<>();
-//        buttonList.add(1);
-//        buttonList.add(2);
-//        questionPage.setButtonList(buttonList);
-//        questionPage.setHasPrevious(false);
-//        questionPage.setHasNext(true);
-//        List<QuestionVO> questionList = new ArrayList<>();
-//        QuestionVO question1 = new QuestionVO();
-//        question1.setTitle("hello");
-//        question1.setContent("hello world");
-//        questionList.add(question1);
-//        QuestionVO question2 = new QuestionVO();
-//        question2.setTitle("goodbye");
-//        question2.setContent("goodbye world");
-//        questionList.add(question2);
-//        questionPage.setQuestions(questionList);
-//        return AjaxResponse.success(questionPage);
-//    }
-
     //新增获取问题列表接口
     @PostMapping("/questions")
     public @ResponseBody AjaxResponse testGetQuestionPage(@RequestBody QuestionPage questionPage){
@@ -69,114 +44,25 @@ public class QuestionController {
         return AjaxResponse.success(page);
     }
 
-//    @PostMapping("/question")
-//    public  @ResponseBody AjaxResponse addQuestion(@RequestBody QuestionVO questionVO){
-//        Title title = new Title();
-//        title.setTitle(questionVO.getTitle());
-//        title.setId(questionVO.getQuestion().getContentId());
-//
-//        Content content = new Content();
-//        content.setContent(questionVO.getContent());
-//        content.setId(questionVO.getQuestion().getContentId());
-//
-//        AccountData accountData = new AccountData();
-//        accountData.setId(1);
-//        accountData.setLevel(10);
-//        accountData.setScore(10);
-//        accountData.setExperienceValue(99/100);
-//        accountData.setFocusNum(5);
-//        accountData.setQuestionNum(5);
-//        accountData.setResponseNum(5);
-//
-//        User user = new User();
-//        user.setId(1);
-//        user.setAccount("221701421");
-//        user.setPassword("123456");
-//        user.setName("wsh");
-//        user.setIdCard("123456789");
-//        user.setIdentity("student");
-//        user.setPhoneNum("110");
-//        user.setAccountDataId(1);
-//
-//        UserVO userVO = new UserVO();
-//        userVO.setUser(user);
-//        userVO.setAccountData(accountData);
-//        return AjaxResponse.success(userVO);
-//    }
-
     //实现新增问题接口
     @PostMapping("/question")
     public  @ResponseBody AjaxResponse testAddQuestion(@RequestBody QuestionVO questionVO){
         return AjaxResponse.success(questionService.addQuestion(questionVO));
     }
 
-//    @PostMapping("/userQuestions/{uid}")
-//    public @ResponseBody AjaxResponse getUserQuestionPage(@PathVariable String uid,  @RequestBody QuestionPage questionPage){
-//        questionPage.setPageNum(10);
-//        List<Integer> buttonList = new ArrayList<>();
-//        buttonList.add(1);
-//        buttonList.add(2);
-//        questionPage.setButtonList(buttonList);
-//        questionPage.setHasPrevious(false);
-//        questionPage.setHasNext(true);
-//        List<QuestionVO> questionList = new ArrayList<>();
-//        QuestionVO question1 = new QuestionVO();
-//        question1.setTitle("hello");
-//        question1.setContent("hello world");
-//        questionList.add(question1);
-//        questionPage.setQuestions(questionList);
-//        return AjaxResponse.success(questionPage);
-//    }
-
     //实现获取用户问题列表接口
     @PostMapping("/userQuestions/{uid}")
-    public @ResponseBody AjaxResponse testGetUserQuestionPage(@PathVariable String uid,  @RequestBody QuestionPage questionPage){
+    public @ResponseBody AjaxResponse testGetUserQuestionPage(@PathVariable Integer uid,  @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getQuestionPage(uid,questionPage);
         return AjaxResponse.success(page);
     }
 
-//    @PostMapping("/userAttentions/{uid}")
-//    public @ResponseBody AjaxResponse getAttentionQuestionPage(@PathVariable String uid, @RequestBody QuestionPage questionPage){
-//        questionPage.setPageNum(10);
-//        List<Integer> buttonList = new ArrayList<>();
-//        buttonList.add(1);
-//        buttonList.add(2);
-//        questionPage.setButtonList(buttonList);
-//        questionPage.setHasPrevious(false);
-//        questionPage.setHasNext(true);
-//        List<QuestionVO> questionList = new ArrayList<>();
-//        QuestionVO question1 = new QuestionVO();
-//        question1.setTitle("goodbye");
-//        question1.setContent("goodbye world");
-//        questionList.add(question1);
-//        questionPage.setQuestions(questionList);
-//        return AjaxResponse.success(questionPage);
-//    }
-
     //实现获取关注问题列表接口
     @PostMapping("/userAttentions/{uid}")
-    public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable String uid, @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getQuestionPageByIdList(uid, questionPage);
+    public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getAttentionQuestionPage(uid, questionPage);
         return AjaxResponse.success(page);
     }
-
-//    @PostMapping("/userResponseQuestions/{uid}")
-//    public @ResponseBody AjaxResponse getUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
-//        questionPage.setPageNum(10);
-//        List<Integer> buttonList = new ArrayList<>();
-//        buttonList.add(1);
-//        buttonList.add(2);
-//        questionPage.setButtonList(buttonList);
-//        questionPage.setHasPrevious(false);
-//        questionPage.setHasNext(true);
-//        List<QuestionVO> questionList = new ArrayList<>();
-//        QuestionVO question1 = new QuestionVO();
-//        question1.setTitle("goodbye");
-//        question1.setContent("goodbye");
-//        questionList.add(question1);
-//        questionPage.setQuestions(questionList);
-//        return AjaxResponse.success(questionPage);
-//    }
 
     //实现获取用户回答过的问题列表接口
     @PostMapping("/userResponseQuestions/{uid}")
@@ -184,24 +70,6 @@ public class QuestionController {
         QuestionPage page = questionService.getResponseQuestion(uid,questionPage);
         return AjaxResponse.success(page);
     }
-
-//    @SneakyThrows
-//    @GetMapping("/question/{id}")
-//    public @ResponseBody AjaxResponse getQuestion(@PathVariable String id){
-//        QuestionVO questionVO = new QuestionVO();
-//        Question question = new Question();
-//        question.setId(Integer.getInteger(id));
-//        question.setAuthorId(1);
-//        question.setResponseNum(5);
-//        question.setReportNum(3);
-//
-//        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2020-04-15 15:30:00");
-//        question.setCreateTime(date);
-//        questionVO.setQuestion(question);
-//        questionVO.setTitle("hello");
-//        questionVO.setContent("hello world");
-//        return  AjaxResponse.success(questionVO);
-//    }
 
     //实现获取问题详细信息接口
     @SneakyThrows

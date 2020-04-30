@@ -35,4 +35,19 @@ public interface QuestionDao {
 
     //获取用户问题列表（map: {"user":用户ID，"start":子列表开始位置索引, "count":子列表长度}）
     public List<Question> selectUserQuestion(Map<String, Integer> map);
+
+    /**根据热度获取用户问题列表（map: {"start":子列表开始位置索引, "count":子列表长度}）
+     * 热度：按照回复数递减排序
+     */
+    public List<Question> selectQuestionByHeat(Map<String, Integer> map);
+
+    /**根据时间获取用户问题列表（map: {"start":子列表开始位置索引, "count":子列表长度}）
+     * 按照时间由近到远排序
+     */
+    public List<Question> selectQuestionByTime(Map<String, Integer> map);
+
+    /**
+     * 根据标题关键字查询
+     */
+    public List<Question> selectQuestionByKeyWord(Map<String, Object> map);
 }

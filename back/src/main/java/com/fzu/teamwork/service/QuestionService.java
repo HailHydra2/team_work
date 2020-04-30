@@ -23,10 +23,10 @@ public interface QuestionService {
     public QuestionPage getQuestionPage(QuestionPage questionPage);
 
     //获取用户问题的某个分页
-    public QuestionPage getQuestionPage(String userId, QuestionPage questionPage);
+    public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage);
 
     //获取用户关注的问题分页
-    public QuestionPage getQuestionPageByIdList(String userId, QuestionPage questionPage);
+    public QuestionPage getAttentionQuestionPage(Integer userId, QuestionPage questionPage);
 
     //获取用户回答过的问题分页
     public QuestionPage getResponseQuestion(String userId, QuestionPage questionPage);

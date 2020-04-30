@@ -31,11 +31,4 @@ public class AttentionController {
         UserVO userVO = userService.convertToUserVo(user);
         return AjaxResponse.success(userVO);
     }
-
-    //获取用户关注问题list列表（测试，不是作为前后端接口）
-    @GetMapping("/testAttentionList/{uid}")
-    public @ResponseBody AjaxResponse getAttentionQuestionList(@PathVariable int uid){
-        List<Integer> list = attentionService.getAttentionQuestionList(uid);
-        return AjaxResponse.success(list);
-    }
 }
