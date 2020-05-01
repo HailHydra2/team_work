@@ -35,32 +35,30 @@
 								</div>
 							</div>
 						</div>
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" target="iframe">
 							
 						<div class="form-group">
-								<label for="inputQue" class="col-sm-2 control-label">问题</label>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" id="inputQue" />
-								</div>
+							<label for="inputQue" class="col-sm-2 control-label">问题</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputQue" />
 							</div>
-							<div class="form-group">
-    							<label for="describeQue" class="col-sm-2 control-label">描述</label>
-								<div class="col-sm-9">
-    								<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
-								</div>
-  							</div>
-							<div style="text-align:center">
-								<button type="button" class="btn btn-primary">提 交</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">关 闭</button>
+						</div>
+						<div class="form-group">
+    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
+							<div class="col-sm-9">
+    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
 							</div>
-						</form>
+  						</div>
+						<div style="text-align:center">
+							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+						</div>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-
-
-
     <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -71,7 +69,7 @@
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
 					<ul class="nav navbar-nav">
-						<li>
+						<li class="dropdown">
 							 <a href="index.html">首页</a>
 						</li>
 						<li>
@@ -80,12 +78,15 @@
 						<li class="dropdown">
 							<a href="questionList.html">等你来答</a>
 						</li>
+						<li class="dropdown"  id="tempBlock">
+					   </li>
 					</ul>
-					<form class="navbar-form navbar-left" role="search">
+					<form class="navbar-form navbar-left" role="search" target="iframe">
 						<div class="form-group">
-							<input type="text" class="form-control" />
-						</div> <button type="submit" class="btn btn-default">🔍</button>
+							<input type="text" class="form-control" id="searchContent"/>
+						</div> <button type="submit" class="btn btn-default" onclick="search();">🔍</button>
 					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							 <a href="message.html">🔔</a>
@@ -118,10 +119,10 @@
 				<div class="col-md-12 column" >
 					<div id="login_btn" class="login_log" style="display: inline;">
 						<br/>
-						<button type="button" class="btn btn-sm btn-primary" id="attentionQuestion" onclick="attentionQuesion();">关注问题</button>
+						<button type="button" class="btn btn-sm btn-primary" id="attentionQuestion" onclick="attentionQuestion();"></button>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					</div>
-					<button type="button" class="btn btn-sm btn-danger" id="reportQuestion" onclick="reportQuesion();">举报问题</button>
+					<button type="button" class="btn btn-sm btn-danger" id="reportQuestion" onclick="reportQuesion();"></button>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<div id="login_btn" class="login_log" style="display: inline;">
 						<a id="modal-706894" class="btn btn-success btn-sm" href="#addAnswer" role="button" class="btn btn-default btn-success" data-toggle="modal">回答问题</a>
@@ -303,6 +304,11 @@
 
     //页面加载时启动页面
     $(document).ready(function(e) {
+		if(userVO == null){
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "login.html";
+		}
 		//加载问题信息
 		initQuestion();
 		//加载问题列表
@@ -350,7 +356,7 @@
 	//初始化问题的详细信息
 	function initQuestion(){
 		$.ajax({
-			url: "http://localhost:8888/question/" + id,
+			url: "http://localhost:8888/question/" + id + "/" + userVO.user.id,
 			type: "get", 
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
@@ -370,6 +376,28 @@
 		var questionCreateTime = document.getElementById("questionCreateTime");
 		questionCreateTime.innerHTML = questionVO.question.createTime;
 		var questionAuthorName = document.getElementById("authorName");
+		questionAuthorName.innerHTML = questionVO.authorName;4
+		var attentionQuestionButton = document.getElementById("attentionQuestion");
+		var reportQuestionButton = document.getElementById("reportQuestion");
+		if(questionVO.doesAttention == true){
+			//已关注
+			attentionQuestionButton.innerHTML = "取消关注";
+			attentionQuestionButton.setAttribute("flag",1);
+		}else{
+			//未关注
+			attentionQuestionButton.innerHTML = "关注问题";
+			attentionQuestionButton.setAttribute("flag",0);
+		}
+
+		if(questionVO.doesReported == true){
+			//已投诉
+			reportQuestionButton.innerHTML = "取消投诉";
+			reportQuestionButton.setAttribute("flag", 1);
+		}else{
+			//未投诉
+			reportQuestionButton.innerHTML = "投诉问题";
+			reportQuestionButton.setAttribute("flag", 0);
+		}
 	}
 
 	//初始化加载问题列表
@@ -377,7 +405,7 @@
 		changeQuestionPage(responsePage, responsePath)
 	}
 
-	//加载更新问题问题列表分页
+	//加载更新回复列表分页
 	var list;
     function updateList(p){
 		responsePage = p;
@@ -489,7 +517,7 @@
 	}
 
 	//关注、取消关注问题
-	function attentionQuesion(){
+	function attentionQuestion(){
 		var userId = userVO.user.id;
 		//关注时间
 		var time = new Date();

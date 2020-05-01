@@ -40,6 +40,15 @@ public class QuestionServiceImpl implements QuestionService{
     @Resource
     private QuestionTitleDao questionTitleDao;
 
+    @Resource
+    private AttentionDao attentionDao;
+
+    @Resource
+    private UserDao userDao;
+
+    @Resource
+    private ReportQuestionDao reportQuestionDao;
+
     //获取问题列表的策略类
     private QuestionStrategy questionStrategy;
     //要获取的问题分页
@@ -77,10 +86,15 @@ public class QuestionServiceImpl implements QuestionService{
         int questionID = question.getId();
         int titleID = titleDao.selectTitleByQuestionID(questionID);
         int contentID = question.getContentId();
+        int authorID = question.getAuthorId();
+
         Title title = titleDao.selectByPrimaryKey(titleID);
         Content content = contentDao.selectByPrimaryKey(contentID);
+        User author = userDao.selectByPrimaryKey(authorID);
+
         questionVO.setTitle(title.getTitle());
         questionVO.setContent(content.getContent());
+        questionVO.setAuthorName(author.getName());
         return questionVO;
     }
 
@@ -202,5 +216,43 @@ public class QuestionServiceImpl implements QuestionService{
             questionVOList.add(convertToVO(question));
         }
         return questionVOList;
+    }
+
+    //为QuestionVO添加与用户uid之间的关系（是否已经关注、投诉）
+    @Override
+    public void addRelationToUId(QuestionVO questionVO, Integer uid){
+        //创建关注表查询条件
+        AttentionExample example = new AttentionExample();
+        AttentionExample.Criteria criteria = example.createCriteria();
+        //关注记录用户id、问题id与查询情况一致，flag=1
+        criteria.andUserIdEqualTo(uid);
+        criteria.andQuestionIdEqualTo(questionVO.getQuestion().getId());
+        criteria.andFlagEqualTo(1);
+        //查询结果
+        List<Attention> attentionList = attentionDao.selectByExample(example);
+        if(attentionList.size() > 0){
+            //已关注
+            questionVO.setDoesAttention(true);
+        }else{
+            //未关注
+            questionVO.setDoesAttention(false);
+        }
+        //创建投诉查询条件
+        ReportQuestionExample example1 = new ReportQuestionExample();
+        ReportQuestionExample.Criteria criteria1 = example1.createCriteria();
+        //投诉记录用户id、问题id与查询情况一致，flag=1
+        criteria1.andQuestionIdEqualTo(questionVO.getQuestion().getId());
+        criteria1.andReportorIdEqualTo(uid);
+        criteria1.andFlagEqualTo(1);
+        //查询结果
+        List<ReportQuestion> reportQuestionList = reportQuestionDao.selectByExample(example1);
+
+        if(reportQuestionList.size() > 0){
+            //已投诉
+            questionVO.setDoesReported(true);
+        }else{
+            //未投诉
+            questionVO.setDoesReported(false);
+        }
     }
 }

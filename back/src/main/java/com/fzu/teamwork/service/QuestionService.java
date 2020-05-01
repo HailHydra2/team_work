@@ -36,4 +36,7 @@ public interface QuestionService {
 
     //根据问题ID批量删除问题
     public void deleteQuestionsById(int[] questionIdList);
+
+    //为QuestionVO添加与用户uid之间的关系（是否已经关注、投诉）
+    public void addRelationToUId(QuestionVO questionVO, Integer uid);
 }

@@ -73,10 +73,12 @@ public class QuestionController {
 
     //实现获取问题详细信息接口
     @SneakyThrows
-    @GetMapping("/question/{id}")
-    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
+    @GetMapping("/question/{id}/{uid}")
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable Integer uid){
         Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
         QuestionVO questionVO = questionService.convertToVO(question);
+        //添加与用户uid之间的关系
+        questionService.addRelationToUId(questionVO, uid);
         return AjaxResponse.success(questionVO);
     }
 
