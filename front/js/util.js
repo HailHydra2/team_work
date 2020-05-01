@@ -1,19 +1,36 @@
 
-//用于获取url种variable参数的值，不存在返回false
-function getQueryVariable(variable)
+//用于获取url种name参数的值，不存在返回false
+function getQueryVariable(name)
 {
-       var query = window.location.search.substring(1);
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
+    name = name.replace(/[]/,"\[").replace(/[]/,"\[").replace(/[]/,"\\\]");
+    var regexS = "[\\?&]"+name+"=([^&#]*)";
+    var regex = new RegExp( regexS );
+    var results = regex.exec(window.parent.location.href);
+    if( results == null ) 
+        return ""; 
+    else {
+        return decodeURI(results[1]);
+    }
 }
 
 
 
 //问题页面换页
+function changeQuestionPage(page, path){
+    $.ajax({
+        url: path,
+        type: "post", 
+        data:JSON.stringify(page),
+        contentType: 'application/json;charset=utf-8',
+        success: function (data) {
+            page = data.data;
+            console.info(page);
+            updateList(page);
+        }
+    });
+}
+
+//回复页面换页
 function changeQuestionPage(page, path){
     $.ajax({
         url: path,
@@ -139,6 +156,68 @@ function postQuestion(){
     $("#inputQue").innerHTML = "";
     $("#describeQue").innerHTML = "";
     location.replace(document.referrer);
+}
+
+
+//判断后台是否有临时板块（有则显示，无则隐藏）
+function getBlock(){
+    //获取临时板块的元素
+    var tempBlock = document.getElementById("tempBlock");
+    $.ajax({
+        url: "http://localhost:8888/block",
+        type: "get", 
+        contentType: 'application/json;charset=utf-8',
+        success: function (data) {
+            if(data.code == 200){
+                block = data.data;
+                //有临时板块
+                //展示临时板块按钮
+                tempBlock.removeAttribute("style");
+                var blockLink = document.createElement("a");
+                blockLink.innerHTML = block.blockName;
+                var href = "search.html?keyWord=" +  block.keyWord;
+                blockLink.setAttribute("href",href);
+                tempBlock.appendChild(blockLink);
+                //console.info(block);
+            }else if(data.code == 201){
+                //没有临时板块
+                //隐藏临时板块按钮
+                tempBlock.setAttribute("style","display:none");
+            }
+        }
+    });
+}
+
+//更新问题列表
+function updateList(p){
+    page = p;
+    var list = page.questions;
+    list = Array.prototype.slice.call(list);
+    for(var i = 0; i < list.length; i++){
+        //创建存放单个问题的blockquote
+        var questionBlock = document.createElement("blockquote");
+        //创建存放问题标题的a标签
+        var title = document.createElement("a");
+        title.innerHTML = "标题：" + list[i].title;//问题标题
+        title.setAttribute("href", "questionIndex.html?id=" + list[i].question.id);//问题标题对应的详情页面
+        //创建存放问题描述的p标签
+        var content = document.createElement("small");
+        content.innerHTML = "问题描述：" + list[i].content;//问题描述
+        questionBlock.appendChild(title);
+        questionBlock.appendChild(content);
+        questionList.appendChild(questionBlock);
+        
+        //更新分页按钮
+        updatePageButtons();
+    }
+}
+
+//搜索框搜素函数
+function search(){
+    //搜索框输入内容
+    var searchContent = document.getElementById("searchContent");
+    var content = $.trim($("#searchContent").val());
+    window.location.href="search.html?keyWord=" + content;
 }
 
 var userVO;

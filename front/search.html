@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      	<title>校园帮帮网-搜索结果</title>
+      	<title>校园帮帮网-主页</title>
       	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       	<!-- 引入 Bootstrap -->
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -38,23 +38,23 @@
 					<form class="form-horizontal" role="form" target="iframe">
 							
 						<div class="form-group">
-								<label for="inputQue" class="col-sm-2 control-label">问题</label>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" id="inputQue" />
-								</div>
+							<label for="inputQue" class="col-sm-2 control-label">问题</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputQue" />
 							</div>
-							<div class="form-group">
-    							<label for="describeQue" class="col-sm-2 control-label">描述</label>
-								<div class="col-sm-9">
-    								<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
-								</div>
-  							</div>
-							<div style="text-align:center">
-								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+						</div>
+						<div class="form-group">
+    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
+							<div class="col-sm-9">
+    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
 							</div>
-						</form>
-						<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+  						</div>
+						<div style="text-align:center">
+							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+						</div>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
@@ -70,7 +70,7 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
 					<ul class="nav navbar-nav">
 						<li>
-							 <a href="#">首页</a>
+							 <a href="index.html">首页</a>
 						</li>
 						<li>
 							 <a href="#" data-toggle="modal" data-target="#myModal">提问</a>
@@ -78,11 +78,14 @@
 						<li class="dropdown">
 							<a href="questionList.html">等你来答</a>
 						</li>
+						<li>
+							<a href="temp.html"  id="tempBlock"></a>
+					   </li>
 					</ul>
 					<form class="navbar-form navbar-left" role="search">
 						<div class="form-group">
 							<input type="text" class="form-control" />
-						</div> <button type="submit" class="btn btn-default active">🔍</button>
+						</div> <button type="submit" class="btn btn-default">🔍</button>
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
@@ -98,8 +101,8 @@
 			</nav>
 			<div class="page-header" style="top:130">
 				<br/>
-				<h1 >
-					搜索“<strong>KeyWords</strong>”的结果
+				<h1>
+					搜素结果<small></small>
 				</h1>
 			</div>
 			<!--页面主要内容容器-->
@@ -140,13 +143,15 @@
 	//上一页按钮
 	var preButton = document.getElementById("previous");
     //下一页按钮
-    var nextButton = document.getElementById("next");
+	var nextButton = document.getElementById("next");
+	//搜索关键字
+	var keyWord = getQueryVariable("keyWord");
     //当前页面显示的数据(传递给后端的数据)
     var page = {
             "pageIndex":1,
-            "count":2,
-            "keyWord":"",
-            sortApproach:"sortByHeat",
+            "count":10,
+            "keyWord":keyWord,
+            sortApproach:"sortByKeyWord",
         };
 
 	//请求后端的url
@@ -156,7 +161,9 @@
     //页面加载时启动页面
     $(document).ready(function(e) {
         //首页按时间排序
-        changeQuestionPage(page, path);
+		changeQuestionPage(page, path);
+		//获取临时板块
+		getBlock();
     });
 
     //上一页点击事件
@@ -191,7 +198,7 @@
             //创建存放问题标题的a标签
             var title = document.createElement("a");
             title.innerHTML = "标题：" + list[i].title;//问题标题
-            title.setAttribute("href", "详情页面.html?id=1");//问题标题对应的详情页面
+            title.setAttribute("href", "questionIndex.html?id=" + list[i].question.id);//问题标题对应的详情页面
             //创建存放问题描述的p标签
             var content = document.createElement("small");
             content.innerHTML = "问题描述：" + list[i].content;//问题描述
@@ -218,5 +225,6 @@
 			console.info("没有下一页");
 		}
 	}
+
 </script>
 </html>
