@@ -28,23 +28,28 @@ public class ReportServiceImpl implements ReportService{
     @Resource
     private ReportResponseDao reportResponseDao;
 
+
     @Override
     public List<Question> getReportQuestion(){
-        List<Question> questionList = new ArrayList<>();
-        List<Integer> questionIdList = reportQuestionDao.selectAllQuestion();
-        for (int id:questionIdList){
-            questionList.add(questionDao.selectByPrimaryKey(id));
-        }
+        //创建查询条件
+        QuestionExample example = new QuestionExample();
+        QuestionExample.Criteria criteria = example.createCriteria();
+        criteria.andReportNumGreaterThanOrEqualTo(0);
+        example.setOrderByClause("report_num desc");
+        //返回的问题列表
+        List<Question> questionList;
+        questionList =questionDao.selectByExample(example);
         return questionList;
     }
 
     @Override
     public List<Response> getReportResponse(){
-        List<Response> responseList = new ArrayList<>();
-        List<Integer> responseIdList = reportResponseDao.selectAllResponse();
-        for(int id:responseIdList){
-            responseList.add(responseDao.selectByPrimaryKey(id));
-        }
+        //创建查询条件
+        ResponseExample example = new ResponseExample();
+        ResponseExample.Criteria criteria = example.createCriteria();
+        criteria.andReportNumGreaterThanOrEqualTo(0);
+        example.setOrderByClause("report_num desc");
+        List<Response> responseList = responseDao.selectByExample(example);
         return responseList;
     }
 

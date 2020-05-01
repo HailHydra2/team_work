@@ -3,11 +3,14 @@ package com.fzu.teamwork.model;
 import com.fzu.teamwork.service.QuestionService;
 import com.fzu.teamwork.service.UserService;
 import com.fzu.teamwork.util.MessageWay;
+import com.fzu.teamwork.util.ScoreNum;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
 import io.swagger.models.auth.In;
+import lombok.extern.slf4j.Slf4j;
 
 //MessageService对回复问题消息进行处理的策略类(ResQ: Response Question)
+@Slf4j
 public class MessageResQStrategy extends MessageOperateStrategy{
 
     //操作消息
@@ -63,8 +66,8 @@ public class MessageResQStrategy extends MessageOperateStrategy{
         //回复数
         int responseNum = accountData.getResponseNum();
 
-        score+=10;//回复问题积分+10
-        experienceValue+=10;//回复问题经验值+10
+        score += ScoreNum.RESPONSE_QUESTION_SCORE;//回复问题积分+10
+        experienceValue += ScoreNum.RESPONSE_QUESTION_EXPERIENCE;//回复问题经验值+10
         responseNum++;//回复数+1
 
         accountData.setScore(score);
@@ -99,7 +102,7 @@ public class MessageResQStrategy extends MessageOperateStrategy{
                 question.getTitle() + "\"的问题";
 
         //设置消息的对象为问题的作者
-        message.setObjectId(internalMessage.getObject_id());
+        message.setObjectId(internalMessage.getOperator_id());
         //设置消息的描述信息
         message.setDescription(description);
         //设置消息的产生方式为回复

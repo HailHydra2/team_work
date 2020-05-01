@@ -26,9 +26,7 @@ public class AttentionController {
     //关注/取消关注（实现类）
     @PostMapping("/attention")
     public @ResponseBody AjaxResponse testAddAttention(@RequestBody Attention attention){
-        attentionService.insertAttention(attention);
-        User user = userService.getUserById(attention.getUserId());
-        UserVO userVO = userService.convertToUserVo(user);
+        UserVO userVO = attentionService.insertAttention(attention);
         return AjaxResponse.success(userVO);
     }
 }

@@ -13,4 +13,6 @@ public class InternalMessage {
     private int object_id;
     //操作方式
     private String way;
+    // 变化标志
+    private int flag;
 }

@@ -77,8 +77,8 @@
 				<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 					<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Photo" />
 					<span class="user-info">
-						<small>欢迎回来,</small>
-						管理员
+						<small>欢迎回来</small>
+						<p id="userName"></p>
 					</span>
 
 					<i class="icon-caret-down"></i>
@@ -96,7 +96,7 @@
 					<li class="divider"></li>
 
 					<li>
-						<a href="#">
+						<a href="#" onclick="adminExit();">
 							<i class="icon-off"></i>
 							退出
 						</a>
@@ -360,6 +360,19 @@
 
 	<script src="assets/js/biz/reward.js"></script>
 	<script src="assets/js/tableExport.js"></script>
+	<script src="../js/util.js"></script>
+	<script>
+		//页面加载时启动页面
+		$(document).ready(function(e) {
+			if(userVO == null){
+				//登录过期
+				alert("登录过期，请重新登录");
+				window.location.href = "../login.html";
+			}
+			//显示用户姓名
+			document.getElementById("userName").innerHTML = userVO.user.name;
+		});
+	</script>
 
 </body>
 

@@ -72,8 +72,8 @@
                         <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                             <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Photo" />
                             <span class="user-info">
-                                <small>欢迎回来,</small>
-                                管理员
+                                <small>欢迎回来</small>
+                                <p id="userName"></p>
                             </span>
 
                             <i class="icon-caret-down"></i>
@@ -91,7 +91,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="#">
+                                <a href="#" onclick="adminExit();">
                                     <i class="icon-off"></i>
                                     退出
                                 </a>
@@ -235,7 +235,7 @@
 
                             <form id="form1"  action="##" method="post" class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 账号：
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 账号(学号)：
                                     </label>
 
                                     <div class="col-sm-9">
@@ -283,7 +283,7 @@
                                 </div>
 
                                 <div class="col-md-offset-3 col-md-9">
-                                    <input class="btn btn-info" value="确认新增" type="button" id="addUser" onClick="submit()">
+                                    <input class="btn btn-info" value="确认新增" type="button" id="addUser" onclick="addAUser()">
                                 </div>
                             </form>
 
@@ -389,24 +389,53 @@
     <script src="assets/js/ace-elements.min.js"></script>
     <script src="assets/js/ace.min.js"></script>
 
-    <!-- inline scripts related to this page -->
-    <script type="text/javascript">
-        function submit() {
+    <script src="../js/util.js"></script>
+	<script>
+        //账号(学号输入框)
+        var accountTextBox = document.getElementById("account");
+        //身份选择框
+        var identityOption = document.getElementById("identity");
+        //姓名输入框
+        var nameTextBox = document.getElementById("name");
+        //身份证输入框
+        var idCardTextBox = document.getElementById("idCard");
+		//页面加载时启动页面
+		$(document).ready(function(e) {
+			if(userVO == null){
+				//登录过期
+				alert("登录过期，请重新登录");
+				window.location.href = "../login.html";
+			}
+			//显示用户姓名
+			document.getElementById("userName").innerHTML = userVO.user.name;
+        });
+        
+        //新增用户
+        function addAUser(){
+            var account = accountTextBox.value;
+            var identiy = identityOption.options[identityOption.selectedIndex].value;
+            var name = nameTextBox.value;
+            var idCard = idCardTextBox.value;
+            
+            var user = {
+                "account":account,
+                "identity":identiy,
+                "name":name,
+                "idCard":idCard
+            };
+
             $.ajax({
-                type: 'POST',
-                dataType: "json",
-                url: "http://localhost:8888/user",
-                data: $('#form1').serialize(),
-                success: function (result) {
-                  console.log(data);
-                  if(result.code==200)
-                    alert("成功");
+                url: "http://localhost:8888/users",
+                type: "post", 
+                contentType: 'application/json;charset=utf-8',
+                data:JSON.stringify(user),
+                success: function (data) {
+                    alert("新增成功");
+                    location.reload();
                 }
             });
-
         }
-
-    </script>
+	</script>
 </body>
 
 </html>

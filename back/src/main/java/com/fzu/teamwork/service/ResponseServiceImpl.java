@@ -1,11 +1,15 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.ContentDao;
+import com.fzu.teamwork.dao.LikesDao;
+import com.fzu.teamwork.dao.ReportResponseDao;
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.*;
+import com.fzu.teamwork.util.MessageWay;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +21,22 @@ import java.util.*;
 @Service
 public class ResponseServiceImpl implements ResponseService{
     @Resource
-    ResponseDao responseDao;
+    private ResponseDao responseDao;
 
     @Resource
-    ContentDao contentDao;
+    private ContentDao contentDao;
+
+    @Resource
+    private ReportResponseDao reportResponseDao;
+
+    @Resource
+    private LikesDao likesDao;
 
     @Resource(name = "contentServiceImpl")
-    ContentService contentService;
+    private ContentService contentService;
+
+    @Resource(name = "messageServiceImpl")
+    private MessageService messageService;
 
     //回复分页
     private ResponsePage page;
@@ -137,7 +150,6 @@ public class ResponseServiceImpl implements ResponseService{
     //向数据库中插入一条回复记录
     @Override
     public void insertResponse(ResponseVO responseVO){
-        log.info("responseVO{}",responseVO);
         Response response = responseVO.getResponse();
         //获取内容，先将内容插入内容表
         Content content = new Content();
@@ -148,5 +160,58 @@ public class ResponseServiceImpl implements ResponseService{
         response.setContentId(contentId);
         //插入回复记录
         responseDao.insert(response);
+        //创建内部传输消息
+        InternalMessage message = new InternalMessage();
+        //消息操作者为回复用户id
+        message.setOperator_id(response.getAuthorId());
+        //操作对象是被回复问题id
+        message.setObject_id(response.getQuestionId());
+        //消息触发事件是回复问题
+        message.setWay(MessageWay.response);
+        //发送内部消息更新相关数据
+        messageService.updateInfoByMessage(message);
+    }
+
+    //为responseVO列表添加用户uid的关联信息（是否点过赞/点灭，投诉）
+    @Override
+    public void addListRelationToUid(List<ResponseVO> list, int uid){
+        for(ResponseVO responseVO : list){
+            addRelationToUid(responseVO, uid);
+        }
+    }
+
+    //为response对象添加用户uid的关联信息（是否点过赞/点灭，投诉）
+    public void addRelationToUid(ResponseVO responseVO, int uid){
+        //创建查询条件
+        ReportResponseExample example = new ReportResponseExample();
+        ReportResponseExample.Criteria criteria = example.createCriteria();
+        criteria.andReportorIdEqualTo(uid);
+        criteria.andResponseIdEqualTo(responseVO.getResponse().getId());
+
+        List<ReportResponse> reportResponseList = reportResponseDao.selectByExample(example);
+
+        if(reportResponseList.size() == 0){
+            //未投诉
+            responseVO.setDoesReported(false);
+        }else{
+            responseVO.setDoesReported(true);
+        }
+
+        //创建查询条件
+        LikesExample example1 = new LikesExample();
+        LikesExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andUserIdEqualTo(uid);
+        criteria1.andResponseIdEqualTo(responseVO.getResponse().getId());
+
+        List<Likes> likesList = likesDao.selectByExample(example1);
+
+        if(likesList.size() == 0){
+            //没点赞也没点灭
+            responseVO.setLike(0);
+        }else{
+            //有过点赞记录
+            responseVO.setLike(likesList.get(0).getFlag());
+        }
+
     }
 }

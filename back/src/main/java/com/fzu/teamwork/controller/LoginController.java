@@ -19,7 +19,7 @@ import java.util.*;
 
 @Slf4j
 @RestController
-public class LoginController {
+public class    LoginController {
 
     @Resource(name = "loginServiceImpl")
     LoginService loginService;

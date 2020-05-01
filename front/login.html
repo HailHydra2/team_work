@@ -142,6 +142,8 @@
 						}else if(data.code == 400){
 							//账号不存在
 							alert("账号不存在");
+						}else{
+							alert("服务器错误，请稍后再试");
 						}
 					}
 				});
@@ -151,7 +153,7 @@
 			function login(userVO){//根据用户信息跳转到相应页面
 				updateUser(userVO);
 				if(userVO.user.identity == "administrator"){//管理员用户
-					window.location.href = "管理员界面/index.html";
+					window.location.href = "adminInterface/index.html";
 				}else if(userVO.user.identity == "student" || user.identity == "teacher"){
 					window.location.href = "index.html";
 				}

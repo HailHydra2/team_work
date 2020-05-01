@@ -100,8 +100,11 @@ public class QuestionServiceImpl implements QuestionService{
 
     //更新问题数据
     @Override
-    public Question updateQuestion(QuestionVO question){
-        return null;
+    public Question updateQuestion(QuestionVO questionVO){
+        Question question = questionVO.getQuestion();
+        //更新问题数据（回复数等），因为没有更改标题内容功能因此暂时不做对这两部分的修改
+        questionDao.updateByPrimaryKey(question);
+        return question;
     }
 
     @Override

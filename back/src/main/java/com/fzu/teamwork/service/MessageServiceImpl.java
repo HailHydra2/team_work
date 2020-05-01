@@ -145,6 +145,7 @@ public class MessageServiceImpl implements MessageService{
         //将消息插入数据库保存
         if(message != null){
             //需要保存的消息
+            log.info("message{}",message);
             messageDao.insert(message);
         }
     }

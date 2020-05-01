@@ -72,8 +72,8 @@
                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                     <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Photo" />
                     <span class="user-info">
-                        <small>欢迎回来,</small>
-                        管理员
+                        <small>欢迎回来</small>
+                        <p id="userName"></p>
                     </span>
 
                     <i class="icon-caret-down"></i>
@@ -91,7 +91,7 @@
                     <li class="divider"></li>
 
                     <li>
-                        <a href="#">
+                        <a href="#" onclick="adminExit();">
                             <i class="icon-off"></i>
                             退出
                         </a>
@@ -261,12 +261,11 @@
                             <br/>
                             
                                 <div class="col-md-offset-3 col-md-9">
-                                    <input class="btn btn-info" value="新增临时模块" type="button" id="addBlock">           
+                                    <input value="新增临时模块" type="button" id="addBlock">           
         
                                     &nbsp; &nbsp; &nbsp;
-                                    <input class="btn" value="撤销临时模块" type="button" id="deleteBlock">
+                                    <input value="撤销临时模块" type="button" id="deleteBlock">
                                        
-                                 
                                 </div>
                          
                             <!-- PAGE CONTENT ENDS -->
@@ -370,6 +369,88 @@
 
     <!-- inline scripts related to this page -->
     
+    <script src="../js/util.js"></script>
+	<script>
+        //临时板块
+        var tempBlock;
+        //撤销临时板块按钮
+        var deleteBlockButton = document.getElementById("deleteBlock");
+        //新增临时板块按钮
+        var addBlockButton = document.getElementById("addBlock");
+        //临时板块名输入框
+        var blockNameTextBox = document.getElementById("blockName");
+        //临时板块关键字
+        var blockKeyWordTextBox = document.getElementById("keyWord");
+		//页面加载时启动页面
+		$(document).ready(function(e) {
+			if(userVO == null){
+				//登录过期
+				alert("登录过期，请重新登录");
+				window.location.href = "../login.html";
+			}
+			//显示用户姓名
+            document.getElementById("userName").innerHTML = userVO.user.name;
+            //获取临时板块
+            getBlockModel();
+
+        });
+        
+        function initBlock(){
+            if(tempBlock == null){
+                //没有临时板块
+                deleteBlockButton.className = "btn";
+                addBlockButton.className = "btn btn-info";
+                //设置添加、撤销按钮响应事件
+                addBlockButton.setAttribute("onclick","addBlock();");
+                deleteBlockButton.removeAttribute("onclick");
+            }else{
+                //有临时板块
+                //设置新增、撤销按钮样式
+                deleteBlockButton.className = "btn btn-info";
+                addBlockButton.className = "btn";
+                //设置文本框信息（展示当前临时板块信息）
+                blockNameTextBox.value = tempBlock.blockName;
+                blockKeyWordTextBox.value = tempBlock.keyWord;
+                //设置输入框为不可编辑状态
+                blockNameTextBox.setAttribute("readonly","readonly");
+                blockKeyWordTextBox.setAttribute("readonly","readonly");
+                //设置按钮触发事件
+                deleteBlockButton.setAttribute("onclick","deleteBlock();");
+                addBlockButton.removeAttribute("onclick")
+            }
+        }
+
+        function addBlock(){
+            var blockName = blockNameTextBox.value;
+            var keyWord = blockKeyWordTextBox.value;
+            var block = {
+                "blockName":blockName,
+                "keyWord":keyWord
+            };
+            $.ajax({
+                url: "http://localhost:8888/block",
+                type: "post", 
+                contentType: 'application/json;charset=utf-8',
+                data:JSON.stringify(block),
+                success: function (data) {
+                    alert("新增成功");
+                    location.reload();
+                }
+            });
+        }
+
+        function deleteBlock(){
+            $.ajax({
+                url: "http://localhost:8888/block",
+                type: "delete", 
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    alert("撤销成功");
+                    location.reload();
+                }
+            });
+        }
+	</script>
 </body>
 
 </html>

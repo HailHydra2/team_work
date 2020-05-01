@@ -74,7 +74,7 @@ public class QuestionController {
     //实现获取问题详细信息接口
     @SneakyThrows
     @GetMapping("/question/{id}/{uid}")
-    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable Integer uid){
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable(required = false) Integer uid){
         Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
         QuestionVO questionVO = questionService.convertToVO(question);
         //添加与用户uid之间的关系
@@ -82,13 +82,17 @@ public class QuestionController {
         return AjaxResponse.success(questionVO);
     }
 
-    @DeleteMapping("/question/{id}")
-    public @ResponseBody AjaxResponse deleteQuestion(@PathVariable String id){
-        return AjaxResponse.success();
+    //实现获取问题详细信息接口
+    @SneakyThrows
+    @GetMapping("/question/{id}")
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
+        Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
+        QuestionVO questionVO = questionService.convertToVO(question);
+        return AjaxResponse.success(questionVO);
     }
 
     //实现删除问题接口
-    @DeleteMapping("/testQuestion/{id}")
+    @DeleteMapping("/question/{id}")
     public @ResponseBody AjaxResponse testDeleteQuestion(@PathVariable String id){
         questionService.deleteQuestionById(id);
         return AjaxResponse.success();

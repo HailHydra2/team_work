@@ -24,9 +24,10 @@ public class BlockServiceImpl implements BlockService {
         blockDao.insert(block);
     }
 
+    //删除临时板块
     @Override
     public void deleteBlock(){
-        blockDao.deleteByPrimaryKey(1);
+        blockDao.deleteByExample(null);
     }
 
     //获取临时板块

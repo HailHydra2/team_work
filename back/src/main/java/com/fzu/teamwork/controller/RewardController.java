@@ -24,53 +24,11 @@ public class RewardController {
     @Resource(name = "rewardServiceImpl")
     RewardService rewardService;
 
-    //管理员界面获取奖励申请记录列表（静态数据）
-    @GetMapping("/rewards")
-    public @ResponseBody List<RewardVO> getRewards(){
-        List<RewardVO> rewardVOS = new ArrayList<>();
-        for(int i = 0; i < 20; i++){
-            RewardVO rewardVO = new RewardVO();
-            rewardVO.setReward(new Reward());
-            rewardVO.getReward().setUserId(i);
-            rewardVO.getReward().setApplyTime(new Date());
-            rewardVO.getReward().setId(1);
-            rewardVO.setAccount("22170" + i);
-            rewardVO.getReward().setRewardNum(10.0);
-            rewardVO.getReward().setType("SyntheticTest");
-            rewardVO.setName("user" + i);
-            rewardVOS.add(rewardVO);
-        }
-        return  rewardVOS;
-    }
-
     //管理员界面获取奖励申请记录列表(具体实现)
-    @GetMapping("/testRewards")
-    public @ResponseBody List<Reward> testGetRewards(){
+    @GetMapping("/rewards")
+    public @ResponseBody List<RewardVO> testGetRewards(){
         return rewardService.getRewardList();
     }
-
-
-    //奖励兑换页面申请兑换奖励（静态数据）
-//    @PostMapping("/reward")
-//    public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
-//        UserVO userVO = new UserVO();
-//        userVO.setUser(new User());
-//        userVO.getUser().setAccount("221701421");
-//        userVO.getUser().setIdCard("123");
-//        userVO.getUser().setId(reward.getUserId());
-//        userVO.getUser().setIdentity(UserIdentity.student);
-//        userVO.setAccountData(new AccountData());
-//        userVO.getAccountData().setId(10);
-//        userVO.getAccountData().setExperienceValue(100);
-//        userVO.getAccountData().setFocusNum(1);
-//        userVO.getAccountData().setLevel(10);
-//        userVO.getAccountData().setQuestionNum(10);
-//        userVO.getAccountData().setScore(100);
-//        userVO.getAccountData().setResponseNum(12);
-//        //rewardService.insertReward(reward);
-//        return AjaxResponse.success(userVO);
-//    }
-
 
     //奖励兑换页面申请兑换奖励（具体实现）
     @PostMapping("/reward")

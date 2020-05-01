@@ -26,8 +26,8 @@ public interface UserService {
     //delete all user
     public void deleteUsersAll(int id[]);
 
-    //add user
-    public void addUsers(User user);
+    //添加一个用户
+    public void addUser(User user);
 
     //更新用户信息(包括基本信息和账户信息)
     public User updateUser(UserVO userVO);

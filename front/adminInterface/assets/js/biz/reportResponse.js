@@ -64,7 +64,7 @@ jQuery(function ($) {
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://localhost:8888/questionReports",
+    url: "http://localhost:8888/responseReports",
     loadonce: true,
     mtype: "get",
     //	data: grid_data,

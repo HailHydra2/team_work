@@ -188,6 +188,26 @@ function getBlock(){
     });
 }
 
+//获取临时板块实体
+function getBlockModel(){
+    $.ajax({
+        url: "http://localhost:8888/block",
+        type: "get", 
+        contentType: 'application/json;charset=utf-8',
+        success: function (data) {
+            if(data.code == 200){
+                tempBlock = data.data;
+                //有临时板块
+            }else if(data.code == 201){
+                //没有临时板块
+                tempBlock = null;
+            }
+            //初始化界面
+            initBlock();
+        }
+    });
+}
+
 //更新问题列表
 function updateList(p){
     page = p;
@@ -225,6 +245,18 @@ function search(){
     var searchContent = document.getElementById("searchContent");
     var content = $.trim($("#searchContent").val());
     window.location.href="search.html?keyWord=" + content;
+}
+
+//后台页面注销登录
+function adminExit(){
+    localStorage.setExpire("userVO",null,0);
+    location.href = "../login.html";
+}
+
+//前台页面注销登录
+function exit(){
+    localStorage.setExpire("userVO",null,1);
+    location.href = "login.html";
 }
 
 var userVO;

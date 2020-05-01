@@ -234,7 +234,7 @@
 	//本页面的问题id
 	var id = getQueryVariable("id");
 	//回复列表url
-	var responsePath = "http://localhost:8888/responses/" + id;
+	var responsePath = "http://localhost:8888/responses/" + id + "/" + userVO.user.id;
 	//回复容器
     var responseDiv = document.getElementById("responseDiv");
     //存放回复列表的div
@@ -439,11 +439,16 @@
 			var likeButton = document.createElement("button");
 			likeButton.className = "btn btn-info btn-xs";
 			likeButton.id = "like" + i;
-			likeButton.innerHTML = "👍点赞";
+			if(list[i].like == 1){
+				//已赞
+				likeButton.innerHTML = "👍取消点赞";
+				likeButton.setAttribute("flag",1);	
+			}else{
+				//点灭或没都没有
+				likeButton.innerHTML = "👍点赞";
+				likeButton.setAttribute("flag",0);
+			}
 			buttonBox.appendChild(likeButton);
-			//*****************************************
-			//*************注意这里先设置为0，后端接口需要改变数据
-			likeButton.setAttribute("flag",0);
 			var responseId = list[i].response.id;
 			console.info("likeResponse("  + responseId + ", "+ i + ", 'like');");
 			likeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'like');")
@@ -455,11 +460,16 @@
 			var disLikeButton = document.createElement("button");
 			disLikeButton.id = "disLike" + i;
 			disLikeButton.className = "btn btn-info btn-xs";
-			disLikeButton.innerHTML = "👎点灭";
+			if(list[i].like == -1){
+				//有点灭记录
+				disLikeButton.innerHTML = "👎取消点灭";
+				disLikeButton.setAttribute("flag", 1);
+			}else{
+				//点赞或都没有
+				disLikeButton.innerHTML = "👎点灭";
+				disLikeButton.setAttribute("flag",0)
+			}
 			buttonBox.appendChild(disLikeButton);
-			//*****************************************
-			//*************注意这里先设置为0，后端接口需要改变数据
-			disLikeButton.setAttribute("flag",0)
 			disLikeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'disLike');")
 			// disLikeButton.onclick = function(){
 			// 	likeResponse(list[i].response.id, i, "disLike");
@@ -467,9 +477,16 @@
 			//创建投诉按钮
 			var reportButton = document.createElement("button");
 			reportButton.className = "btn btn-danger btn-xs";
-			reportButton.innerHTML = "⛔举报";
+			if(list[i].doesReported == true){
+				//投诉过
+				reportButton.innerHTML = "⛔取消举报";
+				reportButton.setAttribute("flag", 1);	
+			}else{
+				//没投诉过
+				reportButton.innerHTML = "⛔举报";
+				reportButton.setAttribute("flag",0);
+			}
 			reportButton.id = "reportResponse" + i;
-			reportButton.setAttribute("flag",0);
 			reportButton.setAttribute("onclick","reportResponse("  + responseId + ", "+ i + ");")
 			buttonBox.appendChild(reportButton);
 			//更新分页按钮
@@ -508,10 +525,8 @@
 				document.getElementById("cresponseContent").value = "";
 				//关闭评论输入框
 				$(closeButton).click();
-				//更新问题数据（回复数+1）
-				initQuestion();
-				//更新回复列表
-				updateList(responsePage);
+				//刷新页面
+				location.reload();
         	}
 		});
 	}
@@ -550,9 +565,7 @@
 			data:JSON.stringify(attention),
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-				userVO = data.data;
-				console.info("attention")
-				console.info(userVO)
+				updateUser(data.data)
         	}
 		});
 	}
@@ -640,7 +653,7 @@
 				disLikeButton.innerHTML = "👎点灭"
 				//设置已赞标志位
 				likeButton.setAttribute("flag", 1);
-				likeButton.innerHTML ="👍已赞"
+				likeButton.innerHTML ="👍取消点赞"
 			}else{//取消点赞
 				flag = 0;
 				//设置点赞标志位为0
@@ -656,7 +669,7 @@
 				likeButton.innerHTML = "👍点赞"
 				//设置点灭标志位
 				disLikeButton.setAttribute("flag",1);
-				disLikeButton.innerHTML = "👎已点灭"
+				disLikeButton.innerHTML = "👎取消点灭"
 			}else{
 				//取消点灭
 				flag = 0;

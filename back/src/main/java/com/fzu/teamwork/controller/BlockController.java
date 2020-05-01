@@ -17,29 +17,15 @@ public class BlockController {
     @Resource(name = "blockServiceImpl")
     BlockService blockService;
 
-    //static
+    //新增临时板块
     @PostMapping("/block")
-    public @ResponseBody
-    AjaxResponse addBlock(@RequestBody Block block){
-        return AjaxResponse.success();
-    }
-
-    //static
-    @DeleteMapping("/block")
-    public @ResponseBody
-    AjaxResponse deleteBlock(){
-        return AjaxResponse.success();
-    }
-
-    //add block
-    @PostMapping("/tblock")
     public @ResponseBody AjaxResponse addBlock_test(@RequestBody Block block){
         blockService.addBlock(block);
         return AjaxResponse.success();
     }
 
-    //delete block
-    @DeleteMapping("/tblock")
+    //删除临时板块
+    @DeleteMapping("/block")
     public @ResponseBody AjaxResponse deleteBlock_test(){
         blockService.deleteBlock();
         return AjaxResponse.success();
