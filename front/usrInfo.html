@@ -221,7 +221,7 @@
 
     //页面加载时启动页面
     $(document).ready(function(e) {
-        //首页按时间排序
+		//首页按时间排序
 		changeQuestionPage(page, path);
 		//获取当前登录用户
 		var userVO = localStorage.getExpire("userVO");
@@ -230,9 +230,6 @@
 		}else{
 			var b = document.getElementById("infoName");
 			b.innerHTML = userVO.user.name;
-			//console.info($(infoName).innerHTML);
-			//$(infoName).innerHTML = userVO.user.name;
-			console.info(userVO.user.name);
 			initInfo(userVO);
 		}
 	});

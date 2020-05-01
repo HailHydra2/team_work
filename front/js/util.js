@@ -212,6 +212,13 @@ function updateList(p){
     }
 }
 
+//将用户信息保存到缓存中(时间为30分钟)
+function updateUser(userVO){
+    localStorage.setExpire("userVO",userVO,1000*60*30);
+}
+
+
+
 //搜索框搜素函数
 function search(){
     //搜索框输入内容
@@ -223,4 +230,7 @@ function search(){
 var userVO;
 //获取当前登录用户
 userVO = localStorage.getExpire("userVO");
+if(userVO != null){
+    updateUser(userVO);
+}
 

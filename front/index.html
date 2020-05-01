@@ -158,7 +158,12 @@
 
     //页面加载时启动页面
     $(document).ready(function(e) {
-        //首页按时间排序
+		if(userVO == null){
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "login.html";
+		}
+		//首页按时间排序
 		changeQuestionPage(page, path);
 		//获取临时板块
 		getBlock();

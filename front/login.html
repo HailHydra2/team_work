@@ -149,9 +149,7 @@
 			});
 			
 			function login(userVO){//根据用户信息跳转到相应页面
-				//将用户信息保存到缓存中(时间为30分钟)
-				localStorage.setExpire("userVO",userVO,1000*60*30);
-				console.info("identity:" + userVO.user.identity);
+				updateUser(userVO);
 				if(userVO.user.identity == "administrator"){//管理员用户
 					window.location.href = "管理员界面/index.html";
 				}else if(userVO.user.identity == "student" || user.identity == "teacher"){
