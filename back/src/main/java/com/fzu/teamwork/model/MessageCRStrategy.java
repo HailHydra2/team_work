@@ -87,7 +87,7 @@ public class MessageCRStrategy extends MessageOperateStrategy{
         //消息对象是回复作者
         message.setObjectId(author.getUser().getId());
         //消息产生方式
-        message.setWay(MessageWay.createResponse);
+        message.setWay(MessageWay.CREATE_RESPONSE);
         //消息描述信息
         String description = "您在" + responseVO.getResponse().getCreateTime()
                 + "回复了问题\"" + questionVO.getTitle() + "\"";

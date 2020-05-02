@@ -167,7 +167,7 @@ public class ResponseServiceImpl implements ResponseService{
         //操作对象是被回复问题id
         message.setObject_id(response.getQuestionId());
         //消息触发事件是回复问题
-        message.setWay(MessageWay.response);
+        message.setWay(MessageWay.RESPONSE);
         //发送内部消息更新相关数据
         messageService.updateInfoByMessage(message);
     }

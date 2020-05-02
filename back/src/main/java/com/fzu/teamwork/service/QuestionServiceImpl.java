@@ -2,6 +2,7 @@ package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.*;
 import com.fzu.teamwork.model.*;
+import com.fzu.teamwork.util.MessageWay;
 import com.fzu.teamwork.util.QuestionSortApproach;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.QuestionVO;
@@ -48,6 +49,9 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Resource
     private ReportQuestionDao reportQuestionDao;
+
+    @Resource(name = "messageServiceImpl")
+    private MessageService messageService;
 
     //获取问题列表的策略类
     private QuestionStrategy questionStrategy;
@@ -107,6 +111,7 @@ public class QuestionServiceImpl implements QuestionService{
         return question;
     }
 
+    //创建问题
     @Override
     public UserVO addQuestion(QuestionVO questionVO){
         Content content = new Content();
@@ -130,6 +135,17 @@ public class QuestionServiceImpl implements QuestionService{
         int userID = question.getAuthorId();
         User user = userService.getUserById(userID);
         UserVO userVO = userService.convertToUserVo(user);
+
+        //创建内部传输消息
+        InternalMessage message = new InternalMessage();
+        //操作对象是作者
+        message.setOperator_id(userID);
+        //操作对象是创建的问题
+        message.setObject_id(question.getId());
+        //操作方式
+        message.setWay(MessageWay.CREATE_QUESTION);
+        //发送消息
+        messageService.updateInfoByMessage(message);
         return userVO;
     }
 

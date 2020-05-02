@@ -148,8 +148,7 @@ function postQuestion(){
         data:JSON.stringify(question),
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
-            console.info(data);
-            alert("创建成功");
+            updateUser(data.data)
         }
     });
     //将输入内容清空

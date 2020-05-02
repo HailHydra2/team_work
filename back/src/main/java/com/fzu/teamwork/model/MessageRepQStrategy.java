@@ -2,6 +2,7 @@ package com.fzu.teamwork.model;
 
 import com.fzu.teamwork.service.QuestionService;
 import com.fzu.teamwork.service.UserService;
+import com.fzu.teamwork.util.ScoreNum;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
 
@@ -14,6 +15,8 @@ public class MessageRepQStrategy extends MessageOperateStrategy{
     private UserVO author;
     //被投诉的问题
     private QuestionVO questionVO;
+    //内部传递消息
+    private InternalMessage internalMessage;
 
     private UserService userService;
     private QuestionService questionService;
@@ -22,6 +25,7 @@ public class MessageRepQStrategy extends MessageOperateStrategy{
     public MessageRepQStrategy(InternalMessage message, UserService userService, QuestionService questionService){
         this.userService = userService;
         this.questionService = questionService;
+        internalMessage = message;
 
         //获取投诉者实体
         User user = userService.getUserById(message.getOperator_id());
@@ -47,8 +51,8 @@ public class MessageRepQStrategy extends MessageOperateStrategy{
     //更新被投诉问题数据（被投诉数）
     public void updateQuestion(){
         Question question = questionVO.getQuestion();
-        //问题被投诉数+1
-        question.setReportNum(question.getReportNum() + 1);
+        //问题被投诉数+1/-1
+        question.setReportNum(question.getReportNum() + internalMessage.getFlag());
         questionVO.setQuestion(question);
         //更新数据库信息
         questionService.updateQuestion(questionVO);
@@ -57,9 +61,15 @@ public class MessageRepQStrategy extends MessageOperateStrategy{
     //更新被投诉问题作者信息（扣除积分）
     public void updateAuthor(){
         AccountData accountData = author.getAccountData();
-        //积分-2
         int score = accountData.getScore();
-        score-=2;
+        if(internalMessage.getFlag() == 1){
+            //扣除积分
+            score -= ScoreNum.REPORT_QUESTION_SCORE;
+        }else{
+            //取消投诉
+            //恢复积分
+            score += ScoreNum.REPORT_QUESTION_SCORE;
+        }
         accountData.setScore(score);
         //更新账户信息
         author.setAccountData(accountData);

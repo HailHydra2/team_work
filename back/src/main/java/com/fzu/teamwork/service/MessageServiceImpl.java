@@ -105,34 +105,34 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public void updateInfoByMessage(InternalMessage internalMessage){
         //判断消息类型，创建需要的策略对象
-        if(internalMessage.getWay().equals(MessageWay.response)){
+        if(internalMessage.getWay().equals(MessageWay.RESPONSE)){
             //回复问题消息
             createMessageOperateStrategy(1, internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.attention)){
+        }else if(internalMessage.getWay().equals(MessageWay.ATTENTION)){
             //关注问题消息
             createMessageOperateStrategy(2, internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.reportResponse)){
+        }else if(internalMessage.getWay().equals(MessageWay.REPORT_RESPONSE)){
             //投诉某个问题
             createMessageOperateStrategy(3,internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.dislikeResponse)){
+        }else if(internalMessage.getWay().equals(MessageWay.DISLIKE_RESPONSE)){
             //点灭某条回复
             createMessageOperateStrategy(4,internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.likeResponse)){
+        }else if(internalMessage.getWay().equals(MessageWay.LIKE_RESPONSE)){
             //点赞某条回复
             createMessageOperateStrategy(5,internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.reportQuestion)){
+        }else if(internalMessage.getWay().equals(MessageWay.REPORT_QUESTION)){
             //投诉某个问题
             createMessageOperateStrategy(6,internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.deleteResponse)){
+        }else if(internalMessage.getWay().equals(MessageWay.DELETE_RESPONSE)){
             //删除某条回复
             createMessageOperateStrategy(7,internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.deleteQuestion)){
+        }else if(internalMessage.getWay().equals(MessageWay.DELETE_QUESTION)){
             //删除某个问题
             createMessageOperateStrategy(8,internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.createQuestion)){
+        }else if(internalMessage.getWay().equals(MessageWay.CREATE_QUESTION)){
             //创建问题
             createMessageOperateStrategy(9, internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.createResponse)){
+        }else if(internalMessage.getWay().equals(MessageWay.CREATE_RESPONSE)){
             //创建回复
             createMessageOperateStrategy(10,internalMessage);
         }else{

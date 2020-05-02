@@ -106,7 +106,7 @@ public class MessageResQStrategy extends MessageOperateStrategy{
         //设置消息的描述信息
         message.setDescription(description);
         //设置消息的产生方式为回复
-        message.setWay(MessageWay.response);
+        message.setWay(MessageWay.RESPONSE);
 
         return message;
     }

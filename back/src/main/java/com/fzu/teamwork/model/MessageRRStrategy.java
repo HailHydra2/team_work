@@ -3,8 +3,11 @@ package com.fzu.teamwork.model;
 
 import com.fzu.teamwork.service.ResponseService;
 import com.fzu.teamwork.service.UserService;
+import com.fzu.teamwork.util.ScoreNum;
 import com.fzu.teamwork.view.ResponseVO;
 import com.fzu.teamwork.view.UserVO;
+
+import javax.annotation.Resource;
 
 //MessageService对投诉某个回复消息进行处理的策略类（RR:Report Response）
 public class MessageRRStrategy extends MessageOperateStrategy{
@@ -24,6 +27,9 @@ public class MessageRRStrategy extends MessageOperateStrategy{
 
     //构造函数
     public MessageRRStrategy(InternalMessage message, UserService userService, ResponseService responseService){
+        this.message = message;
+        this.userService = userService;
+        this.responseService = responseService;
         //获取投诉人实体对象
         User user = userService.getUserById(message.getOperator_id());
         complainant = userService.convertToUserVo(user);
@@ -50,7 +56,13 @@ public class MessageRRStrategy extends MessageOperateStrategy{
         AccountData accountData = author.getAccountData();
         //扣除用户积分
         int score = accountData.getScore();
-        score--;
+        if(message.getFlag() == 1){
+            //问题被举报
+            score -= ScoreNum.REPORT_RESPONSE_SCORE;//扣除相应积分
+        }else{
+            //取消举报
+            score += ScoreNum.REPORT_RESPONSE_SCORE;//恢复积分
+        }
         accountData.setScore(score);
         //更新用户信息
         author.setAccountData(accountData);
@@ -61,7 +73,7 @@ public class MessageRRStrategy extends MessageOperateStrategy{
     public void updateResponse(){
         //被举报数+1
         Response r = response.getResponse();
-        r.setReportNum(r.getReportNum()+1);
+        r.setReportNum(r.getReportNum()+message.getFlag());
         response.setResponse(r);
         //更新数据库信息
         responseService.updateResponse(response);

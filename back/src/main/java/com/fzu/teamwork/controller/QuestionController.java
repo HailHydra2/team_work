@@ -36,7 +36,7 @@ public class QuestionController {
     @Resource
     private TitleDao titleDao;
 
-    //新增获取问题列表接口
+    //获取问题列表接口
     @PostMapping("/questions")
     public @ResponseBody AjaxResponse testGetQuestionPage(@RequestBody QuestionPage questionPage){
         log.info("enter{}",questionPage);
@@ -44,7 +44,7 @@ public class QuestionController {
         return AjaxResponse.success(page);
     }
 
-    //实现新增问题接口
+    //新增问题接口
     @PostMapping("/question")
     public  @ResponseBody AjaxResponse testAddQuestion(@RequestBody QuestionVO questionVO){
         return AjaxResponse.success(questionService.addQuestion(questionVO));

@@ -15,4 +15,6 @@ public class InternalMessage {
     private String way;
     // 变化标志
     private int flag;
+    //标志位2
+    private int flag2;
 }

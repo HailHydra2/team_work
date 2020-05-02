@@ -67,7 +67,7 @@ public class AttentionServiceImpl implements AttentionService{
             message.setFlag(-1);
         }
         //消息产生方式是关注问题
-        message.setWay(MessageWay.attention);
+        message.setWay(MessageWay.ATTENTION);
         //发送消息对用户数据进行更新（关注数）
         messageService.updateInfoByMessage(message);
         User user = userDao.selectByPrimaryKey(record.getUserId());
