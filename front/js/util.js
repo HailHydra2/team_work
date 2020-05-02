@@ -148,8 +148,7 @@ function postQuestion(){
         data:JSON.stringify(question),
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
-            console.info(data);
-            alert("创建成功");
+            updateUser(data.data)
         }
     });
     //将输入内容清空
@@ -184,6 +183,26 @@ function getBlock(){
                 //隐藏临时板块按钮
                 tempBlock.setAttribute("style","display:none");
             }
+        }
+    });
+}
+
+//获取临时板块实体
+function getBlockModel(){
+    $.ajax({
+        url: "http://localhost:8888/block",
+        type: "get", 
+        contentType: 'application/json;charset=utf-8',
+        success: function (data) {
+            if(data.code == 200){
+                tempBlock = data.data;
+                //有临时板块
+            }else if(data.code == 201){
+                //没有临时板块
+                tempBlock = null;
+            }
+            //初始化界面
+            initBlock();
         }
     });
 }
@@ -225,6 +244,18 @@ function search(){
     var searchContent = document.getElementById("searchContent");
     var content = $.trim($("#searchContent").val());
     window.location.href="search.html?keyWord=" + content;
+}
+
+//后台页面注销登录
+function adminExit(){
+    localStorage.setExpire("userVO",null,0);
+    location.href = "../login.html";
+}
+
+//前台页面注销登录
+function exit(){
+    localStorage.setExpire("userVO",null,1);
+    location.href = "login.html";
 }
 
 var userVO;

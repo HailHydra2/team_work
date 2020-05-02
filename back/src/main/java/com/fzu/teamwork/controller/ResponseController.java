@@ -66,6 +66,16 @@ public class ResponseController {
         return AjaxResponse.success(page);
     }
 
+    //获取问题的回复列表，id是所属问题id,uid是当前用户id（具体实现接口）
+    @PostMapping("/responses/{id}/{uid}")
+    public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @PathVariable int uid, @RequestBody ResponsePage page){
+        //获取需要的分页
+        responseService.getResponsePageByQuestionId(id,page);
+        //将page中的responseVO列表与用户uid关联（是否点过赞/点灭，投诉过）
+        responseService.addListRelationToUid(page.getResponses(),uid);
+        return AjaxResponse.success(page);
+    }
+
     //删除编号为id的回复（静态接口）
     @DeleteMapping("/response/{id}")
     public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){
@@ -83,13 +93,7 @@ public class ResponseController {
             return AjaxResponse.error(400,"数据库删除失败");
         }
     }
-/*
-    //测试举报回复列表获取（实现接口）
-    @GetMapping("/testResponseReports")
-    public List<Response> getResponseReported(){
-        return responseService.getResponsePageBeReported();
-    }
-*/
+
     //获取编号为id的回复（实现接口）
     @PostMapping("/testResponse/{id}")
     public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){
@@ -109,9 +113,9 @@ public class ResponseController {
         return AjaxResponse.success("成功删除记录" + delNum + "条");
     }
 
+    //回复问题
     @PostMapping("/response")
     public @ResponseBody AjaxResponse addResponse(@RequestBody ResponseVO responseVO){
-        //log.info("responseVO{}", responseVO);
         responseService.insertResponse(responseVO);
         User user = userService.getUserById(responseVO.getResponse().getAuthorId());
         UserVO userVO = userService.convertToUserVo(user);

@@ -1,6 +1,7 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.model.Reward;
+import com.fzu.teamwork.view.RewardVO;
 import com.fzu.teamwork.view.UserVO;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface RewardService {
     public UserVO insertReward(Reward reward);
 
     //获取奖励申请列表
-    public List<Reward> getRewardList();
+    public List<RewardVO> getRewardList();
 
 
 }

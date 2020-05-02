@@ -11,10 +11,15 @@ public class MessageAQStrategy extends MessageOperateStrategy{
     //关注的用户
     private UserVO user;
 
+    //关注数变化值（1：关注+1， -1：关注-1）
+    private int changeNum;
+
     public MessageAQStrategy(InternalMessage message, UserService userService){
         this.userService = userService;
         //根据消息中关注者的id获得用户对象
         User u = userService.getUserById(message.getOperator_id());
+        //用消息的flag代表关注或取消关注(1或-1)
+        changeNum = message.getFlag();
         user = userService.convertToUserVo(u);
 
 
@@ -34,7 +39,7 @@ public class MessageAQStrategy extends MessageOperateStrategy{
         //获取用户原来的关注数
         int focusNum = user.getAccountData().getFocusNum();
         //更新关注数
-        focusNum++;
+        focusNum += changeNum;
         user.getAccountData().setFocusNum(focusNum);
         //更新用户在数据库中的信息
         userService.updateUser(user);

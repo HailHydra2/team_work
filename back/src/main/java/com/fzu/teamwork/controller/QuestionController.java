@@ -36,7 +36,7 @@ public class QuestionController {
     @Resource
     private TitleDao titleDao;
 
-    //新增获取问题列表接口
+    //获取问题列表接口
     @PostMapping("/questions")
     public @ResponseBody AjaxResponse testGetQuestionPage(@RequestBody QuestionPage questionPage){
         log.info("enter{}",questionPage);
@@ -44,37 +44,37 @@ public class QuestionController {
         return AjaxResponse.success(page);
     }
 
-    //实现新增问题接口
+    //新增问题接口
     @PostMapping("/question")
     public  @ResponseBody AjaxResponse testAddQuestion(@RequestBody QuestionVO questionVO){
         return AjaxResponse.success(questionService.addQuestion(questionVO));
     }
 
-    //实现获取用户问题列表接口
+    //获取用户问题列表接口
     @PostMapping("/userQuestions/{uid}")
     public @ResponseBody AjaxResponse testGetUserQuestionPage(@PathVariable Integer uid,  @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getQuestionPage(uid,questionPage);
         return AjaxResponse.success(page);
     }
 
-    //实现获取关注问题列表接口
+    //关注问题列表接口
     @PostMapping("/userAttentions/{uid}")
     public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getAttentionQuestionPage(uid, questionPage);
         return AjaxResponse.success(page);
     }
 
-    //实现获取用户回答过的问题列表接口
+    //用户回答过的问题列表接口
     @PostMapping("/userResponseQuestions/{uid}")
     public @ResponseBody AjaxResponse TestGetUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getResponseQuestion(uid,questionPage);
         return AjaxResponse.success(page);
     }
 
-    //实现获取问题详细信息接口
+    //问题详细信息接口
     @SneakyThrows
     @GetMapping("/question/{id}/{uid}")
-    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable Integer uid){
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable(required = false) Integer uid){
         Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
         QuestionVO questionVO = questionService.convertToVO(question);
         //添加与用户uid之间的关系
@@ -82,13 +82,17 @@ public class QuestionController {
         return AjaxResponse.success(questionVO);
     }
 
-    @DeleteMapping("/question/{id}")
-    public @ResponseBody AjaxResponse deleteQuestion(@PathVariable String id){
-        return AjaxResponse.success();
+    //问题详细信息接口
+    @SneakyThrows
+    @GetMapping("/question/{id}")
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
+        Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
+        QuestionVO questionVO = questionService.convertToVO(question);
+        return AjaxResponse.success(questionVO);
     }
 
-    //实现删除问题接口
-    @DeleteMapping("/testQuestion/{id}")
+    //删除问题接口
+    @DeleteMapping("/question/{id}")
     public @ResponseBody AjaxResponse testDeleteQuestion(@PathVariable String id){
         questionService.deleteQuestionById(id);
         return AjaxResponse.success();

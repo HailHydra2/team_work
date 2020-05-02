@@ -33,4 +33,7 @@ public interface ResponseService {
 
     //向数据库中插入一条回复记录
     public void insertResponse(ResponseVO responseVO);
+
+    //为responseVO列表添加用户uid的关联信息（是否点过赞/点灭，投诉）
+    public void addListRelationToUid(List<ResponseVO> list, int uid);
 }

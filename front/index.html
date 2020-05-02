@@ -89,10 +89,13 @@
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							 <a href="message.html">🔔</a>
+							 <a href="myMessage.html">🔔</a>
 						</li>
 						<li>
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
 				</div>
@@ -147,7 +150,7 @@
     //当前页面显示的数据(传递给后端的数据)
     var page = {
             "pageIndex":1,
-            "count":2,
+            "count":10,
             "keyWord":"",
             sortApproach:"sortByHeat",
         };

@@ -5,6 +5,7 @@ import com.fzu.teamwork.dao.ReportQuestionDao;
 import com.fzu.teamwork.dao.ReportResponseDao;
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.*;
+import com.fzu.teamwork.util.MessageWay;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
 
@@ -28,26 +29,35 @@ public class ReportServiceImpl implements ReportService{
     @Resource
     private ReportResponseDao reportResponseDao;
 
+    @Resource(name = "messageServiceImpl")
+    private MessageService messageService;
+
+
     @Override
     public List<Question> getReportQuestion(){
-        List<Question> questionList = new ArrayList<>();
-        List<Integer> questionIdList = reportQuestionDao.selectAllQuestion();
-        for (int id:questionIdList){
-            questionList.add(questionDao.selectByPrimaryKey(id));
-        }
+        //创建查询条件
+        QuestionExample example = new QuestionExample();
+        QuestionExample.Criteria criteria = example.createCriteria();
+        criteria.andReportNumGreaterThanOrEqualTo(0);
+        example.setOrderByClause("report_num desc");
+        //返回的问题列表
+        List<Question> questionList;
+        questionList =questionDao.selectByExample(example);
         return questionList;
     }
 
     @Override
     public List<Response> getReportResponse(){
-        List<Response> responseList = new ArrayList<>();
-        List<Integer> responseIdList = reportResponseDao.selectAllResponse();
-        for(int id:responseIdList){
-            responseList.add(responseDao.selectByPrimaryKey(id));
-        }
+        //创建查询条件
+        ResponseExample example = new ResponseExample();
+        ResponseExample.Criteria criteria = example.createCriteria();
+        criteria.andReportNumGreaterThanOrEqualTo(0);
+        example.setOrderByClause("report_num desc");
+        List<Response> responseList = responseDao.selectByExample(example);
         return responseList;
     }
 
+    //添加对问题的投诉记录
     @Override
     public void addQuestionReport(ReportQuestion reportQuestion){
         //创建查询条件（投诉人id，被投诉问题id相同的记录）
@@ -60,16 +70,37 @@ public class ReportServiceImpl implements ReportService{
         if(list.size() == 1){
             //有投诉记录
             reportQuestion.setId(list.get(0).getId());
+            //更新举报信息更新举报记录
             reportQuestionDao.updateByPrimaryKey(reportQuestion);
         }else if(list.size() == 0){
-            //没有投诉记录
+            //没有投诉记录，插入举报记录
             reportQuestionDao.insert(reportQuestion);
         }else{
             //有超过一条一样的记录
             log.info("错误，数据库中包含多于一条同一个用户对同一个问题的投诉");
         }
+
+        //创建内部发送消息
+        InternalMessage message = new InternalMessage();
+        //操作者为举报人id
+        message.setOperator_id(reportQuestion.getReportorId());
+        //操作对象id是问题id
+        message.setObject_id(reportQuestion.getQuestionId());
+        //
+        if(reportQuestion.getFlag() == 1){
+            //举报,消息标志位设置为1
+            message.setFlag(1);
+        }else if(reportQuestion.getFlag() == 0){
+            //取消举报，标志位设置为-1
+            message.setFlag(-1);
+        }
+        //消息产生方式设为投诉问题
+        message.setWay(MessageWay.REPORT_QUESTION);
+        //发送消息
+        messageService.updateInfoByMessage(message);
     }
 
+    //添加对回复的投诉
     @Override
     public void addResponseReport(ReportResponse reportResponse){
         //创建查询条件
@@ -91,5 +122,25 @@ public class ReportServiceImpl implements ReportService{
             //存在超过一条同一用户对同一回复的投诉
             log.info("错误，存在超过一条同一用户对同一回复的投诉");
         }
+
+        //创建内部传递消息
+        InternalMessage message = new InternalMessage();
+        //操作者为投诉人id
+        message.setOperator_id(reportResponse.getReportorId());
+        //操作对象是被投诉回复
+        message.setObject_id(reportResponse.getResponseId());
+        //操作方式:投诉问题
+        message.setWay(MessageWay.REPORT_RESPONSE);
+        if(reportResponse.getFlag() == 1){
+            //创建投诉
+            message.setFlag(1);
+        }else if(reportResponse.getFlag() == 0){
+            //取消投诉
+            message.setFlag(-1);
+        }else{
+             System.out.println("投诉消息flag错误");
+        }
+        //发送消息
+        messageService.updateInfoByMessage(message);
     }
 }

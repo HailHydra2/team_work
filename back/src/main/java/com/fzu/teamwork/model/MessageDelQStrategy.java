@@ -56,7 +56,7 @@ public class MessageDelQStrategy extends MessageOperateStrategy{
         //被删除问题作者是消息对象
         message.setObjectId(author.getUser().getId());
         //设置消息产生方式
-        message.setWay(MessageWay.deleteQuestion);
+        message.setWay(MessageWay.DELETE_QUESTION);
         //消息描述信息
         String description = "您的问题\"" + questionVO.getTitle() + "\"已被管理员删除";
         message.setDescription(description);

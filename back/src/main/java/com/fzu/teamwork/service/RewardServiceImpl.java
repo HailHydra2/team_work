@@ -1,15 +1,18 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.RewardDao;
+import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.Reward;
 import com.fzu.teamwork.model.RewardExample;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.util.RewardType;
+import com.fzu.teamwork.view.RewardVO;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +23,10 @@ public class RewardServiceImpl implements RewardService{
     private UserService userServiceImpl;
 
     @Resource
-    RewardDao rewardDao;
+    private RewardDao rewardDao;
+
+    @Resource
+    private UserDao userDao;
 
     //用户账号信息
     private UserVO userVO;
@@ -79,11 +85,28 @@ public class RewardServiceImpl implements RewardService{
 
     //获取奖励申请列表
     @Override
-    public List<Reward> getRewardList(){
+    public List<RewardVO> getRewardList(){
         RewardExample example = new RewardExample();
         example.setOrderByClause("`APPLY_TIME` DESC");
         List<Reward> rewardsList = rewardDao.selectByExample(example);
-        return rewardsList;
+        return convertListToVO(rewardsList);
+    }
+
+    public RewardVO convertToVO(Reward reward){
+        RewardVO rewardVO = new RewardVO();
+        rewardVO.setReward(reward);
+        User user = userDao.selectByPrimaryKey(reward.getUserId());
+        rewardVO.setName(user.getName());
+        rewardVO.setAccount(user.getAccount());
+        return rewardVO;
+    }
+
+    public List<RewardVO> convertListToVO(List<Reward> list){
+        List<RewardVO> rewardVOList = new ArrayList<>();
+        for (Reward reward : list){
+            rewardVOList.add(convertToVO(reward));
+        }
+        return rewardVOList;
     }
 
 }

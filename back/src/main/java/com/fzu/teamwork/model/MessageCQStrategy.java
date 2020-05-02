@@ -63,7 +63,7 @@ public class MessageCQStrategy extends MessageOperateStrategy{
         //消息对象为问题作者
         message.setObjectId(author.getUser().getId());
         //消息产生方式(创建问题)
-        message.setWay(MessageWay.createQuestion);
+        message.setWay(MessageWay.CREATE_QUESTION);
         //消息描述信息
         String description = "您在" + questionVO.getQuestion().getCreateTime() + "创建了\""
                 + questionVO.getTitle() +"\"问题";

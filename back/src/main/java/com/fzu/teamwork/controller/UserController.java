@@ -22,40 +22,9 @@ public class UserController {
     @Resource(name = "userServiceImpl")
     UserServiceImpl userService;
 
-    //static get
-    @GetMapping("/users")
-    public ArrayList<User> getUser(){
-        ArrayList<User> userArrayList=new ArrayList<>();
-        User u1=new User();
-        u1.setAccount("221701316");
-        u1.setName("lch");
-        u1.setId(1);
-        u1.setPassword("123456");
-        u1.setIdCard("123");
-        u1.setIdentity("student");
-        u1.setPhoneNum("123456");
-        User u2=new User();
-        u2.setAccount("221701319");
-        u2.setName("lll");
-        u2.setId(2);
-        u2.setPassword("123456");
-        u2.setIdCard("123");
-        u2.setIdentity("student");
-        u2.setPhoneNum("123456");
-        userArrayList.add(u1);
-        userArrayList.add(u2);
-        return userArrayList;
-    }
-
     //static delete
     @DeleteMapping("/users/{id}")
     public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
-        return AjaxResponse.success();
-    }
-
-    //static add
-    @PostMapping("/users")
-    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
         return AjaxResponse.success();
     }
 
@@ -66,7 +35,7 @@ public class UserController {
     }
 
     //获取所有用户
-    @GetMapping("/tusers")
+    @GetMapping("/users")
     public ArrayList<User> getUser_test()
     {
         return userService.getUsers();
@@ -87,9 +56,9 @@ public class UserController {
     }
 
     //添加用户
-    @PostMapping("/tusers")
+    @PostMapping("/users")
     public @ResponseBody AjaxResponse addUser_test(@RequestBody User user){
-        userService.addUsers(user);
+        userService.addUser(user);
         return AjaxResponse.success();
     }
 

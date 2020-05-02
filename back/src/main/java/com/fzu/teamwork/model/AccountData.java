@@ -9,17 +9,17 @@ import java.io.Serializable;
 public class AccountData implements Serializable {
     private Integer id;
 
-    private Integer level;
+    private Integer level = 0;
 
-    private Integer experienceValue;
+    private Integer experienceValue = 0;
 
-    private Integer score;
+    private Integer score = 0;
 
-    private Integer focusNum;
+    private Integer focusNum = 0;
 
-    private Integer questionNum;
+    private Integer questionNum = 0;
 
-    private Integer responseNum;
+    private Integer responseNum = 0;
 
     private static final long serialVersionUID = 1L;
 

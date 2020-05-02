@@ -66,7 +66,7 @@ public class MessageDelRStrategy extends MessageOperateStrategy {
         //被删除回复作者是消息对象
         message.setObjectId(author.getUser().getId());
         //消息产生方式
-        message.setWay(MessageWay.deleteResponse);
+        message.setWay(MessageWay.DELETE_RESPONSE);
         //消息描述信息
         String description = "您关于\"" + questionVO.getTitle() + "\"的回复被管理员删除";
         message.setDescription(description);
