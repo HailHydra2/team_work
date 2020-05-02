@@ -1,6 +1,7 @@
 var HOST = 'http://localhost:8888';
 //var HOST = '';
 
+var delId = 1;
 
 var Service = {
   /* 删除记录 */
@@ -91,10 +92,11 @@ jQuery(function ($) {
           beforeShowForm: beforeDeleteCallback,
           reloadAfterSubmit: true,
           delData: {
-            delId: function () {
+            afterSubmit: function () {
               var sel_id = $(grid_selector).jqGrid('getGridParam', 'selrow');
               var value = $(grid_selector).jqGrid('getCell', sel_id, 'id');
               // console.log( $(this));
+              delId = value;
               Service.delete(value).then(function (data) {
                 //alert(value);
                 console.log(data);
@@ -165,10 +167,11 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: $path_base + "/dummy.html", //nothing is saved
+     editurl: "http://localhost:8888/test", //nothing is saved
     caption: "举报回答操作",
     autowidth: true
   });
+
 
   //enable search/filter toolbar
   //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
@@ -274,7 +277,7 @@ jQuery(function ($) {
             console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
           });
-          return value;
+          // return value;
         }
       },
       recreateForm: true,

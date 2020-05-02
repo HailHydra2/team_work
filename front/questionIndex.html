@@ -425,7 +425,7 @@
 			responseBlock.appendChild(responseBox);
             //创建存放回复人姓名的<strong>标签
             var responser = document.createElement("strong");
-			responser.innerHTML = "用户"+ i
+			responser.innerHTML = list[i].authorName;
 			responseBox.appendChild(responser);
             //创建存放回复内容的p标签
             var content = document.createElement("p");

@@ -86,8 +86,9 @@ public class QuestionController {
     //问题详细信息接口
     @SneakyThrows
     @GetMapping("/question/{id}")
-    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
-        Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
+    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable Integer id){
+        System.out.println("id" + id);
+        Question question = questionDao.selectByPrimaryKey(id);
         QuestionVO questionVO = questionService.convertToVO(question);
         return AjaxResponse.success(questionVO);
     }
