@@ -48,16 +48,6 @@ public class ResponseController {
 //        return AjaxResponse.success(page);
 //    }
 
-    //获取编号为id的回复信息(静态数据)
-    @GetMapping("/response/{id}")
-    public @ResponseBody AjaxResponse getResponse(@PathVariable int id){
-        ResponseVO responseVO = new ResponseVO();
-        responseVO.setResponse(new Response());
-        responseVO.getResponse().setId(id);
-        responseVO.setContent("response1");
-        responseVO.getResponse().setQuestionId(1);
-        return AjaxResponse.success(responseVO);
-    }
 
     //获取问题的回复列表，id是所属问题id（具体实现接口）
     @PostMapping("/responses/{id}")
@@ -76,15 +66,9 @@ public class ResponseController {
         return AjaxResponse.success(page);
     }
 
-    //删除编号为id的回复（静态接口）
-    @DeleteMapping("/response/{id}")
-    public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){
-        System.out.println("删除" + id + "号response");
-        return AjaxResponse.success();
-    }
 
     //根据回复id删除回复记录（实现接口）
-    @DeleteMapping("/testResponse/{id}")
+    @DeleteMapping("/response/{id}")
     public @ResponseBody AjaxResponse testDeleteResponse(@PathVariable int id){
         if(responseService.deleteResponseById(id) > 0){
             //删除成功
@@ -95,7 +79,7 @@ public class ResponseController {
     }
 
     //获取编号为id的回复（实现接口）
-    @PostMapping("/testResponse/{id}")
+    @GetMapping("/response/{id}")
     public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){
         Response response = responseService.getResponseById(id);
         ResponseVO responseVO = responseService.convertToVO(response);
@@ -115,10 +99,14 @@ public class ResponseController {
 
     //回复问题
     @PostMapping("/response")
-    public @ResponseBody AjaxResponse addResponse(@RequestBody ResponseVO responseVO){
+    public @ResponseBody AjaxResponse addResponse(@RequestBody ResponseVO responseVO) {
         responseService.insertResponse(responseVO);
         User user = userService.getUserById(responseVO.getResponse().getAuthorId());
         UserVO userVO = userService.convertToUserVo(user);
         return AjaxResponse.success(userVO);
+    }
+    @PostMapping("/test")
+    public void test(){
+//        log.info("o:{}", 0);
     }
 }

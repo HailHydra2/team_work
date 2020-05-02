@@ -8,24 +8,24 @@ jQuery(function ($) {
     url: "http://localhost:8888/rewards",
     loadonce: true,
     mtype: "get",
-    	//data: grid_data,
+    //data: grid_data,
     datatype: "json",
     //    mtype:"POST",
     //datatype:"local",
     height: 250,
-    colNames: ['编号', '用户学号', '姓名', '申请时间','申请类别','申请数量'],
+    colNames: ['编号', '用户学号', '姓名', '申请时间', '申请类别', '申请数量'],
     colModel: [
       {
         name: 'reward.id',
         index: 'reward.id',
         width: 100,
-      //  sorttype: "int",
+        //  sorttype: "int",
         editable: true
       },
       {
         name: 'account',
         index: 'account',
-      //  sorttype: "int",
+        //  sorttype: "int",
         width: 100,
         editable: true,
       },
@@ -33,7 +33,7 @@ jQuery(function ($) {
         name: 'name',
         index: 'name',
         width: 100,
-      //  sorttype: "int",
+        //  sorttype: "int",
         editable: true
       },
       {
@@ -45,7 +45,7 @@ jQuery(function ($) {
         name: 'reward.type',
         index: 'reward.type',
         width: 100,
-      //  sorttype: "int",
+        //  sorttype: "int",
         editable: true
       },
       {
@@ -54,24 +54,24 @@ jQuery(function ($) {
         width: 100,
         sorttype: "int",
         editable: true
-      }   
+      }
     ],
-      
-      width: 80,
-      fixed: true,
-      sortname : 'id',
+
+    width: 80,
+    fixed: true,
+    sortname: 'id',
     viewrecords: true,
     rowNum: 10,
     rowList: [10, 20, 30],
     pager: pager_selector,
     altRows: true,
-   multiselect: true,
- 
+    multiselect: true,
 
-  loadComplete: function () {
+
+    loadComplete: function () {
       var table = this;
-     
-     setTimeout(function () {
+
+      setTimeout(function () {
         updateActionIcons(table);
         updatePagerIcons(table);
         enableTooltips(table);
@@ -349,18 +349,18 @@ jQuery(function ($) {
 
   Date.prototype.Format = function (fmt) {
     var o = {
-        "M+": this.getMonth() + 1, //月份 
-        "d+": this.getDate(), //日 
-        "h+": this.getHours(), //小时 
-        "m+": this.getMinutes(), //分 
-        "s+": this.getSeconds(), //秒 
-        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-        "S": this.getMilliseconds() //毫秒 
+      "M+": this.getMonth() + 1, //月份 
+      "d+": this.getDate(), //日 
+      "h+": this.getHours(), //小时 
+      "m+": this.getMinutes(), //分 
+      "s+": this.getSeconds(), //秒 
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+      "S": this.getMilliseconds() //毫秒 
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
     for (var k in o)
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
-}
+  }
   //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 });

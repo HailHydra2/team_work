@@ -1,9 +1,6 @@
 package com.fzu.teamwork.service;
 
-import com.fzu.teamwork.dao.ContentDao;
-import com.fzu.teamwork.dao.LikesDao;
-import com.fzu.teamwork.dao.ReportResponseDao;
-import com.fzu.teamwork.dao.ResponseDao;
+import com.fzu.teamwork.dao.*;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.MessageWay;
 import com.fzu.teamwork.view.QuestionPage;
@@ -31,6 +28,9 @@ public class ResponseServiceImpl implements ResponseService{
 
     @Resource
     private LikesDao likesDao;
+
+    @Resource
+    private UserDao userDao;
 
     @Resource(name = "contentServiceImpl")
     private ContentService contentService;
@@ -97,6 +97,9 @@ public class ResponseServiceImpl implements ResponseService{
         String content = contentService.getContentById(response.getContentId());
         //将内容赋到responseVO的content属性
         responseVO.setContent(content);
+        //获取回复人
+        User user = userDao.selectByPrimaryKey(response.getAuthorId());
+        responseVO.setAuthorName(user.getName());
         return  responseVO;
     }
 
