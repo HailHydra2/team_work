@@ -154,7 +154,7 @@
 				updateUser(userVO);
 				if(userVO.user.identity == "administrator"){//管理员用户
 					window.location.href = "adminInterface/index.html";
-				}else if(userVO.user.identity == "student" || user.identity == "teacher"){
+				}else if(userVO.user.identity == "student" || userVO.user.identity == "teacher"){
 					window.location.href = "index.html";
 				}
 				

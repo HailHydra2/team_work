@@ -47,13 +47,14 @@ public class QuestionController {
     //新增问题接口
     @PostMapping("/question")
     public  @ResponseBody AjaxResponse testAddQuestion(@RequestBody QuestionVO questionVO){
+        System.out.println("question{}" + questionVO);
         return AjaxResponse.success(questionService.addQuestion(questionVO));
     }
 
     //获取用户问题列表接口
     @PostMapping("/userQuestions/{uid}")
     public @ResponseBody AjaxResponse testGetUserQuestionPage(@PathVariable Integer uid,  @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getQuestionPage(uid,questionPage);
+        QuestionPage page = questionService.getQuestionPage(uid,questionPage,1);
         return AjaxResponse.success(page);
     }
 
@@ -66,8 +67,8 @@ public class QuestionController {
 
     //用户回答过的问题列表接口
     @PostMapping("/userResponseQuestions/{uid}")
-    public @ResponseBody AjaxResponse TestGetUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getResponseQuestion(uid,questionPage);
+    public @ResponseBody AjaxResponse TestGetUserResponseQuestion(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPage(uid,questionPage,0);
         return AjaxResponse.success(page);
     }
 

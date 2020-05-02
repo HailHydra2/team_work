@@ -50,4 +50,7 @@ public interface QuestionDao {
      * 根据标题关键字查询
      */
     public List<Question> selectQuestionByKeyWord(Map<String, Object> map);
+
+    //查询回复过的问题列表
+    public List<Question> selectResponseQuestion(Map<String,Integer> map);
 }

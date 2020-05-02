@@ -1,22 +1,20 @@
 package com.fzu.teamwork.model;
 
+
 import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.view.QuestionPage;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
-//获取用户提问的问题列表
-public class QuestionByUidStrategy extends QuestionStrategy{
-
+//获取用户回复的问题列表
+public class QuestionBeResponse extends QuestionStrategy{
     private int userId;
     private QuestionPage questionPage;
     private QuestionDao questionDao;
 
-    public QuestionByUidStrategy(int userId, QuestionPage questionPage, QuestionDao questionDao){
+    public QuestionBeResponse(int userId, QuestionPage questionPage, QuestionDao questionDao){
         this.userId = userId;
         this.questionPage = questionPage;
         this.questionDao = questionDao;
@@ -29,7 +27,7 @@ public class QuestionByUidStrategy extends QuestionStrategy{
         int firstIndex = (questionPage.getPageIndex() - 1) * questionPage.getCount();
         map.put("start",firstIndex);
         map.put("count",questionPage.getCount());
-        List<Question> questionList = questionDao.selectUserQuestion(map);
+        List<Question> questionList = questionDao.selectResponseQuestion(map);
         return questionList;
     }
 }

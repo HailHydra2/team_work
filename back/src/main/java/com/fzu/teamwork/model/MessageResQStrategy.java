@@ -102,7 +102,7 @@ public class MessageResQStrategy extends MessageOperateStrategy{
                 question.getTitle() + "\"的问题";
 
         //设置消息的对象为问题的作者
-        message.setObjectId(internalMessage.getOperator_id());
+        message.setObjectId(question.getQuestion().getId());
         //设置消息的描述信息
         message.setDescription(description);
         //设置消息的产生方式为回复

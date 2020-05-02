@@ -141,7 +141,6 @@ function postQuestion(){
             "createTime":timeString
         }
     }
-    console.info(question);
     $.ajax({
         url: "http://localhost:8888/question",
         type: "post", 

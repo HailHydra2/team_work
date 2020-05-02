@@ -22,14 +22,12 @@ public interface QuestionService {
     //获取问题的某个分页
     public QuestionPage getQuestionPage(QuestionPage questionPage);
 
-    //获取用户问题的某个分页
-    public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage);
+    //获取用户问题的某个分页(0回复列表，1提问列表)
+    public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage, int type);
 
     //获取用户关注的问题分页
     public QuestionPage getAttentionQuestionPage(Integer userId, QuestionPage questionPage);
 
-    //获取用户回答过的问题分页
-    public QuestionPage getResponseQuestion(String userId, QuestionPage questionPage);
 
     //根据问题ID删除单个问题
     public void deleteQuestionById(String userId);

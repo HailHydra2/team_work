@@ -209,11 +209,11 @@
     //当前页面显示的数据(传递给后端的数据)
     var page = {
             "pageIndex":1,
-            "count":2,
+            "count":10,
         };
 
 	//请求后端的url
-    var path = "http://localhost:8888/userMessages/1";
+    var path = "http://localhost:8888/userMessages/" + userVO.user.id;
 
 
     //页面加载时启动页面

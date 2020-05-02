@@ -169,11 +169,16 @@ public class QuestionServiceImpl implements QuestionService{
         return questionPage;
     }
 
-    //获取用户提问问题列表
+    //获取用户回复、提问问题列表
+    //type：0回复，1:提问
     @Override
-    public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage){
+    public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage, int type){
         this.questionPage = questionPage;
-        questionStrategy = new QuestionByUidStrategy(userId, questionPage,questionDao);
+        if(type == 0){//回复
+            questionStrategy = new QuestionBeResponse(userId,questionPage,questionDao);
+        }else{//提问
+            questionStrategy = new QuestionByUidStrategy(userId, questionPage,questionDao);
+        }
         List<Question> questionList = questionStrategy.getQuestionList();
         List<QuestionVO> questionVOList = convertToVOList(questionList);
         questionPage.setQuestions(questionVOList);
@@ -191,16 +196,6 @@ public class QuestionServiceImpl implements QuestionService{
         for(Question question : questionList) {
             questionVOList.add(convertToVO(question));
         }
-        questionPage.setQuestions(questionVOList);
-        return questionPage;
-    }
-
-    @Override
-    public QuestionPage getResponseQuestion(String userId, QuestionPage questionPage){
-        QuestionStrategy questionStrategy;
-        questionStrategy = new getResponseQuestion(Integer.parseInt(userId),questionDao, responseDao);
-        List<Question> questionList = questionStrategy.getQuestionList();
-        List<QuestionVO> questionVOList = convertToVOList(questionList);
         questionPage.setQuestions(questionVOList);
         return questionPage;
     }
