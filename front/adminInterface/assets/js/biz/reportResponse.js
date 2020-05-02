@@ -14,7 +14,7 @@ var Service = {
     return $.ajax({
       url: HOST + '/reponse/',
       type: 'delete',
-      data:JSON.stringify(data),
+      data: JSON.stringify(data),
       contentType: 'application/json;charset=utf-8',
     });
   },
@@ -28,31 +28,32 @@ var Service = {
     return $.ajax({
       url: HOST + '/question/' + id,
       type: 'get',
-      datatype:'json'
+      datatype: 'json'
     })
   },
 
 };
 
-var question={
-getQuestion(id){
-  Service.getQuestion(id).then(function (data) {
-  console.log(data);
-});
-}
+var question = {
+  getQuestion(id) {
+    Service.getQuestion(id).then(function (data) {
+      console.log(data);
+    });
+  }
 };
 
 
 var Biz = {
   getResponse(id) {
     Service.getResponse(id).then(function (data) {
-     // var object = Service.getQuestion(data.data.response.questionId);
-     // var jsonString = JSON.toJSONString(object);
-      alert("问题标题："+
-      Service.getQuestion(data.data.response.questionId) +"\n" +
-       "内容:" + data.data.content);
-      console.log(data);
-      console.log(Service.getQuestion(data.data.response.questionId));
+      // var object = Service.getQuestion(data.data.response.questionId);
+      // var jsonString = JSON.toJSONString(object);
+      var response = data.data.content;
+      Service.getQuestion(data.data.response.questionId).then(data => {
+        console.log(data);
+        const { title, content } = data.data;
+        alert("问题标题：\n" + title + '\n' + "问题内容:\n" + content + '\n' + "回答内容:\n" + response);
+      });
     });
   }
 };
@@ -164,7 +165,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: $path_base, //nothing is saved
+    editurl: $path_base + "/dummy.html", //nothing is saved
     caption: "举报回答操作",
     autowidth: true
   });
@@ -189,7 +190,7 @@ jQuery(function ($) {
           .datepicker({format:'yyyy-mm-dd' , autoclose:true});
     }, 0);
   }
- 
+
 */
   //navButtons
   jQuery(grid_selector).jqGrid('navGrid', pager_selector, { //navbar options
@@ -261,14 +262,14 @@ jQuery(function ($) {
           var sel_id = [];
           sel_id = $(grid_selector).jqGrid('getGridParam',
             'selarrrow');
-         /* var value = '';
-          for (var i = 0; i < sel_id.length; i++) {
-            value = value + ',' + $(grid_selector).jqGrid('getCell',
-              sel_id[i], 'id');
-          }
-          if (value.charAt(0) == ',') {
-            value = value.substr(1);
-          }*/
+          /* var value = '';
+           for (var i = 0; i < sel_id.length; i++) {
+             value = value + ',' + $(grid_selector).jqGrid('getCell',
+               sel_id[i], 'id');
+           }
+           if (value.charAt(0) == ',') {
+             value = value.substr(1);
+           }*/
           Service.batchDelete(sel_id).then(function (data) {
             console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
@@ -383,8 +384,8 @@ jQuery(function ($) {
       $(table).find('input:checkbox').addClass('ace')
       .wrap('<label />')
       .after('<span class="lbl align-top" />')
- 
- 
+
+
       $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
       .find('input.cbox[type=checkbox]').addClass('ace')
       .wrap('<label />').after('<span class="lbl align-top" />');

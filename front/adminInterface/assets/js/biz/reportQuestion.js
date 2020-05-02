@@ -8,6 +8,7 @@ var Service = {
     return $.ajax({
       url: HOST + '/question/' + id,
       type: 'delete',
+      contentType: "application/json;charset=UTF-8",
     });
   },
   batchDelete(data) {
@@ -150,7 +151,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: $path_base, //nothing is saved
+    editurl: $path_base+"/dummy.html", //nothing is saved
     caption: "举报问题操作",
     autowidth: true
   });
