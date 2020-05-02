@@ -11,6 +11,14 @@ var Service = {
       type: 'delete',
     });
   },
+  batchDelete(data) {
+    return $.ajax({
+      url: HOST + '/questions/',
+      type: 'delete',
+      data:JSON.stringify(data),
+      contentType: 'application/json;charset=utf-8',
+    });
+  },
   getQuestion(id) {
     return $.ajax({
       url: HOST + '/question/' + id,
@@ -154,8 +162,8 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: $path_base, //nothing is saved
-    caption: "举报信息操作",
+    editurl: "http://localhost:8888/test", //nothing is saved, //nothing is saved
+    caption: "用户信息操作",
     autowidth: true
   });
 
@@ -251,19 +259,19 @@ jQuery(function ($) {
           var sel_id = [];
           sel_id = $(grid_selector).jqGrid('getGridParam',
             'selarrrow');
-          var value = '';
-          for (var i = 0; i < sel_id.length; i++) {
-            value = value + ',' + $(grid_selector).jqGrid('getCell',
-              sel_id[i], 'id');
-          }
-          if (value.charAt(0) == ',') {
-            value = value.substr(1);
-          }
-          Service.delete(value).then(function (data) {
+          /* var value = '';
+           for (var i = 0; i < sel_id.length; i++) {
+             value = value + ',' + $(grid_selector).jqGrid('getCell',
+               sel_id[i], 'id');
+           }
+           if (value.charAt(0) == ',') {
+             value = value.substr(1);
+           }*/
+          Service.batchDelete(sel_id).then(function (data) {
             console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
           });
-          return value;
+          // return value;
         }
       },
       recreateForm: true,
