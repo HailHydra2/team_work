@@ -212,6 +212,6 @@
   </update>
 
   <select id="getAttentionQuestionList" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select question_id from attention where user_id=#{uid,jdbcType=INTEGER} and flag=1
+    select question_id from attention where (user_id=#{uid}) and flag=1
   </select>
 </mapper>

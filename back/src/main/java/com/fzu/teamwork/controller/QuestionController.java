@@ -50,28 +50,28 @@ public class QuestionController {
         return AjaxResponse.success(questionService.addQuestion(questionVO));
     }
 
-    //实现获取用户问题列表接口
+    //获取用户问题列表接口
     @PostMapping("/userQuestions/{uid}")
     public @ResponseBody AjaxResponse testGetUserQuestionPage(@PathVariable Integer uid,  @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getQuestionPage(uid,questionPage);
         return AjaxResponse.success(page);
     }
 
-    //实现获取关注问题列表接口
+    //关注问题列表接口
     @PostMapping("/userAttentions/{uid}")
     public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getAttentionQuestionPage(uid, questionPage);
         return AjaxResponse.success(page);
     }
 
-    //实现获取用户回答过的问题列表接口
+    //用户回答过的问题列表接口
     @PostMapping("/userResponseQuestions/{uid}")
     public @ResponseBody AjaxResponse TestGetUserResponseQuestion(@PathVariable String uid, @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getResponseQuestion(uid,questionPage);
         return AjaxResponse.success(page);
     }
 
-    //实现获取问题详细信息接口
+    //问题详细信息接口
     @SneakyThrows
     @GetMapping("/question/{id}/{uid}")
     public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable(required = false) Integer uid){
@@ -82,7 +82,7 @@ public class QuestionController {
         return AjaxResponse.success(questionVO);
     }
 
-    //实现获取问题详细信息接口
+    //问题详细信息接口
     @SneakyThrows
     @GetMapping("/question/{id}")
     public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id){
@@ -91,7 +91,7 @@ public class QuestionController {
         return AjaxResponse.success(questionVO);
     }
 
-    //实现删除问题接口
+    //删除问题接口
     @DeleteMapping("/question/{id}")
     public @ResponseBody AjaxResponse testDeleteQuestion(@PathVariable String id){
         questionService.deleteQuestionById(id);
