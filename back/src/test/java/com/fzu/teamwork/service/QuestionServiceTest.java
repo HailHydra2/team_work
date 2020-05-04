@@ -72,9 +72,8 @@ public class QuestionServiceTest {
         questionPage.setCount(5);
         questionPage.setSortApproach(QuestionSortApproach.SORT_BY_HEAT);
         questionService.getQuestionPage(questionPage);
-        questionService.getQuestionPage(1,questionPage);
+        questionService.getQuestionPage(1,questionPage,0);
         questionService.getAttentionQuestionPage(1,questionPage);
-        questionService.getResponseQuestion("1",questionPage);
     }
 
     @Test
