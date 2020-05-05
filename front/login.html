@@ -116,7 +116,28 @@
 			//var loginButton = document.getElementById("login");
 			$(login_btn).click(function(e){
 			   var username = $.trim($("#username").val());
-			   var password = $.trim($("#password").val());
+			
+			   var passwordTemp = $.trim($("#password").val());
+
+
+
+
+
+//
+
+//
+
+//
+
+//
+
+//
+//！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+			   //
+			   //使用btoa函数对用户输入的passwordTemp加密成password再发给服务器
+			   var password = window.btoa(passwordTemp);
+
 				// if(username == ""){
 				// 	alert("请输入用户名");
 				// 	return false;

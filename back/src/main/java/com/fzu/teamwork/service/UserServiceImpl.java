@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
         UserVO userVO=new UserVO();
         AccountData accountData;
         //获取对应的AccountData
-        log.info("account_id{}",user.getAccountDataId());
+        //log.info("account_id{}",user.getAccountDataId());
         accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
         //封装userVO
         userVO.setUser(user);
