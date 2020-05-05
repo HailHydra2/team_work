@@ -1,6 +1,8 @@
 package com.fzu.teamwork.controller;
 
 
+import com.fzu.teamwork.annoation.AdminLimit;
+import com.fzu.teamwork.annoation.LoginToken;
 import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.User;
@@ -22,19 +24,9 @@ public class UserController {
     @Resource(name = "userServiceImpl")
     UserServiceImpl userService;
 
-    //static delete
-    @DeleteMapping("/users/{id}")
-    public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
-        return AjaxResponse.success();
-    }
-
-    //static update
-    @PutMapping("/user")
-    public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
-        return AjaxResponse.success();
-    }
-
     //获取所有用户
+    @LoginToken//需要登录
+    @AdminLimit//管理员权限
     @GetMapping("/users")
     public ArrayList<User> getUser_test()
     {
@@ -42,14 +34,18 @@ public class UserController {
     }
 
     //按id删除用户
-    @DeleteMapping("/tusers/{id}")
+    @LoginToken//需要登录
+    @AdminLimit//管理员权限
+    @DeleteMapping("/users/{id}")
     public @ResponseBody AjaxResponse deleteUser_test(@PathVariable int id){
         userService.deleteUsers(id);
         return AjaxResponse.success();
     }
 
     //按id数组批量删除用户
-    @DeleteMapping("/tusers")
+    @LoginToken//需要登录
+    @AdminLimit//管理员权限
+    @DeleteMapping("/users")
     public @ResponseBody AjaxResponse deleteUserAll_test(@RequestBody int[] userIdList){
         userService.deleteUsersAll(userIdList);
         return AjaxResponse.success();
@@ -63,7 +59,7 @@ public class UserController {
     }
 
     //更新密码
-    @PutMapping("/tuser")
+    @PutMapping("/user")
     public @ResponseBody AjaxResponse updatePassword_test(@RequestBody User user){
         UserVO userVO=new UserVO();
         userVO.setUser(user);

@@ -1,6 +1,9 @@
 package com.fzu.teamwork.controller;
 
 
+import com.fzu.teamwork.annoation.AdminLimit;
+import com.fzu.teamwork.annoation.LoginToken;
+import com.fzu.teamwork.annoation.UserLimit;
 import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Reward;
@@ -25,12 +28,16 @@ public class RewardController {
     RewardService rewardService;
 
     //管理员界面获取奖励申请记录列表(具体实现)
+    @LoginToken//需要登录
+    @AdminLimit//管理员权限
     @GetMapping("/rewards")
     public @ResponseBody List<RewardVO> testGetRewards(){
         return rewardService.getRewardList();
     }
 
     //奖励兑换页面申请兑换奖励（具体实现）
+    @LoginToken//需要登录
+    @UserLimit//普通用户权限
     @PostMapping("/reward")
     public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
         UserVO userVO = rewardService.insertReward(reward);

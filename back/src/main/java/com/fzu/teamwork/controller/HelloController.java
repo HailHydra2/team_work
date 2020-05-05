@@ -1,5 +1,6 @@
 package com.fzu.teamwork.controller;
 
+import com.fzu.teamwork.annoation.LoginToken;
 import com.fzu.teamwork.dao.AccountDataDao;
 import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.AccountData;
@@ -20,6 +21,7 @@ public class HelloController {
     @Resource
     private AccountDataDao accountDataDao;
 
+    @LoginToken
     @RequestMapping("/hello")
     public String hello(){
         return "hello";

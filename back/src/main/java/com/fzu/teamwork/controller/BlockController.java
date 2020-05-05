@@ -1,5 +1,7 @@
 package com.fzu.teamwork.controller;
 
+import com.fzu.teamwork.annoation.AdminLimit;
+import com.fzu.teamwork.annoation.LoginToken;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Block;
 import com.fzu.teamwork.model.User;
@@ -18,6 +20,8 @@ public class BlockController {
     BlockService blockService;
 
     //新增临时板块
+    @LoginToken//需要登录
+    @AdminLimit//需要管理员权限
     @PostMapping("/block")
     public @ResponseBody AjaxResponse addBlock_test(@RequestBody Block block){
         blockService.addBlock(block);
@@ -25,6 +29,8 @@ public class BlockController {
     }
 
     //删除临时板块
+    @LoginToken//需要登录
+    @AdminLimit//需要管理员权限
     @DeleteMapping("/block")
     public @ResponseBody AjaxResponse deleteBlock_test(){
         blockService.deleteBlock();
@@ -32,6 +38,7 @@ public class BlockController {
     }
 
     //获取临时板块
+    @LoginToken//需要登录
     @GetMapping("/block")
     public @ResponseBody AjaxResponse getBlock(){
         Block block = blockService.getBlock();

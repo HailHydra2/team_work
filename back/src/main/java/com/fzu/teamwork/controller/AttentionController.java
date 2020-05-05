@@ -1,6 +1,8 @@
 package com.fzu.teamwork.controller;
 
 
+import com.fzu.teamwork.annoation.LoginToken;
+import com.fzu.teamwork.annoation.UserLimit;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Attention;
 import com.fzu.teamwork.model.User;
@@ -24,6 +26,8 @@ public class AttentionController {
     private UserService userService;
 
     //关注/取消关注（实现类）
+    @LoginToken//需要登录权限
+    @UserLimit//老师和学生才有权限
     @PostMapping("/attention")
     public @ResponseBody AjaxResponse testAddAttention(@RequestBody Attention attention){
         UserVO userVO = attentionService.insertAttention(attention);

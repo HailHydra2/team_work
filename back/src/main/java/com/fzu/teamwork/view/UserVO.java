@@ -21,8 +21,8 @@ public class UserVO{
     @Resource(name = "accountDataServiceImpl")
     AccountDataService accountDataService;
 
-
     private User user;
     private AccountData accountData;
+    private String token;
 
 }
