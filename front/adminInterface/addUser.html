@@ -415,7 +415,8 @@
             var account = accountTextBox.value;
             var identiy = identityOption.options[identityOption.selectedIndex].value;
             var name = nameTextBox.value;
-            var idCard = idCardTextBox.value;
+            var idCardTemp = idCardTextBox.value;
+            var idCard = window.btoa(idCardTemp);
             
             var user = {
                 "account":account,

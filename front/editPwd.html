@@ -285,9 +285,12 @@
 
 		//提交修改密码请求
 		function submitPwdChange(){
-				var pwd1 = $.trim($("#newpass").val());
-				var pwd2 = $.trim($("#newpassAgain").val());
-				var idCard = $.trim($("#ID").val());
+				var pwd1Temp = $.trim($("#newpass").val());
+				var pwd2Temp = $.trim($("#newpassAgain").val());
+				var idCardTemp = $.trim($("#ID").val());
+				var pwd1 = window.btoa(pwd1Temp);
+				var pwd2 = window.btoa(pwd2Temp);
+				var idCard = window.btoa(idCardTemp);
 				if(pwd1 != pwd2){
 					return;
 				}
