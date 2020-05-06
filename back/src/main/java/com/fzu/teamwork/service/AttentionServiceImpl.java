@@ -39,8 +39,6 @@ public class AttentionServiceImpl implements AttentionService{
         AttentionExample.Criteria criteria = example.createCriteria();
         criteria.andQuestionIdEqualTo(record.getQuestionId());
         criteria.andUserIdEqualTo(record.getUserId());
-        System.out.println("questionId:" + record.getQuestionId() + "  userId:" + record.getUserId());
-        System.out.println("record:" + record);
         List<Attention> attentionList = attentionDao.selectByExample(example);
 
         //判断数据库中是否已经有该记录

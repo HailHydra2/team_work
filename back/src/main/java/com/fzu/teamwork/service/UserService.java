@@ -32,7 +32,10 @@ public interface UserService {
     //更新用户信息(包括基本信息和账户信息)
     public User updateUser(UserVO userVO);
 
+    //更改密码(成功返回更改后的UserVO，失败返回null)
+    public UserVO changePassword(User user);
 
-
+    //重置密码（返回值是重置结果 -1：身份证错误，-2：账号不存在，1：成功）
+    public int resetPassword(User user);
 
 }

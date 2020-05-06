@@ -43,18 +43,18 @@
 			</div>
 
 			<hr/>
-			<form class="form-horizontal" role="form">
+			<form class="form-horizontal" role="form"  target="iframe">
 				<br/><br/>
 				<div class="form-group">
 					 <label for="inputEmail3" class="col-sm-4 control-label">账号</label>
 					<div class="col-sm-5">
-						<input type="email" class="form-control" id="inputEmail3" />
+						<input class="form-control" id="account" />
 					</div>
 				</div>
 				<div class="form-group">
 					 <label for="inputEmail3" class="col-sm-4 control-label">身份证号</label>
 					<div class="col-sm-5">
-						<input type="email" class="form-control" id="inputEmail3" />
+						<input class="form-control" id="idCard" />
 					</div>
 				</div>
 				
@@ -62,14 +62,45 @@
 					<div class="col-sm-offset-5 col-sm-10" style="margin-top:10px">
 						 <a href="login.html" class="btn btn-default btn-success">返回登陆</a>
 						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						 <button type="botton" class="btn btn-default">提交验证</button>
+						 <button type="botton" class="btn btn-default" onclick="resetPassword();">重置密码</button>
 					</div>
 				</div>
 			</form> 
+			<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 		</div>
 
 	</div>
 	</div>
+
+	<script>
+		//重置密码
+		function resetPassword(){
+			var account = document.getElementById("account").value;
+			var idCard = document.getElementById("idCard").value;
+			// alert("account" + account + "  idCard" + idCard);
+			var user = {
+				"account":account,
+				"idCard":idCard
+			};
+			$.ajax({
+				url: "http://localhost:8888/resetPwd",
+				type: "put", 
+				contentType: 'application/json;charset=utf-8',
+				data:JSON.stringify(user),
+				success: function (data) {
+					if(data.code == 200){//修改成功
+						alert("密码已成功重置")
+						window.location.href = "login.html"
+					}else if(data.code == 402){
+						alert("账户不存在");
+					}else if(data.code == 406){
+						alert("身份证错误，重置失败");
+					}
+				}
+			});
+		}
+	</script>
+
    </body>
 
    

@@ -1,27 +1,28 @@
 package com.fzu.teamwork.model;
 
+import com.fzu.teamwork.dao.AttentionDao;
 import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.view.QuestionPage;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
-//获取用户提问的问题列表
-public class QuestionByUidStrategy extends QuestionStrategy{
+//QuestionService通过热度排序获取问题列表的策略类
+public class QuestionBeAttentionStrategy extends QuestionStrategy{
 
     private int userId;
     private QuestionPage questionPage;
     private QuestionDao questionDao;
+    protected AttentionDao attentionDao;
     private Map<String, Integer> map;
 
-    public QuestionByUidStrategy(int userId, QuestionPage questionPage, QuestionDao questionDao){
+    public QuestionBeAttentionStrategy(int userId, QuestionPage questionPage, QuestionDao questionDao, AttentionDao attentionDao){
         this.userId = userId;
         this.questionPage = questionPage;
         this.questionDao = questionDao;
+        this.attentionDao =attentionDao;
     }
 
     public List<Question> getQuestionList(){
@@ -31,7 +32,7 @@ public class QuestionByUidStrategy extends QuestionStrategy{
         int firstIndex = (questionPage.getPageIndex() - 1) * questionPage.getCount();
         map.put("start",firstIndex);
         map.put("count",questionPage.getCount());
-        List<Question> questionList = questionDao.selectUserQuestion(map);
+        List<Question> questionList = questionDao.selectAttentionQuestion(map);
         getButtonList();
         return questionList;
     }
@@ -41,9 +42,11 @@ public class QuestionByUidStrategy extends QuestionStrategy{
         //每页有几条数据
         int count = questionPage.getCount();
         //问题总条数
-        QuestionExample example = new QuestionExample();
-        example.createCriteria().andAuthorIdEqualTo(userId);
-        int total = (int)questionDao.countByExample(example);
+        AttentionExample example = new AttentionExample();
+        AttentionExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        criteria.andFlagEqualTo(1);
+        int total = (int)attentionDao.countByExample(example);
         //当前页号
         int pageIndex = questionPage.getPageIndex();
         //总页数

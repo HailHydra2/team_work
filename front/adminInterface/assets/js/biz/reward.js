@@ -7,6 +7,9 @@ jQuery(function ($) {
   jQuery(grid_selector).jqGrid({
     url: "http://localhost:8888/rewards",
     loadonce: true,
+    loadBeforeSend: function(jqXHR) {
+      jqXHR.setRequestHeader("token", userVO.token);
+    },
     mtype: "get",
     //data: grid_data,
     datatype: "json",

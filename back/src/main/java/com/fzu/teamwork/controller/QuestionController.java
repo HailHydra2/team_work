@@ -71,7 +71,7 @@ public class QuestionController {
     @UserLimit//普通用户权限
     @PostMapping("/userAttentions/{uid}")
     public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getAttentionQuestionPage(uid, questionPage);
+        QuestionPage page = questionService.getQuestionPage(uid, questionPage,2);
         return AjaxResponse.success(page);
     }
 

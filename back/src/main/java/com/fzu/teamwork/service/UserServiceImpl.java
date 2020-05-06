@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService{
     private UserDao userDao;
     @Resource
     private AccountDataDao accountDataDao;
+    @Resource
+    private TokenService tokenService;
 
     private static Integer maxGetNum=100;//最大查找人数
 
@@ -33,7 +35,9 @@ public class UserServiceImpl implements UserService{
         //获取对应的AccountData
         //log.info("account_id{}",user.getAccountDataId());
         accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
+        String token = tokenService.getToken(user);//获取用户token
         //封装userVO
+        userVO.setToken(token);
         userVO.setUser(user);
         userVO.setAccountData(accountData);
         return userVO;
@@ -115,5 +119,41 @@ public class UserServiceImpl implements UserService{
         //更新账户数据
         accountDataDao.updateByPrimaryKey(userVO.getAccountData());
         return null;
+    }
+
+    //更改密码(成功返回更改后的UserVO，失败返回null)
+    public UserVO changePassword(User user){
+        User u = userDao.selectByPrimaryKey(user.getId());
+        if(u.getIdCard().equals(user.getIdCard())){
+            //密保正确（身份证）
+            userDao.updateByPrimaryKey(user);
+            return convertToUserVo(user);
+        }else{
+            return null;
+        }
+    }
+
+    //重置密码返回值是重置结果 -1：身份证错误，-2：账号不存在，1：成功）
+    @Override
+    public int resetPassword(User user){
+        //创建查询条件
+        UserExample example = new UserExample();
+        example.createCriteria().andAccountEqualTo(user.getAccount());//账号相同
+        List<User> list = userDao.selectByExample(example);
+        if(list.size() == 0){
+            //账号不存在
+            return -2;
+        }
+        User u = list.get(0);
+        if(u.getIdCard().equals(user.getIdCard())){
+            //验证正确
+            //************************这里先设置成123，后面需要改成身份证有关的初始密码
+            u.setPassword("123");
+            userDao.updateByPrimaryKey(u);
+            return 1;
+        }else{
+            //身份证号验证错误
+            return -1;
+        }
     }
 }

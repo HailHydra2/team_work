@@ -231,6 +231,12 @@
     select * from question where author_id=#{uid} limit #{start},#{count}
   </select>
 
+  <select id="selectAttentionQuestion" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select t1.id, author_id, response_num, report_num, t1.create_time, content_id
+    from question t1 left join attention a on t1.id = a.question_id
+    where a.user_id=#{uid} and a.flag = 1 limit #{start},#{count}
+  </select>
+
   <select id="selectQuestionByHeat" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
     select * from question order by response_num desc limit #{start},#{count}
   </select>
@@ -246,10 +252,23 @@
     where (t.title like #{keyWord}) order by create_time desc limit #{start}, #{count}
   </select>
 
+  <select id="selectQuestionNumByKeyWord" parameterType="Map" resultType="java.lang.Integer">
+    select count(*)
+    from question t1 left join question_title qt on t1.id = qt.question_id
+    left join title t on qt.title_id = t.id
+    where (t.title like #{keyWord})
+  </select>
+
   <select id="selectResponseQuestion" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
     select t1.id, t1.author_id, t1.response_num, t1.report_num, t1.create_time, t1.content_id
     from question t1 left join response r on t1.id = r.question_id
     where r.author_id = #{uid}
     order by create_time desc limit #{start},#{count}
+  </select>
+
+  <select id="selectResponseQuestionNum" parameterType="Map" resultType="java.lang.Integer">
+    select count(*)
+    from question t1 left join response r on t1.id = r.question_id
+    where r.author_id = #{uid}
   </select>
 </mapper>

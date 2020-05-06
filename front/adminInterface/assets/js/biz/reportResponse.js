@@ -9,27 +9,41 @@ var Service = {
     return $.ajax({
       url: HOST + '/response/' + id,
       type: 'delete',
+      contentType: "application/json;charset=UTF-8",
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     });
   },
   batchDelete(data) {
     return $.ajax({
-      url: HOST + '/reponse/',
+      url: HOST + '/responses/',
       type: 'delete',
       data: JSON.stringify(data),
       contentType: 'application/json;charset=utf-8',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     });
   },
   getResponse(id) {
     return $.ajax({
       url: HOST + '/response/' + id,
       type: 'get',
+      contentType: 'application/json;charset=utf-8',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     })
   },
   getQuestion(id) {
     return $.ajax({
       url: HOST + '/question/' + id,
       type: 'get',
-      datatype: 'json'
+      contentType: 'application/json;charset=utf-8',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     })
   },
 
@@ -67,6 +81,9 @@ jQuery(function ($) {
 
   jQuery(grid_selector).jqGrid({
     url: "http://localhost:8888/responseReports",
+    loadBeforeSend: function(jqXHR) {
+      jqXHR.setRequestHeader("token", userVO.token);
+    },
     loadonce: true,
     mtype: "get",
     //	data: grid_data,
@@ -167,7 +184,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-     editurl: "http://localhost:8888/test", //nothing is saved
+    editurl: "http://localhost:8888/test", //nothing is saved
     caption: "举报回答操作",
     autowidth: true
   });

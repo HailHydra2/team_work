@@ -89,10 +89,13 @@
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							 <a href="message.html">🔔</a>
+							 <a href="myMessage.html">🔔</a>
 						</li>
 						<li class="active">
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
 				</div>
@@ -200,21 +203,6 @@
 					</div>
 				</div>
 			</div>
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<!-- 内容写在这里！！！ -->
 		</div>
 		<div class="col-md-4 column">
 			<img alt="140x140" src="http://cdn.ibootstrap.cn/lorempixel.com/140/140/default.jpg" class="img-circle" />
@@ -311,6 +299,9 @@
 				type: "post", 
 				data:JSON.stringify(rewardRecord),
 				contentType: 'application/json;charset=utf-8',
+				beforeSend: function (request) {
+					request.setRequestHeader("token", userVO.token);
+				},
 				success: function (data) {
 					userVO = data.data;
 					console.info(userVO);

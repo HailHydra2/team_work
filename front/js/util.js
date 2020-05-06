@@ -21,6 +21,9 @@ function changeQuestionPage(page, path){
         url: path,
         type: "post", 
         data:JSON.stringify(page),
+        beforeSend: function (request) {
+            request.setRequestHeader("token", userVO.token);
+        },
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             page = data.data;
@@ -30,20 +33,20 @@ function changeQuestionPage(page, path){
     });
 }
 
-//回复页面换页
-function changeQuestionPage(page, path){
-    $.ajax({
-        url: path,
-        type: "post", 
-        data:JSON.stringify(page),
-        contentType: 'application/json;charset=utf-8',
-        success: function (data) {
-            page = data.data;
-            console.info(page);
-            updateList(page);
-        }
-    });
-}
+// //回复页面换页
+// function changeQuestionPage(page, path){
+//     $.ajax({
+//         url: path,
+//         type: "post", 
+//         data:JSON.stringify(page),
+//         contentType: 'application/json;charset=utf-8',
+//         success: function (data) {
+//             page = data.data;
+//             console.info(page);
+//             updateList(page);
+//         }
+//     });
+// }
 
 //将数据存储到缓存
 Storage.prototype.setExpire=(key, value, expire) =>{
@@ -145,6 +148,9 @@ function postQuestion(){
         url: "http://localhost:8888/question",
         type: "post", 
         data:JSON.stringify(question),
+        beforeSend: function (request) {
+            request.setRequestHeader("token", userVO.token);
+        },
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             updateUser(data.data)
@@ -165,6 +171,9 @@ function getBlock(){
         url: "http://localhost:8888/block",
         type: "get", 
         contentType: 'application/json;charset=utf-8',
+        beforeSend: function (request) {
+            request.setRequestHeader("token", userVO.token);
+        },
         success: function (data) {
             if(data.code == 200){
                 block = data.data;
@@ -192,6 +201,9 @@ function getBlockModel(){
         url: "http://localhost:8888/block",
         type: "get", 
         contentType: 'application/json;charset=utf-8',
+        beforeSend: function (request) {
+            request.setRequestHeader("token", userVO.token);
+        },
         success: function (data) {
             if(data.code == 200){
                 tempBlock = data.data;
@@ -224,7 +236,6 @@ function updateList(p){
         questionBlock.appendChild(title);
         questionBlock.appendChild(content);
         questionList.appendChild(questionBlock);
-        
         //更新分页按钮
         updatePageButtons();
     }
@@ -253,8 +264,108 @@ function adminExit(){
 
 //前台页面注销登录
 function exit(){
-    localStorage.setExpire("userVO",null,1);
-    location.href = "login.html";
+    localStorage.setExpire("userVO",userVO,1);
+    //alert("12")
+    //window.location.href = "my";
+
+}
+
+function changePage(index){
+    questionDiv.removeChild(questionList);
+    questionList = document.createElement("div");
+    questionDiv.insertBefore(questionList, pageButtons);
+    questionList.setAttribute("id","quetionList");
+    //pageButtons.removeAttribute("disabled");
+    page.pageIndex = index;
+    changeQuestionPage(page, path);
+}
+
+//上一页触发事件
+function prePage(flag, index){
+    if(flag == "1"){
+        changePage(index);
+    }else{
+        alert("抱歉，已经是第一页了");
+    }
+}
+
+//下一页触发事件
+function nextPage(flag, index){
+    if(flag == "1"){
+        changePage(index);
+    }else{
+        alert("抱歉，已经是最后一页了");
+    }
+}
+
+//更新分页按钮
+function updatePageButtons(){
+    questionDiv.removeChild(pageButtons);
+    pageButtons = document.createElement("ul");
+    pageButtons.className = "pagination pagination-lg";
+    pageButtons.id = "pageButtons";
+    questionDiv.insertBefore(pageButtons,divEnd);
+
+    //首页
+    var firstButton = document.createElement("li");
+    var firstLink = document.createElement("a");
+    firstLink.innerHTML = "首页";
+    firstButton.appendChild(firstLink)
+    pageButtons.appendChild(firstButton);
+    firstButton.setAttribute("onclick","changePage(" + 1 + ");");
+
+    //上一页
+    var preButton = document.createElement("li");
+    var preLink = document.createElement("a");
+    preLink.innerHTML = "上一页";
+    preButton.appendChild(preLink);
+    pageButtons.append(preButton);
+    preButton.setAttribute("id","previous");
+
+    if(page.hasPrevious == true){//有上一页
+        preButton.setAttribute("onclick", "prePage( 1, " + (page.pageIndex-1) + ");");
+    }else{//没有上一页
+        preButton.setAttribute("onclick", "prePage( 0, " + (page.pageIndex-1) + ");");
+    }
+
+    //分页页码列表
+    var buttonList = page.buttonList;
+    console.info(buttonList);
+
+    for(var i = 0; i < buttonList.length; i++){
+        var button_i = document.createElement("li")
+        var link_i = document.createElement("a");
+        link_i.innerHTML = buttonList[i];
+        button_i.appendChild(link_i);
+        pageButtons.appendChild(button_i);
+        button_i.setAttribute("onclick", "changePage(" + buttonList[i] + ");")
+        if(buttonList[i] == page.pageIndex){
+            link_i.setAttribute("style","color:red");
+        }
+    }
+
+    //下一页
+    var nextButton = document.createElement("li");
+    var nextLink = document.createElement("a");
+    nextLink.innerHTML = "下一页";
+    nextButton.appendChild(nextLink);
+    pageButtons.append(nextButton);
+    nextButton.setAttribute("id","next")
+    nextButton.setAttribute("onclick", "nextPage(" + (page.pageIndex+1) + ");");
+
+    if(page.hasNext == true){//有下一页
+        nextButton.setAttribute("onclick", "nextPage( 1, " + (page.pageIndex+1) + ");");
+    }else{//没有下一页
+        nextButton.setAttribute("onclick", "nextPage( 0, " + (page.pageIndex+1) + ");");
+    }
+
+    //末页
+    var lastButton = document.createElement("li");
+    var lastLink = document.createElement("a");
+    lastLink.innerHTML = "末页";
+    lastButton.appendChild(lastLink)
+    pageButtons.appendChild(lastButton);
+    lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
 }
 
 var userVO;

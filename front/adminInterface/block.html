@@ -431,6 +431,9 @@
                 url: "http://localhost:8888/block",
                 type: "post", 
                 contentType: 'application/json;charset=utf-8',
+                beforeSend: function (request) {
+                    request.setRequestHeader("token", userVO.token);
+                },
                 data:JSON.stringify(block),
                 success: function (data) {
                     alert("新增成功");
@@ -444,6 +447,9 @@
                 url: "http://localhost:8888/block",
                 type: "delete", 
                 contentType: 'application/json;charset=utf-8',
+                beforeSend: function (request) {
+                    request.setRequestHeader("token", userVO.token);
+                },
                 success: function (data) {
                     alert("撤销成功");
                     location.reload();

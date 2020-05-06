@@ -7,16 +7,22 @@ var Service = {
   /* 删除记录 */
   delete(id) {
     return $.ajax({
-      url: HOST + '/question/' + id,
+      url: HOST + '/user/' + id,
       type: 'delete',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     });
   },
   batchDelete(data) {
     return $.ajax({
-      url: HOST + '/questions/',
+      url: HOST + '/users/',
       type: 'delete',
       data:JSON.stringify(data),
       contentType: 'application/json;charset=utf-8',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     });
   },
   getQuestion(id) {
@@ -52,6 +58,9 @@ jQuery(function ($) {
 
   jQuery(grid_selector).jqGrid({
     url: "http://localhost:8888/users",
+    loadBeforeSend: function(jqXHR) {
+      jqXHR.setRequestHeader("token", userVO.token);
+    },
     loadonce: true,
     mtype: "get",
     //	data: grid_data,
@@ -81,6 +90,7 @@ jQuery(function ($) {
               var sel_id = $(grid_selector).jqGrid('getGridParam', 'selrow');
               var value = $(grid_selector).jqGrid('getCell', sel_id, 'id');
               // console.log( $(this));
+              alert(value);
               Service.delete(value).then(function (data) {
                 //alert(value);
                 console.log(data);

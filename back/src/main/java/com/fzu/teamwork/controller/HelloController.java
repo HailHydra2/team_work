@@ -21,7 +21,7 @@ public class HelloController {
     @Resource
     private AccountDataDao accountDataDao;
 
-    @LoginToken
+//    @LoginToken
     @RequestMapping("/hello")
     public String hello(){
         return "hello";

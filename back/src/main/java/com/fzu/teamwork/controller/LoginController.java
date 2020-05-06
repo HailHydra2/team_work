@@ -45,8 +45,6 @@ public class LoginController {
             return AjaxResponse.error(ErrorStatus.PASSWORD_ERROR,"密码错误");
         } else {
             //验证正确
-            String token = tokenService.getToken(userVO.getUser());//获取用户token
-            userVO.setToken(token);
             return AjaxResponse.success(userVO);
         }
     }

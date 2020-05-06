@@ -279,7 +279,7 @@
 																		<label class="col-sm-4 control-label no-padding-right" for="form-field-username">身份证</label>
 
 																		<div class="col-sm-8">
-																			<input class="col-xs-12 col-sm-10" type="text" id="form-field-username" placeholder="Username" value="alexdoe" />
+																			<input class="col-xs-12 col-sm-10" type="text" id="idCard" placeholder="请输入身份证"/>
 																		</div>
 																	</div>
 
@@ -288,25 +288,11 @@
 															</div>
 
 															<hr />
-													
-
-															
-
-														
-
-															
-																
-
-						
 
 															<div class="space"></div>
-															
-															
 
 															<div class="space"></div>
 															<h4 class="header blue bolder smaller">密码设置</h4>
-
-											
 
 														<div id="edit-password" class="tab-pane">
 															<div class="space-10"></div>
@@ -315,7 +301,7 @@
 																<label class="col-sm-3 control-label no-padding-right" for="form-field-pass1">新密码</label>
 
 																<div class="col-sm-9">
-																	<input type="password" id="form-field-pass1" />
+																	<input type="password" id="password1" placeholder="请输入新密码"/>
 																</div>
 															</div>
 
@@ -325,7 +311,7 @@
 																<label class="col-sm-3 control-label no-padding-right" for="form-field-pass2">确认新密码</label>
 
 																<div class="col-sm-9">
-																	<input type="password" id="form-field-pass2" />
+																	<input type="password" id="password2" placeholder="请再次输入新密码"/>
 																</div>
 															</div>
 														</div>
@@ -334,13 +320,13 @@
 
 												<div class="clearfix form-actions">
 													<div class="col-md-offset-3 col-md-9">
-														<button class="btn btn-info" type="button">
+														<button class="btn btn-info" type="button" onclick="submitPwdChange();">
 															<i class="icon-ok bigger-110"></i>
 															保存
 														</button>
 
 														&nbsp; &nbsp;
-														<button class="btn" type="reset">
+														<button class="btn" type="reset" onclick="clearInput();">
 															<i class="icon-undo bigger-110"></i>
 															重置
 														</button>
@@ -468,6 +454,7 @@
 
 		<script src="assets/js/ace-elements.min.js"></script>
 		<script src="assets/js/ace.min.js"></script>
+		<script src="../js//util.js"></script>
 
 		<!-- inline scripts related to this page -->
 
@@ -509,6 +496,50 @@
 			
 			
 			});
+
+
+			//提交修改密码请求
+			function submitPwdChange(){
+				var idCard = $.trim($("#idCard").val());
+				var pwd1 = $.trim($("#password1").val());
+				var pwd2 = $.trim($("#password2").val());
+				if(pwd1 != pwd2){
+					alert("两次密码输入不一致！");
+				}
+				var t = userVO;
+				//身份证号
+				t.user.idCard = idCard;
+				//密码
+				t.user.password = pwd1;
+				//提交修改
+				$.ajax({
+					url: "http://localhost:8888/user",
+					type: "put", 
+					data:JSON.stringify(t.user),
+					beforeSend: function (request) {
+						request.setRequestHeader("token", userVO.token);
+					},
+					contentType: 'application/json;charset=utf-8',
+					success: function (data) {
+						if(data.code == 200){
+							//验证成功
+							userVO = userVO;
+							alert("修改成功");
+							clearInput();//重置输入
+						}else{
+							//验证失败
+							alert("抱歉，您输入的身份证信息有误，请重新输入");
+						}
+					}
+				});
+			}
+
+			//重置输入
+			function clearInput(){
+				document.getElementById("password1").value = "";
+				document.getElementById("password2").value = "";
+				document.getElementById("idCard").value = "";
+			}
 		</script>
 	</body>
 </html>

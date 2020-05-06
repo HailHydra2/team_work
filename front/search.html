@@ -116,16 +116,8 @@
 				</div>
 	
 				<ul class="pagination pagination-lg" id="pageButtons">
-					<li>
-						 <a id="previous">前页</a>
-					</li>
-					<li>
-						 <a href="#">1</a>
-					</li>
-					<li>
-						 <a id="next">后页</a>
-					</li>
 				</ul>
+				<p id = "divEnd"></p>
 			</div>
 
 		</div>
@@ -147,12 +139,14 @@
 	var preButton = document.getElementById("previous");
     //下一页按钮
 	var nextButton = document.getElementById("next");
+	//问题模块结束标记元素
+	var divEnd = document.getElementById("divEnd");
 	//搜索关键字
 	var keyWord = getQueryVariable("keyWord");
     //当前页面显示的数据(传递给后端的数据)
     var page = {
             "pageIndex":1,
-            "count":10,
+            "count":5,
             "keyWord":keyWord,
             sortApproach:"sortByKeyWord",
         };
@@ -173,27 +167,6 @@
 		//获取临时板块
 		getBlock();
     });
-
-    //上一页点击事件
-    $(previous).click(function(e){
-        questionDiv.removeChild(questionList);
-        questionList = document.createElement("div");
-        questionDiv.insertBefore(questionList, pageButtons);
-        questionList.setAttribute("id","quetionList");
-        page.pageIndex--;
-        changeQuestionPage(page, path);
-    })
-
-    //下一页点击事件
-    $(next).click(function(e){
-        questionDiv.removeChild(questionList);
-        questionList = document.createElement("div");
-        questionDiv.insertBefore(questionList, pageButtons);
-        questionList.setAttribute("id","quetionList");
-        //pageButtons.removeAttribute("disabled");
-        page.pageIndex++;
-        changeQuestionPage(page, path);
-    })
 
     //更新问题列表
     function updateList(p){
@@ -219,20 +192,6 @@
         }
 	}
 	
-	//更新分页按钮
-	function updatePageButtons(){
-		if(page.hasPrevious == true){//有上一页
-			console.info("有上一页");
-		}else{//没有上一页
-			console.info("没有上一页");
-		}
-
-		if(page.hasNext == true){//有下一页
-			console.info("有下一页");
-		}else{
-			console.info("没有下一页");
-		}
-	}
 
 </script>
 </html>

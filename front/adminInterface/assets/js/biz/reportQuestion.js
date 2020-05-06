@@ -9,6 +9,9 @@ var Service = {
       url: HOST + '/question/' + id,
       type: 'delete',
       contentType: "application/json;charset=UTF-8",
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     });
   },
   batchDelete(data) {
@@ -17,6 +20,9 @@ var Service = {
       type: 'delete',
       data:JSON.stringify(data),
       contentType: 'application/json;charset=utf-8',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     });
   },
   getQuestion(id) {
@@ -52,6 +58,9 @@ jQuery(function ($) {
 
   jQuery(grid_selector).jqGrid({
     url: "http://localhost:8888/questionReports",
+    loadBeforeSend: function(jqXHR) {
+      jqXHR.setRequestHeader("token", userVO.token);
+    },
     loadonce: true,
     mtype: "get",
     //	data: grid_data,
@@ -151,7 +160,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: $path_base+"/dummy.html", //nothing is saved
+    editurl: "http://localhost:8888/test", //nothing is saved
     caption: "举报问题操作",
     autowidth: true
   });
@@ -260,7 +269,7 @@ jQuery(function ($) {
             console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
           });
-          return value;
+          //return value;
         }
       },
       recreateForm: true,

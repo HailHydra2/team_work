@@ -6,6 +6,7 @@
       	<!-- 引入 Bootstrap -->
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="js/util.js"></script>
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
       	<link rel="shortcut icon" href="pic/favicon.ico">
@@ -86,10 +87,13 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							 <a href="message.html">🔔</a>
+							 <a href="myMessage.html">🔔</a>
 						</li>
 						<li class="active">
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
 				</div>
@@ -225,79 +229,33 @@
 				  </div>
 				  <div class="form-group">
 					<label class="col-sm-2 control-label">  </label>
-					  <button type="submit" class="btn btn-primary" id="submit" style="text-align:center;">确认修改</button>
+					  <button type="submit" class="btn btn-primary" id="submit" style="text-align:center;" onclick="submitPwdChange();">确认修改</button>
 				  </div>
 				</form>
 			</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<!-- 内容写在这里！！！ -->
 			
 		</div>
 		<div class="col-md-4 column">
 			<img alt="140x140" src="http://cdn.ibootstrap.cn/lorempixel.com/140/140/default.jpg" class="img-circle" />
 			<dl>
-				<dt>
-					姓名
-				</dt>
-				<dd>
-					张三
-				</dd>
-				<dt>
-					学号
-				</dt>
-				<dd>
-					221701300
-				</dd>
+				<dt>姓名</dt>
+				<dd id="infoName">张三</dd>
+				<dt>学号</dt>
+				<dd id="infoAccount">221701300</dd>
 			</dl>
 			<dl>
-				<dt>
-					等级
-				</dt>
-				<dd>
-					0
-				</dd>
-				<dt>
-					积分
-				</dt>
-				<dd>
-					0
-				</dd>
+				<dt>等级</dt>
+				<dd id="infoLevel">0</dd>
+				<dt>积分</dt>
+				<dd id="infoScore">0</dd>
 			</dl>
 			<dl>
-
-				<dt>
-					提问
-				</dt>
-				<dd>
-					3
-				</dd>
-				<dt>
-					回答
-				</dt>
-				<dd>
-					0
-				</dd>
-				<dt>
-					关注
-				</dt>
-				<dd>
-					0
-				</dd>
-
+				<dt>提问</dt>
+				<dd id="infoQuesNum">3</dd>
+				<dt>回答</dt>
+				<dd id="infoRespNum">0</dd>
+				<dt>关注</dt>
+				<dd id="infoFocusNum">0</dd>
 			</dl>
 		</div>
 	</div>
@@ -310,6 +268,55 @@
 
 	</div>
 
+	<script>
+		//页面加载时启动页面
+		$(document).ready(function(e) {
+			//获取当前登录用户
+			var userVO = localStorage.getExpire("userVO");
+			if(userVO == null){//登录过期，返回登录页面
+				window.location.href = "login.html";
+			}else{
+				var b = document.getElementById("infoName");
+				b.innerHTML = userVO.user.name;
+				console.info(userVO);
+				initInfo(userVO);
+			}
+		});
 
+		//提交修改密码请求
+		function submitPwdChange(){
+				var pwd1 = $.trim($("#newpass").val());
+				var pwd2 = $.trim($("#newpassAgain").val());
+				var idCard = $.trim($("#ID").val());
+				if(pwd1 != pwd2){
+					return;
+				}
+				var t = userVO;
+				//身份证号
+				t.user.idCard = idCard;
+				//密码
+				t.user.password = pwd1;
+				//提交修改
+				$.ajax({
+					url: "http://localhost:8888/user",
+					type: "put", 
+					data:JSON.stringify(t.user),
+					beforeSend: function (request) {
+						request.setRequestHeader("token", userVO.token);
+					},
+					contentType: 'application/json;charset=utf-8',
+					success: function (data) {
+						if(data.code == 200){
+							//验证成功
+							userVO = userVO;
+							alert("修改成功");
+						}else{
+							//验证失败
+							alert("抱歉，您输入的身份证信息有误，请重新输入");
+						}
+					}
+				});
+			}
+	</script>
    </body>
 </html>

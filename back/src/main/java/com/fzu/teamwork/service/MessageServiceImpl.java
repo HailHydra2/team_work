@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -87,8 +88,49 @@ public class MessageServiceImpl implements MessageService{
         //创建对应的列表获取策略对象
         createMessageStrategy(1, uid);
         List<Message> messageList = messageStrategy.getMessageList();
+        getButtonList(uid);
         page.setMessages(messageList);
         return page;
+    }
+
+    //获取分页下面的按钮列表
+    public void getButtonList(int uid){
+        //每页有几条数据
+        int count = messagePage.getCount();
+        //问题总条数
+        MessageExample example = new MessageExample();
+        example.createCriteria().andObjectIdEqualTo(uid);
+        int total = (int)messageDao.countByExample(example);
+        //当前页号
+        int pageIndex = messagePage.getPageIndex();
+        //总页数
+        int maxIndex = total%count == 0 ? total/count : total/count +1;
+        List<Integer> list = new ArrayList<>();
+        //按钮的最后一个是当前页+5/最大页
+        int lastIndex = (pageIndex + 5 > maxIndex) ? maxIndex : pageIndex + 5;
+        //按钮列表的第一个
+        int startIndex;
+        if(lastIndex == pageIndex + 5){//最后一个没到最后一页，第一个就是当前页
+            startIndex = pageIndex;
+        }else{//最后一个是最后一页，第一个是
+            int t = 5 - (maxIndex - pageIndex + 1);//前面要补几个按钮
+            startIndex = pageIndex - t > 0 ? pageIndex - t : 1;
+        }
+
+        for(int i = startIndex; i <= lastIndex; i++){
+            list.add(i);
+        }
+        messagePage.setButtonList(list);
+
+        messagePage.setHasPrevious(true);//是否有上一页
+        messagePage.setHasNext(true);//是否还有下一页
+        messagePage.setPageNum(maxIndex);//设置总页数
+        if(pageIndex == 1){
+            messagePage.setHasPrevious(false);
+        }
+        if(pageIndex == maxIndex){
+            messagePage.setHasNext(false);
+        }
     }
 
     //删除某个用户的所有消息(返回删除消息条数)
@@ -145,7 +187,6 @@ public class MessageServiceImpl implements MessageService{
         //将消息插入数据库保存
         if(message != null){
             //需要保存的消息
-            log.info("message{}",message);
             messageDao.insert(message);
         }
     }

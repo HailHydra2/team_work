@@ -170,14 +170,16 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     //获取用户回复、提问问题列表
-    //type：0回复，1:提问
+    //type：0回复，1:提问, 2:关注
     @Override
     public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage, int type){
         this.questionPage = questionPage;
         if(type == 0){//回复
             questionStrategy = new QuestionBeResponse(userId,questionPage,questionDao);
-        }else{//提问
+        }else if(type == 1){//提问
             questionStrategy = new QuestionByUidStrategy(userId, questionPage,questionDao);
+        }else if(type == 2){//关注
+            questionStrategy = new QuestionBeAttentionStrategy(userId,questionPage,questionDao,attentionDao);
         }
         List<Question> questionList = questionStrategy.getQuestionList();
         List<QuestionVO> questionVOList = convertToVOList(questionList);

@@ -89,10 +89,13 @@
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							 <a href="message.html">🔔</a>
+							 <a href="myMessage.html">🔔</a>
 						</li>
 						<li>
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
 				</div>
@@ -205,16 +208,8 @@
 			</div>
 
 			<ul class="pagination pagination-lg" id="pageButtons">
-				<li>
-					<a id="previous">前页</a>
-				</li>
-				<li>
-					 <a href="#">1</a>
-				</li>
-				<li>
-					 <a id="next">后页</a>
-				</li>
 			</ul>
+			<p id = "divEnd"></p>
 		</div>
 
 		<!-- 内容写在这里！！！ -->
@@ -229,7 +224,7 @@
 	//回复分页列表
 	var responsePage = {
 		"pageIndex":1,
-		"count":10
+		"count":5
 	}
 	//本页面的问题id
 	var id = getQueryVariable("id");
@@ -298,7 +293,9 @@
 	//上一页按钮
 	var preButton = document.getElementById("previous");
     //下一页按钮
-    var nextButton = document.getElementById("next");
+	var nextButton = document.getElementById("next");
+	//问题模块结束标记元素
+	var divEnd = document.getElementById("divEnd");
     //当前页面显示的数据(传递给后端的数据)
 
 
@@ -314,44 +311,8 @@
 		//加载问题列表
 		initResponseList();
     });
-
-    //上一页点击事件
-    $(previous).click(function(e){
-        responseDiv.removeChild(responseList);
-        responseList = document.createElement("div");
-        responseDiv.insertBefore(responseList, pageButtons);
-        responseList.setAttribute("id","responseList");
-        responsePage.pageIndex--
-        changeQuestionPage(responsePage, responsePath);
-    })
-
-    //下一页点击事件
-    $(next).click(function(e){
-        responseDiv.removeChild(responseList);
-        responseList = document.createElement("div");
-        responseDiv.insertBefore(responseList, pageButtons);
-        responseList.setAttribute("id","responseList");
-        //pageButtons.removeAttribute("disabled");
-        responsePage.pageIndex++;
-        changeQuestionPage(responsePage, responsePath);
-	})
 	
 
-	
-	//更新分页按钮
-	function updatePageButtons(){
-		if(responsePage.hasPrevious == true){//有上一页
-			console.info("有上一页");
-		}else{//没有上一页
-			console.info("没有上一页");
-		}
-
-		if(responsePage.hasNext == true){//有下一页
-			console.info("有下一页");
-		}else{
-			console.info("没有下一页");
-		}
-	}
 	
 	//初始化问题的详细信息
 	function initQuestion(){
@@ -359,6 +320,9 @@
 			url: "http://localhost:8888/question/" + id + "/" + userVO.user.id,
 			type: "get", 
 			contentType: 'application/json;charset=utf-8',
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
 			success: function (data) {
 				initQuestionBlock(data.data);
 			}
@@ -520,6 +484,9 @@
 			type: "post", 
 			data:JSON.stringify(response),
 			contentType: 'application/json;charset=utf-8',
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
 			success: function (data) {
 				//将输入框置为空
 				document.getElementById("cresponseContent").value = "";
@@ -564,6 +531,9 @@
 			type: "post", 
 			data:JSON.stringify(attention),
 			contentType: 'application/json;charset=utf-8',
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
 			success: function (data) {
 				updateUser(data.data)
         	}
@@ -698,6 +668,84 @@
 		});
 	}
 
+	//更新分页按钮
+	function updatePageButtons(){
+    responseDiv.removeChild(pageButtons);
+    pageButtons = document.createElement("ul");
+    pageButtons.className = "pagination pagination-lg";
+    pageButtons.id = "pageButtons";
+    responseDiv.insertBefore(pageButtons,divEnd);
 
+    //首页
+    var firstButton = document.createElement("li");
+    var firstLink = document.createElement("a");
+    firstLink.innerHTML = "首页";
+    firstButton.appendChild(firstLink)
+    pageButtons.appendChild(firstButton);
+    firstButton.setAttribute("onclick","changePage(" + 1 + ");");
+
+    //上一页
+    var preButton = document.createElement("li");
+    var preLink = document.createElement("a");
+    preLink.innerHTML = "上一页";
+    preButton.appendChild(preLink);
+    pageButtons.append(preButton);
+    preButton.setAttribute("id","previous");
+
+    if(responsePage.hasPrevious == true){//有上一页
+        preButton.setAttribute("onclick", "prePage( 1, " + (responsePage.pageIndex-1) + ");");
+    }else{//没有上一页
+        preButton.setAttribute("onclick", "prePage( 0, " + (responsePage.pageIndex-1) + ");");
+    }
+
+    //分页页码列表
+    var buttonList = responsePage.buttonList;
+    console.info(buttonList);
+
+    for(var i = 0; i < buttonList.length; i++){
+        var button_i = document.createElement("li")
+        var link_i = document.createElement("a");
+        link_i.innerHTML = buttonList[i];
+        button_i.appendChild(link_i);
+        pageButtons.appendChild(button_i);
+        button_i.setAttribute("onclick", "changePage(" + buttonList[i] + ");")
+        if(buttonList[i] == responsePage.pageIndex){
+            link_i.setAttribute("style","color:red");
+        }
+    }
+
+    //下一页
+    var nextButton = document.createElement("li");
+    var nextLink = document.createElement("a");
+    nextLink.innerHTML = "下一页";
+    nextButton.appendChild(nextLink);
+    pageButtons.append(nextButton);
+    nextButton.setAttribute("id","next")
+    nextButton.setAttribute("onclick", "nextPage(" + (responsePage.pageIndex+1) + ");");
+
+    if(responsePage.hasNext == true){//有下一页
+        nextButton.setAttribute("onclick", "nextPage( 1, " + (responsePage.pageIndex+1) + ");");
+    }else{//没有下一页
+        nextButton.setAttribute("onclick", "nextPage( 0, " + (responsePage.pageIndex+1) + ");");
+    }
+
+    //末页
+    var lastButton = document.createElement("li");
+    var lastLink = document.createElement("a");
+    lastLink.innerHTML = "末页";
+    lastButton.appendChild(lastLink)
+    pageButtons.appendChild(lastButton);
+    lastButton.setAttribute("onclick", "changePage(" + responsePage.pageNum + ");")
+}
+
+function changePage(index){
+    responseDiv.removeChild(responseList);
+    responseList = document.createElement("div");
+    responseDiv.insertBefore(responseList, pageButtons);
+    responseList.setAttribute("id","responseList");
+    //pageButtons.removeAttribute("disabled");
+    responsePage.pageIndex = index;
+    changeQuestionPage(responsePage, responsePath);
+}
 </script>
 </html>
