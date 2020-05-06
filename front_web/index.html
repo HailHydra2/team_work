@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      	<title>校园帮帮网-主页</title>
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
+      	<!-- 引入 Bootstrap -->
+      	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="js/util.js"></script>
+      	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
+      	<link rel="shortcut icon" href="pic/favicon.ico">
+   </head>
+   <body>
+      	<!-- 提问模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" id="myModalLabel">提问</h4>
+					</div>
+					<div class="modal-body">
+						<div >
+							<div class="row clearfix">
+								<div class="col-md-12 column">
+									<div class="alert alert-dismissable alert-info">
+					 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											<h4>提问须知</h4>
+											<strong>注意！</strong>
+											请提出有意义的问题，请勿发表灌水内容。
+											<a href="#" class="alert-link">【问题管理条例】</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					<form class="form-horizontal" role="form" target="iframe">
+							
+						<div class="form-group">
+							<label for="inputQue" class="col-sm-2 control-label">问题</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputQue" />
+							</div>
+						</div>
+						<div class="form-group">
+    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
+							<div class="col-sm-9">
+    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+							</div>
+  						</div>
+						<div style="text-align:center">
+							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+						</div>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+    <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#"><img src="pic/icon.png" height="40" width="40" vsapce="50" style="float:left"/></a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+					<ul class="nav navbar-nav">
+						<li class="active">
+							 <a href="index.html">首页</a>
+						</li>
+						<li>
+							 <a href="#" data-toggle="modal" data-target="#myModal">提问</a>
+						</li>
+						<li class="dropdown">
+							<a href="questionList.html">等你来答</a>
+						</li>
+						<li class="dropdown"  id="tempBlock">
+					   </li>
+					</ul>
+					<form class="navbar-form navbar-left" role="search" target="iframe">
+						<div class="form-group">
+							<input type="text" class="form-control" id="searchContent"/>
+						</div> <button type="submit" class="btn btn-default" onclick="search();">🔍</button>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							 <a href="myMessage.html">🔔</a>
+						</li>
+						<li>
+							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
+						</li>
+					</ul>
+				</div>
+				
+
+			</nav>
+			<div class="page-header" style="top:130">
+				<br/>
+				<h1 >
+					首页 <small></small>
+				</h1>
+			</div>
+			<!--页面主要内容容器-->
+			<div id="questionDiv">
+				<!--问题列表容器-->
+				<div id="quetionList">
+
+				</div>
+	
+				<ul class="pagination pagination-lg" id="pageButtons">
+				</ul>
+				<p id = "divEnd"></p>
+			</div>
+
+		</div>
+	</div>
+	</div>
+
+
+   </body>
+
+   
+<script>
+    //问题容器
+    var questionDiv = document.getElementById("questionDiv");
+    //存放问题列表的div
+	var questionList = document.getElementById("quetionList");
+	//分页的按钮列表
+    var pageButtons = document.getElementById("pageButtons");
+	//上一页按钮
+	var preButton = document.getElementById("previous");
+    //下一页按钮
+	var nextButton = document.getElementById("next");
+	//问题模块结束标记元素
+	var divEnd = document.getElementById("divEnd");
+    //当前页面显示的数据(传递给后端的数据)
+    var page = {
+            "pageIndex":1,
+            "count":10,
+            "keyWord":"",
+            sortApproach:"sortByHeat",
+        };
+
+	//请求后端的url
+    var path = "http://118.190.90.167:8888/questions";
+
+
+    //页面加载时启动页面
+    $(document).ready(function(e) {
+		if(userVO == null){
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "login.html";
+		}
+		//首页按时间排序
+		changeQuestionPage(page, path);
+		//获取临时板块
+		getBlock();
+    });
+
+	
+
+</script>
+</html>

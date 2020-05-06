@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      	<title>校园帮帮网-个人中心</title>
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
+      	<!-- 引入 Bootstrap -->
+      	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="js/util.js"></script>  
+		<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
+      	<link rel="shortcut icon" href="pic/favicon.ico">
+   </head>
+   <body>
+      	<!-- 提问模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" id="myModalLabel">提问</h4>
+					</div>
+					<div class="modal-body">
+						<div >
+							<div class="row clearfix">
+								<div class="col-md-12 column">
+									<div class="alert alert-dismissable alert-info">
+					 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											<h4>提问须知</h4>
+											<strong>注意！</strong>
+											请提出有意义的问题，请勿发表灌水内容。
+											<a href="#" class="alert-link">【问题管理条例】</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					<form class="form-horizontal" role="form" target="iframe">
+							
+						<div class="form-group">
+							<label for="inputQue" class="col-sm-2 control-label">问题</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputQue" />
+							</div>
+						</div>
+						<div class="form-group">
+    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
+							<div class="col-sm-9">
+    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+							</div>
+  						</div>
+						<div style="text-align:center">
+							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+						</div>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+    <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#"><img src="pic/icon.png" height="40" width="40" vsapce="50" style="float:left"/></a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							 <a href="index.html">首页</a>
+						</li>
+						<li>
+							 <a href="#" data-toggle="modal" data-target="#myModal">提问</a>
+						</li>
+						<li class="dropdown">
+							<a href="questionList.html">等你来答</a>
+						</li>
+						<li class="dropdown"  id="tempBlock">
+					   </li>
+					</ul>
+					<form class="navbar-form navbar-left" role="search" target="iframe">
+						<div class="form-group">
+							<input type="text" class="form-control" id="searchContent"/>
+						</div> <button type="submit" class="btn btn-default" onclick="search();">🔍</button>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							 <a href="myMessage.html">🔔</a>
+						</li>
+						<li class="active">
+							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
+						</li>
+					</ul>
+				</div>
+				
+
+			</nav>
+			<div class="page-header" style="top:130">
+				<br/>
+				<h1 >
+					个人中心 <small></small>
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-8 column">
+			<ul class="nav nav-tabs">
+				<li>
+					 <a href="usrInfo.html">关注问题</a>
+				</li>
+				<li>
+					 <a href="myAnswer.html">我的回答</a>
+				</li>
+				<li>
+					 <a href="myQuestion.html">我的提问</a>
+				</li>
+				<li>
+					<a href="myMessage.html">我的消息</a>
+			   </li>
+			   <li class="active">
+				<a href="exchange.html">奖励兑换</a>
+		   	   </li>
+				<li class="dropdown pull-right">
+					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">其他<strong class="caret"></strong></a>
+					<ul class="dropdown-menu">
+						<li>
+							 <a href="editPwd.html">修改密码</a>
+						</li>
+						<li class="disabled">
+							 <a href="#" >修改信息</a>
+						</li>
+						<li class="divider">
+						</li>
+						<li>
+							 <a href="login.html">退出登录</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<!-- 内容写在这里！！！ -->
+			<br/>
+			<div class="container">
+				<div class="row clearfix">
+					<div class="col-md-7 column">
+						<div class="alert alert-success alert-dismissable">
+							 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+							<h4>
+								奖励兑换
+							</h4> <strong>注意!</strong>你可以使用积分来兑换综测成绩或者志愿服务时长，积分只能整数兑换。 <a href="#" class="alert-link">兑换规则</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+			<form role="form">
+				<div class="radio">
+					<label>
+						<input id="SyntheticTestRadio" type="radio" name="optionsRadios" value="SyntheticTest" checked> 综测成绩
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input id="ServiceTimeRadio" type="radio" name="optionsRadios" value="ServiceTime">志愿时长
+					</label>
+				</div>
+				<!--兑换综测-->
+				<div class="form-group" id="syntheticTestRewardNumDiv">
+				  <label for="name">兑换综测值 (兑换规则：100积分兑换0.1综测)</label>
+				  <select class="form-control" id="syntheticTestRewardNum">
+					<option value="0.1">0.1综测</option>
+					<option value="0.5">0.5综测</option>
+					<option value="1.0">1.0综测</option>
+					<option value="5.0">5.0综测</option>
+				  </select>
+				</div>
+
+				<!--兑换时长-->
+				<div class="form-group" id="serviceTimeRewardNumDiv" style="display:none;">
+					<label for="name">兑换时长 (兑换规则：100积分兑换1时长)</label>
+					<select class="form-control" id="serviceTimeRewardNum">
+					  <option value="1.0">1小时</option>
+					  <option value="2.0">2小时</option>
+					  <option value="5.0">5小时</option>
+					  <option value="10.0">10小时</option>
+					  <option value="20.0">20小时</option>
+					</select>
+				</div>
+			  </form>
+
+			  <div class="container">
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						 <button type="button" class="btn btn-default btn-primary" onclick="reward()">确认兑换</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 column">
+			<img alt="140x140" src="http://cdn.ibootstrap.cn/lorempixel.com/140/140/default.jpg" class="img-circle" />
+			<dl>
+				<dt>姓名</dt>
+				<dd id="infoName">张三</dd>
+				<dt>学号</dt>
+				<dd id="infoAccount">221701300</dd>
+			</dl>
+			<dl>
+				<dt>等级</dt>
+				<dd id="infoLevel">0</dd>
+				<dt>积分</dt>
+				<dd id="infoScore">0</dd>
+			</dl>
+			<dl>
+				<dt>提问</dt>
+				<dd id="infoQuesNum">3</dd>
+				<dt>回答</dt>
+				<dd id="infoRespNum">0</dd>
+				<dt>关注</dt>
+				<dd id="infoFocusNum">0</dd>
+			</dl>
+		</div>
+	</div>
+	</div>
+
+
+   </body>
+	
+	<script>
+		var userVO;
+		//页面加载时启动页面
+		$(document).ready(function(e) {
+			//获取当前登录用户
+			userVO = localStorage.getExpire("userVO");
+			if(userVO == null){//登录过期，返回登录页面
+				window.location.href = "login.html";
+			}else{
+				var b = document.getElementById("infoName");
+				b.innerHTML = userVO.user.name;
+				console.info(userVO.user.name);
+				initInfo(userVO);
+			}
+		});
+		
+		$(SyntheticTestRadio).click(function(e){
+			//显示综测兑换分数下拉框
+			var d = document.getElementById("syntheticTestRewardNumDiv");
+			d.removeAttribute("style");
+			//隐藏时长兑换数量下拉框
+			d = document.getElementById("serviceTimeRewardNumDiv");
+			d.setAttribute("style","display:none");
+		})
+		
+		$(ServiceTimeRadio).click(function(e){
+			//隐藏综测兑换分数下拉框
+			var d = document.getElementById("syntheticTestRewardNumDiv");
+			d.setAttribute("style","display:none");
+			//显示时长兑换数量下拉框
+			d = document.getElementById("serviceTimeRewardNumDiv");
+			d.removeAttribute("style");
+		})
+	
+		
+		//将申请信息发送至后端保存到数据库
+		function reward(){
+			//申请类型（综测、时长）
+			var type = $("input[name='optionsRadios']:checked").val();
+			var valueOption;
+			if(type == "SyntheticTest"){
+				//申请类型为综测
+				valueOption = document.getElementById("syntheticTestRewardNum");
+			}else if(type == "ServiceTime"){
+				//申请类型为时长
+				valueOption = document.getElementById("serviceTimeRewardNum")
+			}
+			var rewardNumIndex = valueOption.selectedIndex;
+			//获取申请的值
+			var rewardNum = valueOption.options[rewardNumIndex].value;
+			//申请时间
+			var time = new Date();
+			var timeString = getTimeString(time);
+			//发送给后端的数据
+			var rewardRecord = {
+				"type":type,
+				"rewardNum":rewardNum,
+				"userId":userVO.user.id,
+				"applyTime":timeString
+			}
+
+			$.ajax({
+				url: "http://118.190.90.167:8888/reward",
+				type: "post", 
+				data:JSON.stringify(rewardRecord),
+				contentType: 'application/json;charset=utf-8',
+				beforeSend: function (request) {
+					request.setRequestHeader("token", userVO.token);
+				},
+				success: function (data) {
+					userVO = data.data;
+					console.info(userVO);
+					localStorage.setExpire("userVO",userVO,1000*60*30);
+					initInfo(userVO);
+				}
+			});
+		}
+	</script>
+
+</html>

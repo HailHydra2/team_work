@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      	<title>校园帮帮网-问题详情</title>
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
+      	<!-- 引入 Bootstrap -->
+      	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="js/util.js"></script>
+      	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
+      	<link rel="shortcut icon" href="pic/favicon.ico">
+   </head>
+   <body>
+      	<!-- 提问模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" id="myModalLabel">提问</h4>
+					</div>
+					<div class="modal-body">
+						<div >
+							<div class="row clearfix">
+								<div class="col-md-12 column">
+									<div class="alert alert-dismissable alert-info">
+					 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+											<h4>提问须知</h4>
+											<strong>注意！</strong>
+											请提出有意义的问题，请勿发表灌水内容。
+											<a href="#" class="alert-link">【问题管理条例】</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					<form class="form-horizontal" role="form" target="iframe">
+							
+						<div class="form-group">
+							<label for="inputQue" class="col-sm-2 control-label">问题</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="inputQue" />
+							</div>
+						</div>
+						<div class="form-group">
+    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
+							<div class="col-sm-9">
+    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+							</div>
+  						</div>
+						<div style="text-align:center">
+							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+						</div>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+    <div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#"><img src="pic/icon.png" height="40" width="40" vsapce="50" style="float:left"/></a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							 <a href="index.html">首页</a>
+						</li>
+						<li>
+							 <a href="#" data-toggle="modal" data-target="#myModal">提问</a>
+						</li>
+						<li class="dropdown">
+							<a href="questionList.html">等你来答</a>
+						</li>
+						<li class="dropdown"  id="tempBlock">
+					   </li>
+					</ul>
+					<form class="navbar-form navbar-left" role="search" target="iframe">
+						<div class="form-group">
+							<input type="text" class="form-control" id="searchContent"/>
+						</div> <button type="submit" class="btn btn-default" onclick="search();">🔍</button>
+					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							 <a href="myMessage.html">🔔</a>
+						</li>
+						<li>
+							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
+						</li>
+						<li>
+							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
+						</li>
+					</ul>
+				</div>
+				
+
+			</nav>
+			<div class="page-header" style="top:130">
+				<br/>
+				<h1>
+					问题详情 <small></small>
+				</h1>
+			</div>
+		</div>
+	</div>
+	
+
+
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-8 column">
+				<h3 class="text-left" id="questionTitle"></h3>
+				<p id="questionContent"></p>
+
+				<div class="col-md-12 column" >
+					<div id="login_btn" class="login_log" style="display: inline;">
+						<br/>
+						<button type="button" class="btn btn-sm btn-primary" id="attentionQuestion" onclick="attentionQuestion();"></button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</div>
+					<button type="button" class="btn btn-sm btn-danger" id="reportQuestion" onclick="reportQuesion();"></button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<div id="login_btn" class="login_log" style="display: inline;">
+						<a id="modal-706894" class="btn btn-success btn-sm" href="#addAnswer" role="button" class="btn btn-default btn-success" data-toggle="modal">回答问题</a>
+					</div>
+				</div>
+				 
+			</div>
+			<div class="col-md-4 column">
+				<div class="col-md-6 column">
+					<p><strong>创建时间</strong></p>
+					<p id="questionCreateTime" style="display: inline-flex;"></p>
+			   </div>
+			   <div class="col-md-6 column">
+				<p><strong>回复数</strong></p>
+				<p id="responseNum" style="display: inline-flex;"></p>
+			   </div>
+			   <div class="col-md-12 column" >
+					<strong>提问者</strong>
+					<h4 id="authorName"></h4>
+
+			   </div>
+			   <div class="col-md-12 column" style="bottom: 0;">
+				<br/>
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+				</div>
+				<!-- 回答模态框（Modal） -->
+				<div class="modal fade" id="addAnswer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+							<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+								</button>
+								<h4 class="modal-title" id="myModalLabel">回答</h4>
+							</div>
+							<div class="modal-body">
+								<div >
+									<div class="row clearfix">
+										<div class="col-md-12 column">
+											<div class="alert alert-dismissable alert-info">
+							 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+													<h4>回答须知</h4>
+													<strong>注意！</strong>
+													请做出有意义的回答，请勿发表灌水内容。
+													<a href="#" class="alert-link">【回答管理条例】</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							<form class="form-horizontal" role="form" target="iframe">
+								<div class="form-group">
+    								<label for="describeQue" class="col-sm-2 control-label">内容</label>
+									<div class="col-sm-9">
+    									<textarea class="form-control" rows="3" id="cresponseContent" style="max-width: 100%"></textarea>
+									</div>
+  								</div>
+								<div style="text-align:center">
+									<button type="button" class="btn btn-primary" onclick="postResponse()">提 交</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="closeButton">关 闭</button>
+								</div>
+							</form>
+							<iframe id="iframe" name="iframe" style="display:none;"></iframe>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			<!-- 回答模态框结束（Modal） -->
+				
+			</div>
+		</div>
+		<hr/>
+			
+		<!--页面主要内容容器-->
+		<div id="responseDiv">
+			<!--问题列表容器-->
+			<div id="responseList">
+				<!--一个回复记录-->
+			</div>
+
+			<ul class="pagination pagination-lg" id="pageButtons">
+			</ul>
+			<p id = "divEnd"></p>
+		</div>
+
+		<!-- 内容写在这里！！！ -->
+
+	</div>
+	
+	</div>
+	
+</body>
+   
+<script>
+	//回复分页列表
+	var responsePage = {
+		"pageIndex":1,
+		"count":5
+	}
+	//本页面的问题id
+	var id = getQueryVariable("id");
+	//回复列表url
+	var responsePath = "http://118.190.90.167:8888/responses/" + id + "/" + userVO.user.id;
+	//回复容器
+    var responseDiv = document.getElementById("responseDiv");
+    //存放回复列表的div
+	var responseList = document.getElementById("responseList");
+	//分页的按钮列表
+    var pageButtons = document.getElementById("pageButtons");
+	//上一页按钮
+	var preButton = document.getElementById("previous");
+    //下一页按钮
+    var nextButton = document.getElementById("next");	
+
+	//回答文本折叠
+	function show1(){ 
+	var box = document.getElementById("box1"); 
+	var text = box.innerHTML; 
+	var newBox = document.createElement("div"); 
+	var btn = document.createElement("a"); 
+	newBox.innerHTML = text.substring(0,200); 
+	btn.innerHTML = text.length > 200 ? "...显示全部" : ""; 
+	btn.href = "###"; 
+	btn.onclick = function(){ 
+	if (btn.innerHTML == "...显示全部"){ 
+	btn.innerHTML = "收起"; 
+	newBox.innerHTML = text; 
+	}else{ 
+	btn.innerHTML = "...显示全部"; 
+	newBox.innerHTML = text.substring(0,200); 
+	} 
+	} 
+	box.innerHTML = ""; 
+	box.appendChild(newBox); 
+	box.appendChild(btn); 
+	} 
+	function show2(){ 
+	var box = document.getElementById("box2"); 
+	var text = box.innerHTML; 
+	var newBox = document.createElement("div"); 
+	var btn = document.createElement("a"); 
+	newBox.innerHTML = text.substring(0,200); 
+	btn.innerHTML = text.length > 200 ? "...显示全部" : ""; 
+	btn.href = "###"; 
+	btn.onclick = function(){ 
+	if (btn.innerHTML == "...显示全部"){ 
+	btn.innerHTML = "收起"; 
+	newBox.innerHTML = text; 
+	}else{ 
+	btn.innerHTML = "...显示全部"; 
+	newBox.innerHTML = text.substring(0,200); 
+	} 
+	} 
+	box.innerHTML = ""; 
+	box.appendChild(newBox); 
+	box.appendChild(btn); 
+	} 
+    //问题容器
+    var questionDiv = document.getElementById("questionDiv");
+    //存放问题列表的div
+	var questionList = document.getElementById("quetionList");
+	//分页的按钮列表
+    var pageButtons = document.getElementById("pageButtons");
+	//上一页按钮
+	var preButton = document.getElementById("previous");
+    //下一页按钮
+	var nextButton = document.getElementById("next");
+	//问题模块结束标记元素
+	var divEnd = document.getElementById("divEnd");
+    //当前页面显示的数据(传递给后端的数据)
+
+
+    //页面加载时启动页面
+    $(document).ready(function(e) {
+		if(userVO == null){
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "login.html";
+		}
+		//加载问题信息
+		initQuestion();
+		//加载问题列表
+		initResponseList();
+    });
+	
+
+	
+	//初始化问题的详细信息
+	function initQuestion(){
+		$.ajax({
+			url: "http://118.190.90.167:8888/question/" + id + "/" + userVO.user.id,
+			type: "get", 
+			contentType: 'application/json;charset=utf-8',
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
+			success: function (data) {
+				initQuestionBlock(data.data);
+			}
+		});
+	}
+
+	//给问题详情内容赋值
+	function initQuestionBlock(questionVO){
+		var title = document.getElementById("questionTitle");
+		title.innerHTML = questionVO.title;
+		var content = document.getElementById("questionContent");
+		content.innerHTML = questionVO.content;
+		var responseNum = document.getElementById("responseNum");
+		responseNum.innerHTML = questionVO.question.responseNum;
+		var questionCreateTime = document.getElementById("questionCreateTime");
+		questionCreateTime.innerHTML = questionVO.question.createTime;
+		var questionAuthorName = document.getElementById("authorName");
+		questionAuthorName.innerHTML = questionVO.authorName;4
+		var attentionQuestionButton = document.getElementById("attentionQuestion");
+		var reportQuestionButton = document.getElementById("reportQuestion");
+		if(questionVO.doesAttention == true){
+			//已关注
+			attentionQuestionButton.innerHTML = "取消关注";
+			attentionQuestionButton.setAttribute("flag",1);
+		}else{
+			//未关注
+			attentionQuestionButton.innerHTML = "关注问题";
+			attentionQuestionButton.setAttribute("flag",0);
+		}
+
+		if(questionVO.doesReported == true){
+			//已投诉
+			reportQuestionButton.innerHTML = "取消投诉";
+			reportQuestionButton.setAttribute("flag", 1);
+		}else{
+			//未投诉
+			reportQuestionButton.innerHTML = "投诉问题";
+			reportQuestionButton.setAttribute("flag", 0);
+		}
+	}
+
+	//初始化加载问题列表
+	function initResponseList(){
+		changeQuestionPage(responsePage, responsePath)
+	}
+
+	//加载更新回复列表分页
+	var list;
+    function updateList(p){
+		responsePage = p;
+		//当页的回复列表
+        list = responsePage.responses;
+		list = Array.prototype.slice.call(list);
+		responseDiv.removeChild(responseList);
+		responseList = document.createElement("div");
+        responseDiv.insertBefore(responseList, pageButtons);
+        for(var i = 0; i < list.length; i++){
+            //创建存放单个回复的div
+			var responseBlock = document.createElement("div");
+			responseList.appendChild(responseBlock);
+			//回复内容div
+			var responseBox = document.createElement("div");
+			responseBox.id = "box" + i;
+			responseBlock.appendChild(responseBox);
+            //创建存放回复人姓名的<strong>标签
+            var responser = document.createElement("strong");
+			responser.innerHTML = list[i].authorName;
+			responseBox.appendChild(responser);
+            //创建存放回复内容的p标签
+            var content = document.createElement("p");
+            content.innerHTML = list[i].content;//问题描述
+			responseBox.appendChild(content);
+			//创建按钮div(点赞、点灭、投诉)
+			var buttonBox = document.createElement("div");
+			buttonBox.className = "btn-group btn-group-sm";
+			responseBlock.appendChild(buttonBox);
+			//创建点赞按钮
+			var likeButton = document.createElement("button");
+			likeButton.className = "btn btn-info btn-xs";
+			likeButton.id = "like" + i;
+			if(list[i].like == 1){
+				//已赞
+				likeButton.innerHTML = "👍取消点赞";
+				likeButton.setAttribute("flag",1);	
+			}else{
+				//点灭或没都没有
+				likeButton.innerHTML = "👍点赞";
+				likeButton.setAttribute("flag",0);
+			}
+			buttonBox.appendChild(likeButton);
+			var responseId = list[i].response.id;
+			console.info("likeResponse("  + responseId + ", "+ i + ", 'like');");
+			likeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'like');")
+			// likeButton.onclick =function(list){
+			// 	console.info(list[i].content);
+			// 	likeResponse(list[i].response.id, i, "like");
+			// }	 
+			//创建点灭按钮
+			var disLikeButton = document.createElement("button");
+			disLikeButton.id = "disLike" + i;
+			disLikeButton.className = "btn btn-info btn-xs";
+			if(list[i].like == -1){
+				//有点灭记录
+				disLikeButton.innerHTML = "👎取消点灭";
+				disLikeButton.setAttribute("flag", 1);
+			}else{
+				//点赞或都没有
+				disLikeButton.innerHTML = "👎点灭";
+				disLikeButton.setAttribute("flag",0)
+			}
+			buttonBox.appendChild(disLikeButton);
+			disLikeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'disLike');")
+			// disLikeButton.onclick = function(){
+			// 	likeResponse(list[i].response.id, i, "disLike");
+			// }
+			//创建投诉按钮
+			var reportButton = document.createElement("button");
+			reportButton.className = "btn btn-danger btn-xs";
+			if(list[i].doesReported == true){
+				//投诉过
+				reportButton.innerHTML = "⛔取消举报";
+				reportButton.setAttribute("flag", 1);	
+			}else{
+				//没投诉过
+				reportButton.innerHTML = "⛔举报";
+				reportButton.setAttribute("flag",0);
+			}
+			reportButton.id = "reportResponse" + i;
+			reportButton.setAttribute("onclick","reportResponse("  + responseId + ", "+ i + ");")
+			buttonBox.appendChild(reportButton);
+			//更新分页按钮
+			updatePageButtons();
+        }
+	}
+
+	//创建回复
+	function postResponse(){
+		//申请人id
+		var authorId = userVO.user.id;
+		//回复时间
+		var time = new Date();
+		var timeString = getTimeString(time);
+		//回复内容
+		var responseContent = document.getElementById("cresponseContent").value;
+		//responseContent = responseContent.toString();
+		console.info(responseContent);
+		//发送给后端的回复记录
+		var response = {
+			"response":{
+				"questionId":id,
+				"authorId":authorId,
+				"createTime":timeString
+			},
+			"content":responseContent
+		};
+		
+		$.ajax({
+			url: "http://118.190.90.167:8888/response",
+			type: "post", 
+			data:JSON.stringify(response),
+			contentType: 'application/json;charset=utf-8',
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
+			success: function (data) {
+				//将输入框置为空
+				document.getElementById("cresponseContent").value = "";
+				//关闭评论输入框
+				$(closeButton).click();
+				//刷新页面
+				location.reload();
+        	}
+		});
+	}
+
+	//关注、取消关注问题
+	function attentionQuestion(){
+		var userId = userVO.user.id;
+		//关注时间
+		var time = new Date();
+		var timeString = getTimeString(time);
+		var attentionButton = document.getElementById("attentionQuestion");
+		//1-关注  0-取消关注
+		var flag;
+		if(attentionButton.getAttribute("flag") == 1){
+			//取消关注
+			flag = 0;
+			attentionButton.setAttribute("flag", 0);
+			attentionButton.innerHTML = "关注问题";
+
+		}else{
+			//关注
+			var flag = 1;
+			attentionButton.setAttribute("flag",1);
+			attentionButton.innerHTML = "取消关注"
+		}
+		var attention = {
+			"userId":userId,
+			"questionId":id,
+			"createTime":timeString,
+			"flag":flag
+		}
+
+		$.ajax({
+			url: "http://118.190.90.167:8888/attention",
+			type: "post", 
+			data:JSON.stringify(attention),
+			contentType: 'application/json;charset=utf-8',
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
+			success: function (data) {
+				updateUser(data.data)
+        	}
+		});
+	}
+
+	//举报、取消举报问题
+	function reportQuesion(){
+		var userId = userVO.user.id;
+		var reportQuestionButton = document.getElementById("reportQuestion");
+		//1-投诉  0-取消投诉
+		var flag;
+		if(reportQuestionButton.getAttribute("flag") == 1){
+			//取消投诉
+			flag = 0;
+			reportQuestionButton.setAttribute("flag", 0);
+			reportQuestionButton.innerHTML = "举报问题";
+		}else{
+			//投诉
+			var flag = 1;
+			reportQuestionButton.setAttribute("flag",1);
+			reportQuestionButton.innerHTML = "取消投诉"
+		}
+		var reportRecord = {
+			"reportorId":userId,
+			"questionId":id,
+			"flag":flag
+		}
+
+		$.ajax({
+			url: "http://118.190.90.167:8888/questionReport",
+			type: "post", 
+			data:JSON.stringify(reportRecord),
+			contentType: 'application/json;charset=utf-8',
+			success: function (data) {
+        	}
+		});
+	}
+
+	//举报、取消举报回复（responseId:被投诉回复id, i:本页中的第i条回复）
+	function reportResponse(responseId, i){
+		var userId = userVO.user.id;
+		var reportResponseButton = document.getElementById("reportResponse" + i);
+		//1-投诉  0-取消投诉
+		var flag;
+		if(reportResponseButton.getAttribute("flag") == 1){
+			//取消投诉
+			flag = 0;
+			reportResponseButton.setAttribute("flag", 0);
+			reportResponseButton.innerHTML = "⛔举报";
+		}else{
+			//投诉
+			var flag = 1;
+			reportResponseButton.setAttribute("flag",1);
+			reportResponseButton.innerHTML = "⛔取消举报"
+		}
+		var reportRecord = {
+			"reportorId":userId,
+			"responseId":responseId,
+			"flag":flag
+		}
+
+		$.ajax({
+			url: "http://118.190.90.167:8888/responseReport",
+			type: "post", 
+			data:JSON.stringify(reportRecord),
+			contentType: 'application/json;charset=utf-8',
+			success: function (data) {
+        	}
+		});
+	}
+
+	//点赞、点灭回复(responseId:回复id, flag:)
+	function likeResponse(responseId, i, type){
+		// alert("haha");
+		var userId = userVO.user.id;
+		var likeButton = document.getElementById("like" + i);
+		var disLikeButton = document.getElementById("disLike" + i);
+
+		if(type == "like"){
+			console.info("sttribute:" + likeButton.getAttribute("flag"));
+			if(likeButton.getAttribute("flag") == 0){
+				//点赞
+				flag = 1;
+				//取消点灭
+				disLikeButton.setAttribute("flag", 0);
+				disLikeButton.innerHTML = "👎点灭"
+				//设置已赞标志位
+				likeButton.setAttribute("flag", 1);
+				likeButton.innerHTML ="👍取消点赞"
+			}else{//取消点赞
+				flag = 0;
+				//设置点赞标志位为0
+				likeButton.setAttribute("flag",0);
+				likeButton.innerHTML = "👍点赞"
+			}
+		}else if(type == "disLike"){
+			if(disLikeButton.getAttribute("flag") == 0){
+				//点灭
+				flag = -1;
+				//取消点赞
+				likeButton.setAttribute("flag",0);
+				likeButton.innerHTML = "👍点赞"
+				//设置点灭标志位
+				disLikeButton.setAttribute("flag",1);
+				disLikeButton.innerHTML = "👎取消点灭"
+			}else{
+				//取消点灭
+				flag = 0;
+				//取消点灭标志位
+				disLikeButton.setAttribute("flag",0);
+				disLikeButton.innerHTML = "👎点灭";
+			}
+		}
+
+		console.info("responseId:" + responseId);
+
+		var likeRecode = {
+			"userId":userId,
+			"responseId":responseId,
+			"flag":flag
+		}
+
+		$.ajax({
+			url: "http://118.190.90.167:8888/likeResponse",
+			type: "post", 
+			data:JSON.stringify(likeRecode),
+			contentType: 'application/json;charset=utf-8',
+			success: function (data) {
+				
+        	}
+		});
+	}
+
+	//更新分页按钮
+	function updatePageButtons(){
+    responseDiv.removeChild(pageButtons);
+    pageButtons = document.createElement("ul");
+    pageButtons.className = "pagination pagination-lg";
+    pageButtons.id = "pageButtons";
+    responseDiv.insertBefore(pageButtons,divEnd);
+
+    //首页
+    var firstButton = document.createElement("li");
+    var firstLink = document.createElement("a");
+    firstLink.innerHTML = "首页";
+    firstButton.appendChild(firstLink)
+    pageButtons.appendChild(firstButton);
+    firstButton.setAttribute("onclick","changePage(" + 1 + ");");
+
+    //上一页
+    var preButton = document.createElement("li");
+    var preLink = document.createElement("a");
+    preLink.innerHTML = "上一页";
+    preButton.appendChild(preLink);
+    pageButtons.append(preButton);
+    preButton.setAttribute("id","previous");
+
+    if(responsePage.hasPrevious == true){//有上一页
+        preButton.setAttribute("onclick", "prePage( 1, " + (responsePage.pageIndex-1) + ");");
+    }else{//没有上一页
+        preButton.setAttribute("onclick", "prePage( 0, " + (responsePage.pageIndex-1) + ");");
+    }
+
+    //分页页码列表
+    var buttonList = responsePage.buttonList;
+    console.info(buttonList);
+
+    for(var i = 0; i < buttonList.length; i++){
+        var button_i = document.createElement("li")
+        var link_i = document.createElement("a");
+        link_i.innerHTML = buttonList[i];
+        button_i.appendChild(link_i);
+        pageButtons.appendChild(button_i);
+        button_i.setAttribute("onclick", "changePage(" + buttonList[i] + ");")
+        if(buttonList[i] == responsePage.pageIndex){
+            link_i.setAttribute("style","color:red");
+        }
+    }
+
+    //下一页
+    var nextButton = document.createElement("li");
+    var nextLink = document.createElement("a");
+    nextLink.innerHTML = "下一页";
+    nextButton.appendChild(nextLink);
+    pageButtons.append(nextButton);
+    nextButton.setAttribute("id","next")
+    nextButton.setAttribute("onclick", "nextPage(" + (responsePage.pageIndex+1) + ");");
+
+    if(responsePage.hasNext == true){//有下一页
+        nextButton.setAttribute("onclick", "nextPage( 1, " + (responsePage.pageIndex+1) + ");");
+    }else{//没有下一页
+        nextButton.setAttribute("onclick", "nextPage( 0, " + (responsePage.pageIndex+1) + ");");
+    }
+
+    //末页
+    var lastButton = document.createElement("li");
+    var lastLink = document.createElement("a");
+    lastLink.innerHTML = "末页";
+    lastButton.appendChild(lastLink)
+    pageButtons.appendChild(lastButton);
+    lastButton.setAttribute("onclick", "changePage(" + responsePage.pageNum + ");")
+}
+
+function changePage(index){
+    responseDiv.removeChild(responseList);
+    responseList = document.createElement("div");
+    responseDiv.insertBefore(responseList, pageButtons);
+    responseList.setAttribute("id","responseList");
+    //pageButtons.removeAttribute("disabled");
+    responsePage.pageIndex = index;
+    changeQuestionPage(responsePage, responsePath);
+}
+</script>
+</html>
