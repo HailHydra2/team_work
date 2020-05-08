@@ -89,6 +89,7 @@ public class UserServiceImpl implements UserService{
         idCard = idCard.substring(idCard.length()-3, idCard.length());
         user.setPassword(idCard);
         userDao.insert(user);
+
     }
 
     @Override
@@ -147,8 +148,7 @@ public class UserServiceImpl implements UserService{
         User u = list.get(0);
         if(u.getIdCard().equals(user.getIdCard())){
             //验证正确
-            //************************这里先设置成123，后面需要改成身份证有关的初始密码
-            u.setPassword("123");
+            u.setPassword(user.getPassword());
             userDao.updateByPrimaryKey(u);
             return 1;
         }else{

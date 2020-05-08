@@ -37,6 +37,7 @@ public class LoginController {
     @PostMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user){
         UserVO userVO=loginService.getUser(user);
+        System.out.println("userVo:" + userVO.getUser().getMark());
         if(userVO.getUser().getMark()==0) {
             //账号不存在
             return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT,"账号不存在");
