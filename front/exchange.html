@@ -303,10 +303,16 @@
 					request.setRequestHeader("token", userVO.token);
 				},
 				success: function (data) {
+					if(data.code == 200){//积分充足
+						alert("恭喜, 兑换成功");
+					}else if(data.code == 407){//积分不足
+						alert("抱歉, 积分不足");
+					}
 					userVO = data.data;
 					console.info(userVO);
 					localStorage.setExpire("userVO",userVO,1000*60*30);
 					initInfo(userVO);
+
 				}
 			});
 		}

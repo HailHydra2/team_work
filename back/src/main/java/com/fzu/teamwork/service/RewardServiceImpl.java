@@ -32,7 +32,7 @@ public class RewardServiceImpl implements RewardService{
     private UserVO userVO;
 
     @Override
-    public UserVO insertReward(Reward reward){
+    public Boolean insertReward(Reward reward){
         //查找申请用户
         User user = userServiceImpl.getUserById(reward.getUserId());
         //获取用户的账户信息（将user对象转换为userVO对象）
@@ -47,12 +47,11 @@ public class RewardServiceImpl implements RewardService{
             //扣除兑换积分
             userVO.getAccountData().setScore(score - needScore);
             //更新用户数据
-            log.info("userVO:{}",userVO.getAccountData());
             userServiceImpl.updateUser(userVO);
+            rewardDao.insert(reward);
+            return true;
         }
-        rewardDao.insert(reward);
-        //返回用户信息
-        return userVO;
+        return false;
     }
 
 

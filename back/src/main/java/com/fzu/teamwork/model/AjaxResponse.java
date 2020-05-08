@@ -61,4 +61,14 @@ public class AjaxResponse {
         return resultBean;
     }
 
+    //code是状态码，message描述信息 data是发送数据
+    public static AjaxResponse error(int code, String message, Object data) {
+        AjaxResponse resultBean = new AjaxResponse();
+        resultBean.setIsok(true);
+        resultBean.setCode(code);
+        resultBean.setData(data);
+        resultBean.setMessage(message);
+        return resultBean;
+    }
+
 }

@@ -11,4 +11,5 @@ public class ErrorStatus {
     public static int BEYOND_IDENTITY_LIMIT = 403;//权限不足
     public static int BAD_TOKEN = 405;//错误的token
     public static int CHANGE_PWD_FAILED =406;//修改密码失败（密保错误）
+    public static int SCORE_INSUFFICIENT = 407;//兑换奖励积分不足
 }

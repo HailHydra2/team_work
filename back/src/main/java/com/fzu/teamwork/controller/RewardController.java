@@ -9,6 +9,8 @@ import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Reward;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.service.RewardService;
+import com.fzu.teamwork.service.UserService;
+import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.util.UserIdentity;
 import com.fzu.teamwork.view.RewardVO;
 import com.fzu.teamwork.view.UserVO;
@@ -27,6 +29,9 @@ public class RewardController {
     @Resource(name = "rewardServiceImpl")
     RewardService rewardService;
 
+    @Resource(name = "userServiceImpl")
+    UserService userService;
+
     //管理员界面获取奖励申请记录列表(具体实现)
     @LoginToken//需要登录
     @AdminLimit//管理员权限
@@ -40,7 +45,13 @@ public class RewardController {
     @UserLimit//普通用户权限
     @PostMapping("/reward")
     public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
-        UserVO userVO = rewardService.insertReward(reward);
-        return AjaxResponse.success(userVO);
+        Boolean result = rewardService.insertReward(reward);
+        User user = userService.getUserById(reward.getUserId());
+        UserVO userVO = userService.convertToUserVo(user);
+        if(result == true){//积分充足
+            return AjaxResponse.success(userVO);
+        }else{//积分不足
+            return AjaxResponse.error(ErrorStatus.SCORE_INSUFFICIENT, "积分不足", userVO);
+        }
     }
 }
