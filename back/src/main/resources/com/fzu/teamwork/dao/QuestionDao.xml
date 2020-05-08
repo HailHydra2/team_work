@@ -228,13 +228,13 @@
     select * from question limit #{start},#{count}
   </select>
   <select id="selectUserQuestion" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
-    select * from question where author_id=#{uid} limit #{start},#{count}
+    select * from question where author_id=#{uid} order by create_time desc limit #{start},#{count}
   </select>
 
   <select id="selectAttentionQuestion" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
     select t1.id, author_id, response_num, report_num, t1.create_time, content_id
     from question t1 left join attention a on t1.id = a.question_id
-    where a.user_id=#{uid} and a.flag = 1 limit #{start},#{count}
+    where a.user_id=#{uid} and a.flag = 1 order by a.create_time desc limit #{start},#{count}
   </select>
 
   <select id="selectQuestionByHeat" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">

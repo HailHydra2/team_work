@@ -72,10 +72,10 @@ public class RewardServiceImpl implements RewardService{
     public int calculateScore(String rewardType, double num){
         if(rewardType.equals(RewardType.ServiceTime)){
             //申请类别为党员服务时长
-            return (int)(num*100);//一个时长对应100积分
+            return (int)(num*RewardType.SERVICE_SCORE);//一个时长对应100积分
         }else if(rewardType.equals(RewardType.SyntheticTest)){
             //兑换类别为综测
-            return (int)(num*100);//一分综测对应100积分
+            return (int)(num*RewardType.SYNTHETIC_SCORE);//一分综测对应100积分
         }else{
             log.info("申请类别输入错误：{}",rewardType);
             return -1;

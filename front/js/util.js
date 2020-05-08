@@ -137,7 +137,6 @@ function postQuestion(){
     var time = new Date();
     var timeString = getTimeString(time);
     // console.info(timeString);
-    alert(timeString);
     var question={
         "title":title,
         "content":content,
