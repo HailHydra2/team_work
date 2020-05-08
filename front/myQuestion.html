@@ -214,13 +214,11 @@
         };
 
 	//请求后端的url
-    var path = "http://localhost:8888/userQuestions/" + userVO.user.id;
+    var path;
 
 
     //页面加载时启动页面
     $(document).ready(function(e) {
-        //首页按时间排序
-		changeQuestionPage(page, path);
 		//获取当前登录用户
 		var userVO = localStorage.getExpire("userVO");
 		if(userVO == null){//登录过期，返回登录页面
@@ -233,8 +231,11 @@
 			console.info(userVO.user.name);
 			initInfo(userVO);
 		}
+		path = "http://localhost:8888/userQuestions/" + userVO.user.id;
+		//首页按时间排序
+		changeQuestionPage(page, path);
     });
-
+	
     
 </script>
 </html>

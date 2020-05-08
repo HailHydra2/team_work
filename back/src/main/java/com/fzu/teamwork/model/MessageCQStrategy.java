@@ -6,6 +6,8 @@ import com.fzu.teamwork.util.MessageWay;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
 
+import java.text.SimpleDateFormat;
+
 //MessageService对回复被创建问题进行处理的策略类(CQ: Create Question)
 public class MessageCQStrategy extends MessageOperateStrategy{
 
@@ -65,7 +67,9 @@ public class MessageCQStrategy extends MessageOperateStrategy{
         //消息产生方式(创建问题)
         message.setWay(MessageWay.CREATE_QUESTION);
         //消息描述信息
-        String description = "您在" + questionVO.getQuestion().getCreateTime() + "创建了\""
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(questionVO.getQuestion().getCreateTime());
+        String description = "您在" + dateString + "创建了\""
                 + questionVO.getTitle() +"\"问题";
         message.setDescription(description);
         //返回要保存到数据库的消息

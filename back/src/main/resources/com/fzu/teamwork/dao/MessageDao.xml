@@ -196,6 +196,6 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectMessageByUid" parameterType="Map" resultType="com.fzu.teamwork.model.Message" resultMap="BaseResultMap">
-    select * from message where object_id=#{uid} limit #{start},#{count}
+    select * from message where object_id=#{uid} order by id  desc limit #{start},#{count}
   </select>
 </mapper>

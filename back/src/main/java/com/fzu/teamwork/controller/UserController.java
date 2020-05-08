@@ -63,6 +63,7 @@ public class UserController {
     }
 
     //更新密码
+    @LoginToken//需要登录
     @PutMapping("/user")
     public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
         UserVO userVO = userService.changePassword(user);

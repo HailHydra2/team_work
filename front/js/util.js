@@ -136,6 +136,8 @@ function postQuestion(){
     //创建时间
     var time = new Date();
     var timeString = getTimeString(time);
+    // console.info(timeString);
+    alert(timeString);
     var question={
         "title":title,
         "content":content,

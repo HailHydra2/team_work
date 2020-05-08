@@ -44,7 +44,6 @@ public class QuestionController {
     @UserLimit//普通用户权限
     @PostMapping("/questions")
     public @ResponseBody AjaxResponse getQuestionPage(@RequestBody QuestionPage questionPage){
-        log.info("enter{}",questionPage);
         QuestionPage page = questionService.getQuestionPage(questionPage);
         return AjaxResponse.success(page);
     }
