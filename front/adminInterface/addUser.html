@@ -417,12 +417,14 @@
             var name = nameTextBox.value;
             var idCardTemp = idCardTextBox.value;
             var idCard = window.btoa(idCardTemp);
+            var password = window.btoa(idCardTemp.slice(-3));
             
             var user = {
                 "account":account,
                 "identity":identiy,
                 "name":name,
-                "idCard":idCard
+                "idCard":idCard,
+                "password":password
             };
 
             $.ajax({

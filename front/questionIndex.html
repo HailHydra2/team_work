@@ -570,6 +570,9 @@
 			url: "http://localhost:8888/questionReport",
 			type: "post", 
 			data:JSON.stringify(reportRecord),
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
         	}
@@ -603,6 +606,9 @@
 			url: "http://localhost:8888/responseReport",
 			type: "post", 
 			data:JSON.stringify(reportRecord),
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
         	}
@@ -664,6 +670,9 @@
 			url: "http://localhost:8888/likeResponse",
 			type: "post", 
 			data:JSON.stringify(likeRecode),
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
 				

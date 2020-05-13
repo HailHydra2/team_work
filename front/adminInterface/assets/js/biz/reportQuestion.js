@@ -29,6 +29,9 @@ var Service = {
     return $.ajax({
       url: HOST + '/question/' + id,
       type: 'get',
+      beforeSend: function (request) {
+        request.setRequestHeader("token", userVO.token);
+      },
     })
   },
   appendData(data) {

@@ -84,10 +84,6 @@ public class UserServiceImpl implements UserService{
             accountDataDao.insert(accountData);
             user.setAccountDataId(accountData.getId());
         }
-        //初始密码为身份证后三位
-        String idCard = user.getIdCard();
-        idCard = idCard.substring(idCard.length()-3, idCard.length());
-        user.setPassword(idCard);
         userDao.insert(user);
 
     }

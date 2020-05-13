@@ -145,6 +145,7 @@ function postQuestion(){
             "createTime":timeString
         }
     }
+    console.info(question);
     $.ajax({
         url: "http://localhost:8888/question",
         type: "post", 
@@ -155,12 +156,12 @@ function postQuestion(){
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             updateUser(data.data)
+            //将输入内容清空
+            $("#inputQue").innerHTML = "";
+            $("#describeQue").innerHTML = "";
+            location.replace(document.referrer);
         }
     });
-    //将输入内容清空
-    $("#inputQue").innerHTML = "";
-    $("#describeQue").innerHTML = "";
-    location.replace(document.referrer);
 }
 
 

@@ -64,7 +64,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 }else{//有token
                     String userId;
                     try {//根据token获取uid
-                        System.out.println(JWT.decode(token).getAudience().get(0));
+                        //System.out.println(JWT.decode(token).getAudience().get(0));
                         userId = JWT.decode(token).getAudience().get(0);
                     } catch (JWTDecodeException j) {
                         //错误的token
@@ -81,6 +81,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                         System.out.println("用户不存在");
                         //终止后续访问
                         return false;
+                    }else{
+                        String token2 = tokenService.getToken(user);
+                        if(!token2.equals((token))){
+                            response.setStatus(ErrorStatus.PASSWORD_ERROR);
+                            System.out.println("token错误");
+                            return false;
+                        }
                     }
                 }
             }
