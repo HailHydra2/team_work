@@ -31,6 +31,13 @@ public class RewardServiceImpl implements RewardService{
     //用户账号信息
     private UserVO userVO;
 
+
+    /**
+     *
+     * @param reward  要保存的奖励申请信息
+     * @return  是否保存成功（true 成功  false 积分不足）
+     * 保存奖励函数
+     */
     @Override
     public Boolean insertReward(Reward reward){
         //查找申请用户
@@ -38,7 +45,7 @@ public class RewardServiceImpl implements RewardService{
         //获取用户的账户信息（将user对象转换为userVO对象）
         userVO = userServiceImpl.convertToUserVo(user);
         //计算用户所需积分（若积分充足返回所需积分，不足返回-1）
-        int needScore = doesLeagal(reward);
+        int needScore = doesLegal(reward);
         //判断用户积分是否充足
         if(needScore > 0) {
             //积分充足
@@ -56,7 +63,7 @@ public class RewardServiceImpl implements RewardService{
 
 
     //判断用户的积分是否足够申请, 返回值为所需积分（积分不足返回-1）
-    public int doesLeagal(Reward reward){
+    public int doesLegal(Reward reward){
         //计算所需积分数
         int needScore = calculateScore(reward.getType(), reward.getRewardNum());
         if(userVO.getAccountData().getScore() >= needScore){
