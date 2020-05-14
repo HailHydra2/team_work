@@ -64,4 +64,14 @@ public interface QuestionDao {
 
     //查询回复过的问题列表
     public Integer selectResponseQuestionNum(Map<String,Integer> map);
+
+    /**
+     * 根据类型查询筛选并按时间排序并分页
+     */
+    public List<Question> selectQuestionByKindAndHeat(Map<String, Object> map);
+
+    /**
+     * 根据类型查询筛选并按时间排序并分页
+     */
+    public List<Question> selectQuestionByKindAndDate(Map<String, Object> map);
 }

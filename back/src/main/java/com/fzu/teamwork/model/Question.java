@@ -23,6 +23,10 @@ public class Question implements Serializable {
 
     private Integer contentId;
 
+    private Integer anonymous = 0;
+
+    private Integer kindId = 0;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -73,6 +77,22 @@ public class Question implements Serializable {
         this.contentId = contentId;
     }
 
+    public Integer getAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(Integer anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public Integer getKindId() {
+        return kindId;
+    }
+
+    public void setKindId(Integer kindId) {
+        this.kindId = kindId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -90,7 +110,9 @@ public class Question implements Serializable {
             && (this.getResponseNum() == null ? other.getResponseNum() == null : this.getResponseNum().equals(other.getResponseNum()))
             && (this.getReportNum() == null ? other.getReportNum() == null : this.getReportNum().equals(other.getReportNum()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getContentId() == null ? other.getContentId() == null : this.getContentId().equals(other.getContentId()));
+            && (this.getContentId() == null ? other.getContentId() == null : this.getContentId().equals(other.getContentId()))
+            && (this.getAnonymous() == null ? other.getAnonymous() == null : this.getAnonymous().equals(other.getAnonymous()))
+            && (this.getKindId() == null ? other.getKindId() == null : this.getKindId().equals(other.getKindId()));
     }
 
     @Override
@@ -103,6 +125,8 @@ public class Question implements Serializable {
         result = prime * result + ((getReportNum() == null) ? 0 : getReportNum().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getContentId() == null) ? 0 : getContentId().hashCode());
+        result = prime * result + ((getAnonymous() == null) ? 0 : getAnonymous().hashCode());
+        result = prime * result + ((getKindId() == null) ? 0 : getKindId().hashCode());
         return result;
     }
 
@@ -118,6 +142,8 @@ public class Question implements Serializable {
         sb.append(", reportNum=").append(reportNum);
         sb.append(", createTime=").append(createTime);
         sb.append(", contentId=").append(contentId);
+        sb.append(", anonymous=").append(anonymous);
+        sb.append(", kindId=").append(kindId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

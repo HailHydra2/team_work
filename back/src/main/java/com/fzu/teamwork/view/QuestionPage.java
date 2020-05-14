@@ -18,4 +18,5 @@ public class QuestionPage{
     private String keyWord;//关键字
     private String sortApproach;//排序方式sortByHeat、sortByDate，sortByKeyWord
     private List<QuestionVO> questions;//问题列表
+    private String kind;//类别
 }

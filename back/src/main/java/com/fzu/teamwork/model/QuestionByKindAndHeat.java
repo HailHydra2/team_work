@@ -1,35 +1,45 @@
 package com.fzu.teamwork.model;
 
+import com.fzu.teamwork.dao.KindDao;
 import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.view.QuestionPage;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//QuestionService通过热度排序获取问题列表的策略类
-public class QuestionByHeatStrategy extends QuestionStrategy{
+@Slf4j
+public class QuestionByKindAndHeat extends QuestionStrategy{
 
     //获取列表所属的分页信息
     private QuestionPage questionPage;
     private QuestionDao questionDao;
+    private KindDao kindDao;
 
     //构造函数
-    public QuestionByHeatStrategy(QuestionPage page, QuestionDao dao){
+    public QuestionByKindAndHeat(QuestionPage page, QuestionDao dao, KindDao kindDao){
         this.questionPage = page;
         this.questionDao = dao;
+        this.kindDao = kindDao;
     }
 
     public List<Question> getQuestionList(){
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         //获取该页第一个回复的索引[（页码-1）*一页所包含的数量]
         int firstIndex = (questionPage.getPageIndex() - 1) * questionPage.getCount();
+        //类别
+        String kindStr = questionPage.getKind();
+        KindExample example = new KindExample();
+        example.createCriteria().andNameEqualTo(questionPage.getKind());
+        Kind kind = kindDao.selectByExample(example).get(0);
         //分页第一个索引
         map.put("start",firstIndex);
         //分页包含数量
         map.put("count",questionPage.getCount());
-        List<Question> questionList = questionDao.selectQuestionByHeat(map);
+        map.put("kind",kind.getId());
+        List<Question> questionList = questionDao.selectQuestionByKindAndHeat(map);
 
         //获取分页的按钮
         getButtonList();
@@ -41,7 +51,12 @@ public class QuestionByHeatStrategy extends QuestionStrategy{
         //每页有几条数据
         int count = questionPage.getCount();
         //问题总条数
-        int total = (int)questionDao.countByExample(null);
+        KindExample kindExample = new KindExample();
+        kindExample.createCriteria().andNameEqualTo(questionPage.getKind());
+        Kind kind = kindDao.selectByExample(kindExample).get(0);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andKindIdEqualTo(kind.getId());
+        int total = (int)questionDao.countByExample(questionExample);
         //当前页号
         int pageIndex = questionPage.getPageIndex();
         //总页数

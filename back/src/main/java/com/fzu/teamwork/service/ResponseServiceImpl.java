@@ -99,7 +99,11 @@ public class ResponseServiceImpl implements ResponseService{
         responseVO.setContent(content);
         //获取回复人
         User user = userDao.selectByPrimaryKey(response.getAuthorId());
-        responseVO.setAuthorName(user.getName());
+        if(response.getAnonymous() == 0){//非匿名
+            responseVO.setAuthorName(user.getName());
+        }else{//匿名用户
+            responseVO.setAuthorName("匿名用户");
+        }
         return  responseVO;
     }
 

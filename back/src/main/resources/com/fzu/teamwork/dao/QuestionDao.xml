@@ -8,6 +8,8 @@
     <result column="report_num" jdbcType="INTEGER" property="reportNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="content_id" jdbcType="INTEGER" property="contentId" />
+    <result column="anonymous" jdbcType="INTEGER" property="anonymous" />
+    <result column="kind_id" jdbcType="INTEGER" property="kindId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, author_id, response_num, report_num, create_time, content_id
+    id, author_id, response_num, report_num, create_time, content_id, anonymous, kind_id
   </sql>
   <select id="selectByExample" parameterType="com.fzu.teamwork.model.QuestionExample" resultMap="BaseResultMap">
     select
@@ -109,9 +111,12 @@
     </if>
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
-    insert into question (author_id, response_num, report_num, create_time, content_id)
+    insert into question (author_id, response_num, report_num, 
+      create_time, content_id, anonymous, 
+      kind_id)
     values (#{authorId,jdbcType=INTEGER}, #{responseNum,jdbcType=INTEGER}, #{reportNum,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{contentId,jdbcType=INTEGER})
+      #{createTime,jdbcType=TIMESTAMP}, #{contentId,jdbcType=INTEGER}, #{anonymous,jdbcType=INTEGER}, 
+      #{kindId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fzu.teamwork.model.Question" useGeneratedKeys="true">
     insert into question
@@ -131,6 +136,12 @@
       <if test="contentId != null">
         content_id,
       </if>
+      <if test="anonymous != null">
+        anonymous,
+      </if>
+      <if test="kindId != null">
+        kind_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="authorId != null">
@@ -147,6 +158,12 @@
       </if>
       <if test="contentId != null">
         #{contentId,jdbcType=INTEGER},
+      </if>
+      <if test="anonymous != null">
+        #{anonymous,jdbcType=INTEGER},
+      </if>
+      <if test="kindId != null">
+        #{kindId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -177,6 +194,12 @@
       <if test="record.contentId != null">
         content_id = #{record.contentId,jdbcType=INTEGER},
       </if>
+      <if test="record.anonymous != null">
+        anonymous = #{record.anonymous,jdbcType=INTEGER},
+      </if>
+      <if test="record.kindId != null">
+        kind_id = #{record.kindId,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -189,7 +212,9 @@
       response_num = #{record.responseNum,jdbcType=INTEGER},
       report_num = #{record.reportNum,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      content_id = #{record.contentId,jdbcType=INTEGER}
+      content_id = #{record.contentId,jdbcType=INTEGER},
+      anonymous = #{record.anonymous,jdbcType=INTEGER},
+      kind_id = #{record.kindId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -212,6 +237,12 @@
       <if test="contentId != null">
         content_id = #{contentId,jdbcType=INTEGER},
       </if>
+      <if test="anonymous != null">
+        anonymous = #{anonymous,jdbcType=INTEGER},
+      </if>
+      <if test="kindId != null">
+        kind_id = #{kindId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -221,7 +252,9 @@
       response_num = #{responseNum,jdbcType=INTEGER},
       report_num = #{reportNum,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      content_id = #{contentId,jdbcType=INTEGER}
+      content_id = #{contentId,jdbcType=INTEGER},
+      anonymous = #{anonymous,jdbcType=INTEGER},
+      kind_id = #{kindId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectQuestion" parameterType="int" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
@@ -270,5 +303,13 @@
     select count(*)
     from question t1 left join response r on t1.id = r.question_id
     where r.author_id = #{uid}
+  </select>
+
+  <select id="selectQuestionByKindAndHeat" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select * from question where kind_id=#{kind} order by response_num desc limit #{start},#{count}
+  </select>
+
+  <select id="selectQuestionByKindAndDate" parameterType="Map" resultType="com.fzu.teamwork.model.Question" resultMap="BaseResultMap">
+    select * from question where kind_id=#{kind} order by create_time desc limit #{start},#{count}
   </select>
 </mapper>

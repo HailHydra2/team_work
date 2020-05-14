@@ -37,18 +37,16 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Resource
     private ContentDao contentDao;
-
     @Resource
     private QuestionTitleDao questionTitleDao;
-
     @Resource
     private AttentionDao attentionDao;
-
     @Resource
     private UserDao userDao;
-
     @Resource
     private ReportQuestionDao reportQuestionDao;
+    @Resource
+    private KindDao kindDao;
 
     @Resource(name = "messageServiceImpl")
     private MessageService messageService;
@@ -78,6 +76,10 @@ public class QuestionServiceImpl implements QuestionService{
         }else if(type == 3){//按关键字排序
             questionStrategy = new QuestionByKeywordStrategy(questionPage,questionDao,
                     titleDao,questionTitleDao);
+        }else if(type == 4){//通过类别筛选并按热度排序
+            questionStrategy = new QuestionByKindAndHeat(questionPage,questionDao,kindDao);
+        }else if(type == 5){//通过类别筛选并按时间排序
+            questionStrategy = new QuestionByKindAndDate(questionPage,questionDao,kindDao);
         }
     }
 
@@ -91,14 +93,21 @@ public class QuestionServiceImpl implements QuestionService{
         int titleID = titleDao.selectTitleByQuestionID(questionID);
         int contentID = question.getContentId();
         int authorID = question.getAuthorId();
+        int kindID = question.getKindId();
 
         Title title = titleDao.selectByPrimaryKey(titleID);
         Content content = contentDao.selectByPrimaryKey(contentID);
         User author = userDao.selectByPrimaryKey(authorID);
+        Kind kind = kindDao.selectByPrimaryKey(kindID);
 
         questionVO.setTitle(title.getTitle());
         questionVO.setContent(content.getContent());
-        questionVO.setAuthorName(author.getName());
+        questionVO.setKind(kind.getName());
+        if(question.getAnonymous() == 0){//非匿名
+            questionVO.setAuthorName(author.getName());
+        }else{//匿名
+            questionVO.setAuthorName("匿名用户");
+        }
         return questionVO;
     }
 
@@ -162,6 +171,12 @@ public class QuestionServiceImpl implements QuestionService{
         }else if(questionPage.getSortApproach().equals(QuestionSortApproach.SORT_BY_DATE)){
             //通过时间由近到远排序
             createQuestionStrategy(2);//创建对应策略对象
+        }else if(questionPage.getSortApproach().equals(QuestionSortApproach.SORT_BY_KIND_AND_HEAT)){
+            //通过类别筛选并按热度排序
+            createQuestionStrategy(4);//创建对应策略对象
+        }else if(questionPage.getSortApproach().equals(QuestionSortApproach.SORT_BY_KIND_AND_DATE)){
+            //通过类别筛选并按时间排序
+            createQuestionStrategy(5);//创建对应策略对象
         }
         List<Question> questionList = questionStrategy.getQuestionList();
         List<QuestionVO> questionVOList = convertToVOList(questionList);

@@ -17,4 +17,6 @@ public class QuestionVO{
     private boolean doesReported;
     //提问者姓名
     private String authorName;
+    //所属类别
+    private String kind;
 }

@@ -27,6 +27,8 @@ public class Response implements Serializable {
 
     private Date createTime;
 
+    private Integer anonymous = 0;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -93,6 +95,14 @@ public class Response implements Serializable {
         this.createTime = createTime;
     }
 
+    public Integer getAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(Integer anonymous) {
+        this.anonymous = anonymous;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -112,7 +122,8 @@ public class Response implements Serializable {
             && (this.getLikeNum() == null ? other.getLikeNum() == null : this.getLikeNum().equals(other.getLikeNum()))
             && (this.getDislikeNum() == null ? other.getDislikeNum() == null : this.getDislikeNum().equals(other.getDislikeNum()))
             && (this.getReportNum() == null ? other.getReportNum() == null : this.getReportNum().equals(other.getReportNum()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()));
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getAnonymous() == null ? other.getAnonymous() == null : this.getAnonymous().equals(other.getAnonymous()));
     }
 
     @Override
@@ -127,6 +138,7 @@ public class Response implements Serializable {
         result = prime * result + ((getDislikeNum() == null) ? 0 : getDislikeNum().hashCode());
         result = prime * result + ((getReportNum() == null) ? 0 : getReportNum().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getAnonymous() == null) ? 0 : getAnonymous().hashCode());
         return result;
     }
 
@@ -144,6 +156,7 @@ public class Response implements Serializable {
         sb.append(", dislikeNum=").append(dislikeNum);
         sb.append(", reportNum=").append(reportNum);
         sb.append(", createTime=").append(createTime);
+        sb.append(", anonymous=").append(anonymous);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
