@@ -1,14 +1,15 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.model.Block;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public interface BlockService {
 
-    //add block
-    public void addBlock(Block block);
+    //添加临时板块（返回添加结果）
+    public Boolean addBlock(Block block);
 
-    //delete block
-    public void deleteBlock();
+    //撤销临时板块（返回操作结果）
+    public boolean deleteBlock();
 
     //获取临时板块
     public Block getBlock();

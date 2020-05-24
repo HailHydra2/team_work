@@ -12,6 +12,17 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      success: function (data) {
+        console.info(data);
+        if(data.code == 200){//删除成功
+          alert("删除成功");
+        }else if(data.code == 408){
+          alert(data.message);
+        }
+      },
+      error: function(){
+        alert("服务器异常,请稍后再试");
+      }
     });
   },
   batchDelete(data) {
@@ -23,15 +34,30 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      success: function (data) {
+        console.info(data);
+        if(data.code == 200){//删除成功
+          alert(data.message);
+        }else if(data.code == 408){
+          alert(data.message);
+        }
+      },
+      error: function(){
+        alert("服务器异常,请稍后再试");
+      }
     });
   },
   getQuestion(id) {
     return $.ajax({
       url: HOST + '/question/' + id,
       type: 'get',
+      contentType: 'application/json;charset=utf-8',
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      error:function(){
+        alert("服务器异常，请稍后再试");
+      }
     })
   },
   appendData(data) {
@@ -47,12 +73,15 @@ var Service = {
 var Biz = {
   getQuestion(id) {
     Service.getQuestion(id).then(function (data) {
-      alert("标题：" + data.data.title + "\n" + "内容:" + data.data.content);
-      console.log(data);
+      if(data.code == 200){//查询成功
+        alert("标题：" + data.data.title + "\n" + "内容:" + data.data.content);
+      }else if(data.code == 408){//问题不存在
+        alert(data.message);
+        window.location.reload(true);
+      }
     });
   }
 };
-
 
 
 jQuery(function ($) {

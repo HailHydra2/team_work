@@ -39,5 +39,5 @@ public interface ResponseDao {
     List<Integer> selectQuestionIdByAuthorId(int authorId);
 
     //根据int[]参数批量删除回复记录
-    int deleteResponseInList(int[] arrays);
+    int deleteResponseInList(List<Integer> arrays);
 }

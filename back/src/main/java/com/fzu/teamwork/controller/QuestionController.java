@@ -7,6 +7,7 @@ import com.fzu.teamwork.annoation.UserLimit;
 import com.fzu.teamwork.dao.*;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.service.*;
+import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
@@ -78,7 +79,7 @@ public class QuestionController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/userResponseQuestions/{uid}")
-    public @ResponseBody AjaxResponse TestGetUserResponseQuestion(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
+    public @ResponseBody AjaxResponse getUserResponseQuestion(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
         QuestionPage page = questionService.getQuestionPage(uid,questionPage,0);
         return AjaxResponse.success(page);
     }
@@ -88,8 +89,12 @@ public class QuestionController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @GetMapping("/question/{id}/{uid}")
-    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable String id, @PathVariable(required = false) Integer uid){
-        Question question = questionDao.selectByPrimaryKey(Integer.parseInt(id));
+    public @ResponseBody AjaxResponse getDetailQuestion(@PathVariable Integer id, @PathVariable Integer uid){
+        Question question = questionService.getQuestionById(id);
+        if(question == null){//查询问题不存在
+
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT,"查询问题已被删除");
+        }
         QuestionVO questionVO = questionService.convertToVO(question);
         //添加与用户uid之间的关系
         questionService.addRelationToUId(questionVO, uid);
@@ -101,9 +106,11 @@ public class QuestionController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/question/{id}")
-    public @ResponseBody AjaxResponse testGetQuestion(@PathVariable Integer id){
-        System.out.println("id" + id);
-        Question question = questionDao.selectByPrimaryKey(id);
+    public @ResponseBody AjaxResponse getDetailQuestion(@PathVariable Integer id){
+        Question question = questionService.getQuestionById(id);
+        if(question == null){//查询问题不存在
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT,"查询问题已被删除");
+        }
         QuestionVO questionVO = questionService.convertToVO(question);
         return AjaxResponse.success(questionVO);
     }
@@ -112,17 +119,31 @@ public class QuestionController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @DeleteMapping("/question/{id}")
-    public @ResponseBody AjaxResponse testDeleteQuestion(@PathVariable String id){
-        questionService.deleteQuestionById(id);
-        return AjaxResponse.success();
+    public @ResponseBody AjaxResponse deleteQuestion(@PathVariable int id){
+        if(questionService.deleteQuestionById(id) == true){//删除成功
+            return AjaxResponse.success();
+        }else{//删除失败——要删除的问题不存在
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT, "抱歉，您要删除的问题不存在");
+        }
     }
 
     //批量删除问题
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @DeleteMapping("/questions")
-    public @ResponseBody AjaxResponse deleteQuestions(@RequestBody int[] questionIdList){
-        questionService.deleteQuestionsById(questionIdList);
-        return AjaxResponse.success();
+    public @ResponseBody AjaxResponse deleteQuestions(@RequestBody List<Integer> questionIdList){
+        List<Integer> failedList;//删除失败的问题id列表
+        failedList = questionService.deleteQuestionsById(questionIdList);
+        String message = "成功删除" + (questionIdList.size() - failedList.size()) + "条问题";
+        if(failedList.size() == 0){//全部成功
+            return AjaxResponse.success(message);
+        }else{
+            message += ",id为[";
+            for(Integer id : failedList){
+                message += (id + ",");
+            }
+            message += "]的问题不存在";
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT, message);
+        }
     }
 }

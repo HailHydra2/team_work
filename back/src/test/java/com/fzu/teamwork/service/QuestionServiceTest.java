@@ -62,7 +62,8 @@ public class QuestionServiceTest {
         question.setAuthorId(1);
         question.setCreateTime(new Date());
         questionVO.setQuestion(question);
-        questionService.updateQuestion(questionVO);
+        questionService.addQuestion(questionVO);
+        System.out.println(questionVO.getQuestion().getId());
     }
 
     @Test
@@ -78,13 +79,13 @@ public class QuestionServiceTest {
 
     @Test
     public void deleteQuestionByIdTest(){
-        questionService.deleteQuestionById("26");
+        questionService.deleteQuestionById(26);
     }
 
     @Test
     public void deleteQuestionsByIdTest(){
-        int[] list = {27,28};
-        questionService.deleteQuestionsById(list);
+//        int[] list = {27,28};
+//        questionService.deleteQuestionsById(list);
     }
 
     @Test

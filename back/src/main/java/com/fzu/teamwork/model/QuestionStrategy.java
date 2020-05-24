@@ -6,4 +6,7 @@ import java.util.List;
 public abstract class QuestionStrategy {
 
     public abstract List<Question> getQuestionList();
+
+    //获取分页下面的按钮列表
+    public abstract void getButtonList();
 }

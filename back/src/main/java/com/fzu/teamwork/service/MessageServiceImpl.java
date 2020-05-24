@@ -53,7 +53,6 @@ public class MessageServiceImpl implements MessageService{
      * type:7：删除某条回复消息处理的策略对象
      * type=8：删除某个问题消息处理的策略对象
      * type=9：创建问题消息处理的策略对象
-     * type=10：创建回复消息处理的策略对象
      */
     public void createMessageOperateStrategy(int type, InternalMessage message){
         if(type == 1){//对回复问题消息的处理策略对象
@@ -74,8 +73,6 @@ public class MessageServiceImpl implements MessageService{
             operateStrategy = new MessageDelQStrategy(message,questionService,userService);
         }else if(type == 9) {//创建问题
             operateStrategy = new MessageCQStrategy(message, userService, questionService);
-        }else if(type == 10) {//创建回复
-            operateStrategy = new MessageCRStrategy(message, userService, responseService, questionService);
         }else{
             log.info("MessageService 策略对象type错误");
         }
@@ -174,9 +171,6 @@ public class MessageServiceImpl implements MessageService{
         }else if(internalMessage.getWay().equals(MessageWay.CREATE_QUESTION)){
             //创建问题
             createMessageOperateStrategy(9, internalMessage);
-        }else if(internalMessage.getWay().equals(MessageWay.CREATE_RESPONSE)){
-            //创建回复
-            createMessageOperateStrategy(10,internalMessage);
         }else{
             log.info("MessageService messageWay 错误");
         }

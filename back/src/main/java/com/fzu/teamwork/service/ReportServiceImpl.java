@@ -33,6 +33,7 @@ public class ReportServiceImpl implements ReportService{
     private MessageService messageService;
 
 
+    //获取被举报问题列表
     @Override
     public List<Question> getReportQuestion(){
         //创建查询条件
@@ -46,6 +47,7 @@ public class ReportServiceImpl implements ReportService{
         return questionList;
     }
 
+    //获取被举报回复列表
     @Override
     public List<Response> getReportResponse(){
         //创建查询条件
@@ -57,9 +59,13 @@ public class ReportServiceImpl implements ReportService{
         return responseList;
     }
 
-    //添加对问题的投诉记录
+    //添加对问题的投诉记录（返回值为处理结果）
     @Override
-    public void addQuestionReport(ReportQuestion reportQuestion){
+    public boolean addQuestionReport(ReportQuestion reportQuestion){
+        Question question = questionDao.selectByPrimaryKey(reportQuestion.getQuestionId());
+        if(question == null){//投诉问题不存在
+            return false;
+        }
         //创建查询条件（投诉人id，被投诉问题id相同的记录）
         ReportQuestionExample example = new ReportQuestionExample();
         ReportQuestionExample.Criteria criteria = example.createCriteria();
@@ -75,9 +81,6 @@ public class ReportServiceImpl implements ReportService{
         }else if(list.size() == 0){
             //没有投诉记录，插入举报记录
             reportQuestionDao.insert(reportQuestion);
-        }else{
-            //有超过一条一样的记录
-            log.info("错误，数据库中包含多于一条同一个用户对同一个问题的投诉");
         }
 
         //创建内部发送消息
@@ -98,11 +101,16 @@ public class ReportServiceImpl implements ReportService{
         message.setWay(MessageWay.REPORT_QUESTION);
         //发送消息
         messageService.updateInfoByMessage(message);
+        return true;
     }
 
-    //添加对回复的投诉
+    //添加对回复的投诉(返回值为处理结果)
     @Override
-    public void addResponseReport(ReportResponse reportResponse){
+    public boolean addResponseReport(ReportResponse reportResponse){
+        Response response = responseDao.selectByPrimaryKey(reportResponse.getResponseId());
+        if(response == null){//被举报问题不存在
+            return false;
+        }
         //创建查询条件
         ReportResponseExample example = new ReportResponseExample();
         ReportResponseExample.Criteria criteria = example.createCriteria();
@@ -118,9 +126,6 @@ public class ReportServiceImpl implements ReportService{
         }else if(list.size() == 0){
             //不存在投诉记录
             reportResponseDao.insert(reportResponse);
-        }else{
-            //存在超过一条同一用户对同一回复的投诉
-            log.info("错误，存在超过一条同一用户对同一回复的投诉");
         }
 
         //创建内部传递消息
@@ -139,8 +144,10 @@ public class ReportServiceImpl implements ReportService{
             message.setFlag(-1);
         }else{
              System.out.println("投诉消息flag错误");
+             return false;
         }
         //发送消息
         messageService.updateInfoByMessage(message);
+        return true;
     }
 }

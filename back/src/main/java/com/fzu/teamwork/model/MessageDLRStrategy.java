@@ -46,7 +46,6 @@ public class MessageDLRStrategy extends MessageOperateStrategy{
             //取消点灭
             r.setDislikeNum(r.getDislikeNum() - 1);
         }
-        System.out.println(r);
         responseVO.setResponse(r);
         //更新数据库信息
         responseService.updateResponse(responseVO);

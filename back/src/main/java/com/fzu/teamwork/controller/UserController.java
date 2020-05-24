@@ -57,8 +57,17 @@ public class UserController {
     @PostMapping("/users")
     @LoginToken//需要登录
     @AdminLimit//管理员权限
-    public @ResponseBody AjaxResponse addUser_test(@RequestBody User user){
+    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
         userService.addUser(user);
+        return AjaxResponse.success();
+    }
+
+    //批量添加用户
+    @PostMapping("/userList")
+    @LoginToken//需要登录
+    @AdminLimit//管理员权限
+    public @ResponseBody AjaxResponse addUsers(@RequestBody List<User> users){
+        userService.addUsers(users);
         return AjaxResponse.success();
     }
 

@@ -29,6 +29,12 @@ public class MessageLRStrategy extends MessageOperateStrategy{
         this.userService = userService;
         this.responseService = responseService;
         this.message = message;
+
+    }
+
+
+    //根据消息进行处理,返回要保存的Message信息
+    public Message operate(){
         //点赞的人
         User u = userService.getUserById(message.getOperator_id());
         viewer = userService.convertToUserVo(u);
@@ -38,11 +44,6 @@ public class MessageLRStrategy extends MessageOperateStrategy{
         //被点赞回复作者
         u = userService.getUserById(r.getAuthorId());
         author = userService.convertToUserVo(u);
-    }
-
-
-    //根据消息进行处理,返回要保存的Message信息
-    public Message operate(){
         //更新回复数据（点赞数）
         updateResponse();
         //更新回复作者积分

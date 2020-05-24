@@ -10,5 +10,5 @@ public class MessageWay {//消息产生方式
     static public String DELETE_QUESTION = "deleteQuestion";//删除问题
     static public String ATTENTION = "attention";//关注
     static public String CREATE_QUESTION = "createQuestion";//创建问题
-    static public String CREATE_RESPONSE = "createResponse";//创建回复
+//    static public String CREATE_RESPONSE = "createResponse";//创建回复
 }

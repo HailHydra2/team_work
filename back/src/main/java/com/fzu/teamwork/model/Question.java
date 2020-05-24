@@ -15,9 +15,9 @@ public class Question implements Serializable {
 
     private Integer authorId;
 
-    private Integer responseNum;
+    private Integer responseNum = 0;
 
-    private Integer reportNum;
+    private Integer reportNum = 0;
 
     private Date createTime;
 

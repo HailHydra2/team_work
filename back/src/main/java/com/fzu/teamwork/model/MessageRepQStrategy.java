@@ -26,20 +26,16 @@ public class MessageRepQStrategy extends MessageOperateStrategy{
         this.userService = userService;
         this.questionService = questionService;
         internalMessage = message;
-
-        //获取投诉者实体
-        User user = userService.getUserById(message.getOperator_id());
-        complainant = userService.convertToUserVo(user);
-        //获取被投诉问题实体
-        Question question = questionService.getQuestionById(message.getObject_id());
-        questionVO = questionService.convertToVO(question);
-        //获取被投诉问题作者实体
-        user = userService.getUserById(question.getAuthorId());
-        author = userService.convertToUserVo(user);
     }
 
     //根据消息进行处理,返回要保存的Message信息
     public Message operate(){
+        //获取被投诉问题实体
+        Question question = questionService.getQuestionById(internalMessage.getObject_id());
+        questionVO = questionService.convertToVO(question);
+        //获取被投诉问题作者实体
+        User user = userService.getUserById(question.getAuthorId());
+        author = userService.convertToUserVo(user);
         //更新被投诉问题信息（被投诉数+1）
         updateQuestion();
         //更新被投诉问题作者信息（扣除积分）

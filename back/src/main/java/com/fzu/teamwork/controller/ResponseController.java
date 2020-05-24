@@ -8,6 +8,7 @@ import com.fzu.teamwork.model.Response;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.service.ResponseService;
 import com.fzu.teamwork.service.UserService;
+import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.view.ResponsePage;
 import com.fzu.teamwork.view.ResponseVO;
 import com.fzu.teamwork.view.UserVO;
@@ -32,19 +33,19 @@ public class ResponseController {
 
     //*************这个接口是不是没用***************************
     //获取问题的回复列表，id是所属问题id（具体实现接口）
-    @LoginToken//需要登录
-    @UserLimit//普通用户权限
-    @PostMapping("/responses/{id}")
-    public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
-        responseService.getResponsePageByQuestionId(id,page);
-        return AjaxResponse.success(page);
-    }
+//    @LoginToken//需要登录
+//    @UserLimit//普通用户权限
+//    @PostMapping("/responses/{id}")
+//    public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
+//        responseService.getResponsePageByQuestionId(id,page);
+//        return AjaxResponse.success(page);
+//    }
 
     //获取问题的回复列表，id是所属问题id,uid是当前用户id（具体实现接口）
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/responses/{id}/{uid}")
-    public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @PathVariable int uid, @RequestBody ResponsePage page){
+    public @ResponseBody  AjaxResponse getResponsePage(@PathVariable int id, @PathVariable int uid, @RequestBody ResponsePage page){
         //获取需要的分页
         responseService.getResponsePageByQuestionId(id,page);
         //将page中的responseVO列表与用户uid关联（是否点过赞/点灭，投诉过）
@@ -57,12 +58,12 @@ public class ResponseController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @DeleteMapping("/response/{id}")
-    public @ResponseBody AjaxResponse testDeleteResponse(@PathVariable int id){
+    public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){
         if(responseService.deleteResponseById(id) > 0){
             //删除成功
-            return AjaxResponse.success();
-        }else{
-            return AjaxResponse.error(400,"数据库删除失败");
+            return AjaxResponse.success("删除成功");
+        }else{//删除问题不存在
+            return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT,"删除失败，该回复不存在");
         }
     }
 
@@ -70,13 +71,13 @@ public class ResponseController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/response/{id}")
-    public @ResponseBody AjaxResponse testGetResponse(@PathVariable int id){
+    public @ResponseBody AjaxResponse getResponse(@PathVariable int id){
         Response response = responseService.getResponseById(id);
-        ResponseVO responseVO = responseService.convertToVO(response);
-        if(responseVO != null){
+        if(response != null){
+            ResponseVO responseVO = responseService.convertToVO(response);
             return AjaxResponse.success(responseVO);
         }else {
-            return AjaxResponse.error(501,"编号为id的回复不存在");
+            return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT,"编号为id的回复不存在");
         }
     }
 
@@ -84,9 +85,20 @@ public class ResponseController {
     @LoginToken//需要登录
     @AdminLimit//需要管理员权限
     @DeleteMapping("responses")
-    public @ResponseBody AjaxResponse deleteResponseList(@RequestBody int[] responseIdList){
-        int delNum = responseService.deleteResponseList(responseIdList);
-        return AjaxResponse.success("成功删除记录" + delNum + "条");
+    public @ResponseBody AjaxResponse deleteResponseList(@RequestBody List<Integer> responseIdList){
+        List<Integer> failedList = new ArrayList<>();//删除失败（不存在）回复id列表
+        failedList = responseService.deleteResponseList(responseIdList);
+        String message = "成功删除" + (responseIdList.size() - failedList.size()) + "条回复";
+        if(failedList.size() == 0){//全部删除成功
+            return AjaxResponse.success(message);
+        }else{//部分问题删除失败
+            message += ",id为 [";
+            for(int id : failedList){
+                message += (id + ",");
+            }
+            message += "]的回复不存在";
+            return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT, message);
+        }
     }
 
     //回复问题
@@ -94,14 +106,17 @@ public class ResponseController {
     @UserLimit//普通用户权限
     @PostMapping("/response")
     public @ResponseBody AjaxResponse addResponse(@RequestBody ResponseVO responseVO) {
-        responseService.insertResponse(responseVO);
-        User user = userService.getUserById(responseVO.getResponse().getAuthorId());
-        UserVO userVO = userService.convertToUserVo(user);
-        return AjaxResponse.success(userVO);
+        if(responseService.insertResponse(responseVO) == true) {//回复成功
+            User user = userService.getUserById(responseVO.getResponse().getAuthorId());
+            UserVO userVO = userService.convertToUserVo(user);
+            return AjaxResponse.success(userVO);
+        }else{//回复失败，回复问题不存在
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT, "您回复的问题已被删除");
+        }
     }
 
     @PostMapping("/test")
     public void test(){
-//        log.info("o:{}", 0);
+
     }
 }

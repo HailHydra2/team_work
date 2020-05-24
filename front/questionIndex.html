@@ -327,7 +327,15 @@
 				request.setRequestHeader("token", userVO.token);
 			},
 			success: function (data) {
-				initQuestionBlock(data.data);
+				if(data.code == 200){
+					initQuestionBlock(data.data);
+				}else if(data.code == 408){//查询问题不存在
+					alert(data.message);
+					window.history.back();location.reload();//返回上一页
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
 			}
 		});
 	}
@@ -491,13 +499,21 @@
 				request.setRequestHeader("token", userVO.token);
 			},
 			success: function (data) {
-				//将输入框置为空
-				document.getElementById("cresponseContent").value = "";
-				//关闭评论输入框
-				$(closeButton).click();
-				//刷新页面
-				location.reload();
-        	}
+				if(data.code == 200){//评论成功
+					//将输入框置为空
+					document.getElementById("cresponseContent").value = "";
+					//关闭评论输入框
+					$(closeButton).click();
+					//刷新页面
+					location.reload();
+				}else if(data.code == 408){
+					alert(data.message);
+					window.location.href = "index.html";
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
+			}
 		});
 	}
 
@@ -538,6 +554,10 @@
 				request.setRequestHeader("token", userVO.token);
 			},
 			success: function (data) {
+				if(data.code == 408){//关注问题不存在
+					alert(data.message);
+					window.location.href = "index.html";
+				}
 				updateUser(data.data)
         	}
 		});
@@ -575,7 +595,14 @@
 			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-        	}
+				if(data.code == 408){
+					alert("您操作的问题已被管理员删除");
+					window.location.href = "index.html";
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
+			}
 		});
 	}
 
@@ -611,7 +638,14 @@
 			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-        	}
+				if(data.code == 409){
+					alert("您操作的回复已被管理员删除");
+					location.reload(true);
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
+			}
 		});
 	}
 
@@ -675,7 +709,10 @@
 			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-				
+				if(data.code == 409){//点赞回复不存在
+					alert(data.message);
+					window.location.reload(true);
+				}
         	}
 		});
 	}

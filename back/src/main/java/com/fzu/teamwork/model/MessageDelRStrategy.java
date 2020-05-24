@@ -23,6 +23,7 @@ public class MessageDelRStrategy extends MessageOperateStrategy {
     private UserService userService;
     private ResponseService responseService;
     private QuestionService questionService;
+    private InternalMessage message;
 
     //构造函数
     public MessageDelRStrategy(InternalMessage message, UserService userService,
@@ -30,23 +31,35 @@ public class MessageDelRStrategy extends MessageOperateStrategy {
         this.responseService = responseService;
         this.userService = userService;
         this.questionService = questionService;
+        this.message = message;
+    }
+
+    //根据消息进行处理,返回要保存的Message信息
+    public Message operate(){
         //获取被删除问题的实体
         Response response = responseService.getResponseById(message.getObject_id());
         responseVO = responseService.convertToVO(response);
         //获取被删除问题的作者
         User user = userService.getUserById(response.getAuthorId());
         author = userService.convertToUserVo(user);
-        //获取被删除问题所属的问题
+        //获取被删除回复所属的问题
         Question question = questionService.getQuestionById(response.getQuestionId());
         questionVO = questionService.convertToVO(question);
-    }
-
-    //根据消息进行处理,返回要保存的Message信息
-    public Message operate(){
+        //更新所属问题信息
+        updateQuestion();
         //更新被删除消息作者的数据信息
         updateAuthor();
         //返回要保存到数据的消息
         return createMessage();
+    }
+
+    //更新所属问题(回复数-1)
+    public void updateQuestion(){
+        //获取所属问题
+        Question question = questionService.getQuestionById(responseVO.getResponse().getQuestionId());
+        question.setResponseNum(question.getResponseNum() - 1);
+        QuestionVO questionVO = questionService.convertToVO(question);
+        questionService.updateQuestion(questionVO);
     }
 
     //更新被删除用户的数据（回复数-1）

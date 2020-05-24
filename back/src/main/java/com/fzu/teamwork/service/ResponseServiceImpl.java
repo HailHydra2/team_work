@@ -24,6 +24,9 @@ public class ResponseServiceImpl implements ResponseService{
     private ContentDao contentDao;
 
     @Resource
+    private QuestionDao questionDao;
+
+    @Resource
     private ReportResponseDao reportResponseDao;
 
     @Resource
@@ -120,17 +123,16 @@ public class ResponseServiceImpl implements ResponseService{
         return responseVOList;
     }
 
-    //删除编号为id的回复
+    //删除编号为id的回复(返回i删除结果 0-删除问题不存在 1-删除成功)
     @Override
-    public int deleteResponseById(int id){
-        try{
-            responseDao.deleteByPrimaryKey(id);
-        }catch (Exception e){
-            e.printStackTrace();
-            log.info("回复记录删除失败");
-            return -1;
+    public int deleteResponseById(int id) {
+        if(responseDao.selectByPrimaryKey(id) != null){//存在该问题
+            InternalMessage message = new InternalMessage();
+            message.setWay(MessageWay.DELETE_RESPONSE);//操作方式是删除回复
+            message.setObject_id(id);//操作对象是被删除回复
+            messageService.updateInfoByMessage(message);//发送消息
         }
-        return 1;
+        return responseDao.deleteByPrimaryKey(id);
     }
 
     //获取编号为id的回复
@@ -149,14 +151,24 @@ public class ResponseServiceImpl implements ResponseService{
 
     //根据回复id数组批量删除回复(返回删除回复条数)
     @Override
-    public int deleteResponseList(int[] idList){
-        int delNum = responseDao.deleteResponseInList(idList);
-        return delNum;
+    public List<Integer> deleteResponseList(List<Integer> idList){
+        List<Integer> failedList = new ArrayList<>();//删除失败（不存在）的回复id列表
+        for(int id : idList){
+            if(deleteResponseById(id) == 0){//删除失败
+                failedList.add(id);
+            }
+        }
+        return failedList;
     }
 
-    //向数据库中插入一条回复记录
+    //向数据库中插入一条回复记录（返回值为操作结果）
     @Override
-    public void insertResponse(ResponseVO responseVO){
+    public boolean insertResponse(ResponseVO responseVO){
+        //被举报问题
+        Question question = questionDao.selectByPrimaryKey(responseVO.getResponse().getQuestionId());
+        if(question == null){//回复问题不存在
+            return false;
+        }
         Response response = responseVO.getResponse();
         //获取内容，先将内容插入内容表
         Content content = new Content();
@@ -177,6 +189,7 @@ public class ResponseServiceImpl implements ResponseService{
         message.setWay(MessageWay.RESPONSE);
         //发送内部消息更新相关数据
         messageService.updateInfoByMessage(message);
+        return true;
     }
 
     //为responseVO列表添加用户uid的关联信息（是否点过赞/点灭，投诉）

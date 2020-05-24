@@ -30,6 +30,10 @@ public class MessageRRStrategy extends MessageOperateStrategy{
         this.message = message;
         this.userService = userService;
         this.responseService = responseService;
+    }
+
+    //根据消息进行处理,返回要保存的Message信息
+    public Message operate(){
         //获取投诉人实体对象
         User user = userService.getUserById(message.getOperator_id());
         complainant = userService.convertToUserVo(user);
@@ -38,12 +42,9 @@ public class MessageRRStrategy extends MessageOperateStrategy{
         response = responseService.convertToVO(r);
         //获取被投诉作者的实体对象
         user = userService.getUserById(r.getAuthorId());
+        //被举报回复作者
         author = userService.convertToUserVo(user);
-    }
-
-    //根据消息进行处理,返回要保存的Message信息
-    public Message operate(){
-        //更新被举报问题作者的数据（扣除积分）
+        //更新被举报作者作者的数据（扣除积分）
         updateAuthor();
         //更新被举报问题数据（被举报数+1）
         updateResponse();

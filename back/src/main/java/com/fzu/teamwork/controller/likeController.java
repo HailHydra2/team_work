@@ -6,6 +6,7 @@ import com.fzu.teamwork.annoation.UserLimit;
 import com.fzu.teamwork.model.AjaxResponse;
 import com.fzu.teamwork.model.Likes;
 import com.fzu.teamwork.service.LikeService;
+import com.fzu.teamwork.util.ErrorStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,10 @@ public class likeController {
     @UserLimit//需要普通用户权限
     @PostMapping("/likeResponse")
     public @ResponseBody AjaxResponse likeResponse(@RequestBody Likes like){
-        likeService.insertLikeInfo(like);
-        return AjaxResponse.success();
+        if(likeService.insertLikeInfo(like) == true){//点赞/点灭成功
+            return AjaxResponse.success();
+        }else {//点赞回复不存在
+            return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT, "操作回复已被删除");
+        }
     }
 }

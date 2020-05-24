@@ -46,7 +46,6 @@ public class QuestionByKeywordStrategy extends QuestionStrategy{
         //查询关键字
         map.put("keyWord","%" + keyWord + "%");
         List<Question> questionList = questionDao.selectQuestionByKeyWord(map);
-        getButtonList();
         return questionList;
     }
 
@@ -55,12 +54,7 @@ public class QuestionByKeywordStrategy extends QuestionStrategy{
         //每页有几条数据
         int count = questionPage.getCount();
         //问题总条数
-        if(questionDao == null){
-            System.out.println("dao null");
-        }
-        System.out.println("map:" + map);
         int total = questionDao.selectQuestionNumByKeyWord(map);
-        System.out.println("total:" + total);
         //当前页号
         int pageIndex = questionPage.getPageIndex();
         //总页数

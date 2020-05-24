@@ -17,21 +17,23 @@ public class MessageDelQStrategy extends MessageOperateStrategy{
 
     private QuestionService questionService;
     private UserService userService;
+    private InternalMessage message;
 
     //构造函数
     public MessageDelQStrategy(InternalMessage message, QuestionService questionService, UserService userService){
         this.questionService = questionService;
         this.userService = userService;
+        this.message = message;
+    }
+
+    //根据消息进行处理,返回要保存的Message信息
+    public Message operate(){
         //获取被删除消息
         Question question = questionService.getQuestionById(message.getObject_id());
         questionVO = questionService.convertToVO(question);
         //获取被删除问题作者
         User user = userService.getUserById(question.getAuthorId());
         author = userService.convertToUserVo(user);
-    }
-
-    //根据消息进行处理,返回要保存的Message信息
-    public Message operate(){
         //更新被删除问题作者数据（提问数-1）
         updateAuthor();
         //返回保存数据库的消息
