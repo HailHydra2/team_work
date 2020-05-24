@@ -130,7 +130,7 @@
                         </a>
                     </li>
 
-                    <li>
+                    <li class="active open">
                         <a href="#" class="dropdown-toggle">
                             <i class="icon-list"></i>
                             <span class="menu-text"> 举报信息管理 </span>
@@ -157,7 +157,7 @@
 
 
 
-                    <li>
+                    <li class="active open">
                         <a href="#" class="dropdown-toggle">
                             <i class="icon-desktop"></i>
                             <span class="menu-text"> 用户信息管理 </span>
@@ -289,8 +289,12 @@
                                 </div>
                             </form>
 
-                            <input type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx"/>
-
+                            
+                            
+                            
+                            <input type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx" value="123"/>
+                          
+                        
                             
 
                            
@@ -456,7 +460,7 @@
                     type: 'binary'
                 });
                 workbook.SheetNames.forEach(function(sheetName) {
-                    var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);4
+                    var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     if (XL_row_object.length > 0) {
                         encryption(XL_row_object);//对数据加密            
                         addUsers(XL_row_object);//添加用户
