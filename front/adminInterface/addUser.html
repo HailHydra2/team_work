@@ -444,8 +444,15 @@
                 },
                 data:JSON.stringify(user),
                 success: function (data) {
-                    alert("新增成功");
-                    location.reload();
+                    if(data.code == 200){//添加成功
+                        alert("新增成功");
+                        location.reload();
+                    }else{//添加失败
+                        alert(data.message);
+                    }
+                },
+                error:function(){
+                    alert("服务器异常，请稍后再试");
                 }
             });
         }

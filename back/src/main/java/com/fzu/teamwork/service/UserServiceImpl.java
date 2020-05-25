@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService{
             return ErrorStatus.ACCOUNT_ILLEGAL;//账号（学号）非法
         }
         for(int i = 0; i < account.length(); i++){
-            if(!Character.isDigit(account.charAt(i)) || !Character.isLetter(account.charAt(i))){
+            if(!Character.isDigit(account.charAt(i)) && !Character.isLetter(account.charAt(i))){
                 return ErrorStatus.ACCOUNT_ILLEGAL;//账号非法
             }
         }
@@ -127,8 +127,10 @@ public class UserServiceImpl implements UserService{
         if(userDao.selectByExample(example).size() > 0){
             return ErrorStatus.ACCOUNT_HAS_EXIT;//账户已被注册
         }
-        example.createCriteria().andIdCardEqualTo(idCard);
-        if(userDao.selectByExample(example).size() > 0){
+        UserExample idExample = new UserExample();
+        idExample.createCriteria().andIdCardEqualTo(idCard);
+        System.out.println(idCard);
+        if(userDao.selectByExample(idExample).size() > 0){
             return ErrorStatus.ID_HAS_EXIT;//身份证号已经被注册
         }
         return 0;
@@ -151,7 +153,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserByAccount(String account){
-
         //从数据库中找到对应的user
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
