@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService{
         BASE64Decoder decoder = new BASE64Decoder();
         String account = user.getAccount();
         String idCard = user.getIdCard();
-        String decodeIdCard = "";//解密后的身份证号
+        String decodeIdCard = "";//解密后的身份证
         //判学号
         if(account.length() != 9){
             return ErrorStatus.ACCOUNT_ILLEGAL;//账号（学号）非法
@@ -137,11 +137,32 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    //批量增加用户
-    public List<User> addUsers(List<User> users){
-        List<User> failedList = new ArrayList<>();
+    //批量增加用户(返回添加失败用户的描述信息)
+    public List<String> addUsers(List<User> users){
+        List<String> failedList = new ArrayList<>();
+        BASE64Decoder decoder = new BASE64Decoder();
+        int code;
+        String message = "";
+        String decodeIdCard = "";
         for(User user : users){
-            addUser(user);
+            code = addUser(user);
+            if(code != 0){
+                if(code == ErrorStatus.ACCOUNT_ILLEGAL){//账号非法
+                    message = "姓名为：" + user.getName() + "的用户账号[学号]非法（应为9位字母数字串组成）";
+                }else if(code == ErrorStatus.ID_ILLEGAL){
+                    message = "姓名为：" + user.getName() + "的用户身份证非法";
+                }else if(code == ErrorStatus.ACCOUNT_HAS_EXIT){
+                    message = "姓名为：" + user.getName() + "添加失败，" + user.getAccount() + "账户（学号）已被注册";
+                }else if(code == ErrorStatus.ID_HAS_EXIT){
+                    try {
+                        decodeIdCard = new String(decoder.decodeBuffer(user.getIdCard()));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    message = user.getName() + "添加失败，身份证" + decodeIdCard + "已经被注册";
+                }
+                failedList.add(message);
+            }
         }
         return failedList;
     }

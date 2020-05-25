@@ -505,8 +505,16 @@
                 },
                 data:JSON.stringify(list),
                 success: function (data) {
-                    alert("新增成功");
-                    location.reload();
+                    if(data == 200){
+                        alert("新增成功");
+                        location.reload();
+                    }else if(data.code == 416){//部分用户添加失败
+                        list = data.data;
+                        list = Array.prototype.slice.call(list);
+                        for(var i = 0; i < list.length; i++){
+                            console.info(list[i]);
+                        }
+                    }
                 }
             });
         }

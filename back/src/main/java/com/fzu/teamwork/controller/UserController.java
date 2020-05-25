@@ -79,8 +79,12 @@ public class UserController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     public @ResponseBody AjaxResponse addUsers(@RequestBody List<User> users){
-        userService.addUsers(users);
-        return AjaxResponse.success();
+        List<String> failedList = userService.addUsers(users);
+        if(failedList.size() == 0){//全部添加成功
+            return AjaxResponse.success();
+        }else{//部分账户数据不合法
+            return AjaxResponse.error(ErrorStatus.SOME_USER_ILLEGAL,"部分账户数据不合法",failedList);
+        }
     }
 
     //更新密码

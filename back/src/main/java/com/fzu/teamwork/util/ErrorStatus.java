@@ -19,5 +19,5 @@ public class ErrorStatus {
     public static int ID_HAS_EXIT = 413;//身份证号已经存在
     public static int ACCOUNT_ILLEGAL = 414;//账号（学号不合法）
     public static int ID_ILLEGAL = 415;//身份证不合法
-
+    public static int SOME_USER_ILLEGAL = 416;//部分账户数据不合法
 }
