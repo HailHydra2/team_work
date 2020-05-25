@@ -69,9 +69,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUsersAll(int id[])
     {
-
-        for(int i=0;i<id.length;i++)
-        {
+        for(int i=0;i<id.length;i++) {
             deleteUsers(id[i]);
         }
     }
