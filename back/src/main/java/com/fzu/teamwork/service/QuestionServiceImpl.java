@@ -202,20 +202,6 @@ public class QuestionServiceImpl implements QuestionService{
         return questionPage;
     }
 
-    @Override
-    public QuestionPage getAttentionQuestionPage(Integer userId, QuestionPage questionPage){
-        List<Question> questionList = new ArrayList<>();
-        List<Integer> idList =  attentionService.getAttentionQuestionList(userId);
-        for (int id:idList){
-            questionList.add(getQuestionById(id));
-        }
-        List<QuestionVO> questionVOList = new ArrayList<>();
-        for(Question question : questionList) {
-            questionVOList.add(convertToVO(question));
-        }
-        questionPage.setQuestions(questionVOList);
-        return questionPage;
-    }
 
     @Override
     public boolean deleteQuestionById(int questionId){
