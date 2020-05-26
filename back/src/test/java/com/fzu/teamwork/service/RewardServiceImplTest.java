@@ -27,22 +27,25 @@ class RewardServiceImplTest extends LCH_testFather{
     @Test
     void insertReward() {
 
+        //测试积分不够的例子
         Reward reward=new Reward();
         reward.setId(2);
         reward.setUserId(1);
         reward.setType(RewardType.ServiceTime);
-        reward.setRewardNum(6.0);
+        reward.setRewardNum(0.0);
         Date date=new Date();
         reward.setApplyTime(date);
 
-        //真实的UserVo
-        //UserVO userVO=rewardService.insertReward(reward);
+        assertEquals("测试错误",false,rewardService.insertReward(reward));
 
-        //我期望的UserVo
-        UserVO userVO_except=userService.convertToUserVo(userService.getUserById(reward.getUserId()));
+        //成功的例子
+        reward.setId(2);
+        reward.setUserId(1);
+        reward.setType(RewardType.ServiceTime);
+        reward.setRewardNum(6.0);
+        reward.setApplyTime(date);
 
-        //比较与期望的结果
-        //assertEquals("测试错误",userVO_except,userVO);
+        assertEquals("测试错误",true,rewardService.insertReward(reward));
 
     }
 
