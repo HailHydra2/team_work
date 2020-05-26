@@ -46,7 +46,27 @@
     <!--[if lt IE 9]>
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
+        <![endif]-->
+    <style type="text/css">
+        lable {
+            position: relative;
+        }
+
+        #fileUploader {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        #btn {
+            margin-right: 5px;
+        }
+
+        #text {
+            color: cornflowerblue;
+        }
+    </style>
 </head>
 
 <body>
@@ -235,7 +255,7 @@
                             <!-- PAGE CONTENT BEGINS -->
 
 
-                            <form id="form1"  action="##" method="post" class="form-horizontal" role="form">
+                            <form id="form1" action="##" method="post" class="form-horizontal" role="form">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 账号(学号)：
                                     </label>
@@ -285,23 +305,82 @@
                                 </div>
 
                                 <div class="col-md-offset-3 col-md-9">
-                                    <input class="btn btn-info" value="确认新增" type="button" id="addUser" onclick="addAUser()">
+                                    <input class="btn btn-info" value="确认新增" type="button" id="addUser"
+                                        onclick="addAUser()">
                                 </div>
                             </form>
 
-                            
-                            
-                            
-                            <input type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx" value="123"/>
-                          
-                        
-                            
 
-                           
+                            <div class="space-24"></div>
+                            <div class="page-content">
+                                <div class="page-header">
+                                    <h1>
+
+                                        <small>
+                                            <i class="icon-double-angle-right"></i>
+                                            批量新增用户
+                                        </small>
+                                    </h1>
+                                </div><!-- /.page-header -->
+                            <div class="col-sm-9">
+                                
+
+                                    <div class="space-4"></div>
+                                    <div class="col-xs-12 col-sm-6 widget-container-span">
+                                        <div class="widget-box">
+                                            <div class="widget-header">
+                                                <h5 class="smaller">上传情况</h5>
+
+                                                <div class="widget-toolbar">
+                                                    <span class="label label-success">
+
+                                                        <i class="icon-arrow-up"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main padding-6">
+                                                    <div class="alert alert-info">暂无文件上传</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+
+                                    <div class="space-5"></div>
+                                    <div class="space-30"></div>
+                                    <label for="fileinp" class="col-sm-3 control-label no-padding-right">
+
+                                        <input class="btn btn-info" type="button" id="btn" value="点我上传"> <span
+                                            id="text">请上传EXCEL文档</span>
+
+                                        <input type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx" />
+                                    </label>
+
+
+
+
+
+
+
+
+                                </div>
+                                </div>
+                            </div>
                             <!-- PAGE CONTENT ENDS -->
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.page-content -->
+
+
+
+
             </div><!-- /.main-content -->
 
             <div class="ace-settings-container" id="ace-settings-container">
@@ -398,7 +477,7 @@
     <script src="assets/js/ace.min.js"></script>
 
     <script src="../js/util.js"></script>
-	<script>
+    <script>
         //账号(学号输入框)
         var accountTextBox = document.getElementById("account");
         //身份选择框
@@ -407,42 +486,42 @@
         var nameTextBox = document.getElementById("name");
         //身份证输入框
         var idCardTextBox = document.getElementById("idCard");
-		//页面加载时启动页面
-		$(document).ready(function(e) {
-			if(userVO == null){
-				//登录过期
-				alert("登录过期，请重新登录");
-				window.location.href = "../login.html";
-			}
-			//显示用户姓名
-			document.getElementById("userName").innerHTML = userVO.user.name;
+        //页面加载时启动页面
+        $(document).ready(function (e) {
+            if (userVO == null) {
+                //登录过期
+                alert("登录过期，请重新登录");
+                window.location.href = "../login.html";
+            }
+            //显示用户姓名
+            document.getElementById("userName").innerHTML = userVO.user.name;
         });
-        
+
         //新增用户
-        function addAUser(){
+        function addAUser() {
             var account = accountTextBox.value;
             var identiy = identityOption.options[identityOption.selectedIndex].value;
             var name = nameTextBox.value;
             var idCardTemp = idCardTextBox.value;
             var idCard = window.btoa(idCardTemp);
             var password = window.btoa(idCardTemp.slice(-3));
-            
+
             var user = {
-                "account":account,
-                "identity":identiy,
-                "name":name,
-                "idCard":idCard,
-                "password":password
+                "account": account,
+                "identity": identiy,
+                "name": name,
+                "idCard": idCard,
+                "password": password
             };
 
             $.ajax({
                 url: "http://localhost:8888/users",
-                type: "post", 
+                type: "post",
                 contentType: 'application/json;charset=utf-8',
                 beforeSend: function (request) {
                     request.setRequestHeader("token", userVO.token);
                 },
-                data:JSON.stringify(user),
+                data: JSON.stringify(user),
                 success: function (data) {
                     alert("新增成功");
                     location.reload();
@@ -451,28 +530,28 @@
         }
 
         //批量增加用户
-        $("#fileUploader").change(function readFile(evt){
+        $("#fileUploader").change(function readFile(evt) {
             var selectedFile = evt.target.files[0];
             var reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 var data = event.target.result;
                 var workbook = XLSX.read(data, {
                     type: 'binary'
                 });
-                workbook.SheetNames.forEach(function(sheetName) {
+                workbook.SheetNames.forEach(function (sheetName) {
                     var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     if (XL_row_object.length > 0) {
                         console.info(JSON.stringify(XL_row_object));
                     }
                 })
             };
-    
-            reader.onerror = function(event) {
+
+            reader.onerror = function (event) {
                 console.error("File could not be read! Code " + event.target.error.code);
             };
             reader.readAsBinaryString(selectedFile);
         });
-	</script>
+    </script>
 </body>
 
 </html>
