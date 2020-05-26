@@ -5,6 +5,8 @@ import com.fzu.teamwork.view.QuestionPage;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.UserVO;
 
+import java.util.List;
+
 public interface QuestionService {
 
     //根据question的id主键获取问题
@@ -29,11 +31,12 @@ public interface QuestionService {
     public QuestionPage getAttentionQuestionPage(Integer userId, QuestionPage questionPage);
 
 
-    //根据问题ID删除单个问题
-    public void deleteQuestionById(String userId);
+    //根据问题ID删除单个问题(返回是否删除成功——数据库中是否存在该问题)
+    public boolean deleteQuestionById(int questionId);
 
-    //根据问题ID批量删除问题
-    public void deleteQuestionsById(int[] questionIdList);
+
+    //根据问题ID批量删除问题(返回删除失败的问题id列表)
+    public List<Integer> deleteQuestionsById(List<Integer> questionIdList);
 
     //为QuestionVO添加与用户uid之间的关系（是否已经关注、投诉）
     public void addRelationToUId(QuestionVO questionVO, Integer uid);

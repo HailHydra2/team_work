@@ -14,9 +14,9 @@ public interface ReportService {
     //获取被举报的回复
     public List<Response> getReportResponse();
 
-    //举报问题
-    public void addQuestionReport(ReportQuestion reportQuestion);
+    //举报问题(返回值为处理结果)
+    public boolean addQuestionReport(ReportQuestion reportQuestion);
 
-    //举报回复
-    public void addResponseReport(ReportResponse reportResponse);
+    //举报回复(返回值为处理结果)
+    public boolean addResponseReport(ReportResponse reportResponse);
 }

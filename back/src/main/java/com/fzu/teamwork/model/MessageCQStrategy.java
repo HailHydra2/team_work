@@ -18,22 +18,23 @@ public class MessageCQStrategy extends MessageOperateStrategy{
 
     private UserService userService;
     private QuestionService questionService;
+    private InternalMessage message;
 
     //构造函数
     public MessageCQStrategy(InternalMessage message, UserService userService, QuestionService questionService){
         this.userService = userService;
         this.questionService = questionService;
+        this.message = message;
+    }
 
+    //根据消息进行处理,返回要保存的Message信息
+    public Message operate(){
         //获取作者信息
         User user = userService.getUserById(message.getOperator_id());
         author = userService.convertToUserVo(user);
         //获取新创建的问题
         Question question = questionService.getQuestionById(message.getObject_id());
         questionVO = questionService.convertToVO(question);
-    }
-
-    //根据消息进行处理,返回要保存的Message信息
-    public Message operate(){
         //更新问题作者数据
         updateAuthor();
         //将要保存的消息返回

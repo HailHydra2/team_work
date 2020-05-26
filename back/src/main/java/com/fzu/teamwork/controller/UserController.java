@@ -29,7 +29,7 @@ public class UserController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/users")
-    public ArrayList<User> getUser_test()
+    public ArrayList<User> getUser()
     {
         return userService.getUsers();
     }
@@ -38,7 +38,7 @@ public class UserController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @DeleteMapping("/user/{id}")
-    public @ResponseBody AjaxResponse deleteUser_test(@PathVariable int id){
+    public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
         System.out.println(id);
         userService.deleteUsers(id);
         return AjaxResponse.success();
@@ -57,9 +57,34 @@ public class UserController {
     @PostMapping("/users")
     @LoginToken//需要登录
     @AdminLimit//管理员权限
-    public @ResponseBody AjaxResponse addUser_test(@RequestBody User user){
-        userService.addUser(user);
-        return AjaxResponse.success();
+    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
+        int code = userService.addUser(user);//添加是否成功标志位（0：成功 其他：对应错误状态码）
+        String message = "";//错误描述信息
+        if(code == 0){//添加成功
+            return AjaxResponse.success();
+        }else if(code == ErrorStatus.ACCOUNT_ILLEGAL){//账号非法
+            message = "添加用户账号非法（应为9位字母数字串组成）";
+        }else if(code == ErrorStatus.ID_ILLEGAL){
+            message = "添加用户身份证非法";
+        }else if(code == ErrorStatus.ACCOUNT_HAS_EXIT){
+            message = "添加失败，账户（学号）已被注册";
+        }else if(code == ErrorStatus.ID_HAS_EXIT){
+            message = "添加失败，身份证已经被注册";
+        }
+        return AjaxResponse.error(code,message);
+    }
+
+    //批量添加用户
+    @PostMapping("/userList")
+    @LoginToken//需要登录
+    @AdminLimit//管理员权限
+    public @ResponseBody AjaxResponse addUsers(@RequestBody List<User> users){
+        List<String> failedList = userService.addUsers(users);
+        if(failedList.size() == 0){//全部添加成功
+            return AjaxResponse.success();
+        }else{//部分账户数据不合法
+            return AjaxResponse.error(ErrorStatus.SOME_USER_ILLEGAL,"部分账户数据不合法",failedList);
+        }
     }
 
     //更新密码

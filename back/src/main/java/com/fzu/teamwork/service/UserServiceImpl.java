@@ -6,11 +6,16 @@ import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AccountDataExample;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
+import com.fzu.teamwork.util.ErrorStatus;
+import com.fzu.teamwork.util.IdCard;
 import com.fzu.teamwork.util.UserIdentity;
 import com.fzu.teamwork.view.UserVO;
+import io.swagger.annotations.Example;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -64,17 +69,19 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUsersAll(int id[])
     {
-
-        for(int i=0;i<id.length;i++)
-        {
+        for(int i=0;i<id.length;i++) {
             deleteUsers(id[i]);
         }
     }
 
 
-    //添加一个用户
+    //添加一个用户(返回添加结果 0：成功添加 其他：错误对应的状态码)
     @Override
-    public void addUser(User user) {
+    public int addUser(User user) {
+        int flag = doesLegal(user);
+        if(flag != 0){//添加用户非法
+            return flag;//返回错误状态码
+        }
         if(user.getIdentity().equals(UserIdentity.admin)){
             //用户注册的是管理员账号(不需要账号信息)
             user.setAccountDataId(-1);
@@ -85,7 +92,77 @@ public class UserServiceImpl implements UserService{
             user.setAccountDataId(accountData.getId());
         }
         userDao.insert(user);
+        return 0;
+    }
 
+    //判断要添加的用户是否合法（返回判断结果 0-合法 其他-对应错误状态码）
+    public int doesLegal(User user){
+        BASE64Decoder decoder = new BASE64Decoder();
+        String account = user.getAccount();
+        String idCard = user.getIdCard();
+        String decodeIdCard = "";//解密后的身份证
+        //判学号
+        if(account.length() != 9){
+            return ErrorStatus.ACCOUNT_ILLEGAL;//账号（学号）非法
+        }
+        for(int i = 0; i < account.length(); i++){
+            if(!Character.isDigit(account.charAt(i)) && !Character.isLetter(account.charAt(i))){
+                return ErrorStatus.ACCOUNT_ILLEGAL;//账号非法
+            }
+        }
+        //判身份证
+        try {
+            decodeIdCard = new String(decoder.decodeBuffer(idCard));//解密
+            if(!IdCard.IDCardValidate(decodeIdCard)){
+                return ErrorStatus.ID_ILLEGAL;//身份证非法
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //判断重复性
+        UserExample example = new UserExample();
+        example.createCriteria().andAccountEqualTo(account);
+        if(userDao.selectByExample(example).size() > 0){
+            return ErrorStatus.ACCOUNT_HAS_EXIT;//账户已被注册
+        }
+        UserExample idExample = new UserExample();
+        idExample.createCriteria().andIdCardEqualTo(idCard);
+        System.out.println(idCard);
+        if(userDao.selectByExample(idExample).size() > 0){
+            return ErrorStatus.ID_HAS_EXIT;//身份证号已经被注册
+        }
+        return 0;
+    }
+
+    @Override
+    //批量增加用户(返回添加失败用户的描述信息)
+    public List<String> addUsers(List<User> users){
+        List<String> failedList = new ArrayList<>();
+        BASE64Decoder decoder = new BASE64Decoder();
+        int code;
+        String message = "";
+        String decodeIdCard = "";
+        for(User user : users){
+            code = addUser(user);
+            if(code != 0){
+                if(code == ErrorStatus.ACCOUNT_ILLEGAL){//账号非法
+                    message = "姓名为：" + user.getName() + "的用户账号[学号]非法（应为9位字母数字串组成）";
+                }else if(code == ErrorStatus.ID_ILLEGAL){
+                    message = "姓名为：" + user.getName() + "的用户身份证非法";
+                }else if(code == ErrorStatus.ACCOUNT_HAS_EXIT){
+                    message = "姓名为：" + user.getName() + "添加失败，" + user.getAccount() + "账户（学号）已被注册";
+                }else if(code == ErrorStatus.ID_HAS_EXIT){
+                    try {
+                        decodeIdCard = new String(decoder.decodeBuffer(user.getIdCard()));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    message = user.getName() + "添加失败，身份证" + decodeIdCard + "已经被注册";
+                }
+                failedList.add(message);
+            }
+        }
+        return failedList;
     }
 
     @Override
@@ -95,7 +172,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserByAccount(String account){
-
         //从数据库中找到对应的user
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();

@@ -8,6 +8,7 @@ import com.fzu.teamwork.model.Attention;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.service.AttentionService;
 import com.fzu.teamwork.service.UserService;
+import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.view.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,15 @@ public class AttentionController {
     @LoginToken//需要登录权限
     @UserLimit//老师和学生才有权限
     @PostMapping("/attention")
-    public @ResponseBody AjaxResponse testAddAttention(@RequestBody Attention attention){
-        UserVO userVO = attentionService.insertAttention(attention);
-        return AjaxResponse.success(userVO);
+    public @ResponseBody AjaxResponse addAttention(@RequestBody Attention attention){
+        User user = userService.getUserById(attention.getUserId());
+        UserVO userVO = userService.convertToUserVo(user);
+        int focusNum = userVO.getAccountData().getFocusNum();
+        userVO = attentionService.insertAttention(attention);
+        if(focusNum == userVO.getAccountData().getFocusNum()){//关注数没发生改变，关注问题不存在
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT,"关注问题已被删除", userVO);
+        }else{//关注成功
+            return AjaxResponse.success(userVO);
+        }
     }
 }

@@ -523,14 +523,22 @@
                 },
                 data: JSON.stringify(user),
                 success: function (data) {
-                    alert("新增成功");
-                    location.reload();
+                    if(data.code == 200){//添加成功
+                        alert("新增成功");
+                        location.reload();
+                    }else{//添加失败
+                        alert(data.message);
+                    }
+                },
+                error:function(){
+                    alert("服务器异常，请稍后再试");
                 }
             });
         }
 
-        //批量增加用户
-        $("#fileUploader").change(function readFile(evt) {
+        //读取批量增加用户文件
+        $("#fileUploader").change(function readFile(evt){
+
             var selectedFile = evt.target.files[0];
             var reader = new FileReader();
             reader.onload = function (event) {
@@ -541,7 +549,11 @@
                 workbook.SheetNames.forEach(function (sheetName) {
                     var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     if (XL_row_object.length > 0) {
-                        console.info(JSON.stringify(XL_row_object));
+                        encryption(XL_row_object);//对数据加密            
+                        addUsers(XL_row_object);//添加用户
+                        for(var i = 0; i < XL_row_object.length; i++){
+                            console.info(JSON.stringify(XL_row_object[i]));
+                        }
                     }
                 })
             };
@@ -551,7 +563,43 @@
             };
             reader.readAsBinaryString(selectedFile);
         });
-    </script>
+
+        //对列表用户敏感信息进行加密
+        function encryption(list){
+            for(var i = 0; i < list.length; i++){
+                var idCard = "" + list[i]["idCard"];
+                console.info(idCard);
+                list[i]["password"] = window.btoa(idCard.slice(-3));
+                list[i]["idCard"] = window.btoa(list[i]["idCard"]);
+            }
+        }
+
+        //批量增加用户
+        function addUsers(list){
+            $.ajax({
+                url: "http://localhost:8888/userList",
+                type: "post", 
+                contentType: 'application/json;charset=utf-8',
+                beforeSend: function (request) {
+                    request.setRequestHeader("token", userVO.token);
+                },
+                data:JSON.stringify(list),
+                success: function (data) {
+                    if(data == 200){
+                        alert("新增成功");
+                        location.reload();
+                    }else if(data.code == 416){//部分用户添加失败
+                        list = data.data;
+                        list = Array.prototype.slice.call(list);
+                        for(var i = 0; i < list.length; i++){
+                            console.info(list[i]);
+                        }
+                    }
+                }
+            });
+        }
+	</script>
+
 </body>
 
 </html>

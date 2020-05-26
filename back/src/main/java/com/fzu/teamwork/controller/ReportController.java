@@ -10,6 +10,7 @@ import com.fzu.teamwork.dao.ReportResponseDao;
 import com.fzu.teamwork.dao.ResponseDao;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.service.ReportService;
+import com.fzu.teamwork.util.ErrorStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +48,11 @@ public class ReportController {
     @PostMapping("questionReport")
     public @ResponseBody
     AjaxResponse addQuestionReport(@RequestBody ReportQuestion reportQuestion){
-        reportService.addQuestionReport(reportQuestion);
-        return AjaxResponse.success();
+        if(reportService.addQuestionReport(reportQuestion) == true){//投诉成功
+            return AjaxResponse.success();
+        }else{
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT, "您举报的问题已被删除");
+        }
     }
 
     //实现举报回复接口
@@ -56,7 +60,10 @@ public class ReportController {
     @UserLimit//普通用户权限
     @PostMapping("/responseReport")
     public @ResponseBody AjaxResponse addResponseReport(@RequestBody ReportResponse reportResponse){
-        reportService.addResponseReport(reportResponse);
-        return AjaxResponse.success();
+        if(reportService.addResponseReport(reportResponse) == true){//处理成功
+            return AjaxResponse.success();
+        }else {
+            return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT,"您举报的回复已被删除");
+        }
     }
 }

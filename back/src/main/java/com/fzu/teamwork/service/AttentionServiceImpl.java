@@ -1,11 +1,9 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.AttentionDao;
+import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.dao.UserDao;
-import com.fzu.teamwork.model.Attention;
-import com.fzu.teamwork.model.AttentionExample;
-import com.fzu.teamwork.model.InternalMessage;
-import com.fzu.teamwork.model.User;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.MessageWay;
 import com.fzu.teamwork.view.UserVO;
 import io.swagger.annotations.Example;
@@ -26,6 +24,9 @@ public class AttentionServiceImpl implements AttentionService{
     @Resource
     private UserDao userDao;
 
+    @Resource
+    QuestionDao questionDao;
+
     @Resource(name = "messageServiceImpl")
     private MessageService messageService;
 
@@ -34,6 +35,12 @@ public class AttentionServiceImpl implements AttentionService{
 
     //向数据库插入关注记录（返回改变后的用户数据—关注数发生改变）
     public UserVO insertAttention(Attention record){
+        Question question =questionDao.selectByPrimaryKey(record.getQuestionId());
+        User user = userDao.selectByPrimaryKey(record.getUserId());
+        UserVO userVO = userService.convertToUserVo(user);
+        if(question == null){//关注问题不存在
+            return userVO;
+        }
         //创建关注记录中关注问题id和关注用户id和要插入记录一样的记录
         AttentionExample example = new AttentionExample();
         AttentionExample.Criteria criteria = example.createCriteria();
@@ -68,14 +75,13 @@ public class AttentionServiceImpl implements AttentionService{
         message.setWay(MessageWay.ATTENTION);
         //发送消息对用户数据进行更新（关注数）
         messageService.updateInfoByMessage(message);
-        User user = userDao.selectByPrimaryKey(record.getUserId());
+        user = userDao.selectByPrimaryKey(record.getUserId());
         return userService.convertToUserVo(user);
     }
 
     //根据uid查询用户关注问题的id列表
     public List<Integer> getAttentionQuestionList(int uid){
         List<Integer> list = attentionDao.getAttentionQuestionList(uid);
-        log.info("list:   {}", list);
         return list;
     }
 }

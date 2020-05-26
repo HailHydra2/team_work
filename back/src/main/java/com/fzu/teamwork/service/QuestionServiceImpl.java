@@ -129,21 +129,16 @@ public class QuestionServiceImpl implements QuestionService{
         int contentId = content.getId();
 
         Question question = questionVO.getQuestion();
-        //System.out.println(question);
-        question.setResponseNum(0);
-        question.setReportNum(0);
         question.setContentId(contentId);
         questionDao.insert(question);
 
         Title title = new Title();
         title.setTitle(questionVO.getTitle());
         titleDao.insert(title);
-        System.out.println("queId" + question.getId() + "  titleId: " + title.getId());
         titleDao.insertQuestionTitle(question.getId(),title.getId());
 
         int userID = question.getAuthorId();
         User user = userService.getUserById(userID);
-        UserVO userVO = userService.convertToUserVo(user);
 
         //创建内部传输消息
         InternalMessage message = new InternalMessage();
@@ -155,6 +150,9 @@ public class QuestionServiceImpl implements QuestionService{
         message.setWay(MessageWay.CREATE_QUESTION);
         //发送消息
         messageService.updateInfoByMessage(message);
+        //重新获取用户信息（因为消息处理模块有更新用户数据）
+        user = userService.getUserById(userID);
+        UserVO userVO = userService.convertToUserVo(user);
         return userVO;
     }
 
@@ -179,6 +177,7 @@ public class QuestionServiceImpl implements QuestionService{
             createQuestionStrategy(5);//创建对应策略对象
         }
         List<Question> questionList = questionStrategy.getQuestionList();
+        questionStrategy.getButtonList();//获取分页按钮
         List<QuestionVO> questionVOList = convertToVOList(questionList);
         questionPage.setQuestions(questionVOList);
         return questionPage;
@@ -197,6 +196,7 @@ public class QuestionServiceImpl implements QuestionService{
             questionStrategy = new QuestionBeAttentionStrategy(userId,questionPage,questionDao,attentionDao);
         }
         List<Question> questionList = questionStrategy.getQuestionList();
+        questionStrategy.getButtonList();//获取分页按钮
         List<QuestionVO> questionVOList = convertToVOList(questionList);
         questionPage.setQuestions(questionVOList);
         return questionPage;
@@ -218,28 +218,36 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public void deleteQuestionById(String id){
-        int questionId = Integer.parseInt(id);
+    public boolean deleteQuestionById(int questionId){
+        if(questionDao.selectByPrimaryKey(questionId) == null){//数据库中不存在该问题
+            return false;
+        }
+
+        InternalMessage message = new InternalMessage();
+        message.setWay(MessageWay.DELETE_QUESTION);//删除问题
+        message.setObject_id(questionId);//被操作对象是问题
+        messageService.updateInfoByMessage(message);
+
         int titleId = titleDao.selectTitleByQuestionID(questionId);
         int contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
         titleDao.deleteQuestionTitle(questionId);
         titleDao.deleteByPrimaryKey(titleId);
         questionDao.deleteByPrimaryKey(questionId);
         contentDao.deleteByPrimaryKey(contentId);
+        return true;//删除成功
     }
 
+    //批量删除问题（返回删除失败问题id列表）
     @Override
-    public void deleteQuestionsById(int[] questionIdList){
-        for (int questionId:questionIdList){
-            int titleId = titleDao.selectTitleByQuestionID(questionId);
-            int contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
-            titleDao.deleteQuestionTitle(questionId);
-            titleDao.deleteByPrimaryKey(titleId);
-            questionDao.deleteByPrimaryKey(questionId);
-            contentDao.deleteByPrimaryKey(contentId);
+    public List<Integer> deleteQuestionsById(List<Integer> questionIdList) {
+        List<Integer> failedList = new ArrayList<>();
+        for (int questionId : questionIdList) {
+            if (deleteQuestionById(questionId) == false) {//删除失败（不存在该问题）
+                failedList.add(questionId);
+            }
         }
+        return failedList;
     }
-
     //将List<Question>转化为List<QuestionVO>
     public List<QuestionVO> convertToVOList(List<Question> questions){
         List<QuestionVO> questionVOList = new ArrayList<>();

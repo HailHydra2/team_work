@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2020-05-14 15:09:16
+Date: 2020-05-25 20:55:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,13 +28,13 @@ CREATE TABLE `account_data` (
   `question_num` int(11) NOT NULL,
   `response_num` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of account_data
 -- ----------------------------
-INSERT INTO `account_data` VALUES ('-1', '0', '0', '0', '6', '0', '0');
-INSERT INTO `account_data` VALUES ('1', '0', '870', '320', '12', '31', '25');
+INSERT INTO `account_data` VALUES ('-1', '0', '60', '60', '6', '3', '0');
+INSERT INTO `account_data` VALUES ('1', '0', '1640', '1078', '14', '38', '49');
 INSERT INTO `account_data` VALUES ('2', '0', '100', '92', '1', '1', '8');
 INSERT INTO `account_data` VALUES ('3', '0', '10', '10', '1', '0', '1');
 INSERT INTO `account_data` VALUES ('4', '0', '0', '0', '0', '0', '0');
@@ -51,13 +51,42 @@ INSERT INTO `account_data` VALUES ('14', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('15', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('16', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('17', '0', '0', '0', '0', '0', '0');
-INSERT INTO `account_data` VALUES ('18', '0', '90', '88', '1', '4', '1');
+INSERT INTO `account_data` VALUES ('18', '0', '90', '88', '1', '2', '1');
 INSERT INTO `account_data` VALUES ('19', '0', '30', '31', '0', '1', '1');
 INSERT INTO `account_data` VALUES ('20', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('21', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('22', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('23', '0', '0', '0', '0', '0', '0');
 INSERT INTO `account_data` VALUES ('24', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('25', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('26', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('27', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('28', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('29', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('30', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('31', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('32', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('33', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('34', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('35', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('36', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('37', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('38', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('39', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('40', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('41', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('42', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('43', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('44', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('45', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('46', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('47', '0', '0', '0', '0', '0', '0');
+INSERT INTO `account_data` VALUES ('48', '0', '20', '20', '0', '1', '0');
+INSERT INTO `account_data` VALUES ('49', '0', '20', '20', '0', '1', '0');
+INSERT INTO `account_data` VALUES ('50', '0', '20', '20', '0', '1', '0');
+INSERT INTO `account_data` VALUES ('51', '0', '20', '20', '0', '1', '0');
+INSERT INTO `account_data` VALUES ('52', '0', '20', '20', '0', '1', '0');
+INSERT INTO `account_data` VALUES ('53', '0', '20', '20', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for `attention`
@@ -80,10 +109,8 @@ CREATE TABLE `attention` (
 -- Records of attention
 -- ----------------------------
 INSERT INTO `attention` VALUES ('25', '20', '57', '2020-05-09 15:55:23', '1');
-INSERT INTO `attention` VALUES ('27', '2', '61', '2020-05-11 23:45:38', '0');
-INSERT INTO `attention` VALUES ('28', '2', '65', '2020-05-11 23:45:31', '1');
+INSERT INTO `attention` VALUES ('27', '2', '61', '2020-05-20 09:51:50', '1');
 INSERT INTO `attention` VALUES ('29', '2', '57', '2020-05-14 08:16:14', '1');
-INSERT INTO `attention` VALUES ('30', '2', '67', '2020-05-12 09:17:17', '0');
 
 -- ----------------------------
 -- Table structure for `block`
@@ -94,12 +121,12 @@ CREATE TABLE `block` (
   `block_name` varchar(50) NOT NULL,
   `key_word` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of block
 -- ----------------------------
-INSERT INTO `block` VALUES ('5', '期末板块', '期末');
+INSERT INTO `block` VALUES ('6', '1', '1');
 
 -- ----------------------------
 -- Table structure for `content`
@@ -109,7 +136,7 @@ CREATE TABLE `content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(10000) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of content
@@ -117,13 +144,10 @@ CREATE TABLE `content` (
 INSERT INTO `content` VALUES ('132', '不要\n单词课、APP啥的就不用回答了，网络时代大家都清楚。\n\n要\n要最有效果的，真能把单词背下来的，同时效率很高的。\n确实做到相见恨晚的。其他都是白费。\n\n也要\n当然质量上乘，可以持续调动学习荷尔蒙的鸡汤也算。虽然这种鸡汤不多见。');
 INSERT INTO `content` VALUES ('134', '本人不太自觉，希望有个有效的学习方法');
 INSERT INTO `content` VALUES ('136', '本人大一，上课经常走神，自习总会不自觉拿起手机，求能够帮助专心学习的方法');
-INSERT INTO `content` VALUES ('137', '非计算机专业学生怎么走上技术之路？来自211一般大学，高考错失计算机专业。目前工科。应该考研吗？还是寻找其他成长之路？');
-INSERT INTO `content` VALUES ('138', '想好好学习，但是戒不掉手机，请问怎么办');
 INSERT INTO `content` VALUES ('139', '本人大一，不知道怎么投分比较合理');
 INSERT INTO `content` VALUES ('140', '首先，结合了场景的应用，让单词更加容易记忆，这点就不累赘了其次，拓展了单词的词性，延伸了更多地词义，所谓的的一词多义，在书中最容易体现再者，可读性，阅读是人类的优秀天性，能够让人增长知识，开拓视野，阅读英文文章就更不用说了，背单词可能10分钟就睡着了，阅读一整天可能都还津津有味。最后，阅读让英文水平提升一个档次，大部分英语学习者，都害怕阅读英语名著，怕这怕那的，其实根本提不高英语。（这里我找到了方法）');
 INSERT INTO `content` VALUES ('141', '有些人在背单词的时间，没有时间观念，总是喜欢用一大段时间来背单词，当时感觉已经记住了，但是过不了多久，又全部忘记了，这可能是记单词的通病，所以，学姐建议你，以后记单词，使用零碎时间，用不到10分钟的时间，抽空记住几个，然后一有零碎空闲时间，无论什么地方，无论做什么，马上背几个单词，这样记忆效率是比较高的哦');
 INSERT INTO `content` VALUES ('142', '不知道');
-INSERT INTO `content` VALUES ('143', '感觉机械自动化行业目前一直在走下坡路，虽然在这一块算得上是国家的支助行业，现在却鲜少有年轻人愿意停留在这一块领域，大批的人才向it方向流走。机械与自动化这一块已经风雨飘摇了，再不和互联网衔接，等到老一辈工程师退休，那么这一块将面临重大的人才危（我不知道这是不是杞人忧天，但以目前知乎对于这一块的诸多回答来看，来说我感觉应该是的）。\n\n今天我斗胆提这么一个问题，希望集众人之智，大家一起探讨如何推动机械自动化和互联网衔接，希望每一位在从事在这一块工作的知乎用户，提成各自宝贵的意见。');
 INSERT INTO `content` VALUES ('144', '1');
 INSERT INTO `content` VALUES ('145', 'test');
 INSERT INTO `content` VALUES ('146', '1111');
@@ -138,14 +162,66 @@ INSERT INTO `content` VALUES ('154', 'content');
 INSERT INTO `content` VALUES ('155', '222');
 INSERT INTO `content` VALUES ('156', '222');
 INSERT INTO `content` VALUES ('157', '222');
-INSERT INTO `content` VALUES ('158', '222');
 INSERT INTO `content` VALUES ('159', '111');
-INSERT INTO `content` VALUES ('160', '2');
 INSERT INTO `content` VALUES ('161', '22');
 INSERT INTO `content` VALUES ('162', '22');
 INSERT INTO `content` VALUES ('163', 'llaa');
 INSERT INTO `content` VALUES ('164', 'lala');
 INSERT INTO `content` VALUES ('165', 'xixi');
+INSERT INTO `content` VALUES ('168', '3');
+INSERT INTO `content` VALUES ('171', '1');
+INSERT INTO `content` VALUES ('172', '1');
+INSERT INTO `content` VALUES ('173', '2');
+INSERT INTO `content` VALUES ('174', '1');
+INSERT INTO `content` VALUES ('175', '1');
+INSERT INTO `content` VALUES ('176', '1');
+INSERT INTO `content` VALUES ('178', '3');
+INSERT INTO `content` VALUES ('181', '1\n');
+INSERT INTO `content` VALUES ('182', '2');
+INSERT INTO `content` VALUES ('183', '3');
+INSERT INTO `content` VALUES ('184', '4');
+INSERT INTO `content` VALUES ('185', '2');
+INSERT INTO `content` VALUES ('186', '3\n\n');
+INSERT INTO `content` VALUES ('187', '1');
+INSERT INTO `content` VALUES ('188', '2');
+INSERT INTO `content` VALUES ('189', '3');
+INSERT INTO `content` VALUES ('190', '4');
+INSERT INTO `content` VALUES ('191', '5');
+INSERT INTO `content` VALUES ('192', '6');
+INSERT INTO `content` VALUES ('193', '2');
+INSERT INTO `content` VALUES ('194', '3');
+INSERT INTO `content` VALUES ('195', '4');
+INSERT INTO `content` VALUES ('196', '5');
+INSERT INTO `content` VALUES ('197', '1');
+INSERT INTO `content` VALUES ('198', '1');
+INSERT INTO `content` VALUES ('199', '1');
+INSERT INTO `content` VALUES ('200', '1');
+INSERT INTO `content` VALUES ('201', '1');
+INSERT INTO `content` VALUES ('202', '2');
+INSERT INTO `content` VALUES ('203', '1');
+INSERT INTO `content` VALUES ('204', '1');
+INSERT INTO `content` VALUES ('205', '1');
+INSERT INTO `content` VALUES ('206', '1');
+INSERT INTO `content` VALUES ('207', '1');
+INSERT INTO `content` VALUES ('208', '2');
+INSERT INTO `content` VALUES ('209', '3');
+INSERT INTO `content` VALUES ('210', '4');
+INSERT INTO `content` VALUES ('211', '1');
+INSERT INTO `content` VALUES ('212', '1');
+INSERT INTO `content` VALUES ('216', '1');
+INSERT INTO `content` VALUES ('218', '1');
+INSERT INTO `content` VALUES ('221', '2121212');
+INSERT INTO `content` VALUES ('222', '212121');
+INSERT INTO `content` VALUES ('223', 'content');
+INSERT INTO `content` VALUES ('224', 'content');
+INSERT INTO `content` VALUES ('225', 'content');
+INSERT INTO `content` VALUES ('226', 'content1');
+INSERT INTO `content` VALUES ('227', 'content1');
+INSERT INTO `content` VALUES ('228', 'content1');
+INSERT INTO `content` VALUES ('229', 'content1');
+INSERT INTO `content` VALUES ('230', 'content1');
+INSERT INTO `content` VALUES ('231', 'content1');
+INSERT INTO `content` VALUES ('232', 'content1');
 
 -- ----------------------------
 -- Table structure for `kind`
@@ -177,13 +253,13 @@ CREATE TABLE `likes` (
   KEY `like_user_id` (`user_id`),
   CONSTRAINT `like_response_id` FOREIGN KEY (`response_id`) REFERENCES `response` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `like_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of likes
 -- ----------------------------
 INSERT INTO `likes` VALUES ('3', '77', '20', '0');
-INSERT INTO `likes` VALUES ('4', '78', '2', '1');
+INSERT INTO `likes` VALUES ('4', '78', '2', '-1');
 INSERT INTO `likes` VALUES ('5', '77', '2', '1');
 
 -- ----------------------------
@@ -198,7 +274,7 @@ CREATE TABLE `message` (
   PRIMARY KEY (`id`),
   KEY `message_object_id` (`object_id`),
   CONSTRAINT `message_object_id` FOREIGN KEY (`object_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message
@@ -269,6 +345,94 @@ INSERT INTO `message` VALUES ('89', '2', 'response', '学生1回复了您\"2\"�
 INSERT INTO `message` VALUES ('90', '2', 'response', '学生1回复了您\"2\"的问题');
 INSERT INTO `message` VALUES ('91', '2', 'response', '学生1回复了您\"2\"的问题');
 INSERT INTO `message` VALUES ('92', '2', 'createQuestion', '您在2020-05-14 08:43:55创建了\"xixi\"问题');
+INSERT INTO `message` VALUES ('93', '2', 'createQuestion', '您在2020-05-19 22:33:14创建了\"1\"问题');
+INSERT INTO `message` VALUES ('94', '2', 'deleteQuestion', '您的问题\"1\"已被管理员删除');
+INSERT INTO `message` VALUES ('95', '2', 'deleteQuestion', '您的问题\"机械行业和自动化行业该如何与互联网衔接？\"已被管理员删除');
+INSERT INTO `message` VALUES ('96', '20', 'deleteQuestion', '您的问题\"非计算机专业学生怎么走上计算机技术之路？\"已被管理员删除');
+INSERT INTO `message` VALUES ('97', '20', 'deleteQuestion', '您的问题\"如何戒掉手机去认真学习？\"已被管理员删除');
+INSERT INTO `message` VALUES ('98', '2', 'createQuestion', '您在2020-05-19 23:17:00创建了\"2\"问题');
+INSERT INTO `message` VALUES ('99', '2', 'createQuestion', '您在2020-05-19 23:17:09创建了\"3\"问题');
+INSERT INTO `message` VALUES ('100', '2', 'createQuestion', '您在2020-05-19 23:17:13创建了\"4\"问题');
+INSERT INTO `message` VALUES ('101', '2', 'createQuestion', '您在2020-05-19 23:17:20创建了\"5\"问题');
+INSERT INTO `message` VALUES ('102', '2', 'deleteQuestion', '您的问题\"5\"已被管理员删除');
+INSERT INTO `message` VALUES ('103', '2', 'deleteQuestion', '您的问题\"4\"已被管理员删除');
+INSERT INTO `message` VALUES ('104', '2', 'deleteQuestion', '您的问题\"2\"已被管理员删除');
+INSERT INTO `message` VALUES ('105', '2', 'createQuestion', '您在2020-05-20 10:54:04创建了\"1\"问题');
+INSERT INTO `message` VALUES ('106', '2', 'createQuestion', '您在2020-05-20 10:55:31创建了\"1\"问题');
+INSERT INTO `message` VALUES ('107', '2', 'createQuestion', '您在2020-05-20 10:55:49创建了\"2\"问题');
+INSERT INTO `message` VALUES ('108', '2', 'createQuestion', '您在2020-05-20 10:56:35创建了\"11\"问题');
+INSERT INTO `message` VALUES ('109', '2', 'createQuestion', '您在2020-05-20 10:57:18创建了\"1\"问题');
+INSERT INTO `message` VALUES ('110', '2', 'createQuestion', '您在2020-05-20 11:38:23创建了\"1\"问题');
+INSERT INTO `message` VALUES ('111', '2', 'createQuestion', '您在2020-05-20 11:38:28创建了\"2\"问题');
+INSERT INTO `message` VALUES ('112', '2', 'createQuestion', '您在2020-05-20 11:38:34创建了\"3\"问题');
+INSERT INTO `message` VALUES ('113', '2', 'createQuestion', '您在2020-05-20 11:38:40创建了\"4\"问题');
+INSERT INTO `message` VALUES ('114', '2', 'createQuestion', '您在2020-05-20 11:38:45创建了\"5\"问题');
+INSERT INTO `message` VALUES ('115', '2', 'deleteQuestion', '您的问题\"5\"已被管理员删除');
+INSERT INTO `message` VALUES ('116', '2', 'deleteQuestion', '您的问题\"2\"已被管理员删除');
+INSERT INTO `message` VALUES ('117', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('118', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('119', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('120', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('121', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('122', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('123', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('124', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('125', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('126', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('127', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('128', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('129', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('130', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('131', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('132', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('133', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('134', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('135', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('136', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('137', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('138', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('139', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('140', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('141', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('142', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('143', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('144', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('145', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('146', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('147', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('148', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('149', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('150', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('151', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('152', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('153', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('154', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('155', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('156', '2', 'response', '学生1回复了您\"1\"的问题');
+INSERT INTO `message` VALUES ('157', '2', 'deleteResponse', '您关于\"1\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('158', '2', 'deleteQuestion', '您的问题\"4\"已被管理员删除');
+INSERT INTO `message` VALUES ('159', '2', 'createQuestion', '您在2020-05-20 23:46:26创建了\"1\"问题');
+INSERT INTO `message` VALUES ('160', '2', 'deleteQuestion', '您的问题\"1\"已被管理员删除');
+INSERT INTO `message` VALUES ('161', '2', 'createQuestion', '您在2020-05-20 23:57:32创建了\"2\"问题');
+INSERT INTO `message` VALUES ('162', '2', 'deleteQuestion', '您的问题\"2\"已被管理员删除');
+INSERT INTO `message` VALUES ('163', '2', 'createQuestion', '您在2020-05-21 08:47:07创建了\"11\"问题');
+INSERT INTO `message` VALUES ('164', '2', 'response', '学生1回复了您\"11\"的问题');
+INSERT INTO `message` VALUES ('165', '2', 'createQuestion', '您在2020-05-21 09:30:16创建了\"234\"问题');
+INSERT INTO `message` VALUES ('166', '2', 'response', '学生1回复了您\"234\"的问题');
+INSERT INTO `message` VALUES ('167', '2', 'deleteResponse', '您关于\"234\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('168', '2', 'deleteQuestion', '您的问题\"234\"已被管理员删除');
+INSERT INTO `message` VALUES ('169', '2', 'createQuestion', '您在2020-05-21 09:42:13创建了\"2121\"问题');
+INSERT INTO `message` VALUES ('170', '2', 'deleteQuestion', '您的问题\"2121\"已被管理员删除');
+INSERT INTO `message` VALUES ('171', '2', 'createQuestion', '您在2020-05-21 09:49:50创建了\"2121212\"问题');
+INSERT INTO `message` VALUES ('172', '2', 'deleteQuestion', '您的问题\"2121212\"已被管理员删除');
+INSERT INTO `message` VALUES ('173', '2', 'response', '学生1回复了您\"11\"的问题');
+INSERT INTO `message` VALUES ('174', '2', 'likeResponse', '学生1点赞了您的回复');
+INSERT INTO `message` VALUES ('175', '2', 'deleteResponse', '您关于\"11\"的回复被管理员删除');
+INSERT INTO `message` VALUES ('176', '2', 'response', '学生1回复了您\"11\"的问题');
+INSERT INTO `message` VALUES ('177', '2', 'deleteQuestion', '您的问题\"11\"已被管理员删除');
+INSERT INTO `message` VALUES ('178', '1', 'createQuestion', '您在2020-05-22 08:08:05创建了\"title\"问题');
+INSERT INTO `message` VALUES ('179', '1', 'createQuestion', '您在2020-05-22 08:09:17创建了\"title\"问题');
+INSERT INTO `message` VALUES ('180', '1', 'createQuestion', '您在2020-05-23 10:07:09创建了\"title\"问题');
 
 -- ----------------------------
 -- Table structure for `question`
@@ -287,26 +451,21 @@ CREATE TABLE `question` (
   KEY `question_content_id` (`content_id`),
   KEY `question_author_id` (`author_id`),
   KEY `question_kind_id` (`kind_id`),
-  CONSTRAINT `question_kind_id` FOREIGN KEY (`kind_id`) REFERENCES `kind` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `question_author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
+  CONSTRAINT `question_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`),
+  CONSTRAINT `question_kind_id` FOREIGN KEY (`kind_id`) REFERENCES `kind` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of question
 -- ----------------------------
-INSERT INTO `question` VALUES ('57', '2', '7', '0', '2020-05-09 15:19:42', '132', '0', '1');
+INSERT INTO `question` VALUES ('57', '2', '7', '1', '2020-05-09 15:19:42', '132', '0', '1');
 INSERT INTO `question` VALUES ('59', '2', '1', '1', '2020-05-09 15:21:31', '134', '0', '0');
 INSERT INTO `question` VALUES ('61', '20', '0', '1', '2020-05-09 15:38:46', '136', '0', '0');
-INSERT INTO `question` VALUES ('62', '20', '0', '0', '2020-05-09 15:46:46', '137', '0', '0');
-INSERT INTO `question` VALUES ('63', '20', '0', '0', '2020-05-09 15:48:00', '138', '0', '1');
-INSERT INTO `question` VALUES ('65', '2', '0', '0', '2020-05-11 23:45:18', '143', '0', '0');
-INSERT INTO `question` VALUES ('66', '2', '0', '0', '2020-05-12 07:32:51', '145', '0', '1');
-INSERT INTO `question` VALUES ('67', '2', '0', '0', '2020-05-12 09:16:32', '147', '0', '0');
-INSERT INTO `question` VALUES ('68', '2', '0', '0', '2020-05-12 21:46:37', '149', '0', '0');
-INSERT INTO `question` VALUES ('69', '2', '0', '0', '2020-05-14 08:20:01', '158', '0', '0');
-INSERT INTO `question` VALUES ('70', '2', '4', '1', '2020-05-14 08:33:26', '160', '1', '0');
-INSERT INTO `question` VALUES ('71', '2', '0', '0', '2020-05-14 08:43:55', '165', '1', '0');
+INSERT INTO `question` VALUES ('82', '2', '24', '1', '2020-05-20 11:38:23', '176', '0', '0');
+INSERT INTO `question` VALUES ('93', '1', '0', '0', '2020-05-22 08:08:05', '223', '0', '0');
+INSERT INTO `question` VALUES ('94', '1', '0', '0', '2020-05-22 08:09:17', '224', '0', '0');
+INSERT INTO `question` VALUES ('95', '1', '0', '0', '2020-05-23 10:07:09', '225', '0', '0');
 
 -- ----------------------------
 -- Table structure for `question_title`
@@ -321,7 +480,7 @@ CREATE TABLE `question_title` (
   KEY `title_question_id` (`question_id`),
   CONSTRAINT `question_title_id` FOREIGN KEY (`title_id`) REFERENCES `title` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `title_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of question_title
@@ -329,15 +488,10 @@ CREATE TABLE `question_title` (
 INSERT INTO `question_title` VALUES ('52', '57', '52');
 INSERT INTO `question_title` VALUES ('54', '59', '54');
 INSERT INTO `question_title` VALUES ('56', '61', '56');
-INSERT INTO `question_title` VALUES ('57', '62', '57');
-INSERT INTO `question_title` VALUES ('58', '63', '58');
-INSERT INTO `question_title` VALUES ('60', '65', '60');
-INSERT INTO `question_title` VALUES ('61', '66', '61');
-INSERT INTO `question_title` VALUES ('62', '67', '62');
-INSERT INTO `question_title` VALUES ('63', '68', '63');
-INSERT INTO `question_title` VALUES ('64', '69', '64');
-INSERT INTO `question_title` VALUES ('65', '70', '65');
-INSERT INTO `question_title` VALUES ('66', '71', '66');
+INSERT INTO `question_title` VALUES ('77', '82', '77');
+INSERT INTO `question_title` VALUES ('88', '93', '88');
+INSERT INTO `question_title` VALUES ('89', '94', '89');
+INSERT INTO `question_title` VALUES ('90', '95', '90');
 
 -- ----------------------------
 -- Table structure for `report_question`
@@ -353,15 +507,15 @@ CREATE TABLE `report_question` (
   KEY `report_question_id` (`question_id`),
   CONSTRAINT `question_reportor_id` FOREIGN KEY (`reportor_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `report_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of report_question
 -- ----------------------------
 INSERT INTO `report_question` VALUES ('2', '2', '61', '1');
 INSERT INTO `report_question` VALUES ('3', '2', '59', '1');
-INSERT INTO `report_question` VALUES ('4', '2', '57', '0');
-INSERT INTO `report_question` VALUES ('5', '2', '70', '1');
+INSERT INTO `report_question` VALUES ('4', '2', '57', '1');
+INSERT INTO `report_question` VALUES ('5', '2', '82', '1');
 
 -- ----------------------------
 -- Table structure for `report_response`
@@ -377,7 +531,7 @@ CREATE TABLE `report_response` (
   KEY `response_reportor_id` (`reportor_id`),
   CONSTRAINT `report_response_id` FOREIGN KEY (`response_id`) REFERENCES `response` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `response_reportor_id` FOREIGN KEY (`reportor_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of report_response
@@ -405,21 +559,14 @@ CREATE TABLE `response` (
   CONSTRAINT `response_author_id` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `response_content_id` FOREIGN KEY (`content_id`) REFERENCES `content` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `response_question_id` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of response
 -- ----------------------------
 INSERT INTO `response` VALUES ('77', '57', '20', '141', '1', '0', '0', '2020-05-09 15:55:16', '1');
-INSERT INTO `response` VALUES ('78', '59', '2', '142', '1', '0', '0', '2020-05-11 23:43:02', '0');
+INSERT INTO `response` VALUES ('78', '59', '2', '142', '0', '1', '-1', '2020-05-11 23:43:02', '0');
 INSERT INTO `response` VALUES ('79', '57', '2', '144', '0', '0', '0', '2020-05-12 07:32:32', '0');
-INSERT INTO `response` VALUES ('81', '57', '2', '148', '0', '0', '0', '2020-05-12 09:25:59', '0');
-INSERT INTO `response` VALUES ('82', '57', '2', '150', '0', '0', '0', '2020-05-12 21:46:54', '0');
-INSERT INTO `response` VALUES ('83', '57', '2', '159', '0', '0', '0', '2020-05-14 08:20:16', '0');
-INSERT INTO `response` VALUES ('84', '70', '2', '161', '0', '0', '0', '2020-05-14 08:33:41', '0');
-INSERT INTO `response` VALUES ('85', '70', '2', '162', '0', '0', '0', '2020-05-14 08:33:48', '0');
-INSERT INTO `response` VALUES ('86', '70', '2', '163', '0', '0', '0', '2020-05-14 08:33:53', '0');
-INSERT INTO `response` VALUES ('87', '70', '2', '164', '0', '0', '0', '2020-05-14 08:43:45', '0');
 
 -- ----------------------------
 -- Table structure for `reward`
@@ -480,7 +627,7 @@ CREATE TABLE `title` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of title
@@ -497,16 +644,28 @@ INSERT INTO `title` VALUES ('29', '7');
 INSERT INTO `title` VALUES ('52', '有什么相见恨晚的背单词方法？');
 INSERT INTO `title` VALUES ('54', '不想学习的时候如何逼迫自己学习？');
 INSERT INTO `title` VALUES ('56', '怎么才能心无旁骛地学习？');
-INSERT INTO `title` VALUES ('57', '非计算机专业学生怎么走上计算机技术之路？');
-INSERT INTO `title` VALUES ('58', '如何戒掉手机去认真学习？');
 INSERT INTO `title` VALUES ('59', '请问选课投分要怎么投？');
-INSERT INTO `title` VALUES ('60', '机械行业和自动化行业该如何与互联网衔接？');
 INSERT INTO `title` VALUES ('61', 'test');
 INSERT INTO `title` VALUES ('62', '111');
 INSERT INTO `title` VALUES ('63', 'haha');
-INSERT INTO `title` VALUES ('64', '222');
-INSERT INTO `title` VALUES ('65', '2');
 INSERT INTO `title` VALUES ('66', 'xixi');
+INSERT INTO `title` VALUES ('69', '3');
+INSERT INTO `title` VALUES ('72', '1');
+INSERT INTO `title` VALUES ('73', '1');
+INSERT INTO `title` VALUES ('74', '2');
+INSERT INTO `title` VALUES ('75', '11');
+INSERT INTO `title` VALUES ('76', '1');
+INSERT INTO `title` VALUES ('77', '1');
+INSERT INTO `title` VALUES ('79', '3');
+INSERT INTO `title` VALUES ('88', 'title');
+INSERT INTO `title` VALUES ('89', 'title');
+INSERT INTO `title` VALUES ('90', 'title');
+INSERT INTO `title` VALUES ('91', 'title1');
+INSERT INTO `title` VALUES ('92', 'title1');
+INSERT INTO `title` VALUES ('93', 'title1');
+INSERT INTO `title` VALUES ('94', 'title1');
+INSERT INTO `title` VALUES ('95', 'title1');
+INSERT INTO `title` VALUES ('96', 'title1');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -517,14 +676,14 @@ CREATE TABLE `user` (
   `account` varchar(20) NOT NULL,
   `password` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `id_card` varchar(20) NOT NULL,
+  `id_card` varchar(50) NOT NULL,
   `identity` varchar(20) NOT NULL DEFAULT 'student',
   `phone_num` varchar(12) DEFAULT NULL,
   `account_data_id` int(11) DEFAULT '-1',
   PRIMARY KEY (`id`),
   KEY `user_account_data_id` (`account_data_id`),
   CONSTRAINT `user_account_data_id` FOREIGN KEY (`account_data_id`) REFERENCES `account_data` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
@@ -537,3 +696,9 @@ INSERT INTO `user` VALUES ('23', 's10', 'MzQ1', '学生10', 'MTIzNDU=', 'student
 INSERT INTO `user` VALUES ('24', 't3', '3', '教师3', '123', 'teacher', null, '22');
 INSERT INTO `user` VALUES ('25', 't3', '3', '教师3', '123', 'teacher', null, '23');
 INSERT INTO `user` VALUES ('26', 't3', '3', '教师3', '123', 'teacher', null, '24');
+INSERT INTO `user` VALUES ('39', '1', 'MzQ0', 'wsh', 'MTIzNDQ=', 'student', null, '31');
+INSERT INTO `user` VALUES ('40', '2', 'MzQ1', 'wsh2', 'MTIzNDU=', 'administrator', null, '-1');
+INSERT INTO `user` VALUES ('41', '1', 'MzQ0', 'wsh', 'MTIzNDQ=', 'student', null, '32');
+INSERT INTO `user` VALUES ('42', '2', 'MzQ1', 'wsh2', 'MTIzNDU=', 'administrator', null, '-1');
+INSERT INTO `user` VALUES ('43', '1', 'MzQ0', 'wsh', 'MTIzNDQ=', 'student', null, '33');
+INSERT INTO `user` VALUES ('44', '2', 'MzQ1', 'wsh2', 'MTIzNDU=', 'administrator', null, '-1');

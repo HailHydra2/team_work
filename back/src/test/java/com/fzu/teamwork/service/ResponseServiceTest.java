@@ -60,8 +60,8 @@ public class ResponseServiceTest {
 
     @Test
     public void deleteResponseListTest(){
-        int[] list = {39,40};
-        responseService.deleteResponseList(list);
+//        int[] list = {39,40};
+//        responseService.deleteResponseList(list);
     }
 
     @Test

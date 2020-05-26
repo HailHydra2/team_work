@@ -48,7 +48,22 @@
 							<div class="col-sm-9">
     							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
 							</div>
-  						</div>
+						  </div>
+						  <div class="form-group">
+							<label for="questionType" class="col-sm-2 control-label">问题类型</label>
+							<div class="col-sm-9">
+							<select class="form-control">
+							  <option>学业问答</option>
+							  <option>就业指导</option>
+							  <option>学习资源</option>
+							  <option>生活相关</option>
+							  <option>其他问题</option>
+							</select>
+						</div>
+						  </div>
+						  <div style="text-align: center;">
+							<label><input type="checkbox" /> 匿名提问</label>
+						</div>
 						<div style="text-align:center">
 							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
@@ -106,7 +121,7 @@
 			<div class="page-header" style="top:130">
 				<br/>
 				<h1>
-					问题详情 <small></small>
+					问题详情 <small><span class="label label-default">标签</span></small>	
 				</h1>
 			</div>
 		</div>
@@ -184,7 +199,10 @@
 									<div class="col-sm-9">
     									<textarea class="form-control" rows="3" id="cresponseContent" style="max-width: 100%"></textarea>
 									</div>
-  								</div>
+								</div>
+								<div style="text-align: center;">
+									<label><input type="checkbox" /> 匿名回答</label>
+								</div>
 								<div style="text-align:center">
 									<button type="button" class="btn btn-primary" onclick="postResponse()">提 交</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="closeButton">关 闭</button>
@@ -327,7 +345,15 @@
 				request.setRequestHeader("token", userVO.token);
 			},
 			success: function (data) {
-				initQuestionBlock(data.data);
+				if(data.code == 200){
+					initQuestionBlock(data.data);
+				}else if(data.code == 408){//查询问题不存在
+					alert(data.message);
+					window.history.back();location.reload();//返回上一页
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
 			}
 		});
 	}
@@ -491,13 +517,21 @@
 				request.setRequestHeader("token", userVO.token);
 			},
 			success: function (data) {
-				//将输入框置为空
-				document.getElementById("cresponseContent").value = "";
-				//关闭评论输入框
-				$(closeButton).click();
-				//刷新页面
-				location.reload();
-        	}
+				if(data.code == 200){//评论成功
+					//将输入框置为空
+					document.getElementById("cresponseContent").value = "";
+					//关闭评论输入框
+					$(closeButton).click();
+					//刷新页面
+					location.reload();
+				}else if(data.code == 408){
+					alert(data.message);
+					window.location.href = "index.html";
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
+			}
 		});
 	}
 
@@ -538,6 +572,10 @@
 				request.setRequestHeader("token", userVO.token);
 			},
 			success: function (data) {
+				if(data.code == 408){//关注问题不存在
+					alert(data.message);
+					window.location.href = "index.html";
+				}
 				updateUser(data.data)
         	}
 		});
@@ -575,7 +613,14 @@
 			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-        	}
+				if(data.code == 408){
+					alert("您操作的问题已被管理员删除");
+					window.location.href = "index.html";
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
+			}
 		});
 	}
 
@@ -611,7 +656,14 @@
 			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-        	}
+				if(data.code == 409){
+					alert("您操作的回复已被管理员删除");
+					location.reload(true);
+				}
+			},
+			error:function(){
+				alert("服务器错误,请稍后再试");
+			}
 		});
 	}
 
@@ -675,7 +727,10 @@
 			},
 			contentType: 'application/json;charset=utf-8',
 			success: function (data) {
-				
+				if(data.code == 409){//点赞回复不存在
+					alert(data.message);
+					window.location.reload(true);
+				}
         	}
 		});
 	}

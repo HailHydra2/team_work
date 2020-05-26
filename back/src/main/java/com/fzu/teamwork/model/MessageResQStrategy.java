@@ -42,14 +42,9 @@ public class MessageResQStrategy extends MessageOperateStrategy{
         //获取问题对象实体
         Question q = questionService.getQuestionById(internalMessage.getObject_id());
         question = questionService.convertToVO(q);
-        //问题作者
-        user = userService.getUserById(q.getAuthorId());
-        questionAuthor = userService.convertToUserVo(user);
 
         //更新回复者账号数据（积分经验值等）
         updateRespondents();
-        //更新问题作者数据
-        updateAuthor();
         //更新问题数据（问题回复数）
         updateQuestion();
         //返回创建的消息
@@ -79,10 +74,6 @@ public class MessageResQStrategy extends MessageOperateStrategy{
         userService.updateUser(respondents);
     }
 
-    //对问题作者的数据进行更新
-    private void updateAuthor(){
-        //暂无什么可以更新的
-    }
 
     //对问题数据进行更新
     private void updateQuestion(){

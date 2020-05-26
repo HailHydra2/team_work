@@ -1,9 +1,9 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.LikesDao;
-import com.fzu.teamwork.model.InternalMessage;
-import com.fzu.teamwork.model.Likes;
-import com.fzu.teamwork.model.LikesExample;
+import com.fzu.teamwork.dao.QuestionDao;
+import com.fzu.teamwork.dao.ResponseDao;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.MessageWay;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,28 @@ import java.util.List;
 @Service
 public class LikeServiceImpl implements LikeService {
 
-    @Resource
-    private LikesDao likesDao;
-
     @Resource(name = "messageServiceImpl")
     private MessageService messageService;
 
+    @Resource
+    private LikesDao likesDao;
+
+    @Resource
+    private QuestionDao questionDao;
+
+    @Resource
+    private ResponseDao responseDao;
+
+    @Override
     //添加（更新）点赞记录
-    public void insertLikeInfo(Likes like){
+    public boolean insertLikeInfo(Likes like){
+        Response response = responseDao.selectByPrimaryKey(like.getResponseId());
+        if(response == null){//点赞回复不存在
+            return false;
+        }
         //查看数据库中是否已经存在该用户对该回复的点赞记录
         LikesExample example = new LikesExample();
         LikesExample.Criteria criteria = example.createCriteria();
-        System.out.println("userId:" + like.getUserId() + "  responseId:" + like.getResponseId());
         //用户id一样的点赞记录
         criteria.andUserIdEqualTo(like.getUserId());
         //被点赞回复id一样的记录
@@ -85,5 +95,6 @@ public class LikeServiceImpl implements LikeService {
 
         }
         messageService.updateInfoByMessage(message);
+        return true;
     }
 }

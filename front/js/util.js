@@ -188,7 +188,7 @@ function getBlock(){
                 blockLink.setAttribute("href",href);
                 tempBlock.appendChild(blockLink);
                 //console.info(block);
-            }else if(data.code == 201){
+            }else if(data.code == 411){
                 //没有临时板块
                 //隐藏临时板块按钮
                 tempBlock.setAttribute("style","display:none");
@@ -242,6 +242,7 @@ function updateList(p){
         updatePageButtons();
     }
 }
+
 
 //将用户信息保存到缓存中(时间为30分钟)
 function updateUser(userVO){

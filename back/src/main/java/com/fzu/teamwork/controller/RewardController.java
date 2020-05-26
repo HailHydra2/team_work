@@ -44,7 +44,7 @@ public class RewardController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/reward")
-    public @ResponseBody AjaxResponse testAddReward(@RequestBody Reward reward){
+    public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
         Boolean result = rewardService.insertReward(reward);
         User user = userService.getUserById(reward.getUserId());
         UserVO userVO = userService.convertToUserVo(user);

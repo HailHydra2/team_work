@@ -45,7 +45,7 @@ public class RewardServiceImpl implements RewardService{
         //获取用户的账户信息（将user对象转换为userVO对象）
         userVO = userServiceImpl.convertToUserVo(user);
         //计算用户所需积分（若积分充足返回所需积分，不足返回-1）
-        int needScore = doesLegal(reward);
+        int needScore = calculateScore(reward);
         //判断用户积分是否充足
         if(needScore > 0) {
             //积分充足
@@ -63,9 +63,9 @@ public class RewardServiceImpl implements RewardService{
 
 
     //判断用户的积分是否足够申请, 返回值为所需积分（积分不足返回-1）
-    public int doesLegal(Reward reward){
+    public int calculateScore(Reward reward){
         //计算所需积分数
-        int needScore = calculateScore(reward.getType(), reward.getRewardNum());
+        int needScore = calculate(reward.getType(), reward.getRewardNum());
         if(userVO.getAccountData().getScore() >= needScore){
             //积分充足
             return needScore;
@@ -76,7 +76,7 @@ public class RewardServiceImpl implements RewardService{
     }
 
     //计算申请的积分数（类别兑换规则*数量），若类别非法返回-1
-    public int calculateScore(String rewardType, double num){
+    public int calculate(String rewardType, double num){
         if(rewardType.equals(RewardType.ServiceTime)){
             //申请类别为党员服务时长
             return (int)(num*RewardType.SERVICE_SCORE);//一个时长对应100积分

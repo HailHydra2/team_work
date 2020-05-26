@@ -27,7 +27,10 @@ public interface UserService {
     public void deleteUsersAll(int id[]);
 
     //添加一个用户
-    public void addUser(User user);
+    public int addUser(User user);
+
+    //批量添加用户(返回添加失败用户描述信息)
+    public List<String> addUsers(List<User> users);
 
     //更新用户信息(包括基本信息和账户信息)
     public User updateUser(UserVO userVO);
