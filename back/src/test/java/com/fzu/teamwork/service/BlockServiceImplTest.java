@@ -14,12 +14,16 @@ class BlockServiceImplTest extends LCH_testFather{
 
     @Test
     void addBlock() {
+
+        boolean res=true;
+        if(blockService.getBlock()!=null)
+            res=false;
+        Assert.assertEquals("测试错误",false,res);
+
         Block block=new Block();
         block.setId(6);
-        block.setBlockName("开学板块");
-        block.setKeyWord("开学");
-
-        //blockService.addBlock(block);
+        block.setBlockName("1");
+        block.setKeyWord("1");
 
         //我期望的block
         Block block_except=block;
@@ -31,14 +35,18 @@ class BlockServiceImplTest extends LCH_testFather{
 
     @Test
     void deleteBlock() {
+        boolean res=true;
+        if(blockService.getBlock()==null)
+            res=false;
+        Assert.assertEquals("测试错误",false,res);
     }
 
     @Test
     void getBlock() {
         Block block=new Block();
         block.setId(6);
-        block.setBlockName("开学板块");
-        block.setKeyWord("开学");
+        block.setBlockName("1");
+        block.setKeyWord("1");
 
         //blockService.addBlock(block);
 
