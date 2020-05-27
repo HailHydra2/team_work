@@ -74,7 +74,11 @@ var Biz = {
   getQuestion(id) {
     Service.getQuestion(id).then(function (data) {
       if(data.code == 200){//查询成功
-        alert("标题：" + data.data.title + "\n" + "内容:" + data.data.content);
+       // swal( "标题" + data.data.title + "\n" + "内容:" + data.data.content);
+        swal( {title:"问题原文",
+      text: '<strong>'+"标题 :"+'</strong>'+data.data.title+'<br/>'+'<br/>'+'<strong>'+"内容 :"+'</strong>' + data.data.content,
+      html:true
+      });
       }else if(data.code == 408){//问题不存在
         alert(data.message);
         window.location.reload(true);
