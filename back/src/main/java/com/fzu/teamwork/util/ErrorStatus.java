@@ -20,4 +20,9 @@ public class ErrorStatus {
     public static int ACCOUNT_ILLEGAL = 414;//账号（学号不合法）
     public static int ID_ILLEGAL = 415;//身份证不合法
     public static int SOME_USER_ILLEGAL = 416;//部分账户数据不合法
+    public static int ACCOUNT_NULL = 417;//账号为空
+    public static int NAME_NULL = 418;//姓名为空
+    public static int ID_CARD_NULL = 419;//身份证为空
+    public static int IDENTITY_NULL = 420;//身份为空
+    public static int IDENTITY_ERROR = 421;//身份错误
 }
