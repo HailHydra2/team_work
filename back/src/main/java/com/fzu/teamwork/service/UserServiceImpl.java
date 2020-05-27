@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService{
         try {
             decodeIdCard = Encryptor.decrypt(idCard);//解密
             if(!IdCard.IDCardValidate(decodeIdCard)){
-                return ErrorStatus.ID_ILLEGAL;//身份证非法
+                return ErrorStatus.ID_CARD_ILLEGAL;//身份证非法
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService{
         idExample.createCriteria().andIdCardEqualTo(idCard);
         System.out.println(idCard);
         if(userDao.selectByExample(idExample).size() > 0){
-            return ErrorStatus.ID_HAS_EXIT;//身份证号已经被注册
+            return ErrorStatus.ID_CARD_HAS_EXIT;//身份证号已经被注册
         }
         return 0;
     }
@@ -209,12 +209,12 @@ public class UserServiceImpl implements UserService{
                     message = "账号为：" + user.getAccount() + "的用户姓名为空";
                 }else if(code == ErrorStatus.ID_CARD_NULL){//身份证为空
                     message = "账号为：" + user.getAccount() + "的用户身份证为空";
-                }else if(code == ErrorStatus.ID_ILLEGAL){//身份证非法
+                }else if(code == ErrorStatus.ID_CARD_ILLEGAL){//身份证非法
                     message = "账号为：" + user.getAccount() + "的用户身份证非法";
                 }else if(code == ErrorStatus.ACCOUNT_HAS_EXIT){//账号已经被注册
                     message = "姓名为：" + user.getName() + "的用户添加失败，"
                             + user.getAccount() + "账户（学号）已被注册";
-                }else if(code == ErrorStatus.ID_HAS_EXIT){//身份证已经被注册
+                }else if(code == ErrorStatus.ID_CARD_HAS_EXIT){//身份证已经被注册
                     decodeIdCard = Encryptor.decrypt(user.getIdCard());
                     message = user.getName() + "添加失败，身份证" + decodeIdCard + "已经被注册";
                 }else if(code == ErrorStatus.IDENTITY_NULL){//身份为空

@@ -72,11 +72,10 @@ class QuestionServiceImplTest{
         user.setAccount("221701422");
         user.setIdentity(UserIdentity.student);
         user.setName("testWSH");
-        user.setPassword(Encryptor.encrypt("11X"));
-        user.setIdCard(Encryptor.encrypt("13072619990713611X"));
+        user.setPassword(Encryptor.encrypt("873"));
+        user.setIdCard(Encryptor.encrypt("360102199003077873"));
         int code = userService.addUser(user);
         if(code == 0){
-            System.out.println("添加成功,用户id为：" + user.getId());
             userVO = userService.convertToUserVo(user);
         }else{
             System.out.println("用户添加失败，状态码为:" + code);

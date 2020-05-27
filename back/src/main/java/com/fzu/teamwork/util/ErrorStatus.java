@@ -16,9 +16,9 @@ public class ErrorStatus {
     public static int BLOCK_HAS_EXIT = 410;//临时板块已存在
     public static int BLOCK_NOT_EXIT = 411;//临时板块不存在
     public static int ACCOUNT_HAS_EXIT = 412;//账号（学号）已经存在
-    public static int ID_HAS_EXIT = 413;//身份证号已经存在
+    public static int ID_CARD_HAS_EXIT = 413;//身份证号已经存在
     public static int ACCOUNT_ILLEGAL = 414;//账号（学号不合法）
-    public static int ID_ILLEGAL = 415;//身份证不合法
+    public static int ID_CARD_ILLEGAL = 415;//身份证不合法
     public static int SOME_USER_ILLEGAL = 416;//部分账户数据不合法
     public static int ACCOUNT_NULL = 417;//账号为空
     public static int NAME_NULL = 418;//姓名为空
