@@ -63,8 +63,8 @@ class LikeServiceImplTest {
         user.setAccount("221701118");
         user.setIdentity(UserIdentity.student);
         user.setName("testZJW");
-        user.setPassword(Encryptor.encrypt("11X"));
-        user.setIdCard(Encryptor.encrypt("13072619990713611X"));
+        user.setPassword(Encryptor.encrypt("314"));
+        user.setIdCard(Encryptor.encrypt("110101199603070314"));
         int code = userService.addUser(user);
         if(code == 0){
             System.out.println("添加成功,用户id为：" + user.getId());
