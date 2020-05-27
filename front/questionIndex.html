@@ -52,7 +52,7 @@
 						  <div class="form-group">
 							<label for="questionType" class="col-sm-2 control-label">问题类型</label>
 							<div class="col-sm-9">
-							<select class="form-control">
+							<select class="form-control" id="selectKind">
 							  <option>学业问答</option>
 							  <option>就业指导</option>
 							  <option>学习资源</option>
@@ -62,7 +62,7 @@
 						</div>
 						  </div>
 						  <div style="text-align: center;">
-							<label><input type="checkbox" /> 匿名提问</label>
+							<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
 						</div>
 						<div style="text-align:center">
 							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
@@ -121,7 +121,7 @@
 			<div class="page-header" style="top:130">
 				<br/>
 				<h1>
-					问题详情 <small><span class="label label-default">标签</span></small>	
+					问题详情 <small><span class="label label-default" id="kind"></span></small>	
 				</h1>
 			</div>
 		</div>
@@ -201,7 +201,7 @@
 									</div>
 								</div>
 								<div style="text-align: center;">
-									<label><input type="checkbox" /> 匿名回答</label>
+									<label><input type="checkbox" id="anonymousResp"/> 匿名回答</label>
 								</div>
 								<div style="text-align:center">
 									<button type="button" class="btn btn-primary" onclick="postResponse()">提 交</button>
@@ -372,6 +372,8 @@
 		questionAuthorName.innerHTML = questionVO.authorName;4
 		var attentionQuestionButton = document.getElementById("attentionQuestion");
 		var reportQuestionButton = document.getElementById("reportQuestion");
+		var kindText = document.getElementById("kind");
+		kindText.innerHTML = questionVO.kind;
 		if(questionVO.doesAttention == true){
 			//已关注
 			attentionQuestionButton.innerHTML = "取消关注";
@@ -496,14 +498,17 @@
 		var timeString = getTimeString(time);
 		//回复内容
 		var responseContent = document.getElementById("cresponseContent").value;
-		//responseContent = responseContent.toString();
-		console.info(responseContent);
+		var anonymousFlag = 0;//是否匿名（默认不匿名）
+		if(document.getElementById("anonymousResp").checked){
+			anonymousFlag = 1;
+		}
 		//发送给后端的回复记录
 		var response = {
 			"response":{
 				"questionId":id,
 				"authorId":authorId,
-				"createTime":timeString
+				"createTime":timeString,
+				"anonymous":anonymousFlag
 			},
 			"content":responseContent
 		};
