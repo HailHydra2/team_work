@@ -340,8 +340,8 @@
                                             </div>
 
                                             <div class="widget-body">
-                                                <div class="widget-main padding-6">
-                                                    <div class="alert alert-info">暂无文件上传</div>
+                                                <div class="widget-main padding-6" id="infoDiv">
+                                                    <div class="alert alert-info" id="addInfo"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -357,19 +357,11 @@
                                     <div class="space-30"></div>
                                     <label for="fileinp" class="col-sm-3 control-label no-padding-right">
 
-                                        <input class="btn btn-info" type="button" id="btn" value="点我上传"> <span
+                                        <input class="btn btn-info" type="button" id="btn" value="点我上传" onclick="$('#fileUploader').click();"> <span
                                             id="text">请上传EXCEL文档</span>
 
-                                        <input type="file" id="fileUploader" name="fileUploader" accept=".xls, .xlsx" />
+                                        <input type="file" id="fileUploader" style="display:none" name="fileUploader" accept=".xls, .xlsx" />
                                     </label>
-
-
-
-
-
-
-
-
                                 </div>
                                 </div>
                             </div>
@@ -538,7 +530,6 @@
 
         //读取批量增加用户文件
         $("#fileUploader").change(function readFile(evt){
-
             var selectedFile = evt.target.files[0];
             var reader = new FileReader();
             reader.onload = function (event) {
@@ -546,13 +537,13 @@
                 var workbook = XLSX.read(data, {
                     type: 'binary'
                 });
+                console.info(workbook);
                 workbook.SheetNames.forEach(function (sheetName) {
                     var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     if (XL_row_object.length > 0) {
-                        encryption(XL_row_object);//对数据加密            
-                        addUsers(XL_row_object);//添加用户
-                        for(var i = 0; i < XL_row_object.length; i++){
-                            console.info(JSON.stringify(XL_row_object[i]));
+                        if(isLegal(XL_row_object) == true){//检验表格合法性
+                            encryption(XL_row_object);//对数据加密            
+                            addUsers(XL_row_object);//添加用户
                         }
                     }
                 })
@@ -563,6 +554,32 @@
             };
             reader.readAsBinaryString(selectedFile);
         });
+
+        //判断表格是否符合要求
+        function isLegal(list){
+            $("#fileUploader").val("");
+            var info = document.getElementById("addInfo");
+            var infoDiv = document.getElementById("infoDiv");
+            infoDiv.removeChild(info);
+            info = document.createElement("div");
+            info.className="alert alert-info";
+            info.id = "addInfo";
+            infoDiv.appendChild(info);
+            var headerName = new Array();
+            headerName[0] = "account";
+            headerName[1] = "name";
+            headerName[2] = "idCard";
+            headerName[3] = "identity";
+            for(var i = 0; i < headerName.length; i++){
+                if(list[0][headerName[i]] == null){
+                    var p = document.createElement("p");
+                    p.innerHTML = "上传失败，文件表头或第一行数据不包含'"+ headerName[i] +"'列";
+                    info.appendChild(p);
+                    return false;
+                }
+            }
+            return true;
+        }
 
         //对列表用户敏感信息进行加密
         function encryption(list){
@@ -576,6 +593,7 @@
 
         //批量增加用户
         function addUsers(list){
+            var info = document.getElementById("addInfo");
             $.ajax({
                 url: "http://localhost:8888/userList",
                 type: "post", 
@@ -585,14 +603,16 @@
                 },
                 data:JSON.stringify(list),
                 success: function (data) {
-                    if(data == 200){
-                        alert("新增成功");
-                        location.reload();
-                    }else if(data.code == 416){//部分用户添加失败
+                    p = document.createElement("p");
+                    p.innerHTML = data.message;
+                    info.appendChild(p);
+                    if(data.code == 416){//部分用户添加失败
                         list = data.data;
                         list = Array.prototype.slice.call(list);
                         for(var i = 0; i < list.length; i++){
-                            console.info(list[i]);
+                            var p = document.createElement("p");
+                            p.innerHTML = list[i];
+                            info.appendChild(p);
                         }
                     }
                 }

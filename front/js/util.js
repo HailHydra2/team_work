@@ -133,6 +133,11 @@ function getTimeString(date){
 function postQuestion(){
     var title =  $.trim($("#inputQue").val());
     var content = $.trim($("#describeQue").val());
+    var kindIndex = $('#selectKind').get(0).selectedIndex;
+    var anonymousFlag = 0;//是否匿名（默认不匿名）
+    if(document.getElementById("anonymousQuest").checked){
+        anonymousFlag = 1;
+    }
     //创建时间
     var time = new Date();
     var timeString = getTimeString(time);
@@ -142,7 +147,9 @@ function postQuestion(){
         "content":content,
         "question":{
             "authorId":userVO.user.id,
-            "createTime":timeString
+            "createTime":timeString,
+            "kindId":kindIndex,
+            "anonymous":anonymousFlag
         }
     }
     console.info(question);
@@ -370,6 +377,8 @@ function updatePageButtons(){
     pageButtons.appendChild(lastButton);
     lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
 }
+
+
 
 var userVO;
 //获取当前登录用户
