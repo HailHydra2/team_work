@@ -82,7 +82,11 @@ var Biz = {
         var response = data.data.content;
         Service.getQuestion(data.data.response.questionId).then(data => {
           const { title, content } = data.data;
-          alert("问题标题：\n" + title + '\n' + "问题内容:\n" + content + '\n' + "回答内容:\n" + response);
+         // alert("问题标题：\n" + title + '\n' + "问题内容:\n" + content + '\n' + "回答内容:\n" + response);
+          swal( {title:"回答原文",
+          text: '<strong >'+"问题标题 :"+'</strong>' + title + '<br/>' +'<br/>'+ '<strong>' +"问题内容 :"+'</strong>' + content+'<br/>'+'<br/>'+'<strong>'+"回答内容 :"+'</strong>'+response,
+          html:true
+          });
         });
       }else if(data.code == 409){
         alert("编号为" + id + "的回复不存在");
