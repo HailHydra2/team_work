@@ -80,10 +80,15 @@ public class UserController {
     @AdminLimit//管理员权限
     public @ResponseBody AjaxResponse addUsers(@RequestBody List<User> users){
         List<String> failedList = userService.addUsers(users);
+        int total = users.size();
+        int failedNum = failedList.size();
         if(failedList.size() == 0){//全部添加成功
-            return AjaxResponse.success();
+            return AjaxResponse.success("成功添加" +total + "人");
         }else{//部分账户数据不合法
-            return AjaxResponse.error(ErrorStatus.SOME_USER_ILLEGAL,"部分账户数据不合法",failedList);
+
+            String message = "批量添加" + total + "人，成功" + (total-failedNum) + "人，失败"
+                    + failedNum + "人";
+            return AjaxResponse.error(ErrorStatus.SOME_USER_ILLEGAL,message,failedList);
         }
     }
 

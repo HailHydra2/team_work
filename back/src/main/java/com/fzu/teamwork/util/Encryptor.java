@@ -13,6 +13,7 @@ public class Encryptor {
         return new String(encoder.encode(str.getBytes()));
     }
 
+    //解密
     static public String decrypt(String str){
         String decodeMessage = "";
         try {

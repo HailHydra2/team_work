@@ -6,6 +6,7 @@ import com.fzu.teamwork.model.AccountData;
 import com.fzu.teamwork.model.AccountDataExample;
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.model.UserExample;
+import com.fzu.teamwork.util.Encryptor;
 import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.util.IdCard;
 import com.fzu.teamwork.util.UserIdentity;
@@ -97,11 +98,37 @@ public class UserServiceImpl implements UserService{
 
     //判断要添加的用户是否合法（返回判断结果 0-合法 其他-对应错误状态码）
     public int doesLegal(User user){
-        BASE64Decoder decoder = new BASE64Decoder();
         String account = user.getAccount();
         String idCard = user.getIdCard();
-        String decodeIdCard = "";//解密后的身份证
+        int code;
+        //判姓名
+        code = doesLegalName(user.getName());
+        if(code != 0){
+            return code;
+        }
         //判学号
+        code = doesLegalAccount(user.getAccount());
+        if(code != 0){
+            return code;
+        }
+        //判身份证
+        code = doesLegalIdCard(user.getIdCard());
+        if(code != 0){
+            return code;
+        }
+        //判身份
+        code = doesLegalIdentity(user.getIdentity());
+        if(code != 0){
+            return code;
+        }
+        return 0;
+    }
+
+    //判断账号是否合法(合法返回0，不合法返回错误状态码)
+    public int doesLegalAccount(String account){
+        if(account == null){//账号为空
+            return ErrorStatus.ACCOUNT_NULL;
+        }
         if(account.length() != 9){
             return ErrorStatus.ACCOUNT_ILLEGAL;//账号（学号）非法
         }
@@ -110,9 +137,23 @@ public class UserServiceImpl implements UserService{
                 return ErrorStatus.ACCOUNT_ILLEGAL;//账号非法
             }
         }
-        //判身份证
+        //判断重复性
+        UserExample example = new UserExample();
+        example.createCriteria().andAccountEqualTo(account);
+        if(userDao.selectByExample(example).size() > 0){
+            return ErrorStatus.ACCOUNT_HAS_EXIT;//账户已被注册
+        }
+        return 0;
+    }
+
+    //判断身份证是否合法(合法返回0，不合法返回错误状态码)
+    public int doesLegalIdCard(String idCard){
+        if(idCard == null){//身份证为空
+            return ErrorStatus.ID_CARD_NULL;
+        }
+        String decodeIdCard = "";//解密后的身份证
         try {
-            decodeIdCard = new String(decoder.decodeBuffer(idCard));//解密
+            decodeIdCard = Encryptor.decrypt(idCard);//解密
             if(!IdCard.IDCardValidate(decodeIdCard)){
                 return ErrorStatus.ID_ILLEGAL;//身份证非法
             }
@@ -120,11 +161,6 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
         }
         //判断重复性
-        UserExample example = new UserExample();
-        example.createCriteria().andAccountEqualTo(account);
-        if(userDao.selectByExample(example).size() > 0){
-            return ErrorStatus.ACCOUNT_HAS_EXIT;//账户已被注册
-        }
         UserExample idExample = new UserExample();
         idExample.createCriteria().andIdCardEqualTo(idCard);
         System.out.println(idCard);
@@ -132,6 +168,26 @@ public class UserServiceImpl implements UserService{
             return ErrorStatus.ID_HAS_EXIT;//身份证号已经被注册
         }
         return 0;
+    }
+
+    //姓名是否合法（合法返回0，非法返回错误状态码）
+    public int doesLegalName(String name){
+        if(name == null){//姓名为空
+            return ErrorStatus.NAME_NULL;
+        }
+        return 0;
+    }
+
+    //身份是否合法（合法返回0，非法返回错误状态码）
+    public int doesLegalIdentity(String identity){
+        if(identity == null){//身份为空
+            return ErrorStatus.IDENTITY_NULL;
+        }
+        if(UserIdentity.doesLegal(identity)){//合法
+            return 0;
+        }else{//身份不存在
+            return ErrorStatus.IDENTITY_ERROR;
+        }
     }
 
     @Override
@@ -147,17 +203,24 @@ public class UserServiceImpl implements UserService{
             if(code != 0){
                 if(code == ErrorStatus.ACCOUNT_ILLEGAL){//账号非法
                     message = "姓名为：" + user.getName() + "的用户账号[学号]非法（应为9位字母数字串组成）";
-                }else if(code == ErrorStatus.ID_ILLEGAL){
-                    message = "姓名为：" + user.getName() + "的用户身份证非法";
-                }else if(code == ErrorStatus.ACCOUNT_HAS_EXIT){
-                    message = "姓名为：" + user.getName() + "添加失败，" + user.getAccount() + "账户（学号）已被注册";
-                }else if(code == ErrorStatus.ID_HAS_EXIT){
-                    try {
-                        decodeIdCard = new String(decoder.decodeBuffer(user.getIdCard()));
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+                }else if(code == ErrorStatus.ACCOUNT_NULL){//账号为空
+                    message = "姓名为：" + user.getName() + "的账号为空";
+                }else if(code == ErrorStatus.NAME_NULL){//姓名为空
+                    message = "账号为：" + user.getAccount() + "的用户姓名为空";
+                }else if(code == ErrorStatus.ID_CARD_NULL){//身份证为空
+                    message = "账号为：" + user.getAccount() + "的用户身份证为空";
+                }else if(code == ErrorStatus.ID_ILLEGAL){//身份证非法
+                    message = "账号为：" + user.getAccount() + "的用户身份证非法";
+                }else if(code == ErrorStatus.ACCOUNT_HAS_EXIT){//账号已经被注册
+                    message = "姓名为：" + user.getName() + "的用户添加失败，"
+                            + user.getAccount() + "账户（学号）已被注册";
+                }else if(code == ErrorStatus.ID_HAS_EXIT){//身份证已经被注册
+                    decodeIdCard = Encryptor.decrypt(user.getIdCard());
                     message = user.getName() + "添加失败，身份证" + decodeIdCard + "已经被注册";
+                }else if(code == ErrorStatus.IDENTITY_NULL){//身份为空
+                    message = "账号为：" + user.getAccount() + "的用户身份为空";
+                }else if(code == ErrorStatus.IDENTITY_ERROR){//身份非法
+                    message = "账号为：" + user.getAccount() + "的用户身份非法";
                 }
                 failedList.add(message);
             }
