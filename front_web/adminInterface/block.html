@@ -128,7 +128,7 @@
                 </a>
             </li>
 
-            <li>
+            <li class="active open">
                 <a href="#" class="dropdown-toggle">
                     <i class="icon-list"></i>
                     <span class="menu-text"> 举报信息管理 </span>
@@ -155,7 +155,7 @@
 
 
 
-            <li>
+            <li class="active open">
                 <a href="#" class="dropdown-toggle">
                     <i class="icon-desktop"></i>
                     <span class="menu-text"> 用户信息管理 </span>
@@ -436,8 +436,11 @@
                 },
                 data:JSON.stringify(block),
                 success: function (data) {
-                    alert("新增成功");
+                    alert(data.message);
                     location.reload();
+                },
+                error:function(){
+                    alert("服务器异常,请稍后再试");
                 }
             });
         }
@@ -451,8 +454,11 @@
                     request.setRequestHeader("token", userVO.token);
                 },
                 success: function (data) {
-                    alert("撤销成功");
+                    alert(data.message);
                     location.reload();
+                },
+                error:function(){
+                    alert("服务器异常,请稍后再试");
                 }
             });
         }

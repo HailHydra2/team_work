@@ -35,25 +35,40 @@
 								</div>
 							</div>
 						</div>
-					<form class="form-horizontal" role="form" target="iframe">
+						<form class="form-horizontal" role="form" target="iframe">
 							
-						<div class="form-group">
-							<label for="inputQue" class="col-sm-2 control-label">问题</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="inputQue" />
+							<div class="form-group">
+								<label for="inputQue" class="col-sm-2 control-label">问题</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="inputQue" />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
-							<div class="col-sm-9">
-    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+							<div class="form-group">
+								<label for="describeQue" class="col-sm-2 control-label">描述</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+								</div>
+							  </div>
+							  <div class="form-group">
+								<label for="questionType" class="col-sm-2 control-label">问题类型</label>
+								<div class="col-sm-9">
+								<select class="form-control" id="selectKind">
+								  <option>学业问答</option>
+								  <option>就业指导</option>
+								  <option>学习资源</option>
+								  <option>生活相关</option>
+								  <option>其他问题</option>
+								</select>
 							</div>
-  						</div>
-						<div style="text-align:center">
-							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
-						</div>
-					</form>
+							  </div>
+							  <div style="text-align: center;">
+								<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
+							</div>
+							<div style="text-align:center">
+								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+							</div>
+						</form>
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
@@ -231,6 +246,8 @@
 		}
 		//首页按时间排序
 		changeQuestionPage(page, path);
+		//获取临时板块
+		getBlock();
 	});
 	
 	

@@ -133,17 +133,26 @@ function getTimeString(date){
 function postQuestion(){
     var title =  $.trim($("#inputQue").val());
     var content = $.trim($("#describeQue").val());
+    var kindIndex = $('#selectKind').get(0).selectedIndex + 1;
+    var anonymousFlag = 0;//是否匿名（默认不匿名）
+    if(document.getElementById("anonymousQuest").checked){
+        anonymousFlag = 1;
+    }
     //创建时间
     var time = new Date();
     var timeString = getTimeString(time);
+    // console.info(timeString);
     var question={
         "title":title,
         "content":content,
         "question":{
             "authorId":userVO.user.id,
-            "createTime":timeString
+            "createTime":timeString,
+            "kindId":kindIndex,
+            "anonymous":anonymousFlag
         }
     }
+    console.info(question);
     $.ajax({
         url: "http://118.190.90.167:8888/question",
         type: "post", 
@@ -154,12 +163,12 @@ function postQuestion(){
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             updateUser(data.data)
+            //将输入内容清空
+            $("#inputQue").innerHTML = "";
+            $("#describeQue").innerHTML = "";
+            location.replace(document.referrer);
         }
     });
-    //将输入内容清空
-    $("#inputQue").innerHTML = "";
-    $("#describeQue").innerHTML = "";
-    location.replace(document.referrer);
 }
 
 
@@ -186,7 +195,7 @@ function getBlock(){
                 blockLink.setAttribute("href",href);
                 tempBlock.appendChild(blockLink);
                 //console.info(block);
-            }else if(data.code == 201){
+            }else if(data.code == 411){
                 //没有临时板块
                 //隐藏临时板块按钮
                 tempBlock.setAttribute("style","display:none");
@@ -240,6 +249,7 @@ function updateList(p){
         updatePageButtons();
     }
 }
+
 
 //将用户信息保存到缓存中(时间为30分钟)
 function updateUser(userVO){
@@ -367,6 +377,8 @@ function updatePageButtons(){
     pageButtons.appendChild(lastButton);
     lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
 }
+
+
 
 var userVO;
 //获取当前登录用户

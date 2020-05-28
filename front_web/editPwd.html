@@ -38,22 +38,37 @@
 						<form class="form-horizontal" role="form" target="iframe">
 							
 							<div class="form-group">
-									<label for="inputQue" class="col-sm-2 control-label">问题</label>
-									<div class="col-sm-9">
-										<input type="text" class="form-control" id="inputQue" />
-									</div>
+								<label for="inputQue" class="col-sm-2 control-label">问题</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="inputQue" />
 								</div>
-								<div class="form-group">
-									<label for="describeQue" class="col-sm-2 control-label">描述</label>
-									<div class="col-sm-9">
-										<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
-									</div>
-								  </div>
-								<div style="text-align:center">
-									<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+							</div>
+							<div class="form-group">
+								<label for="describeQue" class="col-sm-2 control-label">描述</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
 								</div>
-							</form>
+							  </div>
+							  <div class="form-group">
+								<label for="questionType" class="col-sm-2 control-label">问题类型</label>
+								<div class="col-sm-9">
+								<select class="form-control" id="selectKind">
+								  <option>学业问答</option>
+								  <option>就业指导</option>
+								  <option>学习资源</option>
+								  <option>生活相关</option>
+								  <option>其他问题</option>
+								</select>
+							</div>
+							  </div>
+							  <div style="text-align: center;">
+								<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
+							</div>
+							<div style="text-align:center">
+								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+							</div>
+						</form>
 							<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
@@ -70,7 +85,7 @@
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
 					<ul class="nav navbar-nav">
-						<li>
+						<li class="dropdown">
 							 <a href="index.html">首页</a>
 						</li>
 						<li>
@@ -79,21 +94,25 @@
 						<li class="dropdown">
 							<a href="questionList.html">等你来答</a>
 						</li>
+						<li class="dropdown"  id="tempBlock">
+					   </li>
+					   
 					</ul>
-					<form class="navbar-form navbar-left" role="search">
+					<form class="navbar-form navbar-left" role="search" target="iframe">
 						<div class="form-group">
-							<input type="text" class="form-control" />
-						</div> <button type="submit" class="btn btn-default">🔍</button>
+							<input type="text" class="form-control" id="searchContent"/>
+						</div> <button type="submit" class="btn btn-default" onclick="search();">🔍</button>
 					</form>
+					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							 <a href="myMessage.html">🔔</a>
 						</li>
-						<li class="active">
+						<li>
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
 						</li>
 						<li>
-							<a href="" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
+							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
 				</div>
@@ -271,8 +290,10 @@
 	<script>
 		//页面加载时启动页面
 		$(document).ready(function(e) {
+			getBlock();
 			//获取当前登录用户
 			var userVO = localStorage.getExpire("userVO");
+			//获取临时板块
 			if(userVO == null){//登录过期，返回登录页面
 				window.location.href = "login.html";
 			}else{
@@ -285,9 +306,12 @@
 
 		//提交修改密码请求
 		function submitPwdChange(){
-				var pwd1 = $.trim($("#newpass").val());
-				var pwd2 = $.trim($("#newpassAgain").val());
-				var idCard = $.trim($("#ID").val());
+				var pwd1Temp = $.trim($("#newpass").val());
+				var pwd2Temp = $.trim($("#newpassAgain").val());
+				var idCardTemp = $.trim($("#ID").val());
+				var pwd1 = window.btoa(pwd1Temp);
+				var pwd2 = window.btoa(pwd2Temp);
+				var idCard = window.btoa(idCardTemp);
 				if(pwd1 != pwd2){
 					return;
 				}
@@ -309,7 +333,8 @@
 						if(data.code == 200){
 							//验证成功
 							userVO = userVO;
-							alert("修改成功");
+							alert("修改成功,请重新登录");
+							window.location.href = "login.html"
 						}else{
 							//验证失败
 							alert("抱歉，您输入的身份证信息有误，请重新输入");
