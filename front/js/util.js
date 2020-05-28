@@ -133,7 +133,7 @@ function getTimeString(date){
 function postQuestion(){
     var title =  $.trim($("#inputQue").val());
     var content = $.trim($("#describeQue").val());
-    var kindIndex = $('#selectKind').get(0).selectedIndex;
+    var kindIndex = $('#selectKind').get(0).selectedIndex + 1;
     var anonymousFlag = 0;//是否匿名（默认不匿名）
     if(document.getElementById("anonymousQuest").checked){
         anonymousFlag = 1;

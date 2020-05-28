@@ -29,7 +29,7 @@ public class UserController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/users")
-    public ArrayList<User> getUser()
+    public List<User> getUser()
     {
         return userService.getUsers();
     }

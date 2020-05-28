@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService{
     @Resource
     private TokenService tokenService;
 
-    private static Integer maxGetNum=100;//最大查找人数
 
     //user变成userVO
     public UserVO convertToUserVo(User user) {
@@ -50,15 +49,10 @@ public class UserServiceImpl implements UserService{
     }
 
     //获取所有用户
-    public ArrayList<User> getUsers(){
-        ArrayList<User> users=new ArrayList<>();
-        for(int i=1;i<maxGetNum;i++)//假设同时查找maxGetNum个user
-        {
-            if(userDao.selectByPrimaryKey(i)!=null)
-            {
-                users.add(userDao.selectByPrimaryKey(i));
-            }
-        }
+    @Override
+    public List<User> getUsers(){
+        List<User> users=new ArrayList<>();
+        users = userDao.selectByExample(null);
         return users;
     }
 

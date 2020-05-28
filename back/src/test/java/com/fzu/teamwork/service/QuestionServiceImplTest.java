@@ -248,7 +248,7 @@ class QuestionServiceImplTest{
             QuestionVO questionVO = addQuestion(i);
             questionService.updateQuestion(questionVO);
         }
-        int kindId = 0;
+        int kindId = 1;
         String kind = kindDao.selectByPrimaryKey(kindId).getName();
         QuestionPage questionPage = new QuestionPage();
         questionPage.setPageIndex(1);
@@ -278,7 +278,7 @@ class QuestionServiceImplTest{
             QuestionVO questionVO = addQuestion(i);
             questionService.updateQuestion(questionVO);
         }
-        int kindId = 0;
+        int kindId = 1;
         String kind = kindDao.selectByPrimaryKey(kindId).getName();
         QuestionPage questionPage = new QuestionPage();
         questionPage.setPageIndex(1);

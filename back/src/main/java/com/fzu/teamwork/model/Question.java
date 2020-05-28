@@ -25,7 +25,7 @@ public class Question implements Serializable {
 
     private Integer anonymous = 0;
 
-    private Integer kindId = 0;
+    private Integer kindId = 1;
 
     private static final long serialVersionUID = 1L;
 

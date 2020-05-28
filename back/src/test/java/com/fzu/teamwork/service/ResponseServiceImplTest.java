@@ -60,8 +60,8 @@ class ResponseServiceImplTest {
         user.setAccount("221701118");
         user.setIdentity(UserIdentity.student);
         user.setName("testZJW");
-        user.setPassword(Encryptor.encrypt("11X"));
-        user.setIdCard(Encryptor.encrypt("13072619990713611X"));
+        user.setPassword(Encryptor.encrypt("779"));
+        user.setIdCard(Encryptor.encrypt("420102200403070779"));
         int code = userService.addUser(user);
         if(code == 0){
             System.out.println("添加成功,用户id为：" + user.getId());
