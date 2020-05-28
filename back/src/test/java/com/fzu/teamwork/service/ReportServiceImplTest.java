@@ -66,6 +66,7 @@ class ReportServiceImplTest extends LCH_testFather{
         reportQuestion.setReportorId(2);
         //Assert.assertEquals("测试错误",true,reportService.addQuestionReport(reportQuestion));
 
+        //问题id不存在的reportQuestion
         reportQuestion.setId(7);
         reportQuestion.setFlag(2);
         reportQuestion.setQuestionId(55555);
@@ -74,12 +75,10 @@ class ReportServiceImplTest extends LCH_testFather{
         //不存在对应的问题
         Assert.assertEquals("测试错误",false,reportService.addQuestionReport(reportQuestion));
 
+
         //存在对应的问题
         reportQuestion.setQuestionId(57);
         Assert.assertEquals("测试错误",true,reportService.addQuestionReport(reportQuestion));
-
-
-
 
     }
 
