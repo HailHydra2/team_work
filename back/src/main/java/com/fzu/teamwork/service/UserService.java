@@ -12,7 +12,7 @@ public interface UserService {
     public UserVO convertToUserVo(User user);
 
     //获取所有用户
-    public ArrayList<User> getUsers();
+    public List<User> getUsers();
 
     //通过id查找用户
     public User getUserById(int id);

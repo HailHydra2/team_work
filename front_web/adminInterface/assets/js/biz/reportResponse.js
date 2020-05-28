@@ -13,6 +13,12 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      success: function (data) {
+        alert(data.message);
+      },
+      error: function(){
+        alert("服务器异常,请稍后再试");
+      }
     });
   },
   batchDelete(data) {
@@ -24,6 +30,12 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      success: function (data) {
+        alert(data.message);
+      },
+      error: function(){
+        alert("服务器异常,请稍后再试");
+      }
     });
   },
   getResponse(id) {
@@ -34,6 +46,9 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      error: function(){
+        alert("服务器异常,请稍后再试");
+      }
     })
   },
   getQuestion(id) {
@@ -63,12 +78,20 @@ var Biz = {
     Service.getResponse(id).then(function (data) {
       // var object = Service.getQuestion(data.data.response.questionId);
       // var jsonString = JSON.toJSONString(object);
-      var response = data.data.content;
-      Service.getQuestion(data.data.response.questionId).then(data => {
-        console.log(data);
-        const { title, content } = data.data;
-        alert("问题标题：\n" + title + '\n' + "问题内容:\n" + content + '\n' + "回答内容:\n" + response);
-      });
+      if(data.code == 200){//成功获取回复
+        var response = data.data.content;
+        Service.getQuestion(data.data.response.questionId).then(data => {
+          const { title, content } = data.data;
+         // alert("问题标题：\n" + title + '\n' + "问题内容:\n" + content + '\n' + "回答内容:\n" + response);
+          swal( {title:"回答原文",
+          text: '<strong >'+"问题标题 :"+'</strong>' + title + '<br/>' +'<br/>'+ '<strong>' +"问题内容 :"+'</strong>' + content+'<br/>'+'<br/>'+'<strong>'+"回答内容 :"+'</strong>'+response,
+          html:true
+          });
+        });
+      }else if(data.code == 409){
+        alert("编号为" + id + "的回复不存在");
+        window.location.reload();
+      }
     });
   }
 };

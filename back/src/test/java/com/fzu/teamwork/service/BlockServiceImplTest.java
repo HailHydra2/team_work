@@ -43,6 +43,7 @@ class BlockServiceImplTest extends LCH_testFather{
 
     @Test
     void getBlock() {
+
         Block block=new Block();
         block.setId(6);
         block.setBlockName("1");
@@ -55,5 +56,6 @@ class BlockServiceImplTest extends LCH_testFather{
 
         //比较与期望的结果
         Assert.assertEquals("测试错误",block_except,blockService.getBlock());
+         
     }
 }

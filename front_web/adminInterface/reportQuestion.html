@@ -50,6 +50,10 @@
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+
+
+		<link rel="stylesheet" type="text/css" href="https://www.huangwx.cn/css/sweetalert.css">
+<script type="text/javascript" src="https://www.huangwx.cn/js/sweetalert-dev.js"></script>
 </head>
 
 <body>
@@ -133,7 +137,7 @@
 				</a>
 			</li>
 
-			<li>
+			<li class="active open">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-list"></i>
 					<span class="menu-text"> 举报信息管理 </span>
@@ -160,7 +164,7 @@
 
 
 
-			<li>
+			<li class="active open">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-desktop"></i>
 					<span class="menu-text"> 用户信息管理 </span>
@@ -369,6 +373,9 @@
 			//显示用户姓名
 			document.getElementById("userName").innerHTML = userVO.user.name;
 		});
+
+
+	
 	</script>
 </body>
 

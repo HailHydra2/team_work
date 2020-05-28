@@ -24,7 +24,7 @@ var grid_data = [
   },
 ];
 
-var HOST = 'http://118.190.90.167:8888';
+var HOST = 'http://localhost:8888';
 //var HOST = '';
 
 
@@ -67,7 +67,7 @@ jQuery(function ($) {
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://118.190.90.167:8888/questionReports",
+    url: "http://localhost:8888/questionReports",
     loadonce: true,
     mtype: "get",
     //	data: grid_data,

@@ -52,6 +52,8 @@ class RewardServiceImplTest extends LCH_testFather{
 
     @Test
     void getRewardList() throws ParseException {
+
+        //设置reward
         Reward reward=new Reward();
         reward.setId(1);
         reward.setUserId(1);

@@ -54,18 +54,18 @@
 						  <div class="form-group">
 							<label for="questionType" class="col-sm-2 control-label">问题类型</label>
 							<div class="col-sm-9">
-							<select class="form-control">
+							<select class="form-control" id="selectKind">
 							  <option>学业问答</option>
 							  <option>就业指导</option>
 							  <option>学习资源</option>
 							  <option>生活相关</option>
 							  <option>其他问题</option>
 							</select>
-							</div>
+						</div>
 						  </div>
 						  <div style="text-align: center;">
-							<label><input type="checkbox" /> 匿名提问</label>
-						 </div>
+							<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
+						</div>
 						<div style="text-align:center">
 							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
@@ -127,11 +127,11 @@
 				<div class="row clearfix">
 					<div class="col-md-12 column">
 						<div class="btn-group">
-							 <button class="btn btn-default" type="button">学业问答</button>
-							 <button class="btn btn-default" type="button">就业指导</button>
-							 <button class="btn btn-default" type="button">学习资源</button>
-							 <button class="btn btn-default" type="button">生活相关</button>
-							 <button class="btn btn-default" type="button">其他问题</button>
+							 <button class="btn btn-default" type="button"  onclick="changeKind('学业问答')">学业问答</button>
+							 <button class="btn btn-default" type="button" onclick="changeKind('就业指导')">就业指导</button>
+							 <button class="btn btn-default" type="button" onclick="changeKind('学习资源')">学习资源</button>
+							 <button class="btn btn-default" type="button" onclick="changeKind('生活相关')">生活相关</button>
+							 <button class="btn btn-default" type="button" onclick="changeKind('其他问题')">其他问题</button>
 						</div>
 					</div>
 				</div>

@@ -214,8 +214,20 @@ public class QuestionServiceImpl implements QuestionService{
         message.setObject_id(questionId);//被操作对象是问题
         messageService.updateInfoByMessage(message);
 
-        int titleId = titleDao.selectTitleByQuestionID(questionId);
-        int contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
+        int titleId;
+        int contentId;
+        //删除回复
+        ResponseExample example = new ResponseExample();//创建删除回复条件
+        List<Response> responseList = responseDao.selectByExample(example);//问题包含的回复列表
+        for(Response response :responseList){//删除回复在内容表的记录
+            contentId = response.getContentId();
+            contentDao.deleteByPrimaryKey(contentId);
+        }
+        responseDao.deleteByExample(example);//删除所有所属回复
+
+        //删除问题
+        titleId = titleDao.selectTitleByQuestionID(questionId);
+        contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
         titleDao.deleteQuestionTitle(questionId);
         titleDao.deleteByPrimaryKey(titleId);
         questionDao.deleteByPrimaryKey(questionId);
@@ -271,7 +283,6 @@ public class QuestionServiceImpl implements QuestionService{
         criteria1.andFlagEqualTo(1);
         //查询结果
         List<ReportQuestion> reportQuestionList = reportQuestionDao.selectByExample(example1);
-
         if(reportQuestionList.size() > 0){
             //已投诉
             questionVO.setDoesReported(true);

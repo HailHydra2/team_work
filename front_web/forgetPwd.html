@@ -76,10 +76,14 @@
 		//重置密码
 		function resetPassword(){
 			var account = document.getElementById("account").value;
-			var idCard = document.getElementById("idCard").value;
+			var idCardTemp = document.getElementById("idCard").value;
+			var idCard = window.btoa(idCardTemp);
+			//取后三位为初始密码
+			var password = window.btoa(idCardTemp.slice(-3));
 			// alert("account" + account + "  idCard" + idCard);
 			var user = {
 				"account":account,
+				"password":password,
 				"idCard":idCard
 			};
 			$.ajax({

@@ -35,25 +35,40 @@
 								</div>
 							</div>
 						</div>
-					<form class="form-horizontal" role="form" target="iframe">
+						<form class="form-horizontal" role="form" target="iframe">
 							
-						<div class="form-group">
-							<label for="inputQue" class="col-sm-2 control-label">问题</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="inputQue" />
+							<div class="form-group">
+								<label for="inputQue" class="col-sm-2 control-label">问题</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="inputQue" />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
-							<div class="col-sm-9">
-    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+							<div class="form-group">
+								<label for="describeQue" class="col-sm-2 control-label">描述</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+								</div>
+							  </div>
+							  <div class="form-group">
+								<label for="questionType" class="col-sm-2 control-label">问题类型</label>
+								<div class="col-sm-9">
+								<select class="form-control" id="selectKind">
+								  <option>学业问答</option>
+								  <option>就业指导</option>
+								  <option>学习资源</option>
+								  <option>生活相关</option>
+								  <option>其他问题</option>
+								</select>
 							</div>
-  						</div>
-						<div style="text-align:center">
-							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
-						</div>
-					</form>
+							  </div>
+							  <div style="text-align: center;">
+								<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
+							</div>
+							<div style="text-align:center">
+								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+							</div>
+						</form>
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
@@ -95,7 +110,7 @@
 							 <a href="usrInfo.html">我的&nbsp;&nbsp;&nbsp;</a>
 						</li>
 						<li>
-							<a href="login.html" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
+							<a href="" onclick="exit();">退出登录&nbsp;&nbsp;&nbsp;</a>
 						</li>
 					</ul>
 				</div>
@@ -174,7 +189,7 @@
 				</div>
 				<!--兑换综测-->
 				<div class="form-group" id="syntheticTestRewardNumDiv">
-				  <label for="name">兑换综测值 (兑换规则：100积分兑换0.1综测)</label>
+				  <label for="name">兑换综测值 (兑换规则：10积分兑换0.1综测)</label>
 				  <select class="form-control" id="syntheticTestRewardNum">
 					<option value="0.1">0.1综测</option>
 					<option value="0.5">0.5综测</option>
@@ -185,7 +200,7 @@
 
 				<!--兑换时长-->
 				<div class="form-group" id="serviceTimeRewardNumDiv" style="display:none;">
-					<label for="name">兑换时长 (兑换规则：100积分兑换1时长)</label>
+					<label for="name">兑换时长 (兑换规则：10积分兑换1时长)</label>
 					<select class="form-control" id="serviceTimeRewardNum">
 					  <option value="1.0">1小时</option>
 					  <option value="2.0">2小时</option>
@@ -246,6 +261,8 @@
 				b.innerHTML = userVO.user.name;
 				console.info(userVO.user.name);
 				initInfo(userVO);
+				//获取临时板块
+				getBlock();
 			}
 		});
 		
@@ -303,10 +320,18 @@
 					request.setRequestHeader("token", userVO.token);
 				},
 				success: function (data) {
+					if(data.code == 200){//积分充足
+						alert("恭喜, 兑换成功");
+					}else if(data.code == 407){//积分不足
+						alert("抱歉, 积分不足");
+					}
 					userVO = data.data;
 					console.info(userVO);
 					localStorage.setExpire("userVO",userVO,1000*60*30);
 					initInfo(userVO);
+				},
+				error:function(){
+					alert("服务器错误，请稍后再试");
 				}
 			});
 		}

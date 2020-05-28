@@ -132,7 +132,7 @@
 				</a>
 			</li>
 
-			<li>
+			<li class="active open">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-list"></i>
 					<span class="menu-text"> 举报信息管理 </span>
@@ -159,7 +159,7 @@
 
 
 
-			<li>
+			<li class="active open">
 				<a href="#" class="dropdown-toggle">
 					<i class="icon-desktop"></i>
 					<span class="menu-text"> 用户信息管理 </span>
@@ -500,9 +500,12 @@
 
 			//提交修改密码请求
 			function submitPwdChange(){
-				var idCard = $.trim($("#idCard").val());
-				var pwd1 = $.trim($("#password1").val());
-				var pwd2 = $.trim($("#password2").val());
+				var idCardTemp = $.trim($("#idCard").val());
+				var pwd1Temp = $.trim($("#password1").val());
+				var pwd2Temp = $.trim($("#password2").val());
+				var pwd1 = window.btoa(pwd1Temp);
+				var pwd2 = window.btoa(pwd2Temp);
+				var idCard = window.btoa(idCardTemp);
 				if(pwd1 != pwd2){
 					alert("两次密码输入不一致！");
 				}
