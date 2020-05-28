@@ -21,10 +21,10 @@ public interface UserService {
     public User getUserByAccount(String account);
 
     //delete user
-    public void deleteUsers(int id);
+    public boolean deleteUsers(int id);
 
-    //delete all user
-    public void deleteUsersAll(int id[]);
+    //批量删除用户（返回删除失败用户列表）
+    public List<Integer> deleteUsersAll(List<Integer> idList);
 
     //添加一个用户
     public int addUser(User user);

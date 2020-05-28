@@ -51,22 +51,27 @@ public class UserServiceImpl implements UserService{
     //获取所有用户
     @Override
     public List<User> getUsers(){
-        List<User> users=new ArrayList<>();
+        List<User> users;
         users = userDao.selectByExample(null);
         return users;
     }
 
-    //delete user
+    //删除用户
     @Override
-    public void deleteUsers(int id) { userDao.deleteByPrimaryKey(id); }
+    public boolean deleteUsers(int id) {
+        return userDao.deleteByPrimaryKey(id) == 1;
+    }
 
-    //delete all user
+    //批量删除用户
     @Override
-    public void deleteUsersAll(int id[])
-    {
-        for(int i=0;i<id.length;i++) {
-            deleteUsers(id[i]);
+    public List<Integer> deleteUsersAll(List<Integer> idList) {
+        List<Integer> failedList = new ArrayList<>();
+        for(int id : idList){
+            if(!deleteUsers(id)){//删除失败
+                failedList.add(id);
+            }
         }
+        return failedList;
     }
 
 

@@ -227,7 +227,6 @@ class UserServiceImplTest {
                 "210102199003074290",
                 "210102199003076173"
         };
-        List<Integer> rightIdList = new ArrayList<>();//正确问题id序列
         List<User> userList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             user = new User();
@@ -235,7 +234,7 @@ class UserServiceImplTest {
             user.setName("rightUsers" + i);
             String idCard = idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
-            user.setPassword(Encryptor.encrypt(idCards[i].substring(idCard.length()-3)));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
             user.setIdentity(UserIdentity.student);
             userList.add(user);//添加到用列表
         }
@@ -250,5 +249,136 @@ class UserServiceImplTest {
         for(User u : userList){
             userService.deleteUsers(u.getId());
         }
+    }
+
+    //添加全错用户列表
+    @Test
+    public void addUsersAllError(){
+        User user;
+        UserExample example = new UserExample();
+        List<String> failedMessageList;//错误消息列表
+        List<User> userList = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            user = new User();
+            user.setAccount("22170152" + i);
+            user.setName("rightUsers" + i);
+            String idCard = "12345";
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用列表
+        }
+        failedMessageList = userService.addUsers(userList);//批量添加用户
+        Assert.assertEquals(userList.size(), failedMessageList.size());//列表中每个用户都有对应的错误描述
+        for(User u : userList){
+            example.createCriteria().andAccountEqualTo(u.getAccount());
+            //没有将错误用户信息插入数据库
+            Assert.assertEquals(0, userDao.selectByExample(example).size());
+        }
+    }
+
+    //添加部分正确部分错误用户列表
+    @Test
+    public void addUsersHalfRight(){
+        User user;
+        UserExample example = new UserExample();
+        List<String> failedMessageList;//创建失败描述信息列表
+        List<String> rightUserList = new ArrayList<>();//正确用户账号列表
+        List<String> errorUserList = new ArrayList<>();//错误用户账号列表
+        //正确身份证列表
+        String[] idCards = {
+                "360102199003074111",
+                "360102199003077873",
+                "360102199003074998",
+                "36010219900307607X",
+                "360102199003079377",
+                "210102199003076798",
+                "210102199003075517",
+                "210102199003070935",
+                "210102199003074290",
+                "210102199003076173"
+        };
+        List<User> userList = new ArrayList<>();
+        //添加10个正确用户数据
+        for(int i = 0; i < 3; i++){
+            user = new User();
+            user.setAccount("22170152" + i);
+            user.setName("rightUsers" + i);
+            String idCard = idCards[i];
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用户列表
+            rightUserList.add(user.getAccount());//将用户id添加到正确的用户id列表
+        }
+        //添加10个错误用户数据
+        for(int i = 0; i < 3; i++){
+            user = new User();
+            user.setAccount("22170162" + i);
+            user.setName("errorUsers" + i);
+            String idCard = "12345";//错误身份证号
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()- 3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用户列表
+            errorUserList.add(user.getAccount());//将错误用户的id添加到错误用户id列表
+        }
+        failedMessageList = userService.addUsers(userList);//批量添加用户
+        //判断返回错误信息条数是否正确
+        Assert.assertEquals(errorUserList.size(), failedMessageList.size());
+        //判断所有正确用户是否都被添加到了数据库
+        for(String account : rightUserList){
+            //判断是否成功被记录到数据库
+            example = new UserExample();
+            example.createCriteria().andAccountEqualTo(account);
+            Assert.assertEquals(1, userDao.selectByExample(example).size());
+            //删除被保存的数据
+        }
+
+        //判断所有错误用户信息是否都没有被保存到数据库
+        for(String account : errorUserList){
+            //判断是否没有保存到数据库
+            example = new UserExample();
+            example.createCriteria().andAccountEqualTo(account);
+            Assert.assertEquals(0, userDao.selectByExample(example).size());
+        }
+        //删除添加的数据
+        for (String account : rightUserList){
+            example = new UserExample();
+            example.createCriteria().andAccountEqualTo(account);
+            userDao.deleteByExample(example);
+        }
+
+    }
+
+    //测试获取所有用户函数
+    @Test
+    public void getUsers(){
+        List<User> users = userDao.selectByExample(null);
+        List<User> list = userService.getUsers();
+        //测试获取的用户人数是否相同
+        Assert.assertEquals(users.size(), list.size());
+    }
+
+    //测试删除用户
+    @Test
+    public void deleteUsers(){
+        User user = new User();
+        //添加用户
+        user.setAccount("221701521");
+        user.setIdCard("220102199003076079");
+        user.setIdentity(UserIdentity.student);
+        user.setName("rightUser1");
+        addUser(user);
+        //判断是否成功删除新添加的用户
+        Assert.assertTrue(userService.deleteUsers(user.getId()));
+        //重复删除刚删除的用户，判断返回是否为false
+        Assert.assertFalse(userService.deleteUsers(user.getId()));
+    }
+
+    //测试批量删除用户（列表用户都存在）
+    @Test
+    public void deleteUsersListAllExit(){
+
     }
 }
