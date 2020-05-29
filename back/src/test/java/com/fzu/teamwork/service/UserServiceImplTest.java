@@ -256,26 +256,49 @@ class UserServiceImplTest {
     @Test
     public void addUsersAllError(){
         User user;
+        User user1 = new User();
         UserExample example = new UserExample();
         List<String> failedMessageList;//错误消息列表
         List<User> userList = new ArrayList<>();
+        //添加一个正确的用户到数据库
+        user1.setAccount("221701521");
+        user1.setIdCard("220102199003076079");
+        user1.setIdentity(UserIdentity.student);
+        user1.setName("rightUser1");
+        addUser(user1);
         for(int i = 0; i < 10; i++){
             user = new User();
             user.setAccount("22170152" + i);
-            user.setName("rightUsers" + i);
-            String idCard = "12345";
+            user.setName("errorUsers" + i);
+            String idCard =  idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
             user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
             user.setIdentity(UserIdentity.student);
             userList.add(user);//添加到用列表
         }
+        userList.get(0).setAccount("123");//账号非法
+        userList.get(1).setAccount(null);//账号不存在
+        userList.get(2).setName(null);//姓名为空
+        userList.get(3).setIdCard(null);//身份证为空
+        userList.get(4).setIdCard(Encryptor.encrypt("123"));//身份证非法
+        userList.get(5).setAccount(user1.getAccount());//账号已经被注册
+        userList.get(6).setIdCard(user1.getIdCard());//身份证已经被注册
+        userList.get(7).setIdentity(null);//身份为空
+        userList.get(8).setIdentity("stu");//身份错误
+        userList.get(9).setAccount("12345678&");//非法账号
+
         failedMessageList = userService.addUsers(userList);//批量添加用户
         Assert.assertEquals(userList.size(), failedMessageList.size());//列表中每个用户都有对应的错误描述
         for(User u : userList){
-            example.createCriteria().andAccountEqualTo(u.getAccount());
-            //没有将错误用户信息插入数据库
-            Assert.assertEquals(0, userDao.selectByExample(example).size());
+            if(u.getAccount() != null) {
+                example.createCriteria().andAccountEqualTo(u.getAccount());
+                //没有将错误用户信息插入数据库
+                Assert.assertEquals(0, userDao.selectByExample(example).size());
+            }
         }
+
+        //删除添加的测试用户
+        userService.deleteUsers(user1.getId());
     }
 
     //添加部分正确部分错误用户列表

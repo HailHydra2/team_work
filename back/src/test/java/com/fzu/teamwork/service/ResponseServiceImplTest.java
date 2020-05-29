@@ -1,5 +1,6 @@
 package com.fzu.teamwork.service;
 
+import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.model.Question;
 import com.fzu.teamwork.model.Response;
 import com.fzu.teamwork.model.User;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +39,8 @@ class ResponseServiceImplTest {
 
     @Autowired
     private ResponseService responseService;
+    @Resource
+    private QuestionDao questionDao;
 
     private User user;
     private UserVO userVO;
@@ -137,15 +141,21 @@ class ResponseServiceImplTest {
 
     @Test
     void deleteResponseById() {
+        responseVO = responseService.convertToVO(response);
+        responseService.insertResponse(responseVO);
+        question = questionDao.selectByPrimaryKey(question.getId());
         questionResponseNum = question.getResponseNum();
+        userVO = userService.convertToUserVo(user);//获取最新的用户数据
         userResponnseNum = userVO.getAccountData().getResponseNum();
+
         //检验删除回复是否成功并且返回1
         Assert.assertEquals(1,responseService.deleteResponseById(response.getId()));
         //检验问题的回复数是否-1
+        question = questionDao.selectByPrimaryKey(question.getId());//获取最新的问题数据
         Assert.assertEquals(questionResponseNum - 1,(long)question.getResponseNum());
         //检验回复者的回复数是否-1
         userVO = userService.convertToUserVo(user);
-        Assert.assertEquals(userResponnseNum,(long)userVO.getAccountData().getResponseNum());
+        Assert.assertEquals(userResponnseNum - 1,(long)userVO.getAccountData().getResponseNum());
         //检验删除不存在的回复是否返回0
         Assert.assertEquals(0,responseService.deleteResponseById(response.getId()+1));
     }
@@ -199,6 +209,7 @@ class ResponseServiceImplTest {
         //检验回复是否成功创建
         Assert.assertEquals(response.getId(),responseService.getResponseById(response.getId()).getId());
         //检验被回复的问题的回复数是否+1
+        question = questionDao.selectByPrimaryKey(question.getId());//获取该问题最新的数据
         Assert.assertEquals(questionResponseNum + 1,(long)question.getResponseNum());
         //检验回复者的回复数是否+1
         userVO = userService.convertToUserVo(user);

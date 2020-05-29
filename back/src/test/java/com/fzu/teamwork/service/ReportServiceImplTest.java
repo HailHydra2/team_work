@@ -34,28 +34,6 @@ class ReportServiceImplTest extends LCH_testFather{
 
     @Test
     void addQuestionReport() {
-
-        //问题不存在例子
-        /*
-        User user=new User();
-        user = new User();
-        user.setAccount("221701422");
-        user.setIdentity(UserIdentity.student);
-        user.setName("testWSH");
-        user.setPassword(Encryptor.encrypt("11X"));
-        user.setIdCard(Encryptor.encrypt("13072619990713611X"));
-
-
-        QuestionVO questionVO = new QuestionVO();
-        Question question = new Question();
-        questionVO.setQuestion(question);
-        questionVO.setTitle("title1");
-        questionVO.setContent("content1");
-        question.setAuthorId(user.getId());
-
-
-        */
-
         //我设置的reportquestion
         ReportQuestion reportQuestion=new ReportQuestion();
 

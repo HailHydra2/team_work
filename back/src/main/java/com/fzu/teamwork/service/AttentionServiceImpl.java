@@ -79,9 +79,4 @@ public class AttentionServiceImpl implements AttentionService{
         return userService.convertToUserVo(user);
     }
 
-    //根据uid查询用户关注问题的id列表
-    public List<Integer> getAttentionQuestionList(int uid){
-        List<Integer> list = attentionDao.getAttentionQuestionList(uid);
-        return list;
-    }
 }

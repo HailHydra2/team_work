@@ -127,14 +127,15 @@ public class ResponseServiceImpl implements ResponseService{
     @Override
     public int deleteResponseById(int id) {
         Response response = responseDao.selectByPrimaryKey(id);
-        if(response != null){//存在该问题
+        int result = 0;
+        if(response != null) {//存在该问题
             InternalMessage message = new InternalMessage();
             message.setWay(MessageWay.DELETE_RESPONSE);//操作方式是删除回复
             message.setObject_id(id);//操作对象是被删除回复
             messageService.updateInfoByMessage(message);//发送消息
+            result = contentDao.deleteByPrimaryKey(response.getContentId());//删除回复内容关联删除回复
         }
-        contentDao.deleteByPrimaryKey(response.getContentId());//删除回复内容
-        return responseDao.deleteByPrimaryKey(id);
+        return result;
     }
 
     //获取编号为id的回复
