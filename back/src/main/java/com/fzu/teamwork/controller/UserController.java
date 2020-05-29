@@ -39,16 +39,18 @@ public class UserController {
     @AdminLimit//管理员权限
     @DeleteMapping("/user/{id}")
     public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
-        System.out.println(id);
-        userService.deleteUsers(id);
-        return AjaxResponse.success();
+        if(userService.deleteUsers(id) == true){//删除成功
+            return AjaxResponse.success();
+        }else {//删除失败
+            return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT, "id为" + id + "的用户不存在");
+        }
     }
 
     //按id数组批量删除用户
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @DeleteMapping("/users")
-    public @ResponseBody AjaxResponse deleteUserAll_test(@RequestBody int[] userIdList){
+    public @ResponseBody AjaxResponse deleteUserAll_test(@RequestBody List<Integer> userIdList){
         userService.deleteUsersAll(userIdList);
         return AjaxResponse.success();
     }

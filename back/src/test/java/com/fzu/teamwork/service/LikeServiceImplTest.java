@@ -1,6 +1,8 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.LikesDao;
+import com.fzu.teamwork.dao.ResponseDao;
+import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.Encryptor;
 import com.fzu.teamwork.util.ScoreNum;
@@ -37,6 +39,12 @@ class LikeServiceImplTest {
 
     @Autowired
     private LikeService likeService;
+
+    @Resource
+    private ResponseDao responseDao;
+
+    @Resource
+    private UserDao userDao;
 
     private User user;
     private UserVO userVO;
@@ -95,9 +103,6 @@ class LikeServiceImplTest {
         likes.setUserId(user.getId());
         likes.setResponseId(response.getId());
         likes.setFlag(1);
-        userVO = userService.convertToUserVo(user);
-        userScore = userVO.getAccountData().getScore();
-        result = likeService.insertLikeInfo(likes);
     }
 
     @AfterEach
@@ -110,12 +115,17 @@ class LikeServiceImplTest {
 
     @Test
     void insertLikeInfo() {
+        likeNum = response.getLikeNum();//获取点赞前的点赞数
+        user = userDao.selectByPrimaryKey(response.getAuthorId());
+        userVO = userService.convertToUserVo(user);
+        userScore = userVO.getAccountData().getScore();
+        result = likeService.insertLikeInfo(likes);//点赞
+        response = responseDao.selectByPrimaryKey(likes.getResponseId());//获取最新的回复数据
+        responseVO = responseService.convertToVO(response);
         //检验是否点赞成功
         Assert.assertEquals(likes.getFlag(),likesDao.selectByPrimaryKey(likes.getId()).getFlag());
         //检验回复的点赞数是否+1
-        likeNum = responseVO.getLike();
-        responseVO = responseService.convertToVO(response);
-        Assert.assertEquals(likeNum + 1,responseVO.getLike());
+        Assert.assertEquals(likeNum + 1,(long)response.getLikeNum());
         //检验用户积分是否正确添加
         userVO = userService.convertToUserVo(user);
         Assert.assertEquals(userScore + ScoreNum.LIKE_SCORE,(long)userVO.getAccountData().getScore());
@@ -123,12 +133,12 @@ class LikeServiceImplTest {
         Assert.assertEquals(true,result);
         //检验取消点赞是否成功
         likes.setFlag(0);
+        likeNum = response.getLikeNum();//获取取消前点赞数
         result = likeService.insertLikeInfo(likes);
         Assert.assertEquals(likes.getFlag(),likesDao.selectByPrimaryKey(likes.getId()).getFlag());
         //检验回复的点赞数是否-1
-        likeNum = responseVO.getLike();
-        responseVO = responseService.convertToVO(response);
-        Assert.assertEquals(likeNum - 1,responseVO.getLike());
+        response = responseDao.selectByPrimaryKey(likes.getResponseId());
+        Assert.assertEquals(likeNum - 1,(long)response.getLikeNum());
         //检验用户积分是否正确扣除
         userVO = userService.convertToUserVo(user);
         Assert.assertEquals(userScore,(long)userVO.getAccountData().getScore());

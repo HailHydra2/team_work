@@ -55,7 +55,6 @@ public class MessageLRStrategy extends MessageOperateStrategy{
     //更新被点赞回复数据
     public void updateResponse(){
         Response r = responseVO.getResponse();
-
         if(message.getFlag() == 1){
             //点赞
             if(message.getFlag2() == -1){

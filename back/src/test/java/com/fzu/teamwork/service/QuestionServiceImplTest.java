@@ -194,6 +194,13 @@ class QuestionServiceImplTest{
         questionPage.setPageIndex(1);
         questionPage.setCount(3);
         questionPage.setSortApproach(QuestionSortApproach.SORT_BY_HEAT);
+        List<Integer> questionIdList = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            QuestionVO questionVO = addQuestion(i);
+            questionIdList.add(questionVO.getQuestion().getId());
+            questionVO.getQuestion().setResponseNum(i);
+            questionService.updateQuestion(questionVO);
+        }
         questionPage = questionService.getQuestionPage(questionPage);
         List<QuestionVO> questionList = questionPage.getQuestions();
         //判断是否是按热度（评论数）排序
@@ -201,6 +208,10 @@ class QuestionServiceImplTest{
                 >= questionList.get(1).getQuestion().getResponseNum());
         Assert.assertTrue(questionList.get(1).getQuestion().getResponseNum()
                 >= questionList.get(2).getQuestion().getResponseNum());
+        //删除测试添加的问题
+        for(int id : questionIdList){
+            questionService.deleteQuestionById(id);
+        }
     }
 
     //测试根据时间获取问题列表
@@ -210,6 +221,12 @@ class QuestionServiceImplTest{
         questionPage.setPageIndex(1);
         questionPage.setCount(3);
         questionPage.setSortApproach(QuestionSortApproach.SORT_BY_DATE);
+        List<Integer> questionIdList = new ArrayList<>();//新添加的问题列表
+        //添加问题
+        for(int i = 0; i < 10; i++){
+            QuestionVO questionVO = addQuestion(i);
+            questionIdList.add(questionVO.getQuestion().getId());
+        }
         questionPage = questionService.getQuestionPage(questionPage);
         List<QuestionVO> questionList = questionPage.getQuestions();
         //判断是否是按时间由近到远排序
@@ -217,6 +234,10 @@ class QuestionServiceImplTest{
                 >= questionList.get(1).getQuestion().getCreateTime().getTime());
         Assert.assertTrue(questionList.get(1).getQuestion().getCreateTime().getTime()
                 >= questionList.get(2).getQuestion().getCreateTime().getTime());
+        //删除新添加的问题
+        for(int id : questionIdList){
+            questionService.deleteQuestionById(id);
+        }
     }
 
     //测试根据关键字获取问题列表

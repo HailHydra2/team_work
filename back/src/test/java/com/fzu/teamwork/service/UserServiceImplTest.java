@@ -21,8 +21,7 @@ import javax.jws.soap.SOAPBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,6 +33,20 @@ class UserServiceImplTest {
     private UserDao userDao;
     @Resource
     private AccountDataDao accountDataDao;
+
+    //正确身份证列表
+    private String[] idCards = {
+            "360102199003074111",
+            "360102199003077873",
+            "360102199003074998",
+            "36010219900307607X",
+            "360102199003079377",
+            "210102199003076798",
+            "210102199003075517",
+            "210102199003070935",
+            "210102199003074290",
+            "210102199003076173"
+    };
 
     //添加用户，返回添加函数返回的状态码
     public int addUser(User user){
@@ -214,20 +227,7 @@ class UserServiceImplTest {
         User user;
         UserExample example = new UserExample();
         List<String> failedMessageList;//创建失败描述信息列表
-        //正确身份证列表
-        String[] idCards = {
-                "360102199003074111",
-                "360102199003077873",
-                "360102199003074998",
-                "36010219900307607X",
-                "360102199003079377",
-                "210102199003076798",
-                "210102199003075517",
-                "210102199003070935",
-                "210102199003074290",
-                "210102199003076173"
-        };
-        List<Integer> rightIdList = new ArrayList<>();//正确问题id序列
+
         List<User> userList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             user = new User();
@@ -235,7 +235,7 @@ class UserServiceImplTest {
             user.setName("rightUsers" + i);
             String idCard = idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
-            user.setPassword(Encryptor.encrypt(idCards[i].substring(idCard.length()-3)));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
             user.setIdentity(UserIdentity.student);
             userList.add(user);//添加到用列表
         }
@@ -251,4 +251,331 @@ class UserServiceImplTest {
             userService.deleteUsers(u.getId());
         }
     }
+
+    //添加全错用户列表
+    @Test
+    public void addUsersAllError(){
+        User user;
+        User user1 = new User();
+        UserExample example = new UserExample();
+        List<String> failedMessageList;//错误消息列表
+        List<User> userList = new ArrayList<>();
+        //添加一个正确的用户到数据库
+        user1.setAccount("221701521");
+        user1.setIdCard("220102199003076079");
+        user1.setIdentity(UserIdentity.student);
+        user1.setName("rightUser1");
+        addUser(user1);
+        for(int i = 0; i < 10; i++){
+            user = new User();
+            user.setAccount("22170152" + i);
+            user.setName("errorUsers" + i);
+            String idCard =  idCards[i];
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用列表
+        }
+        userList.get(0).setAccount("123");//账号非法
+        userList.get(1).setAccount(null);//账号不存在
+        userList.get(2).setName(null);//姓名为空
+        userList.get(3).setIdCard(null);//身份证为空
+        userList.get(4).setIdCard(Encryptor.encrypt("123"));//身份证非法
+        userList.get(5).setAccount(user1.getAccount());//账号已经被注册
+        userList.get(6).setIdCard(user1.getIdCard());//身份证已经被注册
+        userList.get(7).setIdentity(null);//身份为空
+        userList.get(8).setIdentity("stu");//身份错误
+        userList.get(9).setAccount("12345678&");//非法账号
+
+        failedMessageList = userService.addUsers(userList);//批量添加用户
+        Assert.assertEquals(userList.size(), failedMessageList.size());//列表中每个用户都有对应的错误描述
+        for(User u : userList){
+            if(u.getAccount() != null) {
+                example.createCriteria().andAccountEqualTo(u.getAccount());
+                //没有将错误用户信息插入数据库
+                Assert.assertEquals(0, userDao.selectByExample(example).size());
+            }
+        }
+
+        //删除添加的测试用户
+        userService.deleteUsers(user1.getId());
+    }
+
+    //添加部分正确部分错误用户列表
+    @Test
+    public void addUsersHalfRight(){
+        User user;
+        UserExample example = new UserExample();
+        List<String> failedMessageList;//创建失败描述信息列表
+        List<String> rightUserList = new ArrayList<>();//正确用户账号列表
+        List<String> errorUserList = new ArrayList<>();//错误用户账号列表
+        List<User> userList = new ArrayList<>();
+        //添加10个正确用户数据
+        for(int i = 0; i < 3; i++){
+            user = new User();
+            user.setAccount("22170152" + i);
+            user.setName("rightUsers" + i);
+            String idCard = idCards[i];
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用户列表
+            rightUserList.add(user.getAccount());//将用户id添加到正确的用户id列表
+        }
+        //添加10个错误用户数据
+        for(int i = 0; i < 3; i++){
+            user = new User();
+            user.setAccount("22170162" + i);
+            user.setName("errorUsers" + i);
+            String idCard = "12345";//错误身份证号
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()- 3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用户列表
+            errorUserList.add(user.getAccount());//将错误用户的id添加到错误用户id列表
+        }
+        failedMessageList = userService.addUsers(userList);//批量添加用户
+        //判断返回错误信息条数是否正确
+        Assert.assertEquals(errorUserList.size(), failedMessageList.size());
+        //判断所有正确用户是否都被添加到了数据库
+        for(String account : rightUserList){
+            //判断是否成功被记录到数据库
+            example = new UserExample();
+            example.createCriteria().andAccountEqualTo(account);
+            Assert.assertEquals(1, userDao.selectByExample(example).size());
+            //删除被保存的数据
+        }
+
+        //判断所有错误用户信息是否都没有被保存到数据库
+        for(String account : errorUserList){
+            //判断是否没有保存到数据库
+            example = new UserExample();
+            example.createCriteria().andAccountEqualTo(account);
+            Assert.assertEquals(0, userDao.selectByExample(example).size());
+        }
+        //删除添加的数据
+        for (String account : rightUserList){
+            example = new UserExample();
+            example.createCriteria().andAccountEqualTo(account);
+            userDao.deleteByExample(example);
+        }
+
+    }
+
+    //测试获取所有用户函数
+    @Test
+    public void getUsers(){
+        List<User> users = userDao.selectByExample(null);
+        List<User> list = userService.getUsers();
+        //测试获取的用户人数是否相同
+        Assert.assertEquals(users.size(), list.size());
+    }
+
+    //测试删除用户
+    @Test
+    public void deleteUsers(){
+        User user = new User();
+        //添加用户
+        user.setAccount("221701521");
+        user.setIdCard("220102199003076079");
+        user.setIdentity(UserIdentity.student);
+        user.setName("rightUser1");
+        addUser(user);
+        //判断是否成功删除新添加的用户
+        Assert.assertTrue(userService.deleteUsers(user.getId()));
+        //重复删除刚删除的用户，判断返回是否为false
+        Assert.assertFalse(userService.deleteUsers(user.getId()));
+    }
+
+    //测试批量删除用户（列表用户都存在）
+    @Test
+    public void deleteUsersListAllExit(){
+        User user;
+        UserExample example = new UserExample();
+        List<User> userList = new ArrayList<>();
+        List<Integer> userIdList = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            user = new User();
+            user.setAccount("22170152" + i);
+            user.setName("rightUsers" + i);
+            String idCard = idCards[i];
+            user.setIdCard(Encryptor.encrypt(idCard));
+            user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));
+            user.setIdentity(UserIdentity.student);
+            userList.add(user);//添加到用列表
+        }
+        userService.addUsers(userList);
+        //用户添加到数据库之后记录用户id
+        for(User u : userList){
+            userIdList.add(u.getId());
+        }
+        //删除用户
+        userService.deleteUsersAll(userIdList);
+        //判断新添加用户是否被删除
+        for(int id : userIdList){
+            Assert.assertNull(userDao.selectByPrimaryKey(id));
+        }
+    }
+
+    //测试批量删除用户（列表用户都不存在）
+    @Test
+    public void deleteUsersListNotExit(){
+        User user;
+        UserExample example = new UserExample();
+        List<Integer> userIdList = new ArrayList<>();
+        List<Integer> failedList = new ArrayList<>();
+        Random r = new Random();//用于生成随机的id
+        //用户添加到数据库之后记录用户id
+        for(int i = 0; i < 10; i++){
+            int id = r.nextInt(10000);
+            //确保是不存在的用户id
+            if(userDao.selectByPrimaryKey(id) != null){
+                i--;
+            }else{
+                userIdList.add(id);
+            }
+        }
+        //删除用户
+        failedList = userService.deleteUsersAll(userIdList);
+        //判断是否添加失败所有id全部返回
+        Assert.assertEquals(userIdList.size(), failedList.size());
+    }
+
+    //修改密码测试
+    @Test
+    public void changePassword(){
+        User user = new User();
+        //添加学生
+        user.setAccount("221701521");
+        user.setIdCard("220102199003076079");
+        user.setIdentity(UserIdentity.student);
+        user.setName("changePwdUser1");
+        addUser(user);
+
+        //通过密保的请求
+        String newPwd = "123";
+        String oldPwd = Encryptor.decrypt(user.getPassword());
+        user.setPassword(Encryptor.encrypt(newPwd));//修改密码
+        userService.changePassword(user);
+        user = userDao.selectByPrimaryKey(user.getId());//获取最新的用户数据
+        //验证密码是否是新密码
+        Assert.assertEquals(newPwd, Encryptor.decrypt(user.getPassword()));
+        //与旧密码不同
+        Assert.assertNotEquals(oldPwd, Encryptor.decrypt(user.getPassword()));
+
+        //没有通过密保的请求
+        newPwd = "234";
+        oldPwd = Encryptor.decrypt(user.getPassword());
+        user.setIdCard(Encryptor.encrypt("123"));//不匹配的身份证号
+        user.setPassword(Encryptor.encrypt(newPwd));//修改密码
+        userService.changePassword(user);
+        user = userDao.selectByPrimaryKey(user.getId());//获取最新的用户数据
+        //验证密码是否是新密码
+        Assert.assertNotEquals(newPwd, Encryptor.decrypt(user.getPassword()));
+        //验证密码是否仍是旧密码
+        Assert.assertEquals(oldPwd, Encryptor.decrypt(user.getPassword()));
+
+        //删除新添加的测试用户
+        userService.deleteUsers(user.getId());
+    }
+
+    //测试重置密码
+    @Test
+    public void resetPassword(){
+        User user = new User();
+        UserVO userVO;
+        //添加学生
+        user.setAccount("221701521");
+        user.setIdCard("220102199003076079");
+        user.setIdentity(UserIdentity.student);
+        user.setName("resetPwdUser1");
+        addUser(user);
+        user.setPassword(Encryptor.encrypt("123"));//将密码修改成123
+        userVO = userService.convertToUserVo(user);
+        userService.updateUser(userVO);//更新数据库
+        String oldPwd = Encryptor.encrypt("123");//旧密码
+        String expectPwd = Encryptor.encrypt("079");//重置后的正确密码
+
+        //账号正确，身份证不匹配
+        user.setIdCard(Encryptor.encrypt("1233"));
+        user.setPassword(expectPwd);
+        //重置密码，函数返回值为-1
+        Assert.assertEquals(-1, userService.resetPassword(user));
+        user = userDao.selectByPrimaryKey(user.getId());//获取数据库最新的数据
+        //密码与旧密码一致
+        Assert.assertEquals(oldPwd, user.getPassword());
+
+        //正确的重置密码
+        //判断函数返回值是否为1
+        user.setPassword(expectPwd);
+        Assert.assertEquals(1, userService.resetPassword(user));
+        user = userDao.selectByPrimaryKey(user.getId());//获取最新的用户信息
+        Assert.assertEquals(expectPwd, user.getPassword());//验证密码是否被成功重置
+
+        //重置不存在的账号
+        user.setAccount("1223");
+        user.setPassword(expectPwd);
+        //判断函数返回值是否为-2
+        Assert.assertEquals(-2,userService.resetPassword(user));
+
+        //删除新添加的测试用户
+        userService.deleteUsers(user.getId());
+    }
+
+    //获取单个用户单元测试
+    @Test
+    public void getUserById(){
+        Random random = new Random(1);
+        User user = new User();
+        User user1;
+        user.setAccount("221701521");
+        user.setIdCard("220102199003076079");
+        user.setIdentity(UserIdentity.student);
+        user.setName("getUser1");
+        addUser(user);
+
+        //获取存在于数据库的数据
+        user1 = userService.getUserById(user.getId());
+        Assert.assertNotNull(user1);
+        //判断获取的用户是否是想要的用户数据
+        Assert.assertEquals(user.getAccount(), user1.getAccount());
+
+        int id;//要查找用户的id
+        while(true){
+            id = random.nextInt(10000);
+            //确保id是不存在的用户id
+            if(userDao.selectByPrimaryKey(id) == null){
+                break;
+            }
+        }
+        Assert.assertNull(userService.getUserById(id));
+        //删除添加的测试用户
+        userService.deleteUsers(user.getId());
+    }
+
+    //测试通过账号获取用户
+    @Test
+    public void getUserByAccount(){
+        User user = new User();
+        User user1;
+        user.setAccount("221701521");
+        user.setIdCard("220102199003076079");
+        user.setIdentity(UserIdentity.student);
+        user.setName("getUser2");
+        addUser(user);
+
+        //获取存在于数据库的数据
+        user1 = userService.getUserByAccount(user.getAccount());
+        Assert.assertNotNull(user1);
+        //判断获取的用户是否是想要的用户数据
+        Assert.assertEquals(user.getId(), user1.getId());
+
+        //查找一个账号不存在的用户
+        Assert.assertNull(userService.getUserByAccount("123"));
+
+        //删除添加的测试用户
+        userService.deleteUsers(user.getId());
+
+    }
+
 }

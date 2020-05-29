@@ -1,6 +1,7 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.AttentionDao;
+import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.model.Attention;
 import com.fzu.teamwork.model.Question;
 import com.fzu.teamwork.model.User;
@@ -36,6 +37,8 @@ class AttentionServiceImplTest {
 
     @Autowired
     private QuestionService questionService;
+    @Resource
+    private QuestionDao questionDao;
 
     private User user;
     private UserVO userVO;
@@ -107,18 +110,16 @@ class AttentionServiceImplTest {
         Assert.assertEquals(focusNum - 1,(long)userVO.getAccountData().getFocusNum());
         //检验关注不存在的问题后用户关注数是否改变
         focusNum = userVO.getAccountData().getFocusNum();
-        attention.setQuestionId(question.getId()+1);
+        while(true){
+            int id = (int)Math.random()*10000;
+            if(questionDao.selectByPrimaryKey(id) == null){
+                attention.setQuestionId(id);
+                break;
+            }
+        }
         attentionService.insertAttention(attention);
+        userVO = userService.convertToUserVo(user);//获取最新的用户数据
         Assert.assertEquals(focusNum,(long)userVO.getAccountData().getFocusNum());
     }
 
-    @Test
-    void getAttentionQuestionList() {
-        //检验获取的问题列表ID是否和插入的问题ID一致
-        List<Integer> list1 = attentionService.getAttentionQuestionList(user.getId());
-        Assert.assertEquals((long)question.getId(),(long)list1.get(0));
-        //检验获取不存在的用户的关注列表是否存在
-        List<Integer> list2 = attentionService.getAttentionQuestionList(user.getId()+1);
-        Assert.assertEquals(0,list2.size());
-    }
 }
