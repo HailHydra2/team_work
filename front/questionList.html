@@ -177,7 +177,7 @@
 						  <li><a href="" onclick="changeKind('其他问题')">其他问题</a></li>
 						</ul>
 					  </nav>
-					  <span class="target"></span>
+					  <span class="target" style="position: fixed;"></span>
 				</div>
 				<!--页面主要内容容器-->
 				<div id="questionDiv">
@@ -223,7 +223,7 @@
 
       	var width = this.getBoundingClientRect().width;
       	var height = this.getBoundingClientRect().height;
-      	var left = this.getBoundingClientRect().left + window.pageXOffset-30;
+      	var left = this.getBoundingClientRect().left + window.pageXOffset;
       	var top = this.getBoundingClientRect().top + window.pageYOffset;
       	var color = colors[Math.floor(Math.random() * colors.length)];
 
@@ -247,7 +247,7 @@
     	var active = document.querySelector(".mynav li.active");
 
     	if (active) {
-      	var left = active.getBoundingClientRect().left + window.pageXOffset-30;
+      	var left = active.getBoundingClientRect().left + window.pageXOffset;
       	var top = active.getBoundingClientRect().top + window.pageYOffset;
 
       	target.style.left = left + "px";

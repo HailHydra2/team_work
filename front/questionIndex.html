@@ -9,7 +9,32 @@
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="js/util.js"></script>
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
-      	<link rel="shortcut icon" href="pic/favicon.ico">
+		<link rel="shortcut icon" href="pic/favicon.ico">
+		<style>
+			.infoBlock{
+				border:  1px solid #e2e4e7;
+				padding: 20px;
+				margin: 10px auto;
+				}
+			#responseDiv{
+				margin: auto 8%;
+			}
+			body{
+				background-color: rgb(240, 240, 240);
+			}
+			.infoBlock{
+				background-color: rgb(255, 255, 255);
+			}
+			.text-left{
+				margin-left: 13%;
+			}
+			#questionContent{
+				margin-left: 13%;
+			}
+			.login_btn{
+				margin-left: 15%;
+			}
+		</style>
    </head>
    <body>
       	<!-- 提问模态框（Modal） -->
@@ -21,10 +46,10 @@
 						</button>
 						<h4 class="modal-title" id="myModalLabel">提问</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" >
 						<div >
 							<div class="row clearfix">
-								<div class="col-md-12 column">
+								<div class="col-md-12 column" >
 									<div class="alert alert-dismissable alert-info">
 					 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 											<h4>提问须知</h4>
@@ -74,16 +99,16 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-    <div class="container">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
+    <div class="container-fluid" style="padding-right: 0; margin: 0;">
+	<div class="row clearfix" style="background-color: white;">
+		<div class="col-md-12 column" >
 			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 				<div class="navbar-header">
 					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#"><img src="pic/icon.png" height="40" width="40" vsapce="50" style="float:left"/></a>
 				</div>
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav" >
 						<li class="dropdown">
 							 <a href="index.html">首页</a>
 						</li>
@@ -118,24 +143,25 @@
 				
 
 			</nav>
+			
 			<div class="page-header" style="top:130">
 				<br/>
-				<h1>
+				<h1 style="margin-left: 8%;">
 					问题详情 <small><span class="label label-default" id="kind"></span></small>	
 				</h1>
 			</div>
 		</div>
 	</div>
 	
+	
 
-
-	<div class="container">
-		<div class="row clearfix">
+	<div class="container-fluid" style="padding-left: 0;">
+		<div class="row clearfix" style="background-color: white;border-bottom:1px solid #e2e4e7;">
 			<div class="col-md-8 column">
 				<h3 class="text-left" id="questionTitle"></h3>
 				<p id="questionContent"></p>
 
-				<div class="col-md-12 column" >
+				<div class="col-md-12 column" style="margin-left: 10%;">
 					<div id="login_btn" class="login_log" style="display: inline;">
 						<br/>
 						<button type="button" class="btn btn-sm btn-primary" id="attentionQuestion" onclick="attentionQuestion();"></button>
@@ -154,7 +180,7 @@
 					<p><strong>创建时间</strong></p>
 					<p id="questionCreateTime" style="display: inline-flex;"></p>
 			   </div>
-			   <div class="col-md-6 column">
+			   <div class="col-md-6 column" >
 				<p><strong>回复数</strong></p>
 				<p id="responseNum" style="display: inline-flex;"></p>
 			   </div>
@@ -413,6 +439,7 @@
         for(var i = 0; i < list.length; i++){
             //创建存放单个回复的div
 			var responseBlock = document.createElement("div");
+			responseBlock.className = "infoBlock";
 			responseList.appendChild(responseBlock);
 			//回复内容div
 			var responseBox = document.createElement("div");
