@@ -62,6 +62,7 @@ class LikeServiceImplTest {
 
     private int userScore;
     private int likeNum;
+    private int dislikeNum;
     private boolean result;
 
     @BeforeEach
@@ -131,6 +132,7 @@ class LikeServiceImplTest {
         Assert.assertEquals(userScore + ScoreNum.LIKE_SCORE,(long)userVO.getAccountData().getScore());
         //检验返回值是否为true
         Assert.assertEquals(true,result);
+
         //检验取消点赞是否成功
         likes.setFlag(0);
         likeNum = response.getLikeNum();//获取取消前点赞数
@@ -144,12 +146,31 @@ class LikeServiceImplTest {
         Assert.assertEquals(userScore,(long)userVO.getAccountData().getScore());
         //检验返回值是否为true
         Assert.assertEquals(true,result);
-        //检验点赞不存在的回复是否返回false
-        likes.setResponseId(response.getId() + 1);
+
+        //检验点灭是否成功
+        likes.setFlag(-1);
+        dislikeNum = response.getDislikeNum();//获取点灭前的点灭数
         result = likeService.insertLikeInfo(likes);
-        Assert.assertEquals(false,result);
-        //检验回复不存在的问题时是否返回false
-        response.setQuestionId(question.getId() + 1);
+        Assert.assertEquals(likes.getFlag(),likesDao.selectByPrimaryKey(likes.getId()).getFlag());
+        //检验回复的点灭数是否+1
+        response = responseDao.selectByPrimaryKey(likes.getResponseId());
+        Assert.assertEquals(dislikeNum + 1,(long)response.getDislikeNum());
+        //检验返回值是否为true
+        Assert.assertEquals(true,result);
+
+        //检验点灭是否成功
+        likes.setFlag(0);
+        dislikeNum = response.getDislikeNum();//获取取消点灭前的点灭数
+        result = likeService.insertLikeInfo(likes);
+        Assert.assertEquals(likes.getFlag(),likesDao.selectByPrimaryKey(likes.getId()).getFlag());
+        //检验回复的点灭数是否-1
+        response = responseDao.selectByPrimaryKey(likes.getResponseId());
+        Assert.assertEquals(dislikeNum - 1,(long)response.getDislikeNum());
+        //检验返回值是否为true
+        Assert.assertEquals(true,result);
+
+        //检验回复不存在时是否返回false
+        likes.setResponseId(response.getId() + 1);
         result = likeService.insertLikeInfo(likes);
         Assert.assertEquals(false,result);
     }

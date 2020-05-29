@@ -1,9 +1,7 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.QuestionDao;
-import com.fzu.teamwork.model.Question;
-import com.fzu.teamwork.model.Response;
-import com.fzu.teamwork.model.User;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.Encryptor;
 import com.fzu.teamwork.util.ScoreNum;
 import com.fzu.teamwork.util.UserIdentity;
@@ -38,7 +36,14 @@ class ResponseServiceImplTest {
     private QuestionService questionService;
 
     @Autowired
+    private ReportService reportService;
+
+    @Autowired
     private ResponseService responseService;
+
+    @Autowired
+    private LikeService likeService;
+
     @Resource
     private QuestionDao questionDao;
 
@@ -225,5 +230,79 @@ class ResponseServiceImplTest {
         responseVO = responseService.convertToVO(response);
         result = responseService.insertResponse(responseVO);
         Assert.assertEquals(false,result);
+    }
+
+    @Test
+    void getResponsePageBeReported(){
+        //第一条被举报的回复，被举报一次
+        ReportResponse reportResponse1 = new ReportResponse();
+        reportResponse1.setResponseId(response.getId());
+        reportResponse1.setReportorId(user.getId());
+        reportResponse1.setFlag(1);
+        reportService.addResponseReport(reportResponse1);
+        //第二条被举报的回复，被举报两次
+        Response response1 = new Response();
+        ResponseVO responseVO1 = new ResponseVO();
+        responseVO1.setContent("testResponseContent1");
+        response1.setQuestionId(question.getId());
+        response1.setAuthorId(user.getId());
+        response1.setCreateTime(new Date());
+        responseVO1.setResponse(response1);
+        responseService.insertResponse(responseVO1);
+        ReportResponse reportResponse2 = new ReportResponse();
+        reportResponse2.setResponseId(response1.getId());
+        reportResponse2.setReportorId(user.getId());
+        reportResponse2.setFlag(1);
+        reportService.addResponseReport(reportResponse2);
+        reportService.addResponseReport(reportResponse2);
+        //检验被举报两次的回复是否排在被举报一次的回复的前面,预期第一个回复的举报数是2第二个回复的举报数是1
+        Assert.assertEquals((long)reportService.getReportResponse().get(0).getReportNum(),(long)reportService.getReportResponse().get(1).getReportNum() + 1);
+    }
+
+    @Test
+    void convertToVO(){
+        //检验回复是否匿名成功
+        response.setAnonymous(1);
+        responseVO = responseService.convertToVO(response);
+        responseService.insertResponse(responseVO);
+        Assert.assertEquals("匿名用户",responseService.convertToVO(responseService.getResponseById(response.getId())).getAuthorName());
+    }
+
+    @Test
+    void addListRelationToUid(){
+        List<ResponseVO> responseVOList = new ArrayList<>();
+        responseVO = responseService.convertToVO(response);
+
+        Response response1 = new Response();
+        ResponseVO responseVO1 = new ResponseVO();
+        responseVO1.setContent("testResponseContent1");
+        response1.setQuestionId(question.getId());
+        response1.setAuthorId(user.getId());
+        response1.setCreateTime(new Date());
+        responseVO1.setResponse(response1);
+        responseService.insertResponse(responseVO1);
+
+        Likes likes = new Likes();
+        likes.setResponseId(response.getId());
+        likes.setFlag(1);
+        likes.setUserId(user.getId());
+        likeService.insertLikeInfo(likes);
+
+        ReportResponse reportResponse1 = new ReportResponse();
+        reportResponse1.setResponseId(response1.getId());
+        reportResponse1.setReportorId(user.getId());
+        reportResponse1.setFlag(1);
+        reportService.addResponseReport(reportResponse1);
+
+        responseVO = responseService.convertToVO(response);
+        responseVO1 = responseService.convertToVO(response1);
+        responseVOList.add(responseVO);
+        responseVOList.add(responseVO1);
+        responseService.addListRelationToUid(responseVOList,user.getId());
+
+        //检验点赞关系是否添加成功
+        Assert.assertEquals(1,responseVOList.get(0).getLike());
+        //检验举报关系是否添加成功
+        Assert.assertEquals(true,responseVOList.get(1).isDoesReported());
     }
 }
