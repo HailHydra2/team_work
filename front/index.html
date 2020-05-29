@@ -10,7 +10,46 @@
 		<script src="js/util.js"></script>
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
 		<link rel="shortcut icon" href="pic/favicon.ico">
-		
+		<style>
+			.mynav ul {
+			  display: -webkit-box;
+			  display: -ms-flexbox;
+			  display: flex;
+			  -webkit-box-pack: left;
+				  -ms-flex-pack: left;
+					  justify-content: left;
+			  -ms-flex-wrap: wrap;
+				  flex-wrap: wrap;
+			  list-style-type: none;
+			  padding: 0;
+			}
+			
+			.mynav li:not(:last-child) {
+			  margin-right: 20px;
+			}
+			
+			.mynav a {
+			  display: block;
+			  font-size: 15px;
+			  color: black;
+			  text-decoration: none;
+			  padding: 7px 4px;
+			}
+			
+			.target {
+			  position: absolute;
+
+			  border-bottom: 3px solid transparent;
+			  z-index: -1;
+			  -webkit-transform: translateX(-60px);
+					  transform: translateX(-60px);
+			}
+			
+			.mynav a,
+			.target {
+			  -webkit-transition: all .35s ease-in-out;
+			  transition: all .35s ease-in-out;
+			}</style>
 		
    </head>
    <body>
@@ -124,17 +163,16 @@
 				<h1 >
 					首页 <small></small>
 				</h1>
-				<div class="row clearfix">
-					<div class="col-md-12 column">
-						<div class="btn-group">
-							 <button class="btn btn-default" type="button"  onclick="changeKind('学业问答')">学业问答</button>
-							 <button class="btn btn-default" type="button" onclick="changeKind('就业指导')">就业指导</button>
-							 <button class="btn btn-default" type="button" onclick="changeKind('学习资源')">学习资源</button>
-							 <button class="btn btn-default" type="button" onclick="changeKind('生活相关')">生活相关</button>
-							 <button class="btn btn-default" type="button" onclick="changeKind('其他问题')">其他问题</button>
-						</div>
-					</div>
-				</div>
+				<nav class="mynav">
+					<ul>
+					  <li class="active"><a href="" onclick="changeKind('学业问答')">学业问答</a></li>
+					  <li><a href="" onclick="changeKind('就业指导')">就业指导</a></li>
+					  <li><a href="" onclick="changeKind('学习资源')">学习资源</a></li>
+					  <li><a href="" onclick="changeKind('生活相关')">生活相关</a></li>
+					  <li><a href="" onclick="changeKind('其他问题')">其他问题</a></li>
+					</ul>
+				  </nav>
+				  <span class="target"></span>
 			</div>
 			<!--页面主要内容容器-->
 			<div id="questionDiv">
@@ -157,6 +195,65 @@
 
    
 <script>
+	//美化分类导航↓
+	"use strict";
+
+	(function () {
+
+ 	 var target = document.querySelector(".target");
+ 	 var links = document.querySelectorAll(".mynav a");
+ 	 var colors = ["#D80000", "#D80000", "#D80000"];
+
+  	function mouseenterFunc() {
+  		if (!this.parentNode.classList.contains("active")) {
+  	    	for (var i = 0; i < links.length; i++) {
+        		if (links[i].parentNode.classList.contains("active")) {
+          			links[i].parentNode.classList.remove("active");
+        	}
+        links[i].style.opacity = "0.25";
+      	}
+
+      	this.parentNode.classList.add("active");
+      	this.style.opacity = "1";
+
+      	var width = this.getBoundingClientRect().width;
+      	var height = this.getBoundingClientRect().height;
+      	var left = this.getBoundingClientRect().left + window.pageXOffset-30;
+      	var top = this.getBoundingClientRect().top + window.pageYOffset;
+      	var color = colors[Math.floor(Math.random() * colors.length)];
+
+      	target.style.width = width + "px";
+      	target.style.height = height + "px";
+      	target.style.left = left + "px";
+      	target.style.top = top + "px";
+      	target.style.borderColor = color;
+      	target.style.transform = "none";
+    	}
+  	}
+
+  	for (var i = 0; i < links.length; i++) {
+   		links[i].addEventListener("click", function (e) {
+    	return e.preventDefault();
+    	});
+    	links[i].addEventListener("mouseenter", mouseenterFunc);
+  	}
+
+  	function resizeFunc() {
+    	var active = document.querySelector(".mynav li.active");
+
+    	if (active) {
+      	var left = active.getBoundingClientRect().left + window.pageXOffset-30;
+      	var top = active.getBoundingClientRect().top + window.pageYOffset;
+
+      	target.style.left = left + "px";
+      	target.style.top = top + "px";
+    	}
+  	}
+  		window.addEventListener("resize", resizeFunc);
+	})();
+	//美化分类导航结束↑
+
+
     //问题容器
     var questionDiv = document.getElementById("questionDiv");
     //存放问题列表的div
@@ -206,7 +303,7 @@
 		changeQuestionPage(page, path);
 	}
 
-	
 
+	
 </script>
 </html>
