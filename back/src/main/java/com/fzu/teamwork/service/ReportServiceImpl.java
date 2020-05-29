@@ -108,7 +108,7 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public boolean addResponseReport(ReportResponse reportResponse){
         Response response = responseDao.selectByPrimaryKey(reportResponse.getResponseId());
-        if(response == null){//被举报问题不存在
+        if(response == null){//被举报回复不存在
             return false;
         }
         //创建查询条件
@@ -142,9 +142,6 @@ public class ReportServiceImpl implements ReportService{
         }else if(reportResponse.getFlag() == 0){
             //取消投诉
             message.setFlag(-1);
-        }else{
-             System.out.println("投诉消息flag错误");
-             return false;
         }
         //发送消息
         messageService.updateInfoByMessage(message);
