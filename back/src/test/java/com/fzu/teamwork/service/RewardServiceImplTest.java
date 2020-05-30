@@ -83,7 +83,6 @@ class RewardServiceImplTest extends LCH_testFather{
 
         //申请类别为党员服务时长
         reward=new Reward();
-        reward.setId(2);
         reward.setUserId(user.getId());
         reward.setType(RewardType.ServiceTime); //党员服务时长
         reward.setRewardNum(5.0);
@@ -93,7 +92,6 @@ class RewardServiceImplTest extends LCH_testFather{
 
         //申请类别为综测
         reward=new Reward();
-        reward.setId(2);
         reward.setUserId(user.getId());
         reward.setType(RewardType.SyntheticTest); //综测
         reward.setRewardNum(5.0);

@@ -49,11 +49,6 @@ public class BlockServiceImpl implements BlockService {
         if(blockList.size() == 1){
             //有临时板块记录，返回第一条(因为业务需要，只有一条)
             return blockList.get(0);
-        } else if (blockList.size() == 0) {
-            //没有临时板块
-            return null;
-        }else{
-            log.info("block表中有多于一条的临时板块记录，逻辑错误");
         }
         return null;
     }
