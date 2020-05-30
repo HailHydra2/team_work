@@ -26,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
 
     //获取用户
     @Override
-    public UserVO getUser(User user) {
+    public UserVO login(User user) {
         User u = userService.getUserByAccount(user.getAccount());
         UserVO userVO = new UserVO();
         if (u == null){

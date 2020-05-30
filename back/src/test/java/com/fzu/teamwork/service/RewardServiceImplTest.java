@@ -1,41 +1,37 @@
 package com.fzu.teamwork.service;
 
-import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.dao.RewardDao;
 import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.Encryptor;
 import com.fzu.teamwork.util.RewardType;
-import com.fzu.teamwork.util.ScoreNum;
 import com.fzu.teamwork.util.UserIdentity;
-import com.fzu.teamwork.view.QuestionVO;
-import com.fzu.teamwork.view.ResponseVO;
 import com.fzu.teamwork.view.RewardVO;
 import com.fzu.teamwork.view.UserVO;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-class RewardServiceImplTest extends LCH_testFather{
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@WebAppConfiguration
+class RewardServiceImplTest {
     @Autowired
     private RewardServiceImpl rewardService;
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AccountDataServiceImpl accountDataService;
+
 
     @Resource
     private RewardDao rewardDao;
