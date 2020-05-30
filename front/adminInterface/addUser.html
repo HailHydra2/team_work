@@ -293,6 +293,7 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="name" placeholder="输入姓名" class="col-xs-10 col-sm-5" />
+                                        <span id="nameTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -477,6 +478,7 @@
     <script src="assets/js/ace.min.js"></script>
 
     <script src="../js/util.js"></script>
+    <script src="assets/js/biz/isValidID.js"></script>
     <script>
         //账号(学号输入框)
         var accountTextBox = document.getElementById("account");
@@ -502,7 +504,7 @@
             $("#account").blur(function () {
                 var account = $("#account").val();
                 if (account.length<9) {
-                    showError('account', '账号位数不能小于9位');
+                    showError('account', '账号位数不能小于9位！');
                     error = true;
                 }
                 else {
@@ -512,13 +514,45 @@
             });
 
 
+            $("#name").blur(function () {
+                var account = $("#name").val();
+                if (account.length==0) {
+                    showError('name', '姓名非空！');
+                    error = true;
+                }
+                else {
+                    $("#name").css({ "border-color": "green" });
+                    $("#nameTip").css({ "display": "none" });
+                }
+            });
+
+            
+            $("#account").blur(function () {
+                var account = $("#account").val();
+                if (account.length<9) {
+                    showError('account', '账号位数不能小于9位！');
+                    error = true;
+                }
+                else {
+                    $("#account").css({ "border-color": "green" });
+                    $("#accountTip").css({ "display": "none" });
+                }
+            });
+
+
+
+
             
         $("#idCard").blur(function () {
                 var account = $("#idCard").val();
                 if (account.length<18) {
-                    showError('idCard', '身份证号位数不能小于18位');
+                    showError('idCard', '身份证号位数不能小于18位！');
                     error = true;
                 }
+                else if( IdCardValidate(account)==false){
+					showError('idCard', '身份证号码非法！');
+					error = true;
+				}
                 else {
                     $("#idCard").css({ "border-color": "green" });
                     $("#idCardTip").css({ "display": "none" });

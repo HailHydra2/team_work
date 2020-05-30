@@ -475,7 +475,8 @@
 	<script src="../js//util.js"></script>
 
 	<!-- inline scripts related to this page -->
-
+	<script src="assets/js/biz/isValidID.js"></script>
+	
 	<script type="text/javascript">
 
 		$(document).ready(function (e) {
@@ -485,7 +486,11 @@
 			$("#idCard").blur(function () {
 				var account = $("#idCard").val();
 				if (account.length < 18) {
-					showError('idCard', '位数不能小于18位');
+					showError('idCard', '身份证号码位数不能小于18位！');
+					error = true;
+				}
+				else if( IdCardValidate(account)==false){
+					showError('idCard', '身份证号码非法！');
 					error = true;
 				}
 
