@@ -166,7 +166,7 @@ function postQuestion(){
             //将输入内容清空
             $("#inputQue").innerHTML = "";
             $("#describeQue").innerHTML = "";
-            location.replace(document.referrer);
+            location.replace(location.href);
         }
     });
 }

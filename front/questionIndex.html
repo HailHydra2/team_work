@@ -554,6 +554,8 @@
 					document.getElementById("cresponseContent").value = "";
 					//关闭评论输入框
 					$(closeButton).click();
+					//更新用户数据（回复数+1）
+					updateUser(data.data)
 					//刷新页面
 					location.reload();
 				}else if(data.code == 408){
