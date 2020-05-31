@@ -400,6 +400,9 @@
 		var reportQuestionButton = document.getElementById("reportQuestion");
 		var kindText = document.getElementById("kind");
 		kindText.innerHTML = questionVO.kind;
+		//设置问题作者id
+		attentionQuestionButton.setAttribute("authorId", questionVO.question.authorId);
+		reportQuestionButton.setAttribute("authorId", questionVO.question.authorId);
 		if(questionVO.doesAttention == true){
 			//已关注
 			attentionQuestionButton.innerHTML = "取消关注";
@@ -461,6 +464,7 @@
 			var likeButton = document.createElement("button");
 			likeButton.className = "btn btn-info btn-xs";
 			likeButton.id = "like" + i;
+			likeButton.setAttribute("authorId", list[i].response.authorId);
 			if(list[i].like == 1){
 				//已赞
 				likeButton.innerHTML = "👍取消点赞";
@@ -479,6 +483,7 @@
 			var disLikeButton = document.createElement("button");
 			disLikeButton.id = "disLike" + i;
 			disLikeButton.className = "btn btn-info btn-xs";
+			disLikeButton.setAttribute("authorId",list[i].response.authorId);
 			if(list[i].like == -1){
 				//有点灭记录
 				disLikeButton.innerHTML = "👎取消点灭";
@@ -495,6 +500,7 @@
 			//创建投诉按钮
 			var reportButton = document.createElement("button");
 			reportButton.className = "btn btn-danger btn-xs";
+			reportButton.setAttribute("authorId", list[i].response.authorId);
 			if(list[i].doesReported == true){
 				//投诉过
 				reportButton.innerHTML = "⛔取消举报";
@@ -619,6 +625,10 @@
 		var reportQuestionButton = document.getElementById("reportQuestion");
 		//1-投诉  0-取消投诉
 		var flag;
+		if(reportQuestionButton.getAttribute("authorId") == userId){
+			alert("抱歉，不能投诉自己的问题");
+			return;
+		}
 		if(reportQuestionButton.getAttribute("flag") == 1){
 			//取消投诉
 			flag = 0;
@@ -662,6 +672,10 @@
 		var reportResponseButton = document.getElementById("reportResponse" + i);
 		//1-投诉  0-取消投诉
 		var flag;
+		if(reportResponseButton.getAttribute("authorId") == userId){
+			alert("抱歉，不能举报自己的回复");
+			return;
+		}
 		if(reportResponseButton.getAttribute("flag") == 1){
 			//取消投诉
 			flag = 0;
@@ -707,11 +721,13 @@
 
 	//点赞、点灭回复(responseId:回复id, flag:)
 	function likeResponse(responseId, i, type){
-		// alert("haha");
 		var userId = userVO.user.id;
 		var likeButton = document.getElementById("like" + i);
 		var disLikeButton = document.getElementById("disLike" + i);
-
+		if(likeButton.getAttribute("authorId") == userId){
+			alert("抱歉不能点赞/点灭自己的评论");
+			return;
+		}
 		if(type == "like"){
 			console.info("sttribute:" + likeButton.getAttribute("flag"));
 			if(likeButton.getAttribute("flag") == 0){
@@ -724,7 +740,6 @@
 				likeButton.setAttribute("flag", 1);
 				likeButton.innerHTML ="👍取消点赞(" + num + ")";
 				//取消点灭
-				num = disLikeButton.getAttribute("num");//当前点赞人数
 				if(disLikeButton.getAttribute("flag") == 1){//当前是点灭状态
 					num = disLikeButton.getAttribute("num");//当前灭人数
 					num = (Number(num) - 1);//点赞人数-1
@@ -746,13 +761,13 @@
 				//点灭
 				num = disLikeButton.getAttribute("num");//当前点灭人数
 				num = (Number(num) + 1);//点灭人数+1
-				likeButton.setAttribute("num", num);
+				disLikeButton.setAttribute("num", num);
 				flag = -1;
 				//设置点灭标志位
 				disLikeButton.setAttribute("flag",1);
 				disLikeButton.innerHTML = "👎取消点灭(" + num + ")";
 				//取消点赞
-				if(likeButton.getAttribute("flag" == 1)){//当前为点赞状态
+				if(likeButton.getAttribute("flag") == 1){//当前为点赞状态
 					num = likeButton.getAttribute("num");//当前点赞人数
 					num = (Number(num) - 1);//点赞人数-1
 					likeButton.setAttribute("num", num);

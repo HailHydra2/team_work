@@ -213,7 +213,7 @@ public class ResponseServiceImpl implements ResponseService{
 
         List<ReportResponse> reportResponseList = reportResponseDao.selectByExample(example);
 
-        if(reportResponseList.size() == 0){
+        if(reportResponseList.size() == 0 || reportResponseList.get(0).getFlag() == 0){
             //未投诉
             responseVO.setDoesReported(false);
         }else{
