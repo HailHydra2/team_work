@@ -470,14 +470,11 @@
 				likeButton.innerHTML = "👍点赞";
 				likeButton.setAttribute("flag",0);
 			}
+			likeButton.setAttribute("num", list[i].response.likeNum);//该条回复的点赞数
+			likeButton.innerHTML += ("(" + list[i].response.likeNum + ")")
 			buttonBox.appendChild(likeButton);
 			var responseId = list[i].response.id;
-			console.info("likeResponse("  + responseId + ", "+ i + ", 'like');");
 			likeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'like');")
-			// likeButton.onclick =function(list){
-			// 	console.info(list[i].content);
-			// 	likeResponse(list[i].response.id, i, "like");
-			// }	 
 			//创建点灭按钮
 			var disLikeButton = document.createElement("button");
 			disLikeButton.id = "disLike" + i;
@@ -491,11 +488,10 @@
 				disLikeButton.innerHTML = "👎点灭";
 				disLikeButton.setAttribute("flag",0)
 			}
+			disLikeButton.setAttribute("num", list[i].response.dislikeNum);//该条回复的点灭数
+			disLikeButton.innerHTML += ("(" + list[i].response.dislikeNum + ")");
 			buttonBox.appendChild(disLikeButton);
 			disLikeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'disLike');")
-			// disLikeButton.onclick = function(){
-			// 	likeResponse(list[i].response.id, i, "disLike");
-			// }
 			//创建投诉按钮
 			var reportButton = document.createElement("button");
 			reportButton.className = "btn btn-danger btn-xs";
@@ -508,6 +504,8 @@
 				reportButton.innerHTML = "⛔举报";
 				reportButton.setAttribute("flag",0);
 			}
+			reportButton.setAttribute("num", list[i].response.reportNum);//该条回复的举报数
+			reportButton.innerHTML += ("(" + list[i].response.reportNum + ")");
 			reportButton.id = "reportResponse" + i;
 			reportButton.setAttribute("onclick","reportResponse("  + responseId + ", "+ i + ");")
 			buttonBox.appendChild(reportButton);
@@ -667,13 +665,19 @@
 		if(reportResponseButton.getAttribute("flag") == 1){
 			//取消投诉
 			flag = 0;
+			num = reportResponseButton.getAttribute("num");//当前的被举报人数
+			num = (Number(num) - 1);
+			reportResponseButton.setAttribute("num", num);
 			reportResponseButton.setAttribute("flag", 0);
-			reportResponseButton.innerHTML = "⛔举报";
+			reportResponseButton.innerHTML = "⛔举报(" + num + ")";
 		}else{
 			//投诉
 			var flag = 1;
+			num = reportResponseButton.getAttribute("num");//当前的被举报人数
+			num = (Number(num) + 1);
+			reportResponseButton.setAttribute("num", num);
 			reportResponseButton.setAttribute("flag",1);
-			reportResponseButton.innerHTML = "⛔取消举报"
+			reportResponseButton.innerHTML = "⛔取消举报(" + num + ")";
 		}
 		var reportRecord = {
 			"reportorId":userId,
@@ -713,38 +717,59 @@
 			if(likeButton.getAttribute("flag") == 0){
 				//点赞
 				flag = 1;
-				//取消点灭
-				disLikeButton.setAttribute("flag", 0);
-				disLikeButton.innerHTML = "👎点灭"
+				num = likeButton.getAttribute("num");//当前点赞人数
+				num = (Number(num) + 1);//点赞人数+1
+				likeButton.setAttribute("num", num);
 				//设置已赞标志位
 				likeButton.setAttribute("flag", 1);
-				likeButton.innerHTML ="👍取消点赞"
+				likeButton.innerHTML ="👍取消点赞(" + num + ")";
+				//取消点灭
+				num = disLikeButton.getAttribute("num");//当前点赞人数
+				if(disLikeButton.getAttribute("flag") == 1){//当前是点灭状态
+					num = disLikeButton.getAttribute("num");//当前灭人数
+					num = (Number(num) - 1);//点赞人数-1
+					disLikeButton.setAttribute("num", num);
+					disLikeButton.setAttribute("flag", 0);
+					disLikeButton.innerHTML = "👎点灭(" + num + ")"; 
+				}				
 			}else{//取消点赞
+				num = likeButton.getAttribute("num");//当前点赞人数
+				num = (Number(num) - 1);//点赞人数-1
+				likeButton.setAttribute("num", num);
 				flag = 0;
 				//设置点赞标志位为0
 				likeButton.setAttribute("flag",0);
-				likeButton.innerHTML = "👍点赞"
+				likeButton.innerHTML = "👍点赞(" + num + ")";
 			}
 		}else if(type == "disLike"){
 			if(disLikeButton.getAttribute("flag") == 0){
 				//点灭
+				num = disLikeButton.getAttribute("num");//当前点灭人数
+				num = (Number(num) + 1);//点灭人数+1
+				likeButton.setAttribute("num", num);
 				flag = -1;
-				//取消点赞
-				likeButton.setAttribute("flag",0);
-				likeButton.innerHTML = "👍点赞"
 				//设置点灭标志位
 				disLikeButton.setAttribute("flag",1);
-				disLikeButton.innerHTML = "👎取消点灭"
+				disLikeButton.innerHTML = "👎取消点灭(" + num + ")";
+				//取消点赞
+				if(likeButton.getAttribute("flag" == 1)){//当前为点赞状态
+					num = likeButton.getAttribute("num");//当前点赞人数
+					num = (Number(num) - 1);//点赞人数-1
+					likeButton.setAttribute("num", num);
+					likeButton.setAttribute("flag",0);
+					likeButton.innerHTML = "👍点赞(" + num + ")";
+				}
 			}else{
 				//取消点灭
+				num = disLikeButton.getAttribute("num");//当前点灭人数
+				num = (Number(num) - 1);//点灭人数-1
+				likeButton.setAttribute("num", num);
 				flag = 0;
 				//取消点灭标志位
 				disLikeButton.setAttribute("flag",0);
-				disLikeButton.innerHTML = "👎点灭";
+				disLikeButton.innerHTML = "👎点灭(" + num + ")";
 			}
 		}
-
-		console.info("responseId:" + responseId);
 
 		var likeRecode = {
 			"userId":userId,
