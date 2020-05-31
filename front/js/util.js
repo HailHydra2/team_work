@@ -154,7 +154,7 @@ function postQuestion(){
     }
     console.info(question);
     $.ajax({
-        url: "http://localhost:8888/question",
+        url: "http://118.190.90.167:8888/question",
         type: "post", 
         data:JSON.stringify(question),
         beforeSend: function (request) {
@@ -177,7 +177,7 @@ function getBlock(){
     //获取临时板块的元素
     var tempBlock = document.getElementById("tempBlock");
     $.ajax({
-        url: "http://localhost:8888/block",
+        url: "http://118.190.90.167:8888/block",
         type: "get", 
         contentType: 'application/json;charset=utf-8',
         beforeSend: function (request) {
@@ -207,7 +207,7 @@ function getBlock(){
 //获取临时板块实体
 function getBlockModel(){
     $.ajax({
-        url: "http://localhost:8888/block",
+        url: "http://118.190.90.167:8888/block",
         type: "get", 
         contentType: 'application/json;charset=utf-8',
         beforeSend: function (request) {
