@@ -378,8 +378,6 @@ function updatePageButtons(){
     lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
 }
 
-
-
 var userVO;
 //获取当前登录用户
 userVO = localStorage.getExpire("userVO");

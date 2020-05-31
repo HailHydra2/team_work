@@ -9,7 +9,65 @@
 		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="js/util.js"></script>
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
-      	<link rel="shortcut icon" href="pic/favicon.ico">
+		<link rel="shortcut icon" href="pic/favicon.ico">
+		<style>
+			p{
+				font-family: Arial;
+			}
+			h3,ul,li{margin:0;padding:0; list-style:none;}
+			.scrollbox{background-color:white;font-size:13px; width: 340px; margin: 0 auto; overflow: hidden; border: 1px solid #e2e4e7; padding: 10px; }
+			#scrollDiv{width:340px;height:359px; overflow:hidden;}/*这里的高度和超出隐藏是必须的*/
+			#scrollDiv li{height:90px; width:300px; padding:10px 20px;background:url(ico-4.gif) no-repeat 10px 23px; overflow:hidden; vertical-align:bottom; zoom:1; border-bottom:#B7B7B7 dashed 1px;}
+			#scrollDiv li h3{ height:24px; padding-top:4px; padding-bottom:4px;font-size:14px; color:#353535; line-height:24px; width:300px;}
+			#scrollDiv li h3 a{color:#353535; text-decoration:none;}#scrollDiv li h3 a:hover{ color:#F00}
+			#scrollDiv li div{ height:36px; width:300px; color:#416A7F; line-height:18px; overflow:hidden}
+			#scrollDiv li div a{ color:#416A7F; text-decoration:none}
+
+			.scroltit{ height:26px; line-height:26px; padding-bottom:4px; margin-bottom:4px;}
+			.scroltit h3{ width:100px; float:left;}
+			.scroltit .updown{float:right; width:32px; height:22px; margin-left:4px}
+			#but_up{ background:url(pic/up.gif) no-repeat 0 0; text-indent:-9999px}
+			#but_down{ background:url(pic/down.gif) no-repeat 0 0; text-indent:-9999px}
+
+
+			#n{margin:10px auto; width:920px; border:1px solid #e2e4e7;font-size:12px; line-height:30px;}
+			#n a{ padding:0 4px; color:#333}
+
+
+
+
+
+			.infoBlock{
+				border:  1px solid #e2e4e7;
+				padding: 20px;
+				margin: 10px auto;
+				}
+			#responseDiv{
+				margin: auto 1%;
+			}
+			body{
+				background-color: rgb(240, 240, 240);
+			}
+			.infoBlock{
+				background-color: rgb(255, 255, 255);
+			}
+			.text-left{
+				margin-left: 13%;
+			}
+			#questionContent{
+				margin-left: 13%;
+			}
+			.login_btn{
+				margin-left: 15%;
+			}
+		</style>
+		<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
+		<script src="js/jq_scroll.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+				$("#scrollDiv").Scroll({line:1,speed:500,timer:3000,up:"but_up",down:"but_down"});
+		});
+		</script>
    </head>
    <body>
       	<!-- 提问模态框（Modal） -->
@@ -21,10 +79,10 @@
 						</button>
 						<h4 class="modal-title" id="myModalLabel">提问</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" >
 						<div >
 							<div class="row clearfix">
-								<div class="col-md-12 column">
+								<div class="col-md-12 column" >
 									<div class="alert alert-dismissable alert-info">
 					 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 											<h4>提问须知</h4>
@@ -40,13 +98,13 @@
 						<div class="form-group">
 							<label for="inputQue" class="col-sm-2 control-label">问题</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="inputQue" />
+								<input type="text" class="form-control" id="inputQue"  maxlength="200"/>
 							</div>
 						</div>
 						<div class="form-group">
     						<label for="describeQue" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-9">
-    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%"></textarea>
+    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%" maxlength="2000"></textarea>
 							</div>
 						  </div>
 						  <div class="form-group">
@@ -74,16 +132,16 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-    <div class="container">
-	<div class="row clearfix">
-		<div class="col-md-12 column">
+    <div class="container-fluid" style="padding-right: 0; margin: 0;">
+	<div class="row clearfix" style="background-color: white;">
+		<div class="col-md-12 column" >
 			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 				<div class="navbar-header">
 					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#"><img src="pic/icon.png" height="40" width="40" vsapce="50" style="float:left"/></a>
 				</div>
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav" >
 						<li class="dropdown">
 							 <a href="index.html">首页</a>
 						</li>
@@ -118,24 +176,25 @@
 				
 
 			</nav>
+			
 			<div class="page-header" style="top:130">
 				<br/>
-				<h1>
+				<h1 style="margin-left: 8%;">
 					问题详情 <small><span class="label label-default" id="kind"></span></small>	
 				</h1>
 			</div>
 		</div>
 	</div>
 	
+	
 
-
-	<div class="container">
-		<div class="row clearfix">
+	<div class="container-fluid" style="padding-left: 0;padding-right: 0;">
+		<div class="row clearfix" style="background-color: white;border-bottom:1px solid #e2e4e7;">
 			<div class="col-md-8 column">
 				<h3 class="text-left" id="questionTitle"></h3>
 				<p id="questionContent"></p>
 
-				<div class="col-md-12 column" >
+				<div class="col-md-12 column" style="margin-left: 10%;">
 					<div id="login_btn" class="login_log" style="display: inline;">
 						<br/>
 						<button type="button" class="btn btn-sm btn-primary" id="attentionQuestion" onclick="attentionQuestion();"></button>
@@ -154,7 +213,7 @@
 					<p><strong>创建时间</strong></p>
 					<p id="questionCreateTime" style="display: inline-flex;"></p>
 			   </div>
-			   <div class="col-md-6 column">
+			   <div class="col-md-6 column" >
 				<p><strong>回复数</strong></p>
 				<p id="responseNum" style="display: inline-flex;"></p>
 			   </div>
@@ -220,6 +279,9 @@
 		<hr/>
 			
 		<!--页面主要内容容器-->
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-8 column">
 		<div id="responseDiv">
 			<!--问题列表容器-->
 			<div id="responseList">
@@ -230,6 +292,27 @@
 			</ul>
 			<p id = "divEnd"></p>
 		</div>
+	</div>
+
+	<div class="col-md-4 column">
+		<h4>&nbsp;&nbsp;相关问题</h4>
+		<div class="scrollbox">
+			<div id="scrollDiv">
+				<ul>
+					<li><h3><a href="#" class="linktit">移动娱乐业务突飞</a></h3> <div>为了探索推进公车改革后，新能源汽车分时租赁项目试点工作，并成立了试点工作小组... </div></li>
+					<li><h3><a href="#" class="linktit">不停转动向上滚动可控制向上向下滚动特效</a></h3> <div>DIV CSS JS自动不断向上一个一个滚动可控制向上向下滚动特效... </div></li>
+					<li><h3><a href="#" class="linktit">全国涂料总产量呈现直线下滑态势</a></h3> <div>我国涂料工业将面临涂料消费税征收全面铺开，环保压力持续增加，2015年的形势不容乐观... </div></li>
+					<li><h3><a href="#" class="linktit">镂空渔网超吸睛</a></h3> <div>镂空罩衫，短短的版型穿起来显高又俏皮，内搭长款连衣裙，非常大方哦... </div></li>
+					<li><h3><a href="#" class="linktit">主题创业街亮相</a></h3> <div>目前已有包括咖啡厅、酒吧、餐厅、瑜伽室在内的8家商铺入驻该火车... </div></li>
+				</ul>
+			</div>
+			<div class="scroltit"><div class="updown" id="but_down">向上</div><div class="updown" id="but_up">向下</div></div>
+		</div>
+
+
+	</div>
+</div>
+
 
 		<!-- 内容写在这里！！！ -->
 
@@ -374,6 +457,9 @@
 		var reportQuestionButton = document.getElementById("reportQuestion");
 		var kindText = document.getElementById("kind");
 		kindText.innerHTML = questionVO.kind;
+		//设置问题作者id
+		attentionQuestionButton.setAttribute("authorId", questionVO.question.authorId);
+		reportQuestionButton.setAttribute("authorId", questionVO.question.authorId);
 		if(questionVO.doesAttention == true){
 			//已关注
 			attentionQuestionButton.innerHTML = "取消关注";
@@ -413,6 +499,7 @@
         for(var i = 0; i < list.length; i++){
             //创建存放单个回复的div
 			var responseBlock = document.createElement("div");
+			responseBlock.className = "infoBlock";
 			responseList.appendChild(responseBlock);
 			//回复内容div
 			var responseBox = document.createElement("div");
@@ -434,6 +521,7 @@
 			var likeButton = document.createElement("button");
 			likeButton.className = "btn btn-info btn-xs";
 			likeButton.id = "like" + i;
+			likeButton.setAttribute("authorId", list[i].response.authorId);
 			if(list[i].like == 1){
 				//已赞
 				likeButton.innerHTML = "👍取消点赞";
@@ -443,18 +531,16 @@
 				likeButton.innerHTML = "👍点赞";
 				likeButton.setAttribute("flag",0);
 			}
+			likeButton.setAttribute("num", list[i].response.likeNum);//该条回复的点赞数
+			likeButton.innerHTML += ("(" + list[i].response.likeNum + ")")
 			buttonBox.appendChild(likeButton);
 			var responseId = list[i].response.id;
-			console.info("likeResponse("  + responseId + ", "+ i + ", 'like');");
 			likeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'like');")
-			// likeButton.onclick =function(list){
-			// 	console.info(list[i].content);
-			// 	likeResponse(list[i].response.id, i, "like");
-			// }	 
 			//创建点灭按钮
 			var disLikeButton = document.createElement("button");
 			disLikeButton.id = "disLike" + i;
 			disLikeButton.className = "btn btn-info btn-xs";
+			disLikeButton.setAttribute("authorId",list[i].response.authorId);
 			if(list[i].like == -1){
 				//有点灭记录
 				disLikeButton.innerHTML = "👎取消点灭";
@@ -464,14 +550,14 @@
 				disLikeButton.innerHTML = "👎点灭";
 				disLikeButton.setAttribute("flag",0)
 			}
+			disLikeButton.setAttribute("num", list[i].response.dislikeNum);//该条回复的点灭数
+			disLikeButton.innerHTML += ("(" + list[i].response.dislikeNum + ")");
 			buttonBox.appendChild(disLikeButton);
 			disLikeButton.setAttribute("onclick","likeResponse("  + responseId + ", "+ i + ", 'disLike');")
-			// disLikeButton.onclick = function(){
-			// 	likeResponse(list[i].response.id, i, "disLike");
-			// }
 			//创建投诉按钮
 			var reportButton = document.createElement("button");
 			reportButton.className = "btn btn-danger btn-xs";
+			reportButton.setAttribute("authorId", list[i].response.authorId);
 			if(list[i].doesReported == true){
 				//投诉过
 				reportButton.innerHTML = "⛔取消举报";
@@ -481,6 +567,8 @@
 				reportButton.innerHTML = "⛔举报";
 				reportButton.setAttribute("flag",0);
 			}
+			reportButton.setAttribute("num", list[i].response.reportNum);//该条回复的举报数
+			reportButton.innerHTML += ("(" + list[i].response.reportNum + ")");
 			reportButton.id = "reportResponse" + i;
 			reportButton.setAttribute("onclick","reportResponse("  + responseId + ", "+ i + ");")
 			buttonBox.appendChild(reportButton);
@@ -527,6 +615,8 @@
 					document.getElementById("cresponseContent").value = "";
 					//关闭评论输入框
 					$(closeButton).click();
+					//更新用户数据（回复数+1）
+					updateUser(data.data)
 					//刷新页面
 					location.reload();
 				}else if(data.code == 408){
@@ -592,6 +682,10 @@
 		var reportQuestionButton = document.getElementById("reportQuestion");
 		//1-投诉  0-取消投诉
 		var flag;
+		if(reportQuestionButton.getAttribute("authorId") == userId){
+			alert("抱歉，不能投诉自己的问题");
+			return;
+		}
 		if(reportQuestionButton.getAttribute("flag") == 1){
 			//取消投诉
 			flag = 0;
@@ -635,16 +729,26 @@
 		var reportResponseButton = document.getElementById("reportResponse" + i);
 		//1-投诉  0-取消投诉
 		var flag;
+		if(reportResponseButton.getAttribute("authorId") == userId){
+			alert("抱歉，不能举报自己的回复");
+			return;
+		}
 		if(reportResponseButton.getAttribute("flag") == 1){
 			//取消投诉
 			flag = 0;
+			num = reportResponseButton.getAttribute("num");//当前的被举报人数
+			num = (Number(num) - 1);
+			reportResponseButton.setAttribute("num", num);
 			reportResponseButton.setAttribute("flag", 0);
-			reportResponseButton.innerHTML = "⛔举报";
+			reportResponseButton.innerHTML = "⛔举报(" + num + ")";
 		}else{
 			//投诉
 			var flag = 1;
+			num = reportResponseButton.getAttribute("num");//当前的被举报人数
+			num = (Number(num) + 1);
+			reportResponseButton.setAttribute("num", num);
 			reportResponseButton.setAttribute("flag",1);
-			reportResponseButton.innerHTML = "⛔取消举报"
+			reportResponseButton.innerHTML = "⛔取消举报(" + num + ")";
 		}
 		var reportRecord = {
 			"reportorId":userId,
@@ -674,48 +778,70 @@
 
 	//点赞、点灭回复(responseId:回复id, flag:)
 	function likeResponse(responseId, i, type){
-		// alert("haha");
 		var userId = userVO.user.id;
 		var likeButton = document.getElementById("like" + i);
 		var disLikeButton = document.getElementById("disLike" + i);
-
+		if(likeButton.getAttribute("authorId") == userId){
+			alert("抱歉不能点赞/点灭自己的评论");
+			return;
+		}
 		if(type == "like"){
 			console.info("sttribute:" + likeButton.getAttribute("flag"));
 			if(likeButton.getAttribute("flag") == 0){
 				//点赞
 				flag = 1;
-				//取消点灭
-				disLikeButton.setAttribute("flag", 0);
-				disLikeButton.innerHTML = "👎点灭"
+				num = likeButton.getAttribute("num");//当前点赞人数
+				num = (Number(num) + 1);//点赞人数+1
+				likeButton.setAttribute("num", num);
 				//设置已赞标志位
 				likeButton.setAttribute("flag", 1);
-				likeButton.innerHTML ="👍取消点赞"
+				likeButton.innerHTML ="👍取消点赞(" + num + ")";
+				//取消点灭
+				if(disLikeButton.getAttribute("flag") == 1){//当前是点灭状态
+					num = disLikeButton.getAttribute("num");//当前灭人数
+					num = (Number(num) - 1);//点赞人数-1
+					disLikeButton.setAttribute("num", num);
+					disLikeButton.setAttribute("flag", 0);
+					disLikeButton.innerHTML = "👎点灭(" + num + ")"; 
+				}				
 			}else{//取消点赞
+				num = likeButton.getAttribute("num");//当前点赞人数
+				num = (Number(num) - 1);//点赞人数-1
+				likeButton.setAttribute("num", num);
 				flag = 0;
 				//设置点赞标志位为0
 				likeButton.setAttribute("flag",0);
-				likeButton.innerHTML = "👍点赞"
+				likeButton.innerHTML = "👍点赞(" + num + ")";
 			}
 		}else if(type == "disLike"){
 			if(disLikeButton.getAttribute("flag") == 0){
 				//点灭
+				num = disLikeButton.getAttribute("num");//当前点灭人数
+				num = (Number(num) + 1);//点灭人数+1
+				disLikeButton.setAttribute("num", num);
 				flag = -1;
-				//取消点赞
-				likeButton.setAttribute("flag",0);
-				likeButton.innerHTML = "👍点赞"
 				//设置点灭标志位
 				disLikeButton.setAttribute("flag",1);
-				disLikeButton.innerHTML = "👎取消点灭"
+				disLikeButton.innerHTML = "👎取消点灭(" + num + ")";
+				//取消点赞
+				if(likeButton.getAttribute("flag") == 1){//当前为点赞状态
+					num = likeButton.getAttribute("num");//当前点赞人数
+					num = (Number(num) - 1);//点赞人数-1
+					likeButton.setAttribute("num", num);
+					likeButton.setAttribute("flag",0);
+					likeButton.innerHTML = "👍点赞(" + num + ")";
+				}
 			}else{
 				//取消点灭
+				num = disLikeButton.getAttribute("num");//当前点灭人数
+				num = (Number(num) - 1);//点灭人数-1
+				likeButton.setAttribute("num", num);
 				flag = 0;
 				//取消点灭标志位
 				disLikeButton.setAttribute("flag",0);
-				disLikeButton.innerHTML = "👎点灭";
+				disLikeButton.innerHTML = "👎点灭(" + num + ")";
 			}
 		}
-
-		console.info("responseId:" + responseId);
 
 		var likeRecode = {
 			"userId":userId,

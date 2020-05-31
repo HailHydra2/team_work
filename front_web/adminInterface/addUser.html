@@ -143,14 +143,14 @@
 
 
                 <ul class="nav nav-list">
-                    <li class="active">
+                    <li>
                         <a href="index.html">
                             <i class="icon-dashboard"></i>
                             <span class="menu-text"> 主页 </span>
                         </a>
                     </li>
 
-                    <li class="active open">
+                    <li>
                         <a href="#" class="dropdown-toggle">
                             <i class="icon-list"></i>
                             <span class="menu-text"> 举报信息管理 </span>
@@ -193,7 +193,7 @@
                                 </a>
                             </li>
 
-                            <li>
+                            <li class="active">
                                 <a href="addUser.html">
                                     <i class="icon-double-angle-right"></i>
                                     新增用户
@@ -261,7 +261,11 @@
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" id="account" placeholder="输入账号" class="col-xs-10 col-sm-5" />
+                                        <input type="text" id="account" placeholder="输入账号（9位字母与数字任意组合）"
+                                            class="col-xs-10 col-sm-5" onkeyup="value=value.replace(/[\W]/g,'') "
+                                            onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
+                                            oninput="if(value.length>9) value=value.slice(0,9)" />
+                                            <span id="accountTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -289,6 +293,7 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="name" placeholder="输入姓名" class="col-xs-10 col-sm-5" />
+                                        <span id="nameTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -300,7 +305,10 @@
                                         身份证：</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" id="idCard" placeholder="输入身份证" class="col-xs-10 col-sm-5" />
+                                        <input type="text" id="idCard" placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
+                                            class="col-xs-10 col-sm-5" oninput="value= value.replace(/[^\d|xX]/g,'')"
+                                            label="身份证号" maxlength="18" />
+                                            <span id="idCardTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -322,8 +330,8 @@
                                         </small>
                                     </h1>
                                 </div><!-- /.page-header -->
-                            <div class="col-sm-9">
-                                
+                                <div class="col-sm-9">
+
 
                                     <div class="space-4"></div>
                                     <div class="col-xs-12 col-sm-6 widget-container-span">
@@ -357,76 +365,77 @@
                                     <div class="space-30"></div>
                                     <label for="fileinp" class="col-sm-3 control-label no-padding-right">
 
-                                        <input class="btn btn-info" type="button" id="btn" value="点我上传" onclick="$('#fileUploader').click();"> <span
-                                            id="text">请上传EXCEL文档</span>
+                                        <input class="btn btn-info" type="button" id="btn" value="点我上传"
+                                            onclick="$('#fileUploader').click();"> <span id="text">请上传EXCEL文档</span>
 
-                                        <input type="file" id="fileUploader" style="display:none" name="fileUploader" accept=".xls, .xlsx" />
+                                        <input type="file" id="fileUploader" style="display:none" name="fileUploader"
+                                            accept=".xls, .xlsx" />
                                     </label>
                                 </div>
-                                </div>
                             </div>
-                            <!-- PAGE CONTENT ENDS -->
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.page-content -->
-
-
-
-
-            </div><!-- /.main-content -->
-
-            <div class="ace-settings-container" id="ace-settings-container">
-                <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
-                    <i class="icon-cog bigger-150"></i>
-                </div>
-
-                <div class="ace-settings-box" id="ace-settings-box">
-                    <div>
-                        <div class="pull-left">
-                            <select id="skin-colorpicker" class="hide">
-                                <option data-skin="default" value="#438EB9">#438EB9</option>
-                                <option data-skin="skin-1" value="#222A2D">#222A2D</option>
-                                <option data-skin="skin-2" value="#C6487E">#C6487E</option>
-                                <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
-                            </select>
                         </div>
-                        <span>&nbsp; Choose Skin</span>
-                    </div>
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
 
-                    <div>
-                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
-                        <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
-                    </div>
 
-                    <div>
-                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
-                        <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
-                    </div>
 
-                    <div>
-                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
-                        <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
-                    </div>
 
-                    <div>
-                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
-                        <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
-                    </div>
+        </div><!-- /.main-content -->
 
-                    <div>
-                        <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
-                        <label class="lbl" for="ace-settings-add-container">
-                            Inside
-                            <b>.container</b>
-                        </label>
+        <div class="ace-settings-container" id="ace-settings-container">
+            <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                <i class="icon-cog bigger-150"></i>
+            </div>
+
+            <div class="ace-settings-box" id="ace-settings-box">
+                <div>
+                    <div class="pull-left">
+                        <select id="skin-colorpicker" class="hide">
+                            <option data-skin="default" value="#438EB9">#438EB9</option>
+                            <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                            <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                            <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                        </select>
                     </div>
+                    <span>&nbsp; Choose Skin</span>
                 </div>
-            </div><!-- /#ace-settings-container -->
-        </div><!-- /.main-container-inner -->
 
-        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-            <i class="icon-double-angle-up icon-only bigger-110"></i>
-        </a>
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                    <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                    <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                    <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                    <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                    <label class="lbl" for="ace-settings-add-container">
+                        Inside
+                        <b>.container</b>
+                    </label>
+                </div>
+            </div>
+        </div><!-- /#ace-settings-container -->
+    </div><!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
     </div><!-- /.main-container -->
 
     <!-- basic scripts -->
@@ -469,6 +478,7 @@
     <script src="assets/js/ace.min.js"></script>
 
     <script src="../js/util.js"></script>
+    <script src="assets/js/biz/isValidID.js"></script>
     <script>
         //账号(学号输入框)
         var accountTextBox = document.getElementById("account");
@@ -487,7 +497,78 @@
             }
             //显示用户姓名
             document.getElementById("userName").innerHTML = userVO.user.name;
+
+            var error = false;
+
+
+            $("#account").blur(function () {
+                var account = $("#account").val();
+                if (account.length<9) {
+                    showError('account', '账号位数不能小于9位！');
+                    error = true;
+                }
+                else {
+                    $("#account").css({ "border-color": "green" });
+                    $("#accountTip").css({ "display": "none" });
+                }
+            });
+
+
+            $("#name").blur(function () {
+                var account = $("#name").val();
+                if (account.length==0) {
+                    showError('name', '姓名非空！');
+                    error = true;
+                }
+                else {
+                    $("#name").css({ "border-color": "green" });
+                    $("#nameTip").css({ "display": "none" });
+                }
+            });
+
+            
+            $("#account").blur(function () {
+                var account = $("#account").val();
+                if (account.length<9) {
+                    showError('account', '账号位数不能小于9位！');
+                    error = true;
+                }
+                else {
+                    $("#account").css({ "border-color": "green" });
+                    $("#accountTip").css({ "display": "none" });
+                }
+            });
+
+
+
+
+            
+        $("#idCard").blur(function () {
+                var account = $("#idCard").val();
+                if (account.length<18) {
+                    showError('idCard', '身份证号位数不能小于18位！');
+                    error = true;
+                }
+                else if( IdCardValidate(account)==false){
+					showError('idCard', '身份证号码非法！');
+					error = true;
+				}
+                else {
+                    $("#idCard").css({ "border-color": "green" });
+                    $("#idCardTip").css({ "display": "none" });
+                }
+            });
         });
+
+
+       
+
+        function showError(formSpan, errorText) {
+				$("#" + formSpan).css({"border-color":"red"});
+				$("#" + formSpan + "Tip").empty();
+				$("#" + formSpan + "Tip").append(errorText);;
+				$("#" + formSpan + "Tip").css({"display":"inline"});
+			}
 
         //新增用户
         function addAUser() {
@@ -515,21 +596,21 @@
                 },
                 data: JSON.stringify(user),
                 success: function (data) {
-                    if(data.code == 200){//添加成功
+                    if (data.code == 200) {//添加成功
                         alert("新增成功");
                         location.reload();
-                    }else{//添加失败
+                    } else {//添加失败
                         alert(data.message);
                     }
                 },
-                error:function(){
+                error: function () {
                     alert("服务器异常，请稍后再试");
                 }
             });
         }
 
         //读取批量增加用户文件
-        $("#fileUploader").change(function readFile(evt){
+        $("#fileUploader").change(function readFile(evt) {
             var selectedFile = evt.target.files[0];
             var reader = new FileReader();
             reader.onload = function (event) {
@@ -541,7 +622,7 @@
                 workbook.SheetNames.forEach(function (sheetName) {
                     var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     if (XL_row_object.length > 0) {
-                        if(isLegal(XL_row_object) == true){//检验表格合法性
+                        if (isLegal(XL_row_object) == true) {//检验表格合法性
                             encryption(XL_row_object);//对数据加密            
                             addUsers(XL_row_object);//添加用户
                         }
@@ -556,13 +637,13 @@
         });
 
         //判断表格是否符合要求
-        function isLegal(list){
+        function isLegal(list) {
             $("#fileUploader").val("");
             var info = document.getElementById("addInfo");
             var infoDiv = document.getElementById("infoDiv");
             infoDiv.removeChild(info);
             info = document.createElement("div");
-            info.className="alert alert-info";
+            info.className = "alert alert-info";
             info.id = "addInfo";
             infoDiv.appendChild(info);
             var headerName = new Array();
@@ -570,10 +651,10 @@
             headerName[1] = "name";
             headerName[2] = "idCard";
             headerName[3] = "identity";
-            for(var i = 0; i < headerName.length; i++){
-                if(list[0][headerName[i]] == null){
+            for (var i = 0; i < headerName.length; i++) {
+                if (list[0][headerName[i]] == null) {
                     var p = document.createElement("p");
-                    p.innerHTML = "上传失败，文件表头或第一行数据不包含'"+ headerName[i] +"'列";
+                    p.innerHTML = "上传失败，文件表头或第一行数据不包含'" + headerName[i] + "'列";
                     info.appendChild(p);
                     return false;
                 }
@@ -582,8 +663,8 @@
         }
 
         //对列表用户敏感信息进行加密
-        function encryption(list){
-            for(var i = 0; i < list.length; i++){
+        function encryption(list) {
+            for (var i = 0; i < list.length; i++) {
                 var idCard = "" + list[i]["idCard"];
                 console.info(idCard);
                 list[i]["password"] = window.btoa(idCard.slice(-3));
@@ -592,24 +673,24 @@
         }
 
         //批量增加用户
-        function addUsers(list){
+        function addUsers(list) {
             var info = document.getElementById("addInfo");
             $.ajax({
                 url: "http://118.190.90.167:8888/userList",
-                type: "post", 
+                type: "post",
                 contentType: 'application/json;charset=utf-8',
                 beforeSend: function (request) {
                     request.setRequestHeader("token", userVO.token);
                 },
-                data:JSON.stringify(list),
+                data: JSON.stringify(list),
                 success: function (data) {
                     p = document.createElement("p");
                     p.innerHTML = data.message;
                     info.appendChild(p);
-                    if(data.code == 416){//部分用户添加失败
+                    if (data.code == 416) {//部分用户添加失败
                         list = data.data;
                         list = Array.prototype.slice.call(list);
-                        for(var i = 0; i < list.length; i++){
+                        for (var i = 0; i < list.length; i++) {
                             var p = document.createElement("p");
                             p.innerHTML = list[i];
                             info.appendChild(p);
@@ -618,7 +699,7 @@
                 }
             });
         }
-	</script>
+    </script>
 
 </body>
 
