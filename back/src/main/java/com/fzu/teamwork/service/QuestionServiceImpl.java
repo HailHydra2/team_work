@@ -218,6 +218,7 @@ public class QuestionServiceImpl implements QuestionService{
         int contentId;
         //删除回复
         ResponseExample example = new ResponseExample();//创建删除回复条件
+        example.createCriteria().andQuestionIdEqualTo(questionId);
         List<Response> responseList = responseDao.selectByExample(example);//问题包含的回复列表
         for(Response response :responseList){//删除回复在内容表的记录
             contentId = response.getContentId();

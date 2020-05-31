@@ -80,14 +80,14 @@ public class ResponseServiceImpl implements ResponseService{
     }
 
     //获取回复列表（投诉列表）
-    @Override
-    public List<Response> getResponsePageBeReported(){
-        //创建获取回复列表的策略对象
-        createResponseStrategy(2);
-        //获取对应的回复列表
-        List<Response> responses = responseStrategy.getResponseList();
-        return responses;
-    }
+//    @Override
+//    public List<Response> getResponsePageBeReported(){
+//        //创建获取回复列表的策略对象
+//        createResponseStrategy(2);
+//        //获取对应的回复列表
+//        List<Response> responses = responseStrategy.getResponseList();
+//        return responses;
+//    }
 
 
     //将Response对象转换为ResponseVO对象
