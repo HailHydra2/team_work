@@ -12,9 +12,9 @@ public class Reward implements Serializable {
 
     private Integer userId;
 
-    private String type;
+    private String type = "";
 
-    private Double rewardNum;
+    private Double rewardNum = 0.0;
 
     private Date applyTime;
 

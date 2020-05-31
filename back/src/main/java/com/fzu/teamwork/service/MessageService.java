@@ -9,7 +9,7 @@ public interface MessageService {
     public MessagePage getMessagePageByUid(int uid, MessagePage page);
 
     //删除某个用户的所有消息(返回删除消息条数)
-    public int deleteUserMessage(int uid);
+//    public int deleteUserMessage(int uid);
 
     //根据消息对实体对象的数据进行更新
     public void updateInfoByMessage(InternalMessage message);

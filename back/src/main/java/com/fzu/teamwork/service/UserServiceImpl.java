@@ -59,7 +59,11 @@ public class UserServiceImpl implements UserService{
     //删除用户
     @Override
     public boolean deleteUsers(int id) {
-        return userDao.deleteByPrimaryKey(id) == 1;
+        int accountDataDaoId = userDao.selectByPrimaryKey(id).getAccountDataId();
+        if(userDao.deleteByPrimaryKey(id) == 1){
+            return accountDataDao.deleteByPrimaryKey(accountDataDaoId) == 1;
+        }
+        return false;
     }
 
     //批量删除用户

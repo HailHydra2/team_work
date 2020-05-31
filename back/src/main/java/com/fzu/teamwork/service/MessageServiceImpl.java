@@ -73,8 +73,6 @@ public class MessageServiceImpl implements MessageService{
             operateStrategy = new MessageDelQStrategy(message,questionService,userService);
         }else if(type == 9) {//创建问题
             operateStrategy = new MessageCQStrategy(message, userService, questionService);
-        }else{
-            log.info("MessageService 策略对象type错误");
         }
     }
 
@@ -131,14 +129,14 @@ public class MessageServiceImpl implements MessageService{
     }
 
     //删除某个用户的所有消息(返回删除消息条数)
-    @Override
-    public int deleteUserMessage(int uid){
-        MessageExample example = new MessageExample();
-        example.createCriteria().andObjectIdEqualTo(uid);
-        //删除object_id为uid(被操作者为udi)的消息，并返回删除条数
-        int num = messageDao.deleteByExample(example);
-        return num;
-    }
+//    @Override
+//    public int deleteUserMessage(int uid){
+//        MessageExample example = new MessageExample();
+//        example.createCriteria().andObjectIdEqualTo(uid);
+//        //删除object_id为uid(被操作者为udi)的消息，并返回删除条数
+//        int num = messageDao.deleteByExample(example);
+//        return num;
+//    }
 
     //根据消息对实体对象的数据进行更新
     @Override
@@ -171,8 +169,6 @@ public class MessageServiceImpl implements MessageService{
         }else if(internalMessage.getWay().equals(MessageWay.CREATE_QUESTION)){
             //创建问题
             createMessageOperateStrategy(9, internalMessage);
-        }else{
-            log.info("MessageService messageWay 错误");
         }
 
         //根据消息对实体对象的数据进行处理更新,并获取要保存的消息

@@ -36,11 +36,11 @@ public class MessageController {
 
     //*******************文档没写的接口******************
     //删除某个用户所有的消息
-    @LoginToken//需要登录
-    @UserLimit//普通用户权限
-    @DeleteMapping("/testUserMessage/{uid}")
-    public @ResponseBody AjaxResponse deleteUserMessage(@PathVariable int uid){
-        int num = messageService.deleteUserMessage(uid);
-        return AjaxResponse.success("您共删除"+ num +"条消息记录");
-    }
+//    @LoginToken//需要登录
+//    @UserLimit//普通用户权限
+//    @DeleteMapping("/testUserMessage/{uid}")
+//    public @ResponseBody AjaxResponse deleteUserMessage(@PathVariable int uid){
+//        int num = messageService.deleteUserMessage(uid);
+//        return AjaxResponse.success("您共删除"+ num +"条消息记录");
+//    }
 }

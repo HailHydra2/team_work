@@ -36,7 +36,7 @@ public class LoginController {
     @PassToken//没有权限限制
     @PostMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user){
-        UserVO userVO=loginService.getUser(user);
+        UserVO userVO=loginService.login(user);
         System.out.println("userVo:" + userVO.getUser().getMark());
         if(userVO.getUser().getMark()==0) {
             //账号不存在

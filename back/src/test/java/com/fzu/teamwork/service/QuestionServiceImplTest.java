@@ -69,7 +69,7 @@ class QuestionServiceImplTest{
     @BeforeEach
     public void createTestUser(){
         user = new User();
-        user.setAccount("221701422");
+        user.setAccount("221701622");
         user.setIdentity(UserIdentity.student);
         user.setName("testWSH");
         user.setPassword(Encryptor.encrypt("873"));

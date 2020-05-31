@@ -7,19 +7,23 @@ import com.fzu.teamwork.util.Encryptor;
 import com.fzu.teamwork.util.UserIdentity;
 import com.fzu.teamwork.view.QuestionVO;
 import com.fzu.teamwork.view.ResponseVO;
-import com.fzu.teamwork.view.UserVO;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ReportServiceImplTest extends LCH_testFather{
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@WebAppConfiguration
+class ReportServiceImplTest {
 
     @Autowired
     private UserService userService;
