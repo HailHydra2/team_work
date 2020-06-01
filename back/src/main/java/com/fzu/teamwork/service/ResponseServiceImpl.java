@@ -215,11 +215,9 @@ public class ResponseServiceImpl implements ResponseService{
 
         List<Likes> likesList = likesDao.selectByExample(example1);
 
-        if(likesList.size() == 0){
-            //没点赞也没点灭
+        if(likesList.size() == 0){//没点赞也没点灭
             responseVO.setLike(0);
-        }else{
-            //有过点赞记录
+        }else{//有过点赞记录
             responseVO.setLike(likesList.get(0).getFlag());
         }
 

@@ -31,7 +31,7 @@ public class QuestionServiceImpl implements QuestionService{
     private UserService userService;
 
     @Resource
-    private AttentionService attentionService;
+    private ResponseService responseService;
 
     @Resource
     private TitleDao titleDao;
@@ -222,18 +222,15 @@ public class QuestionServiceImpl implements QuestionService{
         example.createCriteria().andQuestionIdEqualTo(questionId);
         List<Response> responseList = responseDao.selectByExample(example);//问题包含的回复列表
         for(Response response :responseList){//删除回复在内容表的记录
-            contentId = response.getContentId();
-            contentDao.deleteByPrimaryKey(contentId);
+            responseService.deleteResponseById(response.getId());
         }
-        responseDao.deleteByExample(example);//删除所有所属回复
 
         //删除问题
         titleId = titleDao.selectTitleByQuestionID(questionId);
         contentId = questionDao.selectByPrimaryKey(questionId).getContentId();
-        titleDao.deleteQuestionTitle(questionId);
-        titleDao.deleteByPrimaryKey(titleId);
-        questionDao.deleteByPrimaryKey(questionId);
-        contentDao.deleteByPrimaryKey(contentId);
+        titleDao.deleteByPrimaryKey(titleId);//删除标题
+        questionDao.deleteByPrimaryKey(questionId);//删除问题
+        contentDao.deleteByPrimaryKey(contentId);//删除问题描述内容
         return true;//删除成功
     }
 

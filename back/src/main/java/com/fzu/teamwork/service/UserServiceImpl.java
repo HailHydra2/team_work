@@ -67,11 +67,11 @@ public class UserServiceImpl implements UserService{
         if(user != null){//存在该用户
             String identify = user.getIdentity();//获取要删除用户身份
             int accountId = user.getAccountDataId();//账户id
-            userDao.deleteByPrimaryKey(id);//删除用户
             questionList =questionDao.selectByExample(questionExample);//获取用户的问题列表
-            for(Question q : questionList){
+            for(Question q : questionList){//删除该用户的所有问题
                 questionService.deleteQuestionById(q.getId());
             }
+            userDao.deleteByPrimaryKey(id);//删除用户
             if(!identify.equals(UserIdentity.admin)){//管理员没有账号不删除
                 accountDataDao.deleteByPrimaryKey(accountId);//删除账号数据
             }
