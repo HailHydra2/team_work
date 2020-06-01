@@ -150,6 +150,18 @@
 							loginFlag = true;//合法
 						}
 					});
+
+					$("#password").blur(function () {
+						var password = $("#password").val();
+						if(password.length == 0){
+							showError('password', '密码不能为空');
+							loginFlag = false;//非法
+						}else {
+							$("#password").css({ "border-color": "green" });
+							$("#passwordTip").css({ "display": "none" });
+							loginFlag = true;//合法
+						}
+					});
 				});
 					
 				function showError(formSpan, errorText) {
@@ -173,7 +185,7 @@
 						return;
 					}
 					if(passwordTemp.length == 0){
-						showError("password","密码不能为空")
+						showError("password","密码不能为空");
 						return;
 					}
 					//
@@ -194,10 +206,10 @@
 								login(data.data);
 							} else if (data.code == 401) {
 								//密码错误
-								alert("密码错误");
+								showError("password","密码错误")
 							} else if (data.code == 402) {
 								//账号不存在
-								alert("账号不存在");
+								showError('username', '账号不存在');
 							} else {
 								alert("服务器错误，请稍后再试");
 							}
