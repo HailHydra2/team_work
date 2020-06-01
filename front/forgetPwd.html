@@ -91,7 +91,7 @@
 			$("#account").blur(function () {
                // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var account = $("#account").val();
-                var testAccount= new RegExp("/^[0-9A-Za-z]{9}$/");
+                var testAccount= new RegExp("^[0-9A-Za-z]{9}$");
                 if (!testAccount.test(account)) {
                     if(account.length>9){
                         showError('account', '账号位数不合法（账号合法位数为9）！');
