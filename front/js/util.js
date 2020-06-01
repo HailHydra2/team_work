@@ -152,7 +152,6 @@ function postQuestion(){
             "anonymous":anonymousFlag
         }
     }
-    console.info(question);
     $.ajax({
         url: "http://localhost:8888/question",
         type: "post", 
@@ -194,7 +193,6 @@ function getBlock(){
                 var href = "search.html?keyWord=" +  block.keyWord;
                 blockLink.setAttribute("href",href);
                 tempBlock.appendChild(blockLink);
-                //console.info(block);
             }else if(data.code == 411){
                 //没有临时板块
                 //隐藏临时板块按钮
