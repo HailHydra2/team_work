@@ -40,9 +40,9 @@ public class UserController {
     @DeleteMapping("/user/{id}")
     public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
         if(userService.deleteUsers(id) == true){//删除成功
-            return AjaxResponse.success();
+            return AjaxResponse.success("成功删除id为" + id + "的用户");
         }else {//删除失败
-            return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT, "id为" + id + "的用户不存在");
+            return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT, "id为" + id + "的用户已被其他管理员删除");
         }
     }
 

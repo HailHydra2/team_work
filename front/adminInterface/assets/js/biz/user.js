@@ -12,6 +12,9 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      success:function(data){
+        alert(data.message);
+      }
     });
   },
   batchDelete(data) {
@@ -90,10 +93,10 @@ jQuery(function ($) {
               var sel_id = $(grid_selector).jqGrid('getGridParam', 'selrow');
               var value = $(grid_selector).jqGrid('getCell', sel_id, 'id');
               // console.log( $(this));
-              alert(value);
+              // alert(value);
               Service.delete(value).then(function (data) {
                 //alert(value);
-                console.log(data);
+                // console.log(data);
                 $(this).jqGrid().trigger('reloadGrid');
               });
               return value;
@@ -278,7 +281,7 @@ jQuery(function ($) {
              value = value.substr(1);
            }*/
           Service.batchDelete(sel_id).then(function (data) {
-            console.log(data);
+            // console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
           });
           // return value;

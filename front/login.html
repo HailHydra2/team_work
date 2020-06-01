@@ -54,34 +54,34 @@
 						<div class="item">
 							<img alt="" src="pic/loginshow/pic1.jpg" />
 							<div class="carousel-caption">
-								<h4>
+								<!-- <h4>
 									密码学笔记分享
 								</h4>
 								<p>
 									这是一篇个人所作的密码学笔记，记录了一些从CSDN以及其他博客上摘录的DES加密算法相关内容，以及一些关于矩阵求逆的小技巧，需要自取......
-								</p>
+								</p> -->
 							</div>
 						</div>
 						<div class="item active">
 							<img alt="" src="pic/loginshow/pic2.jpg" />
 							<div class="carousel-caption">
-								<h4>
+								<!-- <h4>
 									考研择校指南
 								</h4>
 								<p>
 									收集了137所双一流高校以及部分一本行业强校的报录比数据与复习资料
-								</p>
+								</p> -->
 							</div>
 						</div>
 						<div class="item">
 							<img alt="" src="pic/loginshow/pic3.jpg" />
 							<div class="carousel-caption">
-								<h4>
+								<!-- <h4>
 									法硕非法学复习纲要
 								</h4>
 								<p>
 									法学非法的复习纲要，内容很齐全，附带网课视频以及上岸学长学姐的笔记和真题回忆。
-								</p>
+								</p> -->
 							</div>
 						</div>
 					</div> <a class="left carousel-control" href="#carousel-373022" data-slide="prev"><span
@@ -118,7 +118,7 @@
 							</div>
 							<a class='btn btn-default ' href="forgetPwd.html">忘记密码</a>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<input type="checkbox" />记住我</label>
+							<!-- <input type="checkbox" />记住我</label> -->
 						</div>
 					</div>
 				</form>
@@ -135,7 +135,10 @@
 					$("#username").blur(function () {
                // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var username = $("#username").val();
+
                 var testAccount= new RegExp("^[0-9A-Za-z]{9}$");
+
+        
                 if (!testAccount.test(username)) {
                     if(username.length!=9){
                         showError('username', '账号位数不合法（账号合法位数为9）！');
