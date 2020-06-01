@@ -99,9 +99,7 @@
 						<label for="inputEmail3" class="col-sm-4 control-label">账号</label>
 						<div class="col-sm-5">
 							<input class="form-control" id="username" name="username" type="text"
-								placeholder="输入账号（9位字母与数字任意组合）" onkeyup="value=value.replace(/[\W]/g,'') "
-								onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
-								oninput="if(value.length>9) value=value.slice(0,9)" />
+								placeholder="输入账号（9位字母与数字任意组合）"  />
 							<span id="usernameTip" style="display:none;color:red;"></span>
 						</div>
 					</div>
@@ -135,17 +133,28 @@
 					var error = false;
 
 					$("#username").blur(function () {
-						var username = $("#username").val();
-						if (username.length < 9) {
-							showError('username', '账号位数不能少于9位！');
-							error = true;
-						}
-						else {
-							$("#username").css({ "border-color": "green" });
-							$("#usernameTip").css({ "display": "none" });
-						}
-					});
+               // var testAccount = /^[0-9A-Za-z] {9}$/; 
+                var username = $("#username").val();
+                var testAccount= new RegExp("/^[0-9A-Za-z]{9}$/");
+                if (!testAccount.test(username)) {
+                    if(username.length!=9){
+                        showError('username', '账号位数不合法（账号合法位数为9）！');
+                         error = true;
+                    }
+                    else{
+                    showError('username', '账号不合法（账号只能由字母和数字组成）！');
+                    error = true;
+                    }
+                }
+                else {
+                    $("#username").css({ "border-color": "green" });
+                    $("#usernameTip").css({ "display": "none" });
+                }
+            });
+
 				});
+
+					
 				function showError(formSpan, errorText) {
 					$("#" + formSpan).css({ "border-color": "red" });
 					$("#" + formSpan + "Tip").empty();

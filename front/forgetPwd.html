@@ -51,9 +51,7 @@
 						
 					
 							<input type="text" id="account" placeholder="输入账号（9位字母与数字任意组合）"
-								class="form-control" onkeyup="value=value.replace(/[\W]/g,'') "
-								onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
-								oninput="if(value.length>9) value=value.slice(0,9)" />
+								class="form-control" />
 							
 								<span id="accountTip" style="display:none;color:red;"></span>
 						</class>
@@ -63,7 +61,7 @@
 					 <label for="inputEmail3" class="col-sm-4 control-label">身份证号</label>
 					<div class="col-sm-5">
 						<input type="text" id="idCard" placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
-						class="form-control" oninput="value= value.replace(/[^\d|xX]/g,'')"
+						class="form-control" 
 						label="身份证号" maxlength="18" />
 						<span id="idCardTip" style="display:none;color:red;"></span>
 					</div>
@@ -90,17 +88,26 @@
             var error = false;
 
 
-            $("#account").blur(function () {
+			$("#account").blur(function () {
+               // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var account = $("#account").val();
-                if (account.length<9) {
-                    showError('account', '账号位数不能小于9位！');
+                var testAccount= new RegExp("/^[0-9A-Za-z]{9}$/");
+                if (!testAccount.test(account)) {
+                    if(account.length>9){
+                        showError('account', '账号位数不合法（账号合法位数为9）！');
+                         error = true;
+                    }
+                    else{
+                    showError('account', '账号不合法（账号只能由字母和数字组成）！');
                     error = true;
+                    }
                 }
                 else {
                     $("#account").css({ "border-color": "green" });
                     $("#accountTip").css({ "display": "none" });
                 }
             });
+
 
 
             

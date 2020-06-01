@@ -270,7 +270,6 @@
 																	<input type="text" id="idCard"
 																		placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
 																		class="col-xs-10 col-sm-10"
-																		oninput="value= value.replace(/[^\d|xX]/g,'')"
 																		label="身份证号" maxlength="18" />
 																	<br /><br/>
 																	<span id="idCardTip"
@@ -469,11 +468,7 @@
 
 			$("#idCard").blur(function () {
 				var account = $("#idCard").val();
-				if (account.length < 18) {
-					showError('idCard', '身份证号码位数不能小于18位！');
-					error = true;
-				}
-				else if( IdCardValidate(account)==false){
+				 if( IdCardValidate(account)==false){
 					showError('idCard', '身份证号码非法！');
 					error = true;
 				}
