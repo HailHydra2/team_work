@@ -40,39 +40,40 @@
 						</div>
 					</div>
 					<form class="form-horizontal" role="form" target="iframe">
-
+							
 						<div class="form-group">
 							<label for="inputQue" class="col-sm-2 control-label">问题</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="inputQue" maxlength="200"/>
+								<span id="inputQueTip" style="display:none;color:red;"></span>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="describeQue" class="col-sm-2 control-label">描述</label>
+    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-9">
 								<textarea class="form-control" rows="3" id="describeQue"
-									style="max-width: 100%" maxlength="2000"></textarea>
+								 style="max-width: 100%" maxlength="2000"></textarea>
+								 <span id="describeQueTip" style="display:none;color:red;"></span>
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="questionType" class="col-sm-2 control-label">问题类型</label>
+						  </div>
+						  <div class="form-group">
+							<label for="questionType" class="col-sm-2 control-label" >问题类型</label>
 							<div class="col-sm-9">
-								<select class="form-control" id="selectKind">
-									<option>学业问答</option>
-									<option>就业指导</option>
-									<option>学习资源</option>
-									<option>生活相关</option>
-									<option>其他问题</option>
-								</select>
-							</div>
+							<select class="form-control" id="selectKind">
+							  <option>学业问答</option>
+							  <option>就业指导</option>
+							  <option>学习资源</option>
+							  <option>生活相关</option>
+							  <option>其他问题</option>
+							</select>
 						</div>
-						<div style="text-align: center;">
-							<label><input type="checkbox" id="anonymousQuest" /> 匿名提问</label>
+						  </div>
+						  <div style="text-align: center;">
+							<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
 						</div>
 						<div style="text-align:center">
 							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关
-								闭</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue" onclick="resetQuestTextBox();">关 闭</button>
 						</div>
 					</form>
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
@@ -201,7 +202,7 @@
 
 							var newpassAgain = $("#newpassAgain").val();
 							if (newpassAgain != newpass) {
-								showError('newpassAgain', '与输入的新密码不一致');
+								showError('newpassAgain', '两次密码输入不一致');
 								error = true;
 							}
 							else {
@@ -261,8 +262,6 @@
 								<input type="text" id="ID" placeholder="输入身份证号码" class="form-control"
 									 label="身份证号" maxlength="18"  style="width:250px;"/>
 								<span id="IDTip" style="display:none;color:red;"></span>
-
-
 							</div>
 						</div>
 						<div class="form-group">
@@ -309,6 +308,7 @@
 	</div>
 	<script src="assets/js/biz/isValidID.js"></script>
 	<script>
+		var changeFlag;//更改密码标志位，前端判断错误不发送数据至后端
 		//页面加载时启动页面
 		$(document).ready(function (e) {
 			var error = false;
@@ -325,20 +325,22 @@
 			}
 			$("#ID").blur(function () {
 				var account = $("#ID").val();
-				if (IdCardValidate(account) == false) {
-					showError('ID', '身份证号码非法！');
+				if(account.length == 0){
+					showError('ID', '身份证不能为空');
 					error = true;
-				}
-				else {
+					changeFlag = false;
+				}else if (IdCardValidate(account) == false) {
+					showError('ID', '身份证号码非法');
+					error = true;
+					changeFlag = false;
+				}else {
 					$("#ID").css({ "border-color": "green" });
 					$("#IDTip").css({ "display": "none" });
+					changeFlag = true;
 				}
 			});
-	
-
-		getBlock();
-		
-
+			getBlock();
+			questTextBoxErrorInit();
 		});
 
 
@@ -349,15 +351,30 @@
 				$("#" + formSpan + "Tip").css({ "display": "inline" });
 			}
 
-
-
-
-
 			//提交修改密码请求
 			function submitPwdChange() {
+				if(changeFlag == false){//前端判断错误不发送数据至后端
+					return;
+				}
 				var pwd1Temp = $.trim($("#newpass").val());
 				var pwd2Temp = $.trim($("#newpassAgain").val());
 				var idCardTemp = $.trim($("#ID").val());
+
+				if(pwd1Temp.length == 0){
+					showError('newpass', '新密码不能为空');
+					return;
+				}
+
+				if(pwd2Temp.length == 0){
+					showError('newpassAgain', '验证密码不能为空');
+					return;	
+				}
+
+				if(idCardTemp.length == 0){
+					showError('ID', '身份证不能为空');
+					return;
+				}
+
 				var pwd1 = window.btoa(pwd1Temp);
 				var pwd2 = window.btoa(pwd2Temp);
 				var idCard = window.btoa(idCardTemp);
@@ -386,7 +403,7 @@
 							window.location.href = "login.html"
 						} else {
 							//验证失败
-							alert("抱歉，您输入的身份证信息有误，请重新输入");
+							showError('ID', '身份证与账号不匹配');
 						}
 					}
 				});

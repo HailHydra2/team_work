@@ -135,6 +135,17 @@ function postQuestion(){
     var content = $.trim($("#describeQue").val());
     var kindIndex = $('#selectKind').get(0).selectedIndex + 1;
     var anonymousFlag = 0;//是否匿名（默认不匿名）
+
+    if(title.length == 0){
+        showError('inputQue', '标题不能为空');
+        return;
+    }
+
+    if(content.length == 0){
+        showError('describeQue', '描述不能为空');
+        return;
+    }
+
     if(document.getElementById("anonymousQuest").checked){
         anonymousFlag = 1;
     }
@@ -387,6 +398,52 @@ function changeKind(kind){
     page.pageIndex = 1;
     page.sortApproach = "sortByKindAndHeat";
     changeQuestionPage(page, path);
+}
+
+//添加提问输入文本框的报错方法
+function questTextBoxErrorInit(){
+    var error = false;
+    $("#inputQue").blur(function () {
+        var title = $("#inputQue").val();
+        if(title.length == 0){
+            showError('inputQue', '标题不能为空');
+            error = true;
+        }else {
+            $("#inputQue").css({ "border-color": "green" });
+            $("#inputQueTip").css({ "display": "none" });
+        }
+    });  
+
+    $("#describeQue").blur(function () {
+        var title = $("#describeQue").val();
+        if(title.length == 0){
+            showError('describeQue', '描述不能为空');
+            error = true;
+        }else {
+            $("#describeQue").css({ "border-color": "green" });
+            $("#describeQueTip").css({ "display": "none" });
+        }
+    });  
+}
+
+//重置提问输入文本框样式
+function resetQuestTextBox(){
+    $("#inputQue").val("");
+    $("#describeQue").val("");
+    $("#selectKind").find("text='学业问答'").attr("selected",true);
+    $("#anonymousQuest").attr("checked",false);
+    $("#inputQue").css({ "border-color": "" });
+    $("#describeQue").css({ "border-color": "" });
+    $("#inputQueTip").css({ "display": "none" });
+    $("#describeQueTip").css({ "display": "none" });
+}
+
+//输入文本框错误提示信息
+function showError(formSpan, errorText) {
+    $("#" + formSpan).css({"border-color":"red"});
+    $("#" + formSpan + "Tip").empty();
+    $("#" + formSpan + "Tip").append(errorText);;
+    $("#" + formSpan + "Tip").css({"display":"inline"});
 }
 
 var userVO;

@@ -240,7 +240,8 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="blockName" placeholder="输入临时版块名"
-                                            class="col-xs-10 col-sm-5" />
+                                            class="form-control" style="width:400px;"/>
+                                            <span id="blockNameTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -252,7 +253,8 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="keyWord" placeholder="输入关键词"
-                                            class="col-xs-10 col-sm-5" />
+                                        class="form-control" style="width:400px;"/>
+                                        <span id="keyWordTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
                             </form>
@@ -384,6 +386,8 @@
         //页面加载时启动页面
         //获取当前登录用户
         var userVO = localStorage.getExpire("userVO");
+        //新增临时板块标志位
+        var addFlag;
         if(userVO == null){
             //登录过期
             alert("登录过期，请重新登录");
@@ -395,7 +399,41 @@
             //获取临时板块
             getBlockModel();
 
+            var error = false;
+			$("#blockName").blur(function () {
+               // var testAccount = /^[0-9A-Za-z] {9}$/; 
+               var blockName = $("#blockName").val();
+               if(blockName.length == 0){
+                   showError('blockName', '板块名不能为空');
+                    error = true;
+                    addFlag = false;
+               }else {
+                   $("#blockName").css({ "border-color": "green" });
+                   $("#blockNameTip").css({ "display": "none" });
+                   addFlag = true;
+               }
+            });
+            
+            $("#keyWord").blur(function () {
+               var keyWord = $("#keyWord").val();
+               if(keyWord.length == 0){
+                    showError('keyWord', '关键字不能为空');
+                    error = true;
+                    addFlag = false;
+               }else {
+                   $("#keyWord").css({ "border-color": "green" });
+                   $("#keyWordTip").css({ "display": "none" });
+                   addFlag = true;
+               }
+            });  
         });
+
+        function showError(formSpan, errorText) {
+            $("#" + formSpan).css({"border-color":"red"});
+            $("#" + formSpan + "Tip").empty();
+            $("#" + formSpan + "Tip").append(errorText);;
+            $("#" + formSpan + "Tip").css({"display":"inline"});
+        }
         
         function initBlock(){
             if(tempBlock == null){
@@ -423,8 +461,19 @@
         }
 
         function addBlock(){
+            if(addFlag == false){//板块名或关键字为空不发送数据到后端
+                return;
+            }
             var blockName = blockNameTextBox.value;
             var keyWord = blockKeyWordTextBox.value;
+            if(blockName.length == 0){
+                showError('blockName', '板块名不能为空');
+                return;
+            }
+            if(keyWord.length == 0){
+                showError("keyWord", "关键字不能为空");
+                return;
+            }
             var block = {
                 "blockName":blockName,
                 "keyWord":keyWord

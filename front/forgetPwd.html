@@ -84,7 +84,7 @@
 	<script>
 		var resetFlag;//是否重置的标志位（前端判断错误不发送数据给后端）
 		$(document).ready(function (e) {
-            var error = false;
+			var error = false;
 			$("#account").blur(function () {
                // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var account = $("#account").val();
@@ -98,51 +98,38 @@
 						error = true;
 					}
 					resetFlag = false;
-                }
-                else {
+                }else {
                     $("#account").css({ "border-color": "green" });
 					$("#accountTip").css({ "display": "none" });
 					resetFlag = true;
-                }
+				}
+				questTextBoxErrorInit();
             });
-
-
-
             
-        
-
-            
-        $("#idCard").blur(function () {
-                var account = $("#idCard").val();
-                if (account.length<18) {
-                    showError('idCard', '身份证号位数不能小于18位！');
+			$("#idCard").blur(function () {
+				var account = $("#idCard").val();
+				if (account.length<18) {
+					showError('idCard', '身份证号位数不能小于18位！');
 					error = true;
 					resetFlag = false;
-                }else if( IdCardValidate(account)==false){
+				}else if( IdCardValidate(account)==false){
 					showError('idCard', '身份证号码非法！');
 					error = true;
 					resetFlag = false;
 				}else {
-                    $("#idCard").css({ "border-color": "green" });
+					$("#idCard").css({ "border-color": "green" });
 					$("#idCardTip").css({ "display": "none" });
 					resetFlag = true;
-                }
-            });
-        });
+				}
+			});
+		});
 
-
-       
-
-        function showError(formSpan, errorText) {
-			$("#" + formSpan).css({"border-color":"red"});
-			$("#" + formSpan + "Tip").empty();
-			$("#" + formSpan + "Tip").append(errorText);;
-			$("#" + formSpan + "Tip").css({"display":"inline"});
-		}
-
-
-
-
+			function showError(formSpan, errorText) {
+				$("#" + formSpan).css({"border-color":"red"});
+				$("#" + formSpan + "Tip").empty();
+				$("#" + formSpan + "Tip").append(errorText);;
+				$("#" + formSpan + "Tip").css({"display":"inline"});
+			}
 		//重置密码
 		function resetPassword(){
 			var account = document.getElementById("account").value;
