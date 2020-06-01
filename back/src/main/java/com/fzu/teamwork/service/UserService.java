@@ -27,7 +27,7 @@ public interface UserService {
     public List<Integer> deleteUsersAll(List<Integer> idList);
 
     //添加一个用户
-    public int addUser(User user);
+    public int insertUser(User user);
 
     //批量添加用户(返回添加失败用户描述信息)
     public List<String> addUsers(List<User> users);

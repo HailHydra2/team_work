@@ -36,7 +36,7 @@ public class RewardController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/rewards")
-    public @ResponseBody List<RewardVO> testGetRewards(){
+    public @ResponseBody List<RewardVO> getRewards(){
         return rewardService.getRewardList();
     }
 
@@ -44,11 +44,11 @@ public class RewardController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/reward")
-    public @ResponseBody AjaxResponse addReward(@RequestBody Reward reward){
+    public @ResponseBody AjaxResponse insertReward(@RequestBody Reward reward){
         Boolean result = rewardService.insertReward(reward);
         User user = userService.getUserById(reward.getUserId());
         UserVO userVO = userService.convertToUserVo(user);
-        if(result == true){//积分充足
+        if(result){//积分充足
             return AjaxResponse.success(userVO);
         }else{//积分不足
             return AjaxResponse.error(ErrorStatus.SCORE_INSUFFICIENT, "积分不足", userVO);

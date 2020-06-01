@@ -45,7 +45,7 @@ class MessageServiceImplTest {
         user.setName("testWSH");
         user.setPassword(Encryptor.encrypt("873"));
         user.setIdCard(Encryptor.encrypt("360102199003077873"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             userVO = userService.convertToUserVo(user);
         }else{
@@ -59,7 +59,7 @@ class MessageServiceImplTest {
         userService.deleteUsers(user.getId());
     }
 
-    public QuestionVO addQuestion(int i){
+    public QuestionVO insertQuestion(int i){
         QuestionVO questionVO = new QuestionVO();
         Question question = new Question();
         questionVO.setQuestion(question);
@@ -67,7 +67,7 @@ class MessageServiceImplTest {
         questionVO.setContent("content" + i);
         question.setAuthorId(user.getId());
         question.setCreateTime(new Date());
-        questionService.addQuestion(questionVO);
+        questionService.insertQuestion(questionVO);
         return questionVO;
     }
 
@@ -80,7 +80,7 @@ class MessageServiceImplTest {
 
         //循环添加10个问题（创建10条消息记录）
         for(int i = 0; i < 12; i++){
-            addQuestion(i);
+            insertQuestion(i);
         }
 
         messageService.getMessagePageByUid(user.getId(),page);

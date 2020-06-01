@@ -71,7 +71,7 @@ class ResponseServiceImplTest {
         user.setName("testZJW");
         user.setPassword(Encryptor.encrypt("779"));
         user.setIdCard(Encryptor.encrypt("420102200403070779"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             System.out.println("添加成功,用户id为：" + user.getId());
             userVO = userService.convertToUserVo(user);
@@ -86,7 +86,7 @@ class ResponseServiceImplTest {
         question.setAuthorId(user.getId());
         question.setCreateTime(new Date());
         questionVO.setQuestion(question);
-        questionService.addQuestion(questionVO);
+        questionService.insertQuestion(questionVO);
         questionResponseNum = question.getResponseNum();
         //新增用于测试的待点赞回复
         response = new Response();
@@ -239,7 +239,7 @@ class ResponseServiceImplTest {
         reportResponse1.setResponseId(response.getId());
         reportResponse1.setReportorId(user.getId());
         reportResponse1.setFlag(1);
-        reportService.addResponseReport(reportResponse1);
+        reportService.insertResponseReport(reportResponse1);
         //第二条被举报的回复，被举报两次
         Response response1 = new Response();
         ResponseVO responseVO1 = new ResponseVO();
@@ -253,8 +253,8 @@ class ResponseServiceImplTest {
         reportResponse2.setResponseId(response1.getId());
         reportResponse2.setReportorId(user.getId());
         reportResponse2.setFlag(1);
-        reportService.addResponseReport(reportResponse2);
-        reportService.addResponseReport(reportResponse2);
+        reportService.insertResponseReport(reportResponse2);
+        reportService.insertResponseReport(reportResponse2);
         //检验被举报两次的回复是否排在被举报一次的回复的前面,预期第一个回复的举报数是2第二个回复的举报数是1
         Assert.assertEquals((long)reportService.getReportResponse().get(0).getReportNum(),(long)reportService.getReportResponse().get(1).getReportNum() + 1);
     }
@@ -292,7 +292,7 @@ class ResponseServiceImplTest {
         reportResponse1.setResponseId(response1.getId());
         reportResponse1.setReportorId(user.getId());
         reportResponse1.setFlag(1);
-        reportService.addResponseReport(reportResponse1);
+        reportService.insertResponseReport(reportResponse1);
 
         responseVO = responseService.convertToVO(response);
         responseVO1 = responseService.convertToVO(response1);

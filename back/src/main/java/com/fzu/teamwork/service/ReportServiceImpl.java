@@ -39,7 +39,7 @@ public class ReportServiceImpl implements ReportService{
         //创建查询条件
         QuestionExample example = new QuestionExample();
         QuestionExample.Criteria criteria = example.createCriteria();
-        criteria.andReportNumGreaterThanOrEqualTo(0);
+        criteria.andReportNumGreaterThanOrEqualTo(1);
         example.setOrderByClause("report_num desc");
         //返回的问题列表
         List<Question> questionList;
@@ -53,7 +53,7 @@ public class ReportServiceImpl implements ReportService{
         //创建查询条件
         ResponseExample example = new ResponseExample();
         ResponseExample.Criteria criteria = example.createCriteria();
-        criteria.andReportNumGreaterThanOrEqualTo(0);
+        criteria.andReportNumGreaterThanOrEqualTo(1);
         example.setOrderByClause("report_num desc");
         List<Response> responseList = responseDao.selectByExample(example);
         return responseList;
@@ -61,7 +61,7 @@ public class ReportServiceImpl implements ReportService{
 
     //添加对问题的投诉记录（返回值为处理结果）
     @Override
-    public boolean addQuestionReport(ReportQuestion reportQuestion){
+    public boolean insertQuestionReport(ReportQuestion reportQuestion){
         Question question = questionDao.selectByPrimaryKey(reportQuestion.getQuestionId());
         if(question == null){//投诉问题不存在
             return false;
@@ -106,7 +106,7 @@ public class ReportServiceImpl implements ReportService{
 
     //添加对回复的投诉(返回值为处理结果)
     @Override
-    public boolean addResponseReport(ReportResponse reportResponse){
+    public boolean insertResponseReport(ReportResponse reportResponse){
         Response response = responseDao.selectByPrimaryKey(reportResponse.getResponseId());
         if(response == null){//被举报回复不存在
             return false;

@@ -35,7 +35,7 @@ class LoginServiceImplTest {
         user.setName("testWSH");
         user.setPassword(Encryptor.encrypt("873"));
         user.setIdCard(Encryptor.encrypt("360102199003077873"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             userVO = userService.convertToUserVo(user);
         }else{

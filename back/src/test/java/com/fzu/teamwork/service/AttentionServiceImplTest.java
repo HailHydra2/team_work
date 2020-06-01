@@ -60,7 +60,7 @@ class AttentionServiceImplTest {
         user.setName("testZJW");
         user.setPassword(Encryptor.encrypt("672"));
         user.setIdCard(Encryptor.encrypt("110101199603070672"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             System.out.println("添加成功,用户id为：" + user.getId());
             userVO = userService.convertToUserVo(user);
@@ -75,7 +75,7 @@ class AttentionServiceImplTest {
         question.setAuthorId(user.getId());
         question.setCreateTime(new Date());
         questionVO.setQuestion(question);
-        questionService.addQuestion(questionVO);
+        questionService.insertQuestion(questionVO);
         //新增关注记录
         attention = new Attention();
         attention.setUserId(user.getId());

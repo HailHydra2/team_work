@@ -35,8 +35,6 @@ public class ResponseServiceImpl implements ResponseService{
     @Resource
     private UserDao userDao;
 
-    @Resource(name = "contentServiceImpl")
-    private ContentService contentService;
 
     @Resource(name = "messageServiceImpl")
     private MessageService messageService;
@@ -79,17 +77,6 @@ public class ResponseServiceImpl implements ResponseService{
         return page;
     }
 
-    //获取回复列表（投诉列表）
-//    @Override
-//    public List<Response> getResponsePageBeReported(){
-//        //创建获取回复列表的策略对象
-//        createResponseStrategy(2);
-//        //获取对应的回复列表
-//        List<Response> responses = responseStrategy.getResponseList();
-//        return responses;
-//    }
-
-
     //将Response对象转换为ResponseVO对象
     @Override
     public ResponseVO convertToVO(Response response){
@@ -97,7 +84,7 @@ public class ResponseServiceImpl implements ResponseService{
         //设置responseVO对象的response属性
         responseVO.setResponse(response);
         //根据外键contentId获取回复对象所对应的内容
-        String content = contentService.getContentById(response.getContentId());
+        String content = contentDao.selectByPrimaryKey(response.getContentId()).getContent();
         //将内容赋到responseVO的content属性
         responseVO.setContent(content);
         //获取回复人

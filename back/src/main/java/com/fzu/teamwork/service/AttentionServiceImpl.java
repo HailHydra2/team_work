@@ -37,9 +37,8 @@ public class AttentionServiceImpl implements AttentionService{
     public UserVO insertAttention(Attention record){
         Question question =questionDao.selectByPrimaryKey(record.getQuestionId());
         User user = userDao.selectByPrimaryKey(record.getUserId());
-        UserVO userVO = userService.convertToUserVo(user);
         if(question == null){//关注问题不存在
-            return userVO;
+            return userService.convertToUserVo(user);
         }
         //创建关注记录中关注问题id和关注用户id和要插入记录一样的记录
         AttentionExample example = new AttentionExample();
@@ -49,8 +48,7 @@ public class AttentionServiceImpl implements AttentionService{
         List<Attention> attentionList = attentionDao.selectByExample(example);
 
         //判断数据库中是否已经有该记录
-        if(attentionList.size() == 0){
-            //没有
+        if(attentionList.size() == 0){//没有
             attentionDao.insert(record);
         }else{
             Attention attention = attentionList.get(0);
@@ -64,11 +62,9 @@ public class AttentionServiceImpl implements AttentionService{
         //消息操作者设置为关注用户
         message.setOperator_id(record.getUserId());
         //用标记flag代表关注或取消关注
-        if(record.getFlag() == 1){
-            //关注问题
+        if(record.getFlag() == 1){//关注问题
             message.setFlag(1);
-        }else{
-            //取消关注
+        }else{//取消关注
             message.setFlag(-1);
         }
         //消息产生方式是关注问题

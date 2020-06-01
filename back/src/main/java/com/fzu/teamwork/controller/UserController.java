@@ -29,8 +29,7 @@ public class UserController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/users")
-    public List<User> getUser()
-    {
+    public List<User> getUser() {
         return userService.getUsers();
     }
 
@@ -39,10 +38,11 @@ public class UserController {
     @AdminLimit//管理员权限
     @DeleteMapping("/user/{id}")
     public @ResponseBody AjaxResponse deleteUser(@PathVariable int id){
-        if(userService.deleteUsers(id) == true){//删除成功
+        if(userService.deleteUsers(id)){//删除成功
             return AjaxResponse.success("成功删除id为" + id + "的用户");
         }else {//删除失败
-            return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT, "id为" + id + "的用户已被其他管理员删除");
+            return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT,
+                    "id为" + id + "的用户已被其他管理员删除");
         }
     }
 
@@ -50,17 +50,24 @@ public class UserController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @DeleteMapping("/users")
-    public @ResponseBody AjaxResponse deleteUserAll_test(@RequestBody List<Integer> userIdList){
-        userService.deleteUsersAll(userIdList);
-        return AjaxResponse.success();
+    public @ResponseBody AjaxResponse deleteUserAll(@RequestBody List<Integer> userIdList){
+        List<Integer> failedList;//删除失败的id列表
+        failedList = userService.deleteUsersAll(userIdList);
+        String message = "成功删除" + (userIdList.size() - failedList.size()) + "人";
+        if(failedList.size() == 0){
+            return AjaxResponse.success(message);
+        }else{
+            message += ", 失败" + failedList.size() + "人";
+            return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT, message);
+        }
     }
 
     //添加用户
     @PostMapping("/users")
     @LoginToken//需要登录
     @AdminLimit//管理员权限
-    public @ResponseBody AjaxResponse addUser(@RequestBody User user){
-        int code = userService.addUser(user);//添加是否成功标志位（0：成功 其他：对应错误状态码）
+    public @ResponseBody AjaxResponse insertUser(@RequestBody User user){
+        int code = userService.insertUser(user);//添加是否成功标志位（0：成功 其他：对应错误状态码）
         String message = "";//错误描述信息
         if(code == 0){//添加成功
             return AjaxResponse.success();
@@ -87,7 +94,6 @@ public class UserController {
         if(failedList.size() == 0){//全部添加成功
             return AjaxResponse.success("成功添加" +total + "人");
         }else{//部分账户数据不合法
-
             String message = "批量添加" + total + "人，成功" + (total-failedNum) + "人，失败"
                     + failedNum + "人";
             return AjaxResponse.error(ErrorStatus.SOME_USER_ILLEGAL,message,failedList);
@@ -99,12 +105,9 @@ public class UserController {
     @PutMapping("/user")
     public @ResponseBody AjaxResponse updatePassword(@RequestBody User user){
         UserVO userVO = userService.changePassword(user);
-        if(userVO == null){
-            //密保验证没通过（身份证错误）
-            System.out.println("验证错误");
+        if(userVO == null){//密保验证没通过（身份证错误）
             return AjaxResponse.error(ErrorStatus.CHANGE_PWD_FAILED, "身份证验证错误");
         }else{
-            System.out.println("验证正确");
             return AjaxResponse.success(userVO);
         }
     }
@@ -113,9 +116,9 @@ public class UserController {
     @PutMapping("/resetPwd")
     public @ResponseBody AjaxResponse resetPassword(@RequestBody User user){
         int result = userService.resetPassword(user);
-        if(result == -2){//账号不存在
+        if(result == ErrorStatus.ACCOUNT_NOT_EXIT){//账号不存在
             return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT, "账号不存在");
-        }else if(result == -1){//验证信息错误（身份证错误）
+        }else if(result == ErrorStatus.ID_CARD_NOT_MATCH){//验证信息错误（身份证不匹配）
             return AjaxResponse.error(ErrorStatus.CHANGE_PWD_FAILED, "身份证错误");
         }else{//重置成功
             return AjaxResponse.success();

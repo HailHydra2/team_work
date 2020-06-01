@@ -52,7 +52,7 @@ class RewardServiceImplTest {
         user.setPassword(Encryptor.encrypt("779"));
         user.setIdCard(Encryptor.encrypt("420102200403070779"));
 
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             System.out.println("添加成功,用户id为：" + user.getId());
             userVO = userService.convertToUserVo(user);
@@ -74,7 +74,7 @@ class RewardServiceImplTest {
         //申请类别为党员服务时长
         reward=new Reward();
         reward.setUserId(user.getId());
-        reward.setType(RewardType.ServiceTime); //党员服务时长
+        reward.setType(RewardType.SERVICE); //党员服务时长
         reward.setApplyTime(new Date());
         int score;
 
@@ -111,7 +111,7 @@ class RewardServiceImplTest {
         //申请类别为党员服务时长
         reward=new Reward();
         reward.setUserId(user.getId());
-        reward.setType(RewardType.SyntheticTest); //综测
+        reward.setType(RewardType.SYNTHETIC); //综测
         reward.setApplyTime(new Date());
         int score;
 
@@ -214,9 +214,9 @@ class RewardServiceImplTest {
             reward = new Reward();
             reward.setUserId(user.getId());
             if(i%2 ==0){
-                reward.setType(RewardType.SyntheticTest); //综测
+                reward.setType(RewardType.SYNTHETIC); //综测
             }else{
-                reward.setType(RewardType.ServiceTime);//时长
+                reward.setType(RewardType.SERVICE);//时长
             }
             date = new Date(date.getTime() + i*24*60*3600);
             reward.setApplyTime(date);

@@ -1,11 +1,9 @@
 package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.dao.AccountDataDao;
+import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.dao.UserDao;
-import com.fzu.teamwork.model.AccountData;
-import com.fzu.teamwork.model.AccountDataExample;
-import com.fzu.teamwork.model.User;
-import com.fzu.teamwork.model.UserExample;
+import com.fzu.teamwork.model.*;
 import com.fzu.teamwork.util.Encryptor;
 import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.util.IdCard;
@@ -28,9 +26,13 @@ public class UserServiceImpl implements UserService{
     @Resource
     private UserDao userDao;
     @Resource
+    private QuestionDao questionDao;
+    @Resource
     private AccountDataDao accountDataDao;
     @Resource
     private TokenService tokenService;
+    @Resource
+    private QuestionService questionService;
 
 
     //user变成userVO
@@ -38,7 +40,6 @@ public class UserServiceImpl implements UserService{
         UserVO userVO=new UserVO();
         AccountData accountData;
         //获取对应的AccountData
-        //log.info("account_id{}",user.getAccountDataId());
         accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
         String token = tokenService.getToken(user);//获取用户token
         //封装userVO
@@ -59,9 +60,22 @@ public class UserServiceImpl implements UserService{
     //删除用户
     @Override
     public boolean deleteUsers(int id) {
-        int accountDataDaoId = userDao.selectByPrimaryKey(id).getAccountDataId();
-        if(userDao.deleteByPrimaryKey(id) == 1){
-            return accountDataDao.deleteByPrimaryKey(accountDataDaoId) == 1;
+        User user = userDao.selectByPrimaryKey(id);//获取用户
+        List<Question> questionList;//用户的问题
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andAuthorIdEqualTo(id);
+        if(user != null){//存在该用户
+            String identify = user.getIdentity();//获取要删除用户身份
+            int accountId = user.getAccountDataId();//账户id
+            userDao.deleteByPrimaryKey(id);//删除用户
+            questionList =questionDao.selectByExample(questionExample);//获取用户的问题列表
+            for(Question q : questionList){
+                questionService.deleteQuestionById(q.getId());
+            }
+            if(!identify.equals(UserIdentity.admin)){//管理员没有账号不删除
+                accountDataDao.deleteByPrimaryKey(accountId);//删除账号数据
+            }
+            return true;
         }
         return false;
     }
@@ -81,7 +95,7 @@ public class UserServiceImpl implements UserService{
 
     //添加一个用户(返回添加结果 0：成功添加 其他：错误对应的状态码)
     @Override
-    public int addUser(User user) {
+    public int insertUser(User user) {
         int flag = doesLegal(user);
         if(flag != 0){//添加用户非法
             return flag;//返回错误状态码
@@ -202,7 +216,7 @@ public class UserServiceImpl implements UserService{
         String message = "";
         String decodeIdCard = "";
         for(User user : users){
-            code = addUser(user);
+            code = insertUser(user);
             if(code != 0){
                 if(code == ErrorStatus.ACCOUNT_ILLEGAL){//账号非法
                     message = "姓名为：" + user.getName() + "的用户账号[学号]非法（应为9位字母数字串组成）";
@@ -272,26 +286,23 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    //重置密码返回值是重置结果 -1：身份证错误，-2：账号不存在，1：成功）
+    //重置密码返回错误状态码或0：成功
     @Override
     public int resetPassword(User user){
         //创建查询条件
         UserExample example = new UserExample();
         example.createCriteria().andAccountEqualTo(user.getAccount());//账号相同
         List<User> list = userDao.selectByExample(example);
-        if(list.size() == 0){
-            //账号不存在
-            return -2;
+        if(list.size() == 0){//账号不存在
+            return ErrorStatus.ACCOUNT_NOT_EXIT;
         }
         User u = list.get(0);
-        if(u.getIdCard().equals(user.getIdCard())){
-            //验证正确
+        if(u.getIdCard().equals(user.getIdCard())){//验证正确
             u.setPassword(user.getPassword());
             userDao.updateByPrimaryKey(u);
-            return 1;
-        }else{
-            //身份证号验证错误
-            return -1;
+            return 0;
+        }else{//身份证号不匹配
+            return ErrorStatus.ID_CARD_NOT_MATCH;
         }
     }
 }

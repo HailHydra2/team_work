@@ -26,15 +26,20 @@ public class AttentionController {
     @Resource(name = "userServiceImpl")
     private UserService userService;
 
-    //关注/取消关注（实现类）
+    //关注/取消关注
     @LoginToken//需要登录权限
     @UserLimit//老师和学生才有权限
     @PostMapping("/attention")
-    public @ResponseBody AjaxResponse addAttention(@RequestBody Attention attention){
+    public @ResponseBody AjaxResponse insertAttention(@RequestBody Attention attention){
         User user = userService.getUserById(attention.getUserId());
         UserVO userVO = userService.convertToUserVo(user);
+        //关注前的用户关注数（用于与关注后用户关注数进行比较，判断关注操作是否成功）
         int focusNum = userVO.getAccountData().getFocusNum();
+
+        //保存关注记录，返回用户最新数据
         userVO = attentionService.insertAttention(attention);
+
+        //判断关注是否成功
         if(focusNum == userVO.getAccountData().getFocusNum()){//关注数没发生改变，关注问题不存在
             return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT,"关注问题已被删除", userVO);
         }else{//关注成功

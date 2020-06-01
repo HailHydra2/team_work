@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class QuestionServiceImpl implements QuestionService{
 
+
     @Resource
     private QuestionDao questionDao;
 
@@ -122,7 +123,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     //创建问题
     @Override
-    public UserVO addQuestion(QuestionVO questionVO){
+    public UserVO insertQuestion(QuestionVO questionVO){
         Content content = new Content();
         content.setContent(questionVO.getContent());
         contentDao.insert(content);
@@ -188,11 +189,11 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public QuestionPage getQuestionPage(Integer userId, QuestionPage questionPage, int type){
         this.questionPage = questionPage;
-        if(type == 0){//回复
+        if(type == RESPONSE_TYPE){//回复
             questionStrategy = new QuestionBeResponse(userId,questionPage,questionDao);
-        }else if(type == 1){//提问
+        }else if(type == QUESTION_TYPE){//提问
             questionStrategy = new QuestionByUidStrategy(userId, questionPage,questionDao);
-        }else if(type == 2){//关注
+        }else if(type == ATTENTION_TYPE){//关注
             questionStrategy = new QuestionBeAttentionStrategy(userId,questionPage,questionDao,attentionDao);
         }
         List<Question> questionList = questionStrategy.getQuestionList();
@@ -268,11 +269,9 @@ public class QuestionServiceImpl implements QuestionService{
         criteria.andFlagEqualTo(1);
         //查询结果
         List<Attention> attentionList = attentionDao.selectByExample(example);
-        if(attentionList.size() > 0){
-            //已关注
+        if(attentionList.size() > 0){//已关注
             questionVO.setDoesAttention(true);
-        }else{
-            //未关注
+        }else{//未关注
             questionVO.setDoesAttention(false);
         }
         //创建投诉查询条件
@@ -284,11 +283,9 @@ public class QuestionServiceImpl implements QuestionService{
         criteria1.andFlagEqualTo(1);
         //查询结果
         List<ReportQuestion> reportQuestionList = reportQuestionDao.selectByExample(example1);
-        if(reportQuestionList.size() > 0){
-            //已投诉
+        if(reportQuestionList.size() > 0){//已投诉
             questionVO.setDoesReported(true);
-        }else{
-            //未投诉
+        }else{//未投诉
             questionVO.setDoesReported(false);
         }
     }

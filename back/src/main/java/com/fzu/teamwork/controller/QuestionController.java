@@ -28,18 +28,6 @@ public class QuestionController {
     @Resource
     private QuestionService questionService;
 
-    @Resource
-    private UserService userService;
-
-    @Resource
-    private ContentDao contentDao;
-
-    @Resource
-    private QuestionDao questionDao;
-
-    @Resource
-    private TitleDao titleDao;
-
     //获取问题列表接口
     @LoginToken//需要登录
     @UserLimit//普通用户权限
@@ -53,25 +41,29 @@ public class QuestionController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/question")
-    public  @ResponseBody AjaxResponse addQuestion(@RequestBody QuestionVO questionVO){
-        return AjaxResponse.success(questionService.addQuestion(questionVO));
+    public  @ResponseBody AjaxResponse insertQuestion(@RequestBody QuestionVO questionVO){
+        return AjaxResponse.success(questionService.insertQuestion(questionVO));
     }
 
-    //获取用户问题列表接口
+    //获取个人中心用户问题列表接口
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/userQuestions/{uid}")
-    public @ResponseBody AjaxResponse getUserQuestionPage(@PathVariable Integer uid,  @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getQuestionPage(uid,questionPage,1);
+    public @ResponseBody AjaxResponse getUserQuestionPage
+    (@PathVariable Integer uid,  @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPage(uid,questionPage,
+                QuestionService.QUESTION_TYPE);
         return AjaxResponse.success(page);
     }
 
-    //关注问题列表接口
+    //个人中心关注问题列表接口
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/userAttentions/{uid}")
-    public @ResponseBody AjaxResponse testGetAttentionQuestionPage(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getQuestionPage(uid, questionPage,2);
+    public @ResponseBody AjaxResponse getAttentionQuestionPage
+    (@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPage(uid, questionPage,
+                QuestionService.ATTENTION_TYPE);
         return AjaxResponse.success(page);
     }
 
@@ -79,8 +71,10 @@ public class QuestionController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/userResponseQuestions/{uid}")
-    public @ResponseBody AjaxResponse getUserResponseQuestion(@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
-        QuestionPage page = questionService.getQuestionPage(uid,questionPage,0);
+    public @ResponseBody AjaxResponse getUserResponseQuestion
+    (@PathVariable Integer uid, @RequestBody QuestionPage questionPage){
+        QuestionPage page = questionService.getQuestionPage(uid, questionPage,
+                QuestionService.RESPONSE_TYPE);
         return AjaxResponse.success(page);
     }
 
@@ -89,10 +83,10 @@ public class QuestionController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @GetMapping("/question/{id}/{uid}")
-    public @ResponseBody AjaxResponse getDetailQuestion(@PathVariable Integer id, @PathVariable Integer uid){
+    public @ResponseBody AjaxResponse getDetailQuestion
+    (@PathVariable Integer id, @PathVariable Integer uid){
         Question question = questionService.getQuestionById(id);
         if(question == null){//查询问题不存在
-
             return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT,"查询问题已被删除");
         }
         QuestionVO questionVO = questionService.convertToVO(question);
@@ -123,7 +117,8 @@ public class QuestionController {
         if(questionService.deleteQuestionById(id) == true){//删除成功
             return AjaxResponse.success();
         }else{//删除失败——要删除的问题不存在
-            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT, "抱歉，您要删除的问题不存在");
+            return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT,
+                    "抱歉，您要删除的问题不存在");
         }
     }
 

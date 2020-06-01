@@ -74,7 +74,7 @@ class LikeServiceImplTest {
         user.setName("testZJW");
         user.setPassword(Encryptor.encrypt("314"));
         user.setIdCard(Encryptor.encrypt("110101199603070314"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             System.out.println("添加成功,用户id为：" + user.getId());
             userVO = userService.convertToUserVo(user);
@@ -89,7 +89,7 @@ class LikeServiceImplTest {
         question.setAuthorId(user.getId());
         question.setCreateTime(new Date());
         questionVO.setQuestion(question);
-        questionService.addQuestion(questionVO);
+        questionService.insertQuestion(questionVO);
         //新增用于测试的待点赞回复
         response = new Response();
         responseVO = new ResponseVO();

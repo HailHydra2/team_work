@@ -128,15 +128,6 @@ public class MessageServiceImpl implements MessageService{
         }
     }
 
-    //删除某个用户的所有消息(返回删除消息条数)
-//    @Override
-//    public int deleteUserMessage(int uid){
-//        MessageExample example = new MessageExample();
-//        example.createCriteria().andObjectIdEqualTo(uid);
-//        //删除object_id为uid(被操作者为udi)的消息，并返回删除条数
-//        int num = messageDao.deleteByExample(example);
-//        return num;
-//    }
 
     //根据消息对实体对象的数据进行更新
     @Override

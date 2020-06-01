@@ -21,7 +21,7 @@ public class BlockServiceImpl implements BlockService {
 
     //添加临时板块（返回添加结果）
     @Override
-    public Boolean addBlock(Block block) {
+    public Boolean insertBlock(Block block) {
         if(blockDao.selectByExample(null).size() > 0){//已经存在临时板块
             return false;//添加失败
         }else{

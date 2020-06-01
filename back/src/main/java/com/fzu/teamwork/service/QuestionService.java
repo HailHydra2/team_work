@@ -8,6 +8,9 @@ import com.fzu.teamwork.view.UserVO;
 import java.util.List;
 
 public interface QuestionService {
+    public static int RESPONSE_TYPE = 0;//回复问题列表类型
+    public static int QUESTION_TYPE = 1;//提问列表类型
+    public static int ATTENTION_TYPE = 2;//关注问题列表类型
 
     //根据question的id主键获取问题
     public Question getQuestionById(int id);
@@ -19,7 +22,7 @@ public interface QuestionService {
     public Question updateQuestion(QuestionVO question);
 
     //增加问题
-    public UserVO addQuestion(QuestionVO questionVO);
+    public UserVO insertQuestion(QuestionVO questionVO);
 
     //获取问题的某个分页
     public QuestionPage getQuestionPage(QuestionPage questionPage);

@@ -25,4 +25,5 @@ public class ErrorStatus {
     public static int ID_CARD_NULL = 419;//身份证为空
     public static int IDENTITY_NULL = 420;//身份为空
     public static int IDENTITY_ERROR = 421;//身份错误
+    public static int ID_CARD_NOT_MATCH = 422;//身份证不匹配
 }

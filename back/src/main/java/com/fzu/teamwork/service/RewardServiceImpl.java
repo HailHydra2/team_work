@@ -77,10 +77,10 @@ public class RewardServiceImpl implements RewardService{
 
     //计算申请的积分数（类别兑换规则*数量），若类别非法返回-1
     public int calculate(String rewardType, double num){
-        if(rewardType.equals(RewardType.ServiceTime)){
+        if(rewardType.equals(RewardType.SERVICE)){
             //申请类别为党员服务时长
             return (int)(num*RewardType.SERVICE_SCORE);//一个时长对应100积分
-        }else if(rewardType.equals(RewardType.SyntheticTest)){
+        }else if(rewardType.equals(RewardType.SYNTHETIC)){
             //兑换类别为综测
             return (int)(num*RewardType.SYNTHETIC_SCORE);//一分综测对应100积分
         }else{

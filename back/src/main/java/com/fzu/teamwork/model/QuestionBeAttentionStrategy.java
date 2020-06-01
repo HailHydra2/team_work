@@ -62,8 +62,6 @@ public class QuestionBeAttentionStrategy extends QuestionStrategy{
             int t = 5 - (maxIndex - pageIndex + 1);//前面要补几个按钮
             startIndex = pageIndex - t > 0 ? pageIndex - t : 1;
         }
-
-
         for(int i = startIndex; i <= lastIndex; i++){
             list.add(i);
         }

@@ -30,7 +30,7 @@ public class ReportController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/questionReports")
-    public List<Question> testGetReportQuestion(){
+    public List<Question> getReportQuestion(){
         return reportService.getReportQuestion();
     }
 
@@ -38,7 +38,7 @@ public class ReportController {
     @LoginToken//需要登录
     @AdminLimit//管理员权限
     @GetMapping("/responseReports")
-    public List<Response> testGetReportResponse(){
+    public List<Response> getReportResponse(){
         return reportService.getReportResponse();
     }
 
@@ -47,8 +47,8 @@ public class ReportController {
     @UserLimit//普通用户权限
     @PostMapping("questionReport")
     public @ResponseBody
-    AjaxResponse addQuestionReport(@RequestBody ReportQuestion reportQuestion){
-        if(reportService.addQuestionReport(reportQuestion) == true){//投诉成功
+    AjaxResponse insertQuestionReport(@RequestBody ReportQuestion reportQuestion){
+        if(reportService.insertQuestionReport(reportQuestion)){//投诉成功
             return AjaxResponse.success();
         }else{
             return AjaxResponse.error(ErrorStatus.QUESTION_NOT_EXIT, "您举报的问题已被删除");
@@ -59,8 +59,8 @@ public class ReportController {
     @LoginToken//登录权限
     @UserLimit//普通用户权限
     @PostMapping("/responseReport")
-    public @ResponseBody AjaxResponse addResponseReport(@RequestBody ReportResponse reportResponse){
-        if(reportService.addResponseReport(reportResponse) == true){//处理成功
+    public @ResponseBody AjaxResponse insertResponseReport(@RequestBody ReportResponse reportResponse){
+        if(reportService.insertResponseReport(reportResponse)){//处理成功
             return AjaxResponse.success();
         }else {
             return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT,"您举报的回复已被删除");

@@ -42,7 +42,6 @@ public class QuestionBeResponse extends QuestionStrategy{
         if(questionDao == null){
             System.out.println("dao null");
         }
-        System.out.println("map:" + map);
         int total = questionDao.selectResponseQuestionNum(map);
         //当前页号
         int pageIndex = questionPage.getPageIndex();

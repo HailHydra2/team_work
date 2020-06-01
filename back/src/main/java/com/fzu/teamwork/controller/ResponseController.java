@@ -31,21 +31,12 @@ public class ResponseController {
     UserService userService;
 
 
-    //*************这个接口是不是没用***************************
-    //获取问题的回复列表，id是所属问题id（具体实现接口）
-//    @LoginToken//需要登录
-//    @UserLimit//普通用户权限
-//    @PostMapping("/responses/{id}")
-//    public @ResponseBody  AjaxResponse testGetResponsePage(@PathVariable int id, @RequestBody ResponsePage page){
-//        responseService.getResponsePageByQuestionId(id,page);
-//        return AjaxResponse.success(page);
-//    }
-
     //获取问题的回复列表，id是所属问题id,uid是当前用户id（具体实现接口）
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/responses/{id}/{uid}")
-    public @ResponseBody  AjaxResponse getResponsePage(@PathVariable int id, @PathVariable int uid, @RequestBody ResponsePage page){
+    public @ResponseBody  AjaxResponse getResponsePage
+    (@PathVariable int id, @PathVariable int uid, @RequestBody ResponsePage page){
         //获取需要的分页
         responseService.getResponsePageByQuestionId(id,page);
         //将page中的responseVO列表与用户uid关联（是否点过赞/点灭，投诉过）
@@ -59,8 +50,7 @@ public class ResponseController {
     @AdminLimit//管理员权限
     @DeleteMapping("/response/{id}")
     public @ResponseBody AjaxResponse deleteResponse(@PathVariable int id){
-        if(responseService.deleteResponseById(id) > 0){
-            //删除成功
+        if(responseService.deleteResponseById(id) > 0){//删除成功
             return AjaxResponse.success("删除成功");
         }else{//删除问题不存在
             return AjaxResponse.error(ErrorStatus.RESPONSE_NOT_EXIT,"删除失败，该回复不存在");
@@ -105,7 +95,7 @@ public class ResponseController {
     @LoginToken//需要登录
     @UserLimit//普通用户权限
     @PostMapping("/response")
-    public @ResponseBody AjaxResponse addResponse(@RequestBody ResponseVO responseVO) {
+    public @ResponseBody AjaxResponse insertResponse(@RequestBody ResponseVO responseVO) {
         if(responseService.insertResponse(responseVO) == true) {//回复成功
             User user = userService.getUserById(responseVO.getResponse().getAuthorId());
             UserVO userVO = userService.convertToUserVo(user);
@@ -115,6 +105,7 @@ public class ResponseController {
         }
     }
 
+    //前端有个组件会多调用一次接口，暂时找到好的解决方法，写了下面这个不做任何处理的接口给第二次调用
     @PostMapping("/test")
     public void test(){
 

@@ -1,7 +1,6 @@
 package com.fzu.teamwork.model;
 
 import com.fzu.teamwork.dao.ResponseDao;
-import com.fzu.teamwork.service.ContentService;
 import com.fzu.teamwork.view.ResponsePage;
 import lombok.extern.log4j.Log4j;
 

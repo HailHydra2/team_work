@@ -8,8 +8,8 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    //判断用户存在情况，如no account、error password等等
-    private Integer mark;//no account--0，error password--1 success--3
+    //登录验证标志位
+    private Integer mark = 0;
 
     private Integer id;
 

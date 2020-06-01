@@ -37,15 +37,12 @@ public class LoginController {
     @PostMapping("/user")
     public @ResponseBody AjaxResponse getUser(@RequestBody User user){
         UserVO userVO=loginService.login(user);
-        System.out.println("userVo:" + userVO.getUser().getMark());
-        if(userVO.getUser().getMark()==0) {
-            //账号不存在
+
+        if(userVO.getUser().getMark() == ErrorStatus.ACCOUNT_NOT_EXIT) {//账号不存在
             return AjaxResponse.error(ErrorStatus.ACCOUNT_NOT_EXIT,"账号不存在");
-        } else if(userVO.getUser().getMark()==1) {
-            //密码错误
+        } else if(userVO.getUser().getMark() == ErrorStatus.PASSWORD_ERROR) {//密码错误
             return AjaxResponse.error(ErrorStatus.PASSWORD_ERROR,"密码错误");
-        } else {
-            //验证正确
+        } else {//验证正确
             return AjaxResponse.success(userVO);
         }
     }

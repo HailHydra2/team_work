@@ -8,5 +8,4 @@ public class ScoreNum {
     public static int REPORT_RESPONSE_SCORE = 2;//回复被举报扣除2分
     public static int LIKE_SCORE = 1;//被点赞+1分
     public static int CREATE_QUESTION_SCORE = 20;//创建问题积分+20分
-    public static int CREATE_RESPONSE_SCORE = 5;//创建回复积分+5
 }

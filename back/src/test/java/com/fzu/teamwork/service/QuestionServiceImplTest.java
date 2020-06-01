@@ -74,7 +74,7 @@ class QuestionServiceImplTest{
         user.setName("testWSH");
         user.setPassword(Encryptor.encrypt("873"));
         user.setIdCard(Encryptor.encrypt("360102199003077873"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code == 0){
             userVO = userService.convertToUserVo(user);
         }else{
@@ -88,7 +88,7 @@ class QuestionServiceImplTest{
         userService.deleteUsers(user.getId());
     }
 
-    public QuestionVO addQuestion(int i){
+    public QuestionVO insertQuestion(int i){
         QuestionVO questionVO = new QuestionVO();
         Question question = new Question();
         questionVO.setQuestion(question);
@@ -96,14 +96,14 @@ class QuestionServiceImplTest{
         questionVO.setContent("content" + i);
         question.setAuthorId(user.getId());
         question.setCreateTime(new Date());
-        questionService.addQuestion(questionVO);
+        questionService.insertQuestion(questionVO);
         return questionVO;
     }
 
     //根据id获取问题
     @Test
     void getQuestionById() {
-        QuestionVO questionVO = addQuestion(1);
+        QuestionVO questionVO = insertQuestion(1);
         Question question = questionService.getQuestionById(questionVO.getQuestion().getId());
         Assert.assertNotNull(question);//验证是否成功从数据库获取对应问题
         Assert.assertEquals(questionVO.getQuestion().getId(), question.getId());//验证获取的问题是否一样
@@ -115,7 +115,7 @@ class QuestionServiceImplTest{
     @Test
     void addRelationToUid(){
         //创建问题
-        QuestionVO questionVO = addQuestion(1);
+        QuestionVO questionVO = insertQuestion(1);
         //取消关注
         Attention attention = new Attention();
         attention.setFlag(0);//取消关注标志位
@@ -128,12 +128,12 @@ class QuestionServiceImplTest{
         reportQuestion.setFlag(1);//投诉标志位
         reportQuestion.setQuestionId(questionVO.getQuestion().getId());//投诉问题id
         reportQuestion.setReportorId(user.getId());//投诉人id
-        reportService.addQuestionReport(reportQuestion);//添加投诉记录
+        reportService.insertQuestionReport(reportQuestion);//添加投诉记录
         questionService.addRelationToUId(questionVO,user.getId());
         Assert.assertTrue(!questionVO.isDoesAttention());//判断是否还未关注（上面添加的标志位是0-取消关注）
         Assert.assertTrue(questionVO.isDoesReported());//判断是否有投诉标志
 
-        questionVO = addQuestion(2);
+        questionVO = insertQuestion(2);
         //关注
         attention.setFlag(1);//取消关注标志位
         attention.setQuestionId(questionVO.getQuestion().getId());
@@ -148,7 +148,7 @@ class QuestionServiceImplTest{
     //测试问题转换视图对象函数
     @Test
     void convertToVO() {
-        QuestionVO questionVO = addQuestion(1);//添加问题
+        QuestionVO questionVO = insertQuestion(1);//添加问题
         QuestionVO questionVO1;
         Question question = questionVO.getQuestion();
         question.setAnonymous(1);//设置匿名
@@ -165,8 +165,8 @@ class QuestionServiceImplTest{
 
     //添加问题测试
     @Test
-    void addQuestion() {
-        QuestionVO questionVO = addQuestion(1);
+    void insertQuestion() {
+        QuestionVO questionVO = insertQuestion(1);
         Question question = questionVO.getQuestion();
 
         int questionNum = userVO.getAccountData().getQuestionNum();//提问数
@@ -196,7 +196,7 @@ class QuestionServiceImplTest{
         questionPage.setSortApproach(QuestionSortApproach.SORT_BY_HEAT);
         List<Integer> questionIdList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionIdList.add(questionVO.getQuestion().getId());
             questionVO.getQuestion().setResponseNum(i);
             questionService.updateQuestion(questionVO);
@@ -224,7 +224,7 @@ class QuestionServiceImplTest{
         List<Integer> questionIdList = new ArrayList<>();//新添加的问题列表
         //添加问题
         for(int i = 0; i < 10; i++){
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionIdList.add(questionVO.getQuestion().getId());
         }
         questionPage = questionService.getQuestionPage(questionPage);
@@ -261,12 +261,12 @@ class QuestionServiceImplTest{
     @Test
     void getQuestionPageByKindAndHeat() {
         for(int i = 0; i <10; i++){//添加10个类别为1的问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionVO.getQuestion().setKindId(1);
             questionService.updateQuestion(questionVO);
         }
         for (int i = 0; i <10; i++){//添加10个类别为0的问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionService.updateQuestion(questionVO);
         }
         int kindId = 1;
@@ -291,12 +291,12 @@ class QuestionServiceImplTest{
     @Test
     void getQuestionPageByKindAndDate() {
         for(int i = 0; i <10; i++){//添加10个类别为1的问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionVO.getQuestion().setKindId(1);
             questionService.updateQuestion(questionVO);
         }
         for (int i = 0; i <10; i++){//添加10个类别为0的问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionService.updateQuestion(questionVO);
         }
         int kindId = 1;
@@ -321,7 +321,7 @@ class QuestionServiceImplTest{
     @Test
     void getQuestionPageBeAttention() {
         for(int i =0; i < 10; i++){//创建10个问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             Attention attention = new Attention();
             attention.setCreateTime(new Date());
             attention.setQuestionId(questionVO.getQuestion().getId());
@@ -349,7 +349,7 @@ class QuestionServiceImplTest{
     @Test
     void getQuestionPageBeResponse() {
         for(int i =0; i < 10; i++){//创建10个问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             ResponseVO responseVO = new ResponseVO();//创建回复
             Response response = new Response();
             response.setCreateTime(new Date());
@@ -377,7 +377,7 @@ class QuestionServiceImplTest{
     @Test
     void getUserQuestionPage() {
         for(int i =0; i < 10; i++){//创建10个问题
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
         }
         QuestionPage questionPage = new QuestionPage();
         questionPage.setPageIndex(1);
@@ -398,7 +398,7 @@ class QuestionServiceImplTest{
         Assert.assertEquals(false,result);
 
         //添加问题
-        QuestionVO questionVO = addQuestion(1);
+        QuestionVO questionVO = insertQuestion(1);
         Question question = questionVO.getQuestion();
 
         //提问数
@@ -432,7 +432,7 @@ class QuestionServiceImplTest{
         messageExample.createCriteria().andObjectIdEqualTo(user.getId());
         //添加问题
         for(int i = 0; i < 10; i++){
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionIdList.add(questionVO.getQuestion().getId());
         }
         userVO = userService.convertToUserVo(user);
@@ -468,7 +468,7 @@ class QuestionServiceImplTest{
         //删除存在的问题+不存在的问题（部分对）
         questionIdList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
-            QuestionVO questionVO = addQuestion(i);
+            QuestionVO questionVO = insertQuestion(i);
             questionIdList.add(questionVO.getQuestion().getId());
         }
         //不存在的问题id列表

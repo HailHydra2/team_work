@@ -1,12 +1,8 @@
 package com.fzu.teamwork.view;
 
-import com.fzu.teamwork.model.Content;
 import com.fzu.teamwork.model.Response;
-import com.fzu.teamwork.service.ContentService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.annotation.Resource;
 
 
 @Data
@@ -19,7 +15,5 @@ public class ResponseVO {
     private boolean doesReported;//用户是否投诉过
     private String authorName;//回复者姓名
 
-    @Resource(name = "contentServiceImpl")
-    ContentService contentService;
 
 }

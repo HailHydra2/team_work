@@ -47,7 +47,7 @@ class ReportServiceImplTest {
     void getReportQuestion() {
         List<Question> questionList;
         for(int i = 0; i < 10; i++){
-            Question question = addQuestion(user.getId(), i).getQuestion();
+            Question question = insertQuestion(user.getId(), i).getQuestion();
             question.setReportNum(i*10);
             QuestionVO questionVO = questionService.convertToVO(question);
             questionService.updateQuestion(questionVO);
@@ -65,7 +65,7 @@ class ReportServiceImplTest {
     void getReportResponse() {
         List<Response> responseList;
         for(int i = 0; i < 10; i++){
-            Question question = addQuestion(user.getId(), i).getQuestion();
+            Question question = insertQuestion(user.getId(), i).getQuestion();
             Response response = addResponse(question.getId(), i).getResponse();
             response.setReportNum(i*10);
             ResponseVO responseVO = responseService.convertToVO(response);
@@ -88,7 +88,7 @@ class ReportServiceImplTest {
         user.setName("testWSH");
         user.setPassword(Encryptor.encrypt("873"));
         user.setIdCard(Encryptor.encrypt("360102199003077873"));
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if(code != 0){
             System.out.println("用户添加失败，状态码为:" + code);
         }
@@ -101,7 +101,7 @@ class ReportServiceImplTest {
     }
 
     //添加问题函数
-    public QuestionVO addQuestion(int userId, int i){
+    public QuestionVO insertQuestion(int userId, int i){
         QuestionVO questionVO = new QuestionVO();
         Question question = new Question();
         questionVO.setQuestion(question);
@@ -109,7 +109,7 @@ class ReportServiceImplTest {
         questionVO.setContent("content" + i);
         question.setAuthorId(userId);
         question.setCreateTime(new Date());
-        questionService.addQuestion(questionVO);
+        questionService.insertQuestion(questionVO);
         return questionVO;
     }
 
@@ -128,9 +128,9 @@ class ReportServiceImplTest {
 
     //测试对问题投诉的函数
     @Test
-    void addQuestionReport() {
+    void insertQuestionReport() {
         //添加测试问题
-        Question question = addQuestion(user.getId(), 1).getQuestion();
+        Question question = insertQuestion(user.getId(), 1).getQuestion();
         int reportNum = question.getReportNum();
         Boolean result;
         ReportQuestion reportQuestion = new ReportQuestion();
@@ -138,7 +138,7 @@ class ReportServiceImplTest {
         reportQuestion.setQuestionId(question.getId());
         //投诉问题
         reportQuestion.setFlag(1);
-        result = reportService.addQuestionReport(reportQuestion);
+        result = reportService.insertQuestionReport(reportQuestion);
         question = questionDao.selectByPrimaryKey(question.getId());//获取最新的问题数据
         //判断投诉是否成功
         Assert.assertTrue(result);
@@ -148,7 +148,7 @@ class ReportServiceImplTest {
         //取消投诉
         reportQuestion.setFlag(0);
         reportNum = question.getReportNum();//获取最新投诉数
-        result = reportService.addQuestionReport(reportQuestion);//取消投诉
+        result = reportService.insertQuestionReport(reportQuestion);//取消投诉
         question = questionDao.selectByPrimaryKey(question.getId());//获取最新的问题数据
         //判断投诉数是否-1
         Assert.assertEquals(reportNum - 1, (long)question.getReportNum());
@@ -164,7 +164,7 @@ class ReportServiceImplTest {
                 break;
             }
         }
-        result = reportService.addQuestionReport(reportQuestion);
+        result = reportService.insertQuestionReport(reportQuestion);
         reportNum = question.getReportNum();
         question = questionDao.selectByPrimaryKey(question.getId());//获取问题最新的数据
         //判断投诉是否失败
@@ -178,9 +178,9 @@ class ReportServiceImplTest {
 
     //测试对回复进行测试
     @Test
-    void addResponseReport() {
+    void insertResponseReport() {
         //添加被投诉回复所属的问题
-        Question question = addQuestion(user.getId(),1).getQuestion();
+        Question question = insertQuestion(user.getId(),1).getQuestion();
         //添加对回复的投诉
         Response response = addResponse(question.getId(), 1).getResponse();
         ReportResponse reportResponse = new ReportResponse();
@@ -193,7 +193,7 @@ class ReportServiceImplTest {
 
         //投诉回复
         reportNum = response.getReportNum();
-        result = reportService.addResponseReport(reportResponse);
+        result = reportService.insertResponseReport(reportResponse);
         //判断投诉是否成功
         Assert.assertTrue(result);
         //判断投诉数是否+1
@@ -203,7 +203,7 @@ class ReportServiceImplTest {
         //取消投诉
         reportResponse.setFlag(0);
         reportNum = response.getReportNum();
-        result = reportService.addResponseReport(reportResponse);
+        result = reportService.insertResponseReport(reportResponse);
         //判断是否取消成功
         Assert.assertTrue(result);
         //判断投诉数是否-1
@@ -213,7 +213,7 @@ class ReportServiceImplTest {
         //投诉不存在的回复
         responseService.deleteResponseById(response.getId());//删除该条回复
         //投诉
-        result = reportService.addResponseReport(reportResponse);
+        result = reportService.insertResponseReport(reportResponse);
         //判断投诉结果
         Assert.assertFalse(result);
 

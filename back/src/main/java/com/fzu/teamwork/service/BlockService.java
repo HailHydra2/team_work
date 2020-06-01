@@ -6,7 +6,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 public interface BlockService {
 
     //添加临时板块（返回添加结果）
-    public Boolean addBlock(Block block);
+    public Boolean insertBlock(Block block);
 
     //撤销临时板块（返回操作结果）
     public boolean deleteBlock();

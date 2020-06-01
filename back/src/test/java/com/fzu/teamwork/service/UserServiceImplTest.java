@@ -49,14 +49,14 @@ class UserServiceImplTest {
     };
 
     //添加用户，返回添加函数返回的状态码
-    public int addUser(User user){
+    public int insertUser(User user){
         String idCard = user.getIdCard();
         UserVO userVO = null;
         if(idCard != null){
             user.setIdCard(Encryptor.encrypt(idCard));//加密
             user.setPassword(Encryptor.encrypt(idCard.substring(idCard.length()-3)));//取身份证后三位为密码
         }
-        int code = userService.addUser(user);
+        int code = userService.insertUser(user);
         if (code == 0) {
             userVO = userService.convertToUserVo(user);
         }else{
@@ -74,7 +74,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("rightUser1");
-        addUser(user);
+        insertUser(user);
         //确认是否成功插入数据库
         Assert.assertNotNull(userDao.selectByPrimaryKey(user.getId()));
         //是否创建对应账户数据及记录
@@ -85,7 +85,7 @@ class UserServiceImplTest {
         //添加老师
         user.setIdentity(UserIdentity.teacher);
         user.setIdCard("220102199003076079");
-        addUser(user);
+        insertUser(user);
         //确认是否成功插入数据库
         Assert.assertNotNull(userDao.selectByPrimaryKey(user.getId()));
         //是否创建对应账户数据及记录
@@ -96,7 +96,7 @@ class UserServiceImplTest {
         //添加管理员
         user.setIdentity(UserIdentity.admin);
         user.setIdCard("220102199003076079");
-        addUser(user);
+        insertUser(user);
         //确认是否成功插入数据库
         Assert.assertNotNull(userDao.selectByPrimaryKey(user.getId()));
         //账户信息外键为-1
@@ -115,7 +115,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("exitUser1");
-        addUser(user);
+        insertUser(user);
 
         User user1 = new User();
         //添加重复账号用户
@@ -124,7 +124,7 @@ class UserServiceImplTest {
         user1.setIdentity(UserIdentity.student);
         user1.setName("exitUser2");
         //函数返回状态码为重复账号对应状态码
-        Assert.assertEquals(ErrorStatus.ACCOUNT_HAS_EXIT, addUser(user1));
+        Assert.assertEquals(ErrorStatus.ACCOUNT_HAS_EXIT, insertUser(user1));
         example.createCriteria().andIdCardEqualTo(user1.getIdCard());
         Assert.assertEquals(0,userDao.selectByExample(example).size());
 
@@ -134,7 +134,7 @@ class UserServiceImplTest {
         user1.setIdentity(UserIdentity.student);
         user1.setName("exitUser3");
         //返回值为重复身份证错误状态码
-        Assert.assertEquals(ErrorStatus.ID_CARD_HAS_EXIT, addUser(user1));
+        Assert.assertEquals(ErrorStatus.ID_CARD_HAS_EXIT, insertUser(user1));
         //没有添加对应用户记录
         example.createCriteria().andAccountEqualTo(user1.getAccount());
         Assert.assertEquals(0,userDao.selectByExample(example).size());
@@ -154,7 +154,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         //函数返回状态码为账号错误状态码
-        Assert.assertEquals(ErrorStatus.ACCOUNT_ILLEGAL, addUser(user));
+        Assert.assertEquals(ErrorStatus.ACCOUNT_ILLEGAL, insertUser(user));
         //错误用户信息未插入数据库
         example.createCriteria().andAccountEqualTo(user.getAccount());
         Assert.assertEquals(0,userDao.selectByExample(example).size());
@@ -162,7 +162,7 @@ class UserServiceImplTest {
         //添加身份证错误用户
         user.setAccount("221701523");
         user.setIdCard("123");//错误身份证
-        Assert.assertEquals(ErrorStatus.ID_CARD_ILLEGAL, addUser(user));
+        Assert.assertEquals(ErrorStatus.ID_CARD_ILLEGAL, insertUser(user));
         //错误用户信息没有插入数据库
         example.createCriteria().andAccountEqualTo(user.getAccount());
         Assert.assertEquals(0,userDao.selectByExample(example).size());
@@ -171,7 +171,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity("stu");//错误身份
         //返回身份错误对应状态码
-        Assert.assertEquals(ErrorStatus.IDENTITY_ERROR, addUser(user));
+        Assert.assertEquals(ErrorStatus.IDENTITY_ERROR, insertUser(user));
         //错误用户信息没有被插入数据库
         example.createCriteria().andAccountEqualTo(user.getAccount());
         Assert.assertEquals(0, userDao.selectByExample(example).size());
@@ -188,7 +188,7 @@ class UserServiceImplTest {
         user.setIdentity(UserIdentity.student);
         user.setName("emptyUser1");
         //返回状态码为账号为空状态码
-        Assert.assertEquals(ErrorStatus.ACCOUNT_NULL, addUser(user));
+        Assert.assertEquals(ErrorStatus.ACCOUNT_NULL, insertUser(user));
         //错误用户信息没有插入数据库
         example.createCriteria().andIdCardEqualTo(user.getIdCard());
         Assert.assertEquals(0,userDao.selectByExample(example).size());
@@ -197,7 +197,7 @@ class UserServiceImplTest {
         user.setAccount("221701522");
         user.setIdCard(null);//身份证置位空
         //返回状态码为身份证空状态码
-        Assert.assertEquals(ErrorStatus.ID_CARD_NULL, addUser(user));
+        Assert.assertEquals(ErrorStatus.ID_CARD_NULL, insertUser(user));
         //错误用户信息没有插入数据库
         example.createCriteria().andAccountEqualTo(user.getAccount());
         Assert.assertEquals(0, userDao.selectByExample(example).size());
@@ -206,7 +206,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(null);//身份置位空
         //返回身份为空状态码
-        Assert.assertEquals(ErrorStatus.IDENTITY_NULL, addUser(user));
+        Assert.assertEquals(ErrorStatus.IDENTITY_NULL, insertUser(user));
         //错误信息没有插入数据库
         example.createCriteria().andAccountEqualTo(user.getAccount());
         Assert.assertEquals(0, userDao.selectByExample(example).size());
@@ -215,7 +215,7 @@ class UserServiceImplTest {
         user.setIdentity(UserIdentity.student);
         user.setName(null);//用户姓名置位空
         //返回状态码为用户姓名为空状态码
-        Assert.assertEquals(ErrorStatus.NAME_NULL, addUser(user));
+        Assert.assertEquals(ErrorStatus.NAME_NULL, insertUser(user));
         //错误信息没有插入数据库
         example.createCriteria().andAccountEqualTo(user.getAccount());
         Assert.assertEquals(0, userDao.selectByExample(example).size());
@@ -265,7 +265,7 @@ class UserServiceImplTest {
         user1.setIdCard("220102199003076079");
         user1.setIdentity(UserIdentity.student);
         user1.setName("rightUser1");
-        addUser(user1);
+        insertUser(user1);
         for(int i = 0; i < 10; i++){
             user = new User();
             user.setAccount("22170152" + i);
@@ -380,7 +380,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("rightUser1");
-        addUser(user);
+        insertUser(user);
         //判断是否成功删除新添加的用户
         Assert.assertTrue(userService.deleteUsers(user.getId()));
         //重复删除刚删除的用户，判断返回是否为false
@@ -450,7 +450,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("changePwdUser1");
-        addUser(user);
+        insertUser(user);
 
         //通过密保的请求
         String newPwd = "123";
@@ -489,7 +489,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("resetPwdUser1");
-        addUser(user);
+        insertUser(user);
         user.setPassword(Encryptor.encrypt("123"));//将密码修改成123
         userVO = userService.convertToUserVo(user);
         userService.updateUser(userVO);//更新数据库
@@ -532,7 +532,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("getUser1");
-        addUser(user);
+        insertUser(user);
 
         //获取存在于数据库的数据
         user1 = userService.getUserById(user.getId());
@@ -562,7 +562,7 @@ class UserServiceImplTest {
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("getUser2");
-        addUser(user);
+        insertUser(user);
 
         //获取存在于数据库的数据
         user1 = userService.getUserByAccount(user.getAccount());
