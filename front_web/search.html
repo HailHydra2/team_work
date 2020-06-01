@@ -11,10 +11,10 @@
       	<link rel="bookmark"  type="image/x-icon"  href="pic/favicon.ico"/>
 		<link rel="shortcut icon" href="pic/favicon.ico">
 		<style>
-			body {background-image:url(pic/404.jpg);background-repeat:no-repeat;background-position:center -40%;}
+			.noResult {background-image:url(pic/1.png);background-repeat:no-repeat;background-position:center -50%;}
 		</style>
    </head>
-   <body>
+   <body id="body">
       	<!-- 提问模态框（Modal） -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -77,7 +77,7 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-    <div class="container">
+    <div class="container" >
 	<div class="row clearfix">
 		<div class="col-md-12 column">
 			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -120,24 +120,25 @@
 				
 
 			</nav>
-			<div class="page-header" style="top:130">
-				<br/>
-				<h1>
-					搜素结果<small></small>
-				</h1>
+			
+		<div class="page-header" style="top:130">
+			<br/>
+			<h1>
+				搜素结果<small></small>
+			</h1>
+		</div>
+		<!--页面主要内容容器-->
+		<div id="questionDiv">
+			<!--问题列表容器-->
+			<div id="quetionList">
+				
 			</div>
-			<!--页面主要内容容器-->
-			<div id="questionDiv">
-				<!--问题列表容器-->
-				<div id="quetionList">
-
-				</div>
-	
-				<ul class="pagination pagination-lg" id="pageButtons">
-				</ul>
-				<p id = "divEnd"></p>
-			</div>
-
+			
+			<ul class="pagination pagination-lg" id="pageButtons">
+			</ul>
+			<p id = "divEnd"></p>
+		</div>
+		
 		</div>
 	</div>
 	</div>
@@ -205,9 +206,15 @@
             questionBlock.appendChild(content);
 			questionList.appendChild(questionBlock);
 			
+        }
+		if(list.length > 0){//有查询结果
 			//更新分页按钮
 			updatePageButtons();
-        }
+			document.getElementById("body").className="";
+		}else{//没有查询结果
+			document.getElementById("body").className="noResult";
+		}
+		
 	}
 	
 

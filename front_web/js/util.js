@@ -166,7 +166,7 @@ function postQuestion(){
             //将输入内容清空
             $("#inputQue").innerHTML = "";
             $("#describeQue").innerHTML = "";
-            location.replace(document.referrer);
+            location.replace(location.href);
         }
     });
 }
@@ -377,8 +377,6 @@ function updatePageButtons(){
     pageButtons.appendChild(lastButton);
     lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
 }
-
-
 
 var userVO;
 //获取当前登录用户
