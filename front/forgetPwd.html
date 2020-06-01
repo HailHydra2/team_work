@@ -69,9 +69,9 @@
 				
 				<div class="form-group">
 					<div class="col-sm-offset-5 col-sm-10" style="margin-top:10px">
-						 <a href="login.html" class="btn btn-default btn-success">返回登陆</a>
-						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						 <button type="botton" class="btn btn-default" onclick="resetPassword();">重置密码</button>
+						<button type="botton" class="btn btn-default  btn-success" onclick="resetPassword();">重置密码</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <a href="login.html" class="btn btn-default">返回登陆</a>
 					</div>
 				</div>
 			</form> 
@@ -82,29 +82,27 @@
 	</div>
 	<script src="adminInterface/assets/js/biz/isValidID.js"></script>
 	<script>
- $(document).ready(function (e) {
-        
-          
+		var resetFlag;//是否重置的标志位（前端判断错误不发送数据给后端）
+		$(document).ready(function (e) {
             var error = false;
-
-
 			$("#account").blur(function () {
                // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var account = $("#account").val();
-                var testAccount= new RegExp("^[0-9A-Za-z]{9}$");
+                var testAccount= new RegExp("^[0-9A-Za-z]+$");
                 if (!testAccount.test(account)) {
-                    if(account.length>9){
-                        showError('account', '账号位数不合法（账号合法位数为9）！');
-                         error = true;
-                    }
-                    else{
-                    showError('account', '账号不合法（账号只能由字母和数字组成）！');
-                    error = true;
-                    }
+                    if(account.length == 0){
+                        showError('account', '账号不能为空');
+						 error = true;
+                    }else{
+                    	showError('account', '账号只能由字母和数字组成');
+						error = true;
+					}
+					resetFlag = false;
                 }
                 else {
                     $("#account").css({ "border-color": "green" });
-                    $("#accountTip").css({ "display": "none" });
+					$("#accountTip").css({ "display": "none" });
+					resetFlag = true;
                 }
             });
 
@@ -118,15 +116,16 @@
                 var account = $("#idCard").val();
                 if (account.length<18) {
                     showError('idCard', '身份证号位数不能小于18位！');
-                    error = true;
-                }
-                else if( IdCardValidate(account)==false){
+					error = true;
+					resetFlag = false;
+                }else if( IdCardValidate(account)==false){
 					showError('idCard', '身份证号码非法！');
 					error = true;
-				}
-                else {
+					resetFlag = false;
+				}else {
                     $("#idCard").css({ "border-color": "green" });
-                    $("#idCardTip").css({ "display": "none" });
+					$("#idCardTip").css({ "display": "none" });
+					resetFlag = true;
                 }
             });
         });
@@ -135,11 +134,11 @@
        
 
         function showError(formSpan, errorText) {
-				$("#" + formSpan).css({"border-color":"red"});
-				$("#" + formSpan + "Tip").empty();
-				$("#" + formSpan + "Tip").append(errorText);;
-				$("#" + formSpan + "Tip").css({"display":"inline"});
-			}
+			$("#" + formSpan).css({"border-color":"red"});
+			$("#" + formSpan + "Tip").empty();
+			$("#" + formSpan + "Tip").append(errorText);;
+			$("#" + formSpan + "Tip").css({"display":"inline"});
+		}
 
 
 
@@ -148,6 +147,21 @@
 		function resetPassword(){
 			var account = document.getElementById("account").value;
 			var idCardTemp = document.getElementById("idCard").value;
+
+			if(resetFlag == false){//前端判断错误不发送数据给后端
+				return;
+			}
+
+			if(account.length == 0){
+				showError('account', '账号不能为空');
+				return;
+			}
+
+			if(idCardTemp.length == 0){
+				showError('idCard', '身份证号码非法！');
+				return;
+			}
+
 			var idCard = window.btoa(idCardTemp);
 			//取后三位为初始密码
 			var password = window.btoa(idCardTemp.slice(-3));
@@ -167,9 +181,9 @@
 						alert("密码已成功重置")
 						window.location.href = "login.html"
 					}else if(data.code == 402){
-						alert("账户不存在");
+						showError('account', '账号不存在');
 					}else if(data.code == 406){
-						alert("身份证错误，重置失败");
+						showError('idCard', '身份证不匹配,重置失败');
 					}
 				}
 			});
