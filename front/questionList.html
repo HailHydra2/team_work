@@ -75,7 +75,7 @@
 											<h4>提问须知</h4>
 											<strong>注意！</strong>
 											请提出有意义的问题，请勿发表灌水内容。
-											<a href="#" class="alert-link">【问题管理条例】</a>
+											<!-- <a href="#" class="alert-link">【问题管理条例】</a> -->
 									</div>
 								</div>
 							</div>
@@ -170,11 +170,11 @@
 					</h1>
 					<nav class="mynav">
 						<ul>
-						  <li class="active"><a href="" onclick="changeKind('学业问答')">学业问答</a></li>
-						  <li><a href="" onclick="changeKind('就业指导')">就业指导</a></li>
-						  <li><a href="" onclick="changeKind('学习资源')">学习资源</a></li>
-						  <li><a href="" onclick="changeKind('生活相关')">生活相关</a></li>
-						  <li><a href="" onclick="changeKind('其他问题')">其他问题</a></li>
+							<li class="active"><a href="" onclick="changeKind('学业问答')">学业问答</a></li>
+							<li><a href="" onclick="changeKind('就业指导')">就业指导</a></li>
+							<li><a href="" onclick="changeKind('学习资源')">学习资源</a></li>
+							<li><a href="" onclick="changeKind('生活相关')">生活相关</a></li>
+							<li><a href="" onclick="changeKind('其他问题')">其他问题</a></li>
 						</ul>
 					  </nav>
 					  <span class="target" style="position: fixed;"></span>
@@ -285,6 +285,8 @@
 
 	//页面加载时启动页面
 	$(document).ready(function (e) {
+		//获取当前登录用户
+		var userVO = localStorage.getExpire("userVO");
 		if(userVO == null){
 			//登录过期
 			alert("登录过期，请重新登录");

@@ -461,9 +461,15 @@
 	<script src="assets/js/biz/isValidID.js"></script>
 	
 	<script type="text/javascript">
-
+		var userVO = localStorage.getExpire("userVO");
+		if(userVO == null){
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "../login.html";
+		}
 		$(document).ready(function (e) {
-
+			//获取当前登录用户
+			
 			var error = false;
 
 			$("#idCard").blur(function () {

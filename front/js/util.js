@@ -376,6 +376,19 @@ function updatePageButtons(){
     lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
 }
 
+
+//分类标签更新列表函数
+function changeKind(kind){
+    questionDiv.removeChild(questionList);
+    questionList = document.createElement("div");
+    questionDiv.insertBefore(questionList, pageButtons);
+    questionList.setAttribute("id","quetionList");
+    page.kind = kind;
+    page.pageIndex = 1;
+    page.sortApproach = "sortByKindAndHeat";
+    changeQuestionPage(page, path);
+}
+
 var userVO;
 //获取当前登录用户
 userVO = localStorage.getExpire("userVO");

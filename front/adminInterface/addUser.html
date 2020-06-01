@@ -487,12 +487,14 @@
         //身份证输入框
         var idCardTextBox = document.getElementById("idCard");
         //页面加载时启动页面
-        $(document).ready(function (e) {
+        //获取当前登录用户
+        var userVO = localStorage.getExpire("userVO");
             if (userVO == null) {
                 //登录过期
                 alert("登录过期，请重新登录");
                 window.location.href = "../login.html";
             }
+        $(document).ready(function (e) {
             //显示用户姓名
             document.getElementById("userName").innerHTML = userVO.user.name;
 

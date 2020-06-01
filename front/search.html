@@ -33,7 +33,7 @@
 											<h4>提问须知</h4>
 											<strong>注意！</strong>
 											请提出有意义的问题，请勿发表灌水内容。
-											<a href="#" class="alert-link">【问题管理条例】</a>
+											<!-- <a href="#" class="alert-link">【问题管理条例】</a> -->
 									</div>
 								</div>
 							</div>
@@ -176,6 +176,8 @@
 
     //页面加载时启动页面
     $(document).ready(function(e) {
+		//获取当前登录用户
+		var userVO = localStorage.getExpire("userVO");
 		if(userVO == null){
 			//登录过期
 			alert("登录过期，请重新登录");

@@ -420,6 +420,8 @@
 		<script>
 			//页面加载时启动页面
 			$(document).ready(function(e) {
+				//获取当前登录用户
+				var userVO = localStorage.getExpire("userVO");
 				if(userVO == null){
 					//登录过期
 					alert("登录过期，请重新登录");

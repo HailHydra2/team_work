@@ -381,13 +381,15 @@
         var blockNameTextBox = document.getElementById("blockName");
         //临时板块关键字
         var blockKeyWordTextBox = document.getElementById("keyWord");
-		//页面加载时启动页面
+        //页面加载时启动页面
+        //获取当前登录用户
+        var userVO = localStorage.getExpire("userVO");
+        if(userVO == null){
+            //登录过期
+            alert("登录过期，请重新登录");
+            window.location.href = "../login.html";
+        }
 		$(document).ready(function(e) {
-			if(userVO == null){
-				//登录过期
-				alert("登录过期，请重新登录");
-				window.location.href = "../login.html";
-			}
 			//显示用户姓名
             document.getElementById("userName").innerHTML = userVO.user.name;
             //获取临时板块

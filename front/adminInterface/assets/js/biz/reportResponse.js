@@ -1,8 +1,6 @@
 var HOST = 'http://localhost:8888';
 //var HOST = '';
 
-var delId = 1;
-
 var Service = {
   /* 删除记录 */
   delete(id) {

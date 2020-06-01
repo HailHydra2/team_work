@@ -34,7 +34,7 @@
 									<h4>提问须知</h4>
 									<strong>注意！</strong>
 									请提出有意义的问题，请勿发表灌水内容。
-									<a href="#" class="alert-link">【问题管理条例】</a>
+									<!-- <a href="#" class="alert-link">【问题管理条例】</a> -->
 								</div>
 							</div>
 						</div>
@@ -312,6 +312,17 @@
 		//页面加载时启动页面
 		$(document).ready(function (e) {
 			var error = false;
+			//获取当前登录用户
+			var userVO = localStorage.getExpire("userVO");
+			//获取用户
+			if (userVO == null) {//登录过期，返回登录页面
+				alert("登录过期,请重新登录");
+				window.location.href = "login.html";
+			} else {
+				var b = document.getElementById("infoName");
+				b.innerHTML = userVO.user.name;
+				initInfo(userVO);
+			}
 			$("#ID").blur(function () {
 				var account = $("#ID").val();
 				if (IdCardValidate(account) == false) {
@@ -326,17 +337,7 @@
 	
 
 		getBlock();
-		//获取当前登录用户
-		var userVO = localStorage.getExpire("userVO");
-		//获取临时板块
-		if (userVO == null) {//登录过期，返回登录页面
-			window.location.href = "login.html";
-		} else {
-			var b = document.getElementById("infoName");
-			b.innerHTML = userVO.user.name;
-			console.info(userVO);
-			initInfo(userVO);
-		}
+		
 
 		});
 
