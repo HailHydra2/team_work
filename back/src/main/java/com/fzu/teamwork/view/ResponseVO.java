@@ -16,4 +16,12 @@ public class ResponseVO {
     private String authorName;//回复者姓名
 
 
+    static public int getQuality(int likeNum, int disLikeNum, int reportNum){
+        if(reportNum > 10 && reportNum > 2*likeNum && disLikeNum > likeNum){
+            return -1;
+        }else if(likeNum > 10 && likeNum > 5*reportNum && likeNum > 3*disLikeNum){
+            return 1;
+        }
+        return 0;
+    }
 }

@@ -83,6 +83,8 @@ public class ResponseServiceImpl implements ResponseService{
         ResponseVO responseVO = new ResponseVO();
         //设置responseVO对象的response属性
         responseVO.setResponse(response);
+        responseVO.setQuality(ResponseVO.getQuality(response.getLikeNum(),
+                response.getDislikeNum(), response.getReportNum()));
         //根据外键contentId获取回复对象所对应的内容
         String content = contentDao.selectByPrimaryKey(response.getContentId()).getContent();
         //将内容赋到responseVO的content属性

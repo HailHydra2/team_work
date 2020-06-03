@@ -535,7 +535,20 @@
             //创建存放回复人姓名的<strong>标签
             var responser = document.createElement("strong");
 			responser.innerHTML = list[i].authorName;
+			responser.setAttribute("style","margin:30px 0");
 			responseBox.appendChild(responser);
+			//回复质量
+			var quality = document.createElement("span");
+			quality.setAttribute("padding","2em")
+			if(list[i].quality == 1){
+				quality.innerHTML = "推荐"
+				quality.setAttribute("style","background:rgb(122, 250, 17);color:rgb(137, 17, 250);padding:3px;margin:10px");
+			}else if(list[i].quality == -1){
+				quality.innerHTML = "危险";
+				quality.setAttribute("style","background:rgb(250, 18, 10);color:white;padding:3px;margin:10px");
+
+			}
+			responseBox.appendChild(quality);
             //创建存放回复内容的p标签
             var content = document.createElement("p");
             content.innerHTML = list[i].content;//问题描述
