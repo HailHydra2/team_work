@@ -27,26 +27,11 @@ function changeQuestionPage(page, path){
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             page = data.data;
-            console.info(page);
             updateList(page);
         }
     });
 }
 
-// //回复页面换页
-// function changeQuestionPage(page, path){
-//     $.ajax({
-//         url: path,
-//         type: "post", 
-//         data:JSON.stringify(page),
-//         contentType: 'application/json;charset=utf-8',
-//         success: function (data) {
-//             page = data.data;
-//             console.info(page);
-//             updateList(page);
-//         }
-//     });
-// }
 
 //将数据存储到缓存
 Storage.prototype.setExpire=(key, value, expire) =>{
@@ -277,7 +262,7 @@ function search(){
 
 //后台页面注销登录
 function adminExit(){
-    localStorage.setExpire("userVO",null,0);
+    localStorage.setExpire("userVO",null,10);
     location.href = "../login.html";
 }
 
@@ -436,6 +421,14 @@ function resetQuestTextBox(){
     $("#describeQue").css({ "border-color": "" });
     $("#inputQueTip").css({ "display": "none" });
     $("#describeQueTip").css({ "display": "none" });
+}
+
+//重置回复输入框样式
+function resetResponseTextBox(){
+    $("#cresponseContent").val("");
+    $("#cresponseContent").css({"border-color":""});
+    $("#cresponseContentTip").css({ "display": "none" });
+    $("#anonymousResp").attr("checked",false);
 }
 
 //输入文本框错误提示信息

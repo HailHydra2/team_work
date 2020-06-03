@@ -30,7 +30,6 @@ public class ResponseInAQuestion extends ResponseStrategy{
 
     //获取回复列表
     public List<Response> getResponseList(){
-        //log.info("page:{}",page);
         Map<String, Integer> map = new HashMap<>();
         map.put("questionId",questionId);
         //获取该页第一个回复的索引[（页码-1）*一页所包含的数量]
@@ -39,8 +38,6 @@ public class ResponseInAQuestion extends ResponseStrategy{
         map.put("count",responsePage.getCount());
         //查找id=questionId列表中start到start+count的子列表
         List<Response> responses = responseDao.selectSublistByQuestionId(map);
-        //List<Response> responses = responseDao.test();
-        //responses = responseDao.selectByExample(null);
         getButtonList();
         return responses;
     }

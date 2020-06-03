@@ -4,10 +4,7 @@ import com.fzu.teamwork.dao.AccountDataDao;
 import com.fzu.teamwork.dao.QuestionDao;
 import com.fzu.teamwork.dao.UserDao;
 import com.fzu.teamwork.model.*;
-import com.fzu.teamwork.util.Encryptor;
-import com.fzu.teamwork.util.ErrorStatus;
-import com.fzu.teamwork.util.IdCard;
-import com.fzu.teamwork.util.UserIdentity;
+import com.fzu.teamwork.util.*;
 import com.fzu.teamwork.view.UserVO;
 import io.swagger.annotations.Example;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +38,7 @@ public class UserServiceImpl implements UserService{
         AccountData accountData;
         //获取对应的AccountData
         accountData=accountDataDao.selectByPrimaryKey(user.getAccountDataId());
+        accountData.setLevel(accountData.getExperienceValue()/ ScoreNum.LEVEL_EXPERIENCE);
         String token = tokenService.getToken(user);//获取用户token
         //封装userVO
         userVO.setToken(token);

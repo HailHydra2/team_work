@@ -274,7 +274,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectSublistByQuestionId" parameterType="Map" resultType="com.fzu.teamwork.model.Response" resultMap="BaseResultMap">
-    select * from response where question_id=#{questionId} limit #{start},#{count}
+    select * from response where question_id=#{questionId}  order by like_num desc limit #{start},#{count}
   </select>
 
   <select id="selectSublistBeReported" parameterType="Map" resultType="com.fzu.teamwork.model.Response" resultMap="BaseResultMap">
