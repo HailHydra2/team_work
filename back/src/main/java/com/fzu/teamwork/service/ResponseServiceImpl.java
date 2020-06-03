@@ -56,10 +56,11 @@ public class ResponseServiceImpl implements ResponseService{
         if(type == 1){//获取某个问题回复列表的策略对象
             //实例化对应类型策略对象
             responseStrategy = new ResponseInAQuestion(questionId, page, responseDao);
-        }else if(type == 2){//获取被举报的问题列表的策略对象
-            //实例化对应类型策略对象
-            responseStrategy = new ResponseBeReported(responseDao);
         }
+//        else if(type == 2){//获取被举报的问题列表的策略对象
+//            //实例化对应类型策略对象
+//            responseStrategy = new ResponseBeReported(responseDao);
+//        }
     }
 
     //分页获取对应问题的回复列表

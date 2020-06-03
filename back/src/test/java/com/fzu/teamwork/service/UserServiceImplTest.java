@@ -9,6 +9,8 @@ import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.util.UserIdentity;
 import com.fzu.teamwork.view.UserVO;
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,19 +34,40 @@ class UserServiceImplTest {
     @Resource
     private AccountDataDao accountDataDao;
 
+    //已经存在用户id集合
+    Set<Integer> exitIds = new HashSet<>();
     //正确身份证列表
     private String[] idCards = {
-            "360102199003074111",
-            "360102199003077873",
-            "360102199003074998",
-            "36010219900307607X",
-            "360102199003079377",
-            "210102199003076798",
-            "210102199003075517",
-            "210102199003070935",
-            "210102199003074290",
-            "210102199003076173"
+            "650102190103078994",
+            "650102190103070896",
+            "650102190103074934",
+            "650102190103073317",
+            "650102199009072618",
+            "650102190103070415",
+            "650102190103075953",
+            "650102190103074256",
+            "650102190103076913",
+            "650102190103076550"
     };
+
+    @BeforeEach
+    public void getExitUsers(){
+        List<User> users;
+        users = userDao.selectByExample(null);
+        for(User u : users){
+            exitIds.add(u.getId());
+        }
+    }
+
+    @AfterEach
+    public void deleteTestUser(){
+        List<User> users = userDao.selectByExample(null);
+        for (User u : users){
+            if(!exitIds.contains(u.getId())){
+                userService.deleteUsers(u.getId());
+            }
+        }
+    }
 
     //添加用户，返回添加函数返回的状态码
     public int insertUser(User user){
@@ -70,7 +91,7 @@ class UserServiceImplTest {
     public void addUserRight(){
         User user = new User();
         //添加学生
-        user.setAccount("221701521");
+        user.setAccount("021701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("rightUser1");
@@ -111,7 +132,7 @@ class UserServiceImplTest {
         User user = new User();
         UserExample example = new UserExample();
         //添加用户
-        user.setAccount("221701521");
+        user.setAccount("021701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("exitUser1");
@@ -129,7 +150,7 @@ class UserServiceImplTest {
         Assert.assertEquals(0,userDao.selectByExample(example).size());
 
         //添加重复身份证
-        user1.setAccount("221701522");
+        user1.setAccount("021701522");
         user1.setIdCard(Encryptor.decrypt(user.getIdCard()));
         user1.setIdentity(UserIdentity.student);
         user1.setName("exitUser3");
@@ -160,7 +181,7 @@ class UserServiceImplTest {
         Assert.assertEquals(0,userDao.selectByExample(example).size());
 
         //添加身份证错误用户
-        user.setAccount("221701523");
+        user.setAccount("021701523");
         user.setIdCard("123");//错误身份证
         Assert.assertEquals(ErrorStatus.ID_CARD_ILLEGAL, insertUser(user));
         //错误用户信息没有插入数据库
@@ -194,7 +215,7 @@ class UserServiceImplTest {
         Assert.assertEquals(0,userDao.selectByExample(example).size());
 
         //添加身份证为空的用户信息
-        user.setAccount("221701522");
+        user.setAccount("021701522");
         user.setIdCard(null);//身份证置位空
         //返回状态码为身份证空状态码
         Assert.assertEquals(ErrorStatus.ID_CARD_NULL, insertUser(user));
@@ -231,7 +252,7 @@ class UserServiceImplTest {
         List<User> userList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             user = new User();
-            user.setAccount("22170152" + i);
+            user.setAccount("02170150" + i);
             user.setName("rightUsers" + i);
             String idCard = idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
@@ -261,14 +282,14 @@ class UserServiceImplTest {
         List<String> failedMessageList;//错误消息列表
         List<User> userList = new ArrayList<>();
         //添加一个正确的用户到数据库
-        user1.setAccount("221701521");
+        user1.setAccount("021701521");
         user1.setIdCard("220102199003076079");
         user1.setIdentity(UserIdentity.student);
         user1.setName("rightUser1");
         insertUser(user1);
         for(int i = 0; i < 10; i++){
             user = new User();
-            user.setAccount("22170152" + i);
+            user.setAccount("02170152" + i);
             user.setName("errorUsers" + i);
             String idCard =  idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
@@ -313,7 +334,7 @@ class UserServiceImplTest {
         //添加10个正确用户数据
         for(int i = 0; i < 3; i++){
             user = new User();
-            user.setAccount("22170152" + i);
+            user.setAccount("01270152" + i);
             user.setName("rightUsers" + i);
             String idCard = idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
@@ -325,7 +346,7 @@ class UserServiceImplTest {
         //添加10个错误用户数据
         for(int i = 0; i < 3; i++){
             user = new User();
-            user.setAccount("22170162" + i);
+            user.setAccount("01270162" + i);
             user.setName("errorUsers" + i);
             String idCard = "12345";//错误身份证号
             user.setIdCard(Encryptor.encrypt(idCard));
@@ -376,7 +397,7 @@ class UserServiceImplTest {
     public void deleteUsers(){
         User user = new User();
         //添加用户
-        user.setAccount("221701521");
+        user.setAccount("012701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("rightUser1");
@@ -396,7 +417,7 @@ class UserServiceImplTest {
         List<Integer> userIdList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
             user = new User();
-            user.setAccount("22170152" + i);
+            user.setAccount("01270152" + i);
             user.setName("rightUsers" + i);
             String idCard = idCards[i];
             user.setIdCard(Encryptor.encrypt(idCard));
@@ -446,7 +467,7 @@ class UserServiceImplTest {
     public void changePassword(){
         User user = new User();
         //添加学生
-        user.setAccount("221701521");
+        user.setAccount("012701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("changePwdUser1");
@@ -485,7 +506,7 @@ class UserServiceImplTest {
         User user = new User();
         UserVO userVO;
         //添加学生
-        user.setAccount("221701521");
+        user.setAccount("012701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("resetPwdUser1");
@@ -499,24 +520,24 @@ class UserServiceImplTest {
         //账号正确，身份证不匹配
         user.setIdCard(Encryptor.encrypt("1233"));
         user.setPassword(expectPwd);
-        //重置密码，函数返回值为-1
-        Assert.assertEquals(-1, userService.resetPassword(user));
+        //重置密码，函数返回值为ErrorStatus.ID_CARD_NOT_MATCH
+        Assert.assertEquals(ErrorStatus.ID_CARD_NOT_MATCH, userService.resetPassword(user));
         user = userDao.selectByPrimaryKey(user.getId());//获取数据库最新的数据
         //密码与旧密码一致
         Assert.assertEquals(oldPwd, user.getPassword());
 
         //正确的重置密码
-        //判断函数返回值是否为1
+        //判断函数返回值是否为0
         user.setPassword(expectPwd);
-        Assert.assertEquals(1, userService.resetPassword(user));
+        Assert.assertEquals(0, userService.resetPassword(user));
         user = userDao.selectByPrimaryKey(user.getId());//获取最新的用户信息
         Assert.assertEquals(expectPwd, user.getPassword());//验证密码是否被成功重置
 
         //重置不存在的账号
         user.setAccount("1223");
         user.setPassword(expectPwd);
-        //判断函数返回值是否为-2
-        Assert.assertEquals(-2,userService.resetPassword(user));
+        //判断函数返回值是否为ErrorStatus.ACCOUNT_NOT_EXIT
+        Assert.assertEquals(ErrorStatus.ACCOUNT_NOT_EXIT,userService.resetPassword(user));
 
         //删除新添加的测试用户
         userService.deleteUsers(user.getId());
@@ -528,7 +549,7 @@ class UserServiceImplTest {
         Random random = new Random(1);
         User user = new User();
         User user1;
-        user.setAccount("221701521");
+        user.setAccount("012701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("getUser1");
@@ -558,7 +579,7 @@ class UserServiceImplTest {
     public void getUserByAccount(){
         User user = new User();
         User user1;
-        user.setAccount("221701521");
+        user.setAccount("012701521");
         user.setIdCard("220102199003076079");
         user.setIdentity(UserIdentity.student);
         user.setName("getUser2");

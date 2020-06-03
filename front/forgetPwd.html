@@ -172,6 +172,9 @@
 					}else if(data.code == 406){
 						showError('idCard', '身份证不匹配,重置失败');
 					}
+				},
+				error:function(){
+					alert("服务器异常，请稍后再试");
 				}
 			});
 		}

@@ -256,7 +256,11 @@ class ResponseServiceImplTest {
         reportService.insertResponseReport(reportResponse2);
         reportService.insertResponseReport(reportResponse2);
         //检验被举报两次的回复是否排在被举报一次的回复的前面,预期第一个回复的举报数是2第二个回复的举报数是1
-        Assert.assertEquals((long)reportService.getReportResponse().get(0).getReportNum(),(long)reportService.getReportResponse().get(1).getReportNum() + 1);
+        List<Response> responseList = reportService.getReportResponse();
+        for(int i = 1; i < responseList.size(); i++){
+            Assert.assertTrue(responseList.get(i-1).getReportNum()
+                    > responseList.get(i).getReportNum());
+        }
     }
 
     @Test

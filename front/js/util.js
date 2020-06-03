@@ -28,6 +28,9 @@ function changeQuestionPage(page, path){
         success: function (data) {
             page = data.data;
             updateList(page);
+        },
+        error:function(response){
+            alert("服务器异常，请稍后再试");
         }
     });
 }
@@ -162,6 +165,9 @@ function postQuestion(){
             $("#inputQue").innerHTML = "";
             $("#describeQue").innerHTML = "";
             location.replace(location.href);
+        },
+        error:function(){
+            alert("服务器异常,请稍后再试");
         }
     });
 }
@@ -194,6 +200,23 @@ function getBlock(){
                 //隐藏临时板块按钮
                 tempBlock.setAttribute("style","display:none");
             }
+        },
+        error:function(response){
+            if(response.status == 400 || response.status == 405){
+                alert("登录过期,请重新登录");
+                location.href = "login.html";
+            }else if(response.status == 401){
+                alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+                location.href = "login.html";
+            }else if(response.status == 402){
+                alert("账号被注销,请联系管理员");
+                location.href = "login.html";
+            }else if(response.status == 403){
+                alert("权限不足");
+                window.location.go(-1);
+            }else{
+                alert("服务器错误，请稍后再试");
+            }
         }
     });
 }
@@ -217,6 +240,9 @@ function getBlockModel(){
             }
             //初始化界面
             initBlock();
+        },
+        error:function(){
+            alert("服务器异常,请稍后再试");
         }
     });
 }

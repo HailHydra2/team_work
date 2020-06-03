@@ -461,7 +461,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -671,7 +671,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -718,7 +718,10 @@
 					window.location.href = "index.html";
 				}
 				updateUser(data.data)
-        	}
+        	},
+			error:function(){
+				alert("服务器异常，请稍后再试");
+			}
 		});
 	}
 
@@ -764,7 +767,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -817,7 +820,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -908,7 +911,10 @@
 					alert(data.message);
 					window.location.reload(true);
 				}
-        	}
+        	},
+			error:function(){
+				alert("服务器异常，请稍后再试");
+			}
 		});
 	}
 
@@ -1013,6 +1019,9 @@ function getTheSameKindQuestion(kind){
 			success: function (data) {
 				questionPage = data.data;
 				initSameKindQuestion(questionPage.questions)
+			},
+			error:function(){
+				alert("服务器异常，请稍后再试");
 			}
 		});
 }

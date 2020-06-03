@@ -2,6 +2,7 @@ package com.fzu.teamwork.service;
 
 import com.fzu.teamwork.model.User;
 import com.fzu.teamwork.util.Encryptor;
+import com.fzu.teamwork.util.ErrorStatus;
 import com.fzu.teamwork.util.UserIdentity;
 import com.fzu.teamwork.view.UserVO;
 import org.junit.Assert;
@@ -56,17 +57,17 @@ class LoginServiceImplTest {
         UserVO u = loginService.login(user);
         //验证登录结果
         Assert.assertNotNull(u);
-        Assert.assertEquals(2, (long)u.getUser().getMark());
+        Assert.assertEquals(0, (long)u.getUser().getMark());
 
         //验证密码错误
         user.setPassword(Encryptor.decrypt("123"));
         u = loginService.login(user);
         Assert.assertNotNull(u);
-        Assert.assertEquals(1, (long)u.getUser().getMark());
+        Assert.assertEquals(ErrorStatus.PASSWORD_ERROR, (long)u.getUser().getMark());
 
         //登录不存在账号
         user.setAccount("123");
         u = loginService.login(user);
-        Assert.assertEquals(0, (long)u.getUser().getMark());
+        Assert.assertEquals(ErrorStatus.ACCOUNT_NOT_EXIT, (long)u.getUser().getMark());
     }
 }

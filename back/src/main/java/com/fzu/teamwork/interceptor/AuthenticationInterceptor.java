@@ -57,19 +57,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     //未登录用户
                     //设置响应状态码
                     response.setStatus(ErrorStatus.NOT_LOGGED_IN);
-                    System.out.println("没有token");
-                    //response.sendRedirect("https://www.jianshu.com/p/e88d3f8151db");
                     //停止后续访问
                     return false;
                 }else{//有token
                     String userId;
                     try {//根据token获取uid
-                        //System.out.println(JWT.decode(token).getAudience().get(0));
                         userId = JWT.decode(token).getAudience().get(0);
                     } catch (JWTDecodeException j) {
                         //错误的token
                         response.setStatus(ErrorStatus.BAD_TOKEN);
-                        System.out.println("token错误");
                         return false;
                     }
 
@@ -78,14 +74,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                         //用户不存在
                         //设置响应状态码
                         response.setStatus(ErrorStatus.ACCOUNT_NOT_EXIT);
-                        System.out.println("用户不存在");
                         //终止后续访问
                         return false;
                     }else{
                         String token2 = tokenService.getToken(user);
                         if(!token2.equals((token))){
                             response.setStatus(ErrorStatus.PASSWORD_ERROR);
-                            System.out.println("token错误");
                             return false;
                         }
                     }
@@ -100,11 +94,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 //设置响应状态码
                 response.setStatus(ErrorStatus.BEYOND_IDENTITY_LIMIT);
                 //终止后续访问
-                System.out.println("权限不足，需要管理员权限");
                 return false;
             }
         }
-        System.out.println(method.isAnnotationPresent(UserLimit.class));
         if(method.isAnnotationPresent(UserLimit.class)){//需要普通用户权限
             if(!user.getIdentity().equals(UserIdentity.student)
                     && !user.getIdentity().equals(UserIdentity.teacher)){
@@ -112,7 +104,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 //设置响应状态码
                 response.setStatus(ErrorStatus.BEYOND_IDENTITY_LIMIT);
                 //终止后续访问
-                System.out.println("权限不足,需要普通用户权限");
                 return false;
             }
         }
