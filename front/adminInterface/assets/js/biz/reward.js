@@ -1,5 +1,3 @@
-
-
 jQuery(function ($) {
   var grid_selector = "#grid-table";
   var pager_selector = "#grid-pager";
