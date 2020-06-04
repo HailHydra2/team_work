@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
    <head>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       	<title>校园帮帮网-个人中心</title>
-      	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       	<!-- 引入 Bootstrap -->
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -30,7 +30,7 @@
 											<h4>提问须知</h4>
 											<strong>注意！</strong>
 											请提出有意义的问题，请勿发表灌水内容。
-											<a href="#" class="alert-link">【问题管理条例】</a>
+											<!-- <a href="#" class="alert-link">【问题管理条例】</a> -->
 									</div>
 								</div>
 							</div>
@@ -40,17 +40,20 @@
 							<div class="form-group">
 								<label for="inputQue" class="col-sm-2 control-label">问题</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="inputQue" maxlength="200"/>
+									<input type="text" class="form-control" id="inputQue" maxlength="200" placeholder="200字以内"/>
+									<span id="inputQueTip" style="display:none;color:red;"></span>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="describeQue" class="col-sm-2 control-label">描述</label>
 								<div class="col-sm-9">
-									<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%" maxlength="2000"></textarea>
+									<textarea class="form-control" rows="3" id="describeQue"
+									 style="max-width: 100%" maxlength="2000" placeholder="2000字以内"></textarea>
+									 <span id="describeQueTip" style="display:none;color:red;"></span>
 								</div>
 							  </div>
 							  <div class="form-group">
-								<label for="questionType" class="col-sm-2 control-label">问题类型</label>
+								<label for="questionType" class="col-sm-2 control-label" >问题类型</label>
 								<div class="col-sm-9">
 								<select class="form-control" id="selectKind">
 								  <option>学业问答</option>
@@ -66,7 +69,7 @@
 							</div>
 							<div style="text-align:center">
 								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue" onclick="resetQuestTextBox();">关 闭</button>
 							</div>
 						</form>
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
@@ -237,6 +240,7 @@
 		//获取当前登录用户
 		var userVO = localStorage.getExpire("userVO");
 		if(userVO == null){//登录过期，返回登录页面
+			alert("登录过期，请重新登录");
 			window.location.href = "login.html";
 		}else{
 			var b = document.getElementById("infoName");
@@ -246,11 +250,12 @@
 			console.info(userVO.user.name);
 			initInfo(userVO);
 		}
-		path = "http://118.190.90.167:8888/userQuestions/" + userVO.user.id;
+		path = "http://localhost:8888/userQuestions/" + userVO.user.id;
 		//首页按时间排序
 		changeQuestionPage(page, path);
 		//获取临时板块
 		getBlock();
+		questTextBoxErrorInit();
     });
 	
     

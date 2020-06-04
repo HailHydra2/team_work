@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
    <head>
+	   <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       <title>校园帮帮网-登陆</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       <!-- 引入 Bootstrap -->
       <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -51,20 +51,17 @@
 						
 					
 							<input type="text" id="account" placeholder="输入账号（9位字母与数字任意组合）"
-								class="form-control" onkeyup="value=value.replace(/[\W]/g,'') "
-								onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
-								oninput="if(value.length>9) value=value.slice(0,9)" />
+								class="form-control" />
 							
 								<span id="accountTip" style="display:none;color:red;"></span>
 						</class>
-
 					</div>
 			
 				<div class="form-group">
 					 <label for="inputEmail3" class="col-sm-4 control-label">身份证号</label>
 					<div class="col-sm-5">
 						<input type="text" id="idCard" placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
-						class="form-control" oninput="value= value.replace(/[^\d|xX]/g,'')"
+						class="form-control" 
 						label="身份证号" maxlength="18" />
 						<span id="idCardTip" style="display:none;color:red;"></span>
 					</div>
@@ -72,9 +69,9 @@
 				
 				<div class="form-group">
 					<div class="col-sm-offset-5 col-sm-10" style="margin-top:10px">
-						 <a href="login.html" class="btn btn-default btn-success">返回登陆</a>
-						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						 <button type="botton" class="btn btn-default" onclick="resetPassword();">重置密码</button>
+						<button type="botton" class="btn btn-default  btn-success" onclick="resetPassword();">重置密码</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 <a href="login.html" class="btn btn-default">返回登陆</a>
 					</div>
 				</div>
 			</form> 
@@ -85,63 +82,73 @@
 	</div>
 	<script src="adminInterface/assets/js/biz/isValidID.js"></script>
 	<script>
- $(document).ready(function (e) {
-        
-          
-            var error = false;
-
-
-            $("#account").blur(function () {
+		var resetFlag;//是否重置的标志位（前端判断错误不发送数据给后端）
+		$(document).ready(function (e) {
+			var error = false;
+			$("#account").blur(function () {
+               // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var account = $("#account").val();
-                if (account.length<9) {
-                    showError('account', '账号位数不能小于9位！');
-                    error = true;
-                }
-                else {
+                var testAccount= new RegExp("^[0-9A-Za-z]+$");
+                if (!testAccount.test(account)) {
+                    if(account.length == 0){
+                        showError('account', '账号不能为空');
+						 error = true;
+                    }else{
+                    	showError('account', '账号只能由字母和数字组成');
+						error = true;
+					}
+					resetFlag = false;
+                }else {
                     $("#account").css({ "border-color": "green" });
-                    $("#accountTip").css({ "display": "none" });
-                }
-            });
-
-
-            
-        
-
-            
-        $("#idCard").blur(function () {
-                var account = $("#idCard").val();
-                if (account.length<18) {
-                    showError('idCard', '身份证号位数不能小于18位！');
-                    error = true;
-                }
-                else if( IdCardValidate(account)==false){
-					showError('idCard', '身份证号码非法！');
-					error = true;
+					$("#accountTip").css({ "display": "none" });
+					resetFlag = true;
 				}
-                else {
-                    $("#idCard").css({ "border-color": "green" });
-                    $("#idCardTip").css({ "display": "none" });
-                }
+				questTextBoxErrorInit();
             });
-        });
+            
+			$("#idCard").blur(function () {
+				var account = $("#idCard").val();
+				if (account.length<18) {
+					showError('idCard', '身份证号位数不能小于18位！');
+					error = true;
+					resetFlag = false;
+				}else if( IdCardValidate(account)==false){
+					showError('idCard', '身份证号码非法');
+					error = true;
+					resetFlag = false;
+				}else {
+					$("#idCard").css({ "border-color": "green" });
+					$("#idCardTip").css({ "display": "none" });
+					resetFlag = true;
+				}
+			});
+		});
 
-
-       
-
-        function showError(formSpan, errorText) {
+			function showError(formSpan, errorText) {
 				$("#" + formSpan).css({"border-color":"red"});
 				$("#" + formSpan + "Tip").empty();
 				$("#" + formSpan + "Tip").append(errorText);;
 				$("#" + formSpan + "Tip").css({"display":"inline"});
 			}
-
-
-
-
 		//重置密码
 		function resetPassword(){
 			var account = document.getElementById("account").value;
 			var idCardTemp = document.getElementById("idCard").value;
+
+			if(resetFlag == false){//前端判断错误不发送数据给后端
+				return;
+			}
+
+			if(account.length == 0){
+				showError('account', '账号不能为空');
+				return;
+			}
+
+			if(idCardTemp.length == 0){
+				showError('idCard', '身份证号码非法！');
+				return;
+			}
+
 			var idCard = window.btoa(idCardTemp);
 			//取后三位为初始密码
 			var password = window.btoa(idCardTemp.slice(-3));
@@ -152,7 +159,7 @@
 				"idCard":idCard
 			};
 			$.ajax({
-				url: "http://118.190.90.167:8888/resetPwd",
+				url: "http://localhost:8888/resetPwd",
 				type: "put", 
 				contentType: 'application/json;charset=utf-8',
 				data:JSON.stringify(user),
@@ -161,10 +168,13 @@
 						alert("密码已成功重置")
 						window.location.href = "login.html"
 					}else if(data.code == 402){
-						alert("账户不存在");
+						showError('account', '账号不存在');
 					}else if(data.code == 406){
-						alert("身份证错误，重置失败");
+						showError('idCard', '身份证不匹配,重置失败');
 					}
+				},
+				error:function(){
+					alert("服务器异常，请稍后再试");
 				}
 			});
 		}

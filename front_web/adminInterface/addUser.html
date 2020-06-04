@@ -261,11 +261,9 @@
                                     </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" id="account" placeholder="输入账号（9位字母与数字任意组合）"
-                                            class="col-xs-10 col-sm-5" onkeyup="value=value.replace(/[\W]/g,'') "
-                                            onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
-                                            oninput="if(value.length>9) value=value.slice(0,9)" />
-                                            <span id="accountTip" style="display:none;color:red;"></span>
+                                        <input type="text" id="account" placeholder="账号（字母与数字任意组合）"
+                                            class="col-xs-10 col-sm-5" />
+                                        <span id="accountTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -306,9 +304,9 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="idCard" placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
-                                            class="col-xs-10 col-sm-5" oninput="value= value.replace(/[^\d|xX]/g,'')"
-                                            label="身份证号" maxlength="18" />
-                                            <span id="idCardTip" style="display:none;color:red;"></span>
+                                            class="col-xs-10 col-sm-5" 
+                                            label="身份证号"/>
+                                        <span id="idCardTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -330,9 +328,7 @@
                                         </small>
                                     </h1>
                                 </div><!-- /.page-header -->
-                                <div class="col-sm-9">
-
-
+                                <div class="col-sm-13">
                                     <div class="space-4"></div>
                                     <div class="col-xs-12 col-sm-6 widget-container-span">
                                         <div class="widget-box">
@@ -354,19 +350,19 @@
                                             </div>
                                         </div>
 
-
-
-
                                     </div>
-
-
-
-                                    <div class="space-5"></div>
-                                    <div class="space-30"></div>
-                                    <label for="fileinp" class="col-sm-3 control-label no-padding-right">
-
+                                    <label for="fileinp" class="col-sm-5 control-label no-padding-right">
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                           <h4>
+                                               表格格式
+                                           </h4> <strong>注意!</strong>
+                                           上传表格的表头应为account、name、idCard、identity,
+                                           分别对应账号(学号)、姓名、身份证、身份(student、teacher、administrator)
+                                       </div>
                                         <input class="btn btn-info" type="button" id="btn" value="点我上传"
-                                            onclick="$('#fileUploader').click();"> <span id="text">请上传EXCEL文档</span>
+                                            onclick="$('#fileUploader').click();" title="(表头为account、name、idCard、identity)">
+                                             <label id="text">请上传EXCEL文档</label>
 
                                         <input type="file" id="fileUploader" style="display:none" name="fileUploader"
                                             accept=".xls, .xlsx" />
@@ -488,97 +484,116 @@
         var nameTextBox = document.getElementById("name");
         //身份证输入框
         var idCardTextBox = document.getElementById("idCard");
+        //添加用户输入框数据是否正确标志位
+        var addFlag;
         //页面加载时启动页面
-        $(document).ready(function (e) {
+        //获取当前登录用户
+        var userVO = localStorage.getExpire("userVO");
             if (userVO == null) {
                 //登录过期
                 alert("登录过期，请重新登录");
                 window.location.href = "../login.html";
             }
+            if(userVO.user.identity != "administrator"){
+                //管理员访问前台页面
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }
+        $(document).ready(function (e) {
             //显示用户姓名
             document.getElementById("userName").innerHTML = userVO.user.name;
 
             var error = false;
 
-
+           
             $("#account").blur(function () {
+               // var testAccount = /^[0-9A-Za-z] {9}$/; 
                 var account = $("#account").val();
-                if (account.length<9) {
-                    showError('account', '账号位数不能小于9位！');
+                var testAccount= new RegExp("[0-9A-Za-z]+$");
+                if (!testAccount.test(account)) {
+                    if(account.length == 0){
+                        showError("account","账号不能为空");
+                    }else{
+                        showError('account', '账号只能为字母数字串');
+                    }
                     error = true;
-                }
-                else {
+                    addFlag = false;
+                }else {
                     $("#account").css({ "border-color": "green" });
                     $("#accountTip").css({ "display": "none" });
+                    addFlag = true;
                 }
             });
 
 
             $("#name").blur(function () {
                 var account = $("#name").val();
-                if (account.length==0) {
-                    showError('name', '姓名非空！');
+                if (account.length == 0) {
+                    showError('name', '姓名不能为空');
                     error = true;
+                    addFlag = false;
                 }
                 else {
                     $("#name").css({ "border-color": "green" });
                     $("#nameTip").css({ "display": "none" });
+                    addFlag = true;
                 }
             });
 
-            
-            $("#account").blur(function () {
-                var account = $("#account").val();
-                if (account.length<9) {
-                    showError('account', '账号位数不能小于9位！');
+            $("#idCard").blur(function () {
+                var idCard = $("#idCard").val();
+                idCard = idCard.replace(/^\s*|\s*$/g,"");
+               if (IdCardValidate(idCard) == false) {
+                    if(idCard.length == 0){
+                        showError("idCard","身份证不能为空");
+                    }else{
+                        showError('idCard', '身份证非法');
+                    }
                     error = true;
-                }
-                else {
-                    $("#account").css({ "border-color": "green" });
-                    $("#accountTip").css({ "display": "none" });
-                }
-            });
-
-
-
-
-            
-        $("#idCard").blur(function () {
-                var account = $("#idCard").val();
-                if (account.length<18) {
-                    showError('idCard', '身份证号位数不能小于18位！');
-                    error = true;
-                }
-                else if( IdCardValidate(account)==false){
-					showError('idCard', '身份证号码非法！');
-					error = true;
-				}
-                else {
+                    addFlag = false;
+                }else {
                     $("#idCard").css({ "border-color": "green" });
                     $("#idCardTip").css({ "display": "none" });
+                    addFlag = true;
                 }
             });
         });
 
 
-       
+
 
         function showError(formSpan, errorText) {
-				$("#" + formSpan).css({"border-color":"red"});
-				$("#" + formSpan + "Tip").empty();
-				$("#" + formSpan + "Tip").append(errorText);;
-				$("#" + formSpan + "Tip").css({"display":"inline"});
-			}
+            $("#" + formSpan).css({ "border-color": "red" });
+            $("#" + formSpan + "Tip").empty();
+            $("#" + formSpan + "Tip").append(errorText);;
+            $("#" + formSpan + "Tip").css({ "display": "inline" });
+        }
 
         //新增用户
         function addAUser() {
+            if(addFlag == false){//前端判断错误，不发送数据到后端
+                return;
+            }
             var account = accountTextBox.value;
             var identiy = identityOption.options[identityOption.selectedIndex].value;
             var name = nameTextBox.value;
             var idCardTemp = idCardTextBox.value;
+            idCardTemp = idCardTemp.replace(/^\s*|\s*$/g,"");            
+            if(account.length == 0){
+                showError("account","账号不能为空");
+                return;
+            }
+            if(name.length == 0){
+                showError('name', '姓名不能为空');
+                return;
+            }
+            if(idCardTemp.length == 0){
+                showError("idCard","身份证不能为空");
+                return;
+            }
             var idCard = window.btoa(idCardTemp);
             var password = window.btoa(idCardTemp.slice(-3));
-
+            
             var user = {
                 "account": account,
                 "identity": identiy,
@@ -588,7 +603,7 @@
             };
 
             $.ajax({
-                url: "http://118.190.90.167:8888/users",
+                url: "http://localhost:8888/users",
                 type: "post",
                 contentType: 'application/json;charset=utf-8',
                 beforeSend: function (request) {
@@ -600,11 +615,35 @@
                         alert("新增成功");
                         location.reload();
                     } else {//添加失败
-                        alert(data.message);
+                        if(data.code == 415){
+                            showError('idCard', '身份证非法');
+                        }else if(data.code == 414){
+                            showError("account","账号非法");
+                        }else if(data.code == 412){
+                            showError("account","该账号(学号)已被注册");
+                        }else if(data.code == 413){
+                            showError('idCard', '身份证已被注册');
+                        }else{
+                            alert(data.message);
+                        }
                     }
                 },
-                error: function () {
-                    alert("服务器异常，请稍后再试");
+                error:function(response){
+                    if(response.status == 400 || response.status == 405){
+                        alert("登录过期,请重新登录");
+                        location.href = "login.html";
+                    }else if(response.status == 401){
+                        alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+                        location.href = "login.html";
+                    }else if(response.status == 402){
+                        alert("账号被注销,请联系管理员");
+                        location.href = "login.html";
+                    }else if(response.status == 403){
+                        alert("权限不足");
+                        window.location.go(-1);
+                    }else{
+                        alert("服务器错误，请稍后再试");
+                    }
                 }
             });
         }
@@ -666,7 +705,7 @@
         function encryption(list) {
             for (var i = 0; i < list.length; i++) {
                 var idCard = "" + list[i]["idCard"];
-                console.info(idCard);
+                idCard = idCard.replace(/^\s*|\s*$/g,"");
                 list[i]["password"] = window.btoa(idCard.slice(-3));
                 list[i]["idCard"] = window.btoa(list[i]["idCard"]);
             }
@@ -676,7 +715,7 @@
         function addUsers(list) {
             var info = document.getElementById("addInfo");
             $.ajax({
-                url: "http://118.190.90.167:8888/userList",
+                url: "http://localhost:8888/userList",
                 type: "post",
                 contentType: 'application/json;charset=utf-8',
                 beforeSend: function (request) {

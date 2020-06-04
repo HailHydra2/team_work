@@ -240,7 +240,8 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="blockName" placeholder="输入临时版块名"
-                                            class="col-xs-10 col-sm-5" />
+                                            class="form-control" style="width:400px;"/>
+                                            <span id="blockNameTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
 
@@ -252,7 +253,8 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" id="keyWord" placeholder="输入关键词"
-                                            class="col-xs-10 col-sm-5" />
+                                        class="form-control" style="width:400px;"/>
+                                        <span id="keyWordTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
                             </form>
@@ -381,19 +383,62 @@
         var blockNameTextBox = document.getElementById("blockName");
         //临时板块关键字
         var blockKeyWordTextBox = document.getElementById("keyWord");
-		//页面加载时启动页面
+        //页面加载时启动页面
+        //获取当前登录用户
+        var userVO = localStorage.getExpire("userVO");
+        //新增临时板块标志位
+        var addFlag;
+        if(userVO == null){
+            //登录过期
+            alert("登录过期，请重新登录");
+            window.location.href = "../login.html";
+        }
+        if(userVO.user.identity != "administrator"){
+            //管理员访问前台页面
+            alert("抱歉,您没有访问权限");
+            window.history.back(); 
+        }
 		$(document).ready(function(e) {
-			if(userVO == null){
-				//登录过期
-				alert("登录过期，请重新登录");
-				window.location.href = "../login.html";
-			}
 			//显示用户姓名
             document.getElementById("userName").innerHTML = userVO.user.name;
             //获取临时板块
             getBlockModel();
 
+            var error = false;
+			$("#blockName").blur(function () {
+               // var testAccount = /^[0-9A-Za-z] {9}$/; 
+               var blockName = $("#blockName").val();
+               if(blockName.length == 0){
+                   showError('blockName', '板块名不能为空');
+                    error = true;
+                    addFlag = false;
+               }else {
+                   $("#blockName").css({ "border-color": "green" });
+                   $("#blockNameTip").css({ "display": "none" });
+                   addFlag = true;
+               }
+            });
+            
+            $("#keyWord").blur(function () {
+               var keyWord = $("#keyWord").val();
+               if(keyWord.length == 0){
+                    showError('keyWord', '关键字不能为空');
+                    error = true;
+                    addFlag = false;
+               }else {
+                   $("#keyWord").css({ "border-color": "green" });
+                   $("#keyWordTip").css({ "display": "none" });
+                   addFlag = true;
+               }
+            });  
         });
+
+        function showError(formSpan, errorText) {
+            $("#" + formSpan).css({"border-color":"red"});
+            $("#" + formSpan + "Tip").empty();
+            $("#" + formSpan + "Tip").append(errorText);;
+            $("#" + formSpan + "Tip").css({"display":"inline"});
+        }
         
         function initBlock(){
             if(tempBlock == null){
@@ -421,14 +466,25 @@
         }
 
         function addBlock(){
+            if(addFlag == false){//板块名或关键字为空不发送数据到后端
+                return;
+            }
             var blockName = blockNameTextBox.value;
             var keyWord = blockKeyWordTextBox.value;
+            if(blockName.length == 0){
+                showError('blockName', '板块名不能为空');
+                return;
+            }
+            if(keyWord.length == 0){
+                showError("keyWord", "关键字不能为空");
+                return;
+            }
             var block = {
                 "blockName":blockName,
                 "keyWord":keyWord
             };
             $.ajax({
-                url: "http://118.190.90.167:8888/block",
+                url: "http://localhost:8888/block",
                 type: "post", 
                 contentType: 'application/json;charset=utf-8',
                 beforeSend: function (request) {
@@ -439,15 +495,29 @@
                     alert(data.message);
                     location.reload();
                 },
-                error:function(){
-                    alert("服务器异常,请稍后再试");
+                error:function(response){
+                    if(response.status == 400 || response.status == 405){
+                        alert("登录过期,请重新登录");
+                        location.href = "login.html";
+                    }else if(response.status == 401){
+                        alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+                        location.href = "login.html";
+                    }else if(response.status == 402){
+                        alert("账号被注销,请联系管理员");
+                        location.href = "login.html";
+                    }else if(response.status == 403){
+                        alert("权限不足");
+                        window.location.go(-1);
+                    }else{
+                        alert("服务器错误，请稍后再试");
+                    }
                 }
             });
         }
 
         function deleteBlock(){
             $.ajax({
-                url: "http://118.190.90.167:8888/block",
+                url: "http://localhost:8888/block",
                 type: "delete", 
                 contentType: 'application/json;charset=utf-8',
                 beforeSend: function (request) {

@@ -27,26 +27,19 @@ function changeQuestionPage(page, path){
         contentType: 'application/json;charset=utf-8',
         success: function (data) {
             page = data.data;
-            console.info(page);
             updateList(page);
+        },
+        error:function(response){
+            if(response.status == 403){
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }else{
+                alert("服务器错误，请稍后再试");
+            }
         }
     });
 }
 
-// //回复页面换页
-// function changeQuestionPage(page, path){
-//     $.ajax({
-//         url: path,
-//         type: "post", 
-//         data:JSON.stringify(page),
-//         contentType: 'application/json;charset=utf-8',
-//         success: function (data) {
-//             page = data.data;
-//             console.info(page);
-//             updateList(page);
-//         }
-//     });
-// }
 
 //将数据存储到缓存
 Storage.prototype.setExpire=(key, value, expire) =>{
@@ -135,6 +128,17 @@ function postQuestion(){
     var content = $.trim($("#describeQue").val());
     var kindIndex = $('#selectKind').get(0).selectedIndex + 1;
     var anonymousFlag = 0;//是否匿名（默认不匿名）
+
+    if(title.length == 0){
+        showError('inputQue', '标题不能为空');
+        return;
+    }
+
+    if(content.length == 0){
+        showError('describeQue', '描述不能为空');
+        return;
+    }
+
     if(document.getElementById("anonymousQuest").checked){
         anonymousFlag = 1;
     }
@@ -152,9 +156,8 @@ function postQuestion(){
             "anonymous":anonymousFlag
         }
     }
-    console.info(question);
     $.ajax({
-        url: "http://118.190.90.167:8888/question",
+        url: "http://localhost:8888/question",
         type: "post", 
         data:JSON.stringify(question),
         beforeSend: function (request) {
@@ -167,6 +170,9 @@ function postQuestion(){
             $("#inputQue").innerHTML = "";
             $("#describeQue").innerHTML = "";
             location.replace(location.href);
+        },
+        error:function(){
+            alert("服务器异常,请稍后再试");
         }
     });
 }
@@ -177,13 +183,19 @@ function getBlock(){
     //获取临时板块的元素
     var tempBlock = document.getElementById("tempBlock");
     $.ajax({
-        url: "http://118.190.90.167:8888/block",
+        url: "http://localhost:8888/block",
         type: "get", 
         contentType: 'application/json;charset=utf-8',
         beforeSend: function (request) {
             request.setRequestHeader("token", userVO.token);
         },
         success: function (data) {
+            var userVO = localStorage.getExpire("userVO");
+            if(userVO.user.identity == "administrator"){
+                //管理员访问前台页面
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }
             if(data.code == 200){
                 block = data.data;
                 //有临时板块
@@ -194,11 +206,27 @@ function getBlock(){
                 var href = "search.html?keyWord=" +  block.keyWord;
                 blockLink.setAttribute("href",href);
                 tempBlock.appendChild(blockLink);
-                //console.info(block);
             }else if(data.code == 411){
                 //没有临时板块
                 //隐藏临时板块按钮
                 tempBlock.setAttribute("style","display:none");
+            }
+        },
+        error:function(response){
+            if(response.status == 400 || response.status == 405){
+                alert("登录过期,请重新登录");
+                location.href = "login.html";
+            }else if(response.status == 401){
+                alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+                location.href = "login.html";
+            }else if(response.status == 402){
+                alert("账号被注销,请联系管理员");
+                location.href = "login.html";
+            }else if(response.status == 403){
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }else{
+                alert("服务器错误，请稍后再试");
             }
         }
     });
@@ -207,7 +235,7 @@ function getBlock(){
 //获取临时板块实体
 function getBlockModel(){
     $.ajax({
-        url: "http://118.190.90.167:8888/block",
+        url: "http://localhost:8888/block",
         type: "get", 
         contentType: 'application/json;charset=utf-8',
         beforeSend: function (request) {
@@ -223,6 +251,9 @@ function getBlockModel(){
             }
             //初始化界面
             initBlock();
+        },
+        error:function(){
+            alert("服务器异常,请稍后再试");
         }
     });
 }
@@ -268,16 +299,13 @@ function search(){
 
 //后台页面注销登录
 function adminExit(){
-    localStorage.setExpire("userVO",null,0);
+    localStorage.setExpire("userVO",null,10);
     location.href = "../login.html";
 }
 
 //前台页面注销登录
 function exit(){
-    localStorage.setExpire("userVO",userVO,1);
-    //alert("12")
-    //window.location.href = "my";
-
+    localStorage.setExpire("userVO",null,10);
 }
 
 function changePage(index){
@@ -376,6 +404,73 @@ function updatePageButtons(){
     lastButton.appendChild(lastLink)
     pageButtons.appendChild(lastButton);
     lastButton.setAttribute("onclick", "changePage(" + page.pageNum + ");")
+}
+
+
+//分类标签更新列表函数
+function changeKind(kind){
+    questionDiv.removeChild(questionList);
+    questionList = document.createElement("div");
+    questionDiv.insertBefore(questionList, pageButtons);
+    questionList.setAttribute("id","quetionList");
+    page.kind = kind;
+    page.pageIndex = 1;
+    page.sortApproach = "sortByKindAndHeat";
+    changeQuestionPage(page, path);
+}
+
+//添加提问输入文本框的报错方法
+function questTextBoxErrorInit(){
+    var error = false;
+    $("#inputQue").blur(function () {
+        var title = $("#inputQue").val();
+        if(title.length == 0){
+            showError('inputQue', '标题不能为空');
+            error = true;
+        }else {
+            $("#inputQue").css({ "border-color": "green" });
+            $("#inputQueTip").css({ "display": "none" });
+        }
+    });  
+
+    $("#describeQue").blur(function () {
+        var title = $("#describeQue").val();
+        if(title.length == 0){
+            showError('describeQue', '描述不能为空');
+            error = true;
+        }else {
+            $("#describeQue").css({ "border-color": "green" });
+            $("#describeQueTip").css({ "display": "none" });
+        }
+    });  
+}
+
+//重置提问输入文本框样式
+function resetQuestTextBox(){
+    $("#inputQue").val("");
+    $("#describeQue").val("");
+    $("#selectKind").find("text='学业问答'").attr("selected",true);
+    $("#anonymousQuest").attr("checked",false);
+    $("#inputQue").css({ "border-color": "" });
+    $("#describeQue").css({ "border-color": "" });
+    $("#inputQueTip").css({ "display": "none" });
+    $("#describeQueTip").css({ "display": "none" });
+}
+
+//重置回复输入框样式
+function resetResponseTextBox(){
+    $("#cresponseContent").val("");
+    $("#cresponseContent").css({"border-color":""});
+    $("#cresponseContentTip").css({ "display": "none" });
+    $("#anonymousResp").attr("checked",false);
+}
+
+//输入文本框错误提示信息
+function showError(formSpan, errorText) {
+    $("#" + formSpan).css({"border-color":"red"});
+    $("#" + formSpan + "Tip").empty();
+    $("#" + formSpan + "Tip").append(errorText);;
+    $("#" + formSpan + "Tip").css({"display":"inline"});
 }
 
 var userVO;

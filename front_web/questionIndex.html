@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
    <head>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       	<title>校园帮帮网-问题详情</title>
-      	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type" content="text/html; charset=utf-8">
       	<!-- 引入 Bootstrap -->
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -17,7 +17,8 @@
 			h3,ul,li{margin:0;padding:0; list-style:none;}
 			.scrollbox{background-color:white;font-size:13px; width: 340px; margin: 0 auto; overflow: hidden; border: 1px solid #e2e4e7; padding: 10px; }
 			#scrollDiv{width:340px;height:359px; overflow:hidden;}/*这里的高度和超出隐藏是必须的*/
-			#scrollDiv li{height:90px; width:300px; padding:10px 20px;background:url(ico-4.gif) no-repeat 10px 23px; overflow:hidden; vertical-align:bottom; zoom:1; border-bottom:#B7B7B7 dashed 1px;}
+			/* #scrollDiv li{height:90px; width:300px; padding:10px 20px;background:url(ico-4.gif) no-repeat 10px 23px; overflow:hidden; vertical-align:bottom; zoom:1; border-bottom:#B7B7B7 dashed 1px;} */
+			#scrollDiv li{height:90px; width:300px; padding:10px 20px;background:no-repeat 10px 23px; overflow:hidden; vertical-align:bottom; zoom:1; border-bottom:#B7B7B7 dashed 1px;}
 			#scrollDiv li h3{ height:24px; padding-top:4px; padding-bottom:4px;font-size:14px; color:#353535; line-height:24px; width:300px;}
 			#scrollDiv li h3 a{color:#353535; text-decoration:none;}#scrollDiv li h3 a:hover{ color:#F00}
 			#scrollDiv li div{ height:36px; width:300px; color:#416A7F; line-height:18px; overflow:hidden}
@@ -88,45 +89,48 @@
 											<h4>提问须知</h4>
 											<strong>注意！</strong>
 											请提出有意义的问题，请勿发表灌水内容。
-											<a href="#" class="alert-link">【问题管理条例】</a>
+											<!-- <a href="#" class="alert-link">【问题管理条例】</a> -->
 									</div>
 								</div>
 							</div>
 						</div>
-					<form class="form-horizontal" role="form" target="iframe">
+						<form class="form-horizontal" role="form" target="iframe">
 							
-						<div class="form-group">
-							<label for="inputQue" class="col-sm-2 control-label">问题</label>
-							<div class="col-sm-9">
-								<input type="text" class="form-control" id="inputQue"  maxlength="200"/>
+							<div class="form-group">
+								<label for="inputQue" class="col-sm-2 control-label">问题</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="inputQue" maxlength="200"/>
+									<span id="inputQueTip" style="display:none;color:red;"></span>
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-    						<label for="describeQue" class="col-sm-2 control-label">描述</label>
-							<div class="col-sm-9">
-    							<textarea class="form-control" rows="3" id="describeQue" style="max-width: 100%" maxlength="2000"></textarea>
+							<div class="form-group">
+								<label for="describeQue" class="col-sm-2 control-label">描述</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" rows="3" id="describeQue"
+									 style="max-width: 100%" maxlength="2000"></textarea>
+									 <span id="describeQueTip" style="display:none;color:red;"></span>
+								</div>
+							  </div>
+							  <div class="form-group">
+								<label for="questionType" class="col-sm-2 control-label" >问题类型</label>
+								<div class="col-sm-9">
+								<select class="form-control" id="selectKind">
+								  <option>学业问答</option>
+								  <option>就业指导</option>
+								  <option>学习资源</option>
+								  <option>生活相关</option>
+								  <option>其他问题</option>
+								</select>
 							</div>
-						  </div>
-						  <div class="form-group">
-							<label for="questionType" class="col-sm-2 control-label">问题类型</label>
-							<div class="col-sm-9">
-							<select class="form-control" id="selectKind">
-							  <option>学业问答</option>
-							  <option>就业指导</option>
-							  <option>学习资源</option>
-							  <option>生活相关</option>
-							  <option>其他问题</option>
-							</select>
-						</div>
-						  </div>
-						  <div style="text-align: center;">
-							<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
-						</div>
-						<div style="text-align:center">
-							<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
-						</div>
-					</form>
+							  </div>
+							  <div style="text-align: center;">
+								<label><input type="checkbox" id="anonymousQuest"/> 匿名提问</label>
+							</div>
+							<div style="text-align:center">
+								<button type="button" class="btn btn-primary" onclick="postQuestion()">提 交</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue">关 闭</button>
+							</div>
+						</form>
 					<iframe id="iframe" name="iframe" style="display:none;"></iframe>
 					</div>
 				</div><!-- /.modal-content -->
@@ -247,7 +251,7 @@
 													<h4>回答须知</h4>
 													<strong>注意！</strong>
 													请做出有意义的回答，请勿发表灌水内容。
-													<a href="#" class="alert-link">【回答管理条例】</a>
+													<!-- <a href="#" class="alert-link">【回答管理条例】</a> -->
 											</div>
 										</div>
 									</div>
@@ -256,7 +260,9 @@
 								<div class="form-group">
     								<label for="describeQue" class="col-sm-2 control-label">内容</label>
 									<div class="col-sm-9">
-    									<textarea class="form-control" rows="3" id="cresponseContent" style="max-width: 100%"></textarea>
+										<textarea class="form-control" rows="3" id="cresponseContent"
+										 style="max-width: 100%" maxlength="2000" placeholder="2000字以内"></textarea>
+										 <span id="cresponseContentTip" style="display:none;color:red;"></span>
 									</div>
 								</div>
 								<div style="text-align: center;">
@@ -264,7 +270,7 @@
 								</div>
 								<div style="text-align:center">
 									<button type="button" class="btn btn-primary" onclick="postResponse()">提 交</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="closeButton">关 闭</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="closeQue" onclick="resetResponseTextBox();">关 闭</button>
 								</div>
 							</form>
 							<iframe id="iframe" name="iframe" style="display:none;"></iframe>
@@ -298,12 +304,12 @@
 		<h4>&nbsp;&nbsp;相关问题</h4>
 		<div class="scrollbox">
 			<div id="scrollDiv">
-				<ul>
-					<li><h3><a href="#" class="linktit">移动娱乐业务突飞</a></h3> <div>为了探索推进公车改革后，新能源汽车分时租赁项目试点工作，并成立了试点工作小组... </div></li>
+				<ul id="theSameKindQuestionList">
+					<!-- <li><h3><a href="#" class="linktit">移动娱乐业务突飞</a></h3> <div>为了探索推进公车改革后，新能源汽车分时租赁项目试点工作，并成立了试点工作小组... </div></li>
 					<li><h3><a href="#" class="linktit">不停转动向上滚动可控制向上向下滚动特效</a></h3> <div>DIV CSS JS自动不断向上一个一个滚动可控制向上向下滚动特效... </div></li>
 					<li><h3><a href="#" class="linktit">全国涂料总产量呈现直线下滑态势</a></h3> <div>我国涂料工业将面临涂料消费税征收全面铺开，环保压力持续增加，2015年的形势不容乐观... </div></li>
 					<li><h3><a href="#" class="linktit">镂空渔网超吸睛</a></h3> <div>镂空罩衫，短短的版型穿起来显高又俏皮，内搭长款连衣裙，非常大方哦... </div></li>
-					<li><h3><a href="#" class="linktit">主题创业街亮相</a></h3> <div>目前已有包括咖啡厅、酒吧、餐厅、瑜伽室在内的8家商铺入驻该火车... </div></li>
+					<li><h3><a href="#" class="linktit">主题创业街亮相</a></h3> <div>目前已有包括咖啡厅、酒吧、餐厅、瑜伽室在内的8家商铺入驻该火车... </div></li> -->
 				</ul>
 			</div>
 			<div class="scroltit"><div class="updown" id="but_down">向上</div><div class="updown" id="but_up">向下</div></div>
@@ -331,7 +337,7 @@
 	//本页面的问题id
 	var id = getQueryVariable("id");
 	//回复列表url
-	var responsePath = "http://118.190.90.167:8888/responses/" + id + "/" + userVO.user.id;
+	var responsePath = "http://localhost:8888/responses/" + id + "/" + userVO.user.id;
 	//回复容器
     var responseDiv = document.getElementById("responseDiv");
     //存放回复列表的div
@@ -403,6 +409,8 @@
 
     //页面加载时启动页面
     $(document).ready(function(e) {
+		//获取当前登录用户
+		var userVO = localStorage.getExpire("userVO");
 		if(userVO == null){
 			//登录过期
 			alert("登录过期，请重新登录");
@@ -414,14 +422,31 @@
 		initResponseList();
 		//获取临时板块
 		getBlock();
+		//添加提问输入文本框的报错方法
+		questTextBoxErrorInit();
+		//添加回复输入文本框的报错方法
+		responseTextBoxErrorInit();
     });
 	
+	//添加回复输入文本框的报错方法
+	function responseTextBoxErrorInit(){
+		$("#cresponseContent").blur(function () {
+        var title = $("#cresponseContent").val();
+        if(title.length == 0){
+            showError('cresponseContent', '回复内容不能为空');
+            error = true;
+        }else {
+            $("#cresponseContent").css({ "border-color": "green" });
+            $("#cresponseContentTip").css({ "display": "none" });
+        }
+    });  
+	}
 
 	
 	//初始化问题的详细信息
 	function initQuestion(){
 		$.ajax({
-			url: "http://118.190.90.167:8888/question/" + id + "/" + userVO.user.id,
+			url: "http://localhost:8888/question/" + id + "/" + userVO.user.id,
 			type: "get", 
 			contentType: 'application/json;charset=utf-8',
 			beforeSend: function (request) {
@@ -436,7 +461,12 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				if(response.status == 403){
+					alert("抱歉,您没有访问权限");
+					window.history.back(); 
+				}else{
+					alert("服务器错误，请稍后再试");
+				}
 			}
 		});
 	}
@@ -457,6 +487,8 @@
 		var reportQuestionButton = document.getElementById("reportQuestion");
 		var kindText = document.getElementById("kind");
 		kindText.innerHTML = questionVO.kind;
+		//填充同类问题列表数据
+		getTheSameKindQuestion(questionVO.kind);
 		//设置问题作者id
 		attentionQuestionButton.setAttribute("authorId", questionVO.question.authorId);
 		reportQuestionButton.setAttribute("authorId", questionVO.question.authorId);
@@ -508,7 +540,20 @@
             //创建存放回复人姓名的<strong>标签
             var responser = document.createElement("strong");
 			responser.innerHTML = list[i].authorName;
+			responser.setAttribute("style","margin:30px 0");
 			responseBox.appendChild(responser);
+			//回复质量
+			var quality = document.createElement("span");
+			quality.setAttribute("padding","2em")
+			if(list[i].quality == 1){
+				quality.innerHTML = "推荐"
+				quality.setAttribute("style","background:rgb(122, 250, 17);color:rgb(137, 17, 250);padding:3px;margin:10px");
+			}else if(list[i].quality == -1){
+				quality.innerHTML = "危险";
+				quality.setAttribute("style","background:rgb(250, 18, 10);color:white;padding:3px;margin:10px");
+
+			}
+			responseBox.appendChild(quality);
             //创建存放回复内容的p标签
             var content = document.createElement("p");
             content.innerHTML = list[i].content;//问题描述
@@ -586,6 +631,12 @@
 		var timeString = getTimeString(time);
 		//回复内容
 		var responseContent = document.getElementById("cresponseContent").value;
+
+		if(responseContent.length == 0){
+			showError('cresponseContent', '内容不能为空');
+			return;
+		}
+
 		var anonymousFlag = 0;//是否匿名（默认不匿名）
 		if(document.getElementById("anonymousResp").checked){
 			anonymousFlag = 1;
@@ -602,7 +653,7 @@
 		};
 		
 		$.ajax({
-			url: "http://118.190.90.167:8888/response",
+			url: "http://localhost:8888/response",
 			type: "post", 
 			data:JSON.stringify(response),
 			contentType: 'application/json;charset=utf-8',
@@ -614,7 +665,7 @@
 					//将输入框置为空
 					document.getElementById("cresponseContent").value = "";
 					//关闭评论输入框
-					$(closeButton).click();
+					$(closeQue).click();
 					//更新用户数据（回复数+1）
 					updateUser(data.data)
 					//刷新页面
@@ -625,7 +676,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -659,7 +710,7 @@
 		}
 
 		$.ajax({
-			url: "http://118.190.90.167:8888/attention",
+			url: "http://localhost:8888/attention",
 			type: "post", 
 			data:JSON.stringify(attention),
 			contentType: 'application/json;charset=utf-8',
@@ -672,7 +723,10 @@
 					window.location.href = "index.html";
 				}
 				updateUser(data.data)
-        	}
+        	},
+			error:function(){
+				alert("服务器异常，请稍后再试");
+			}
 		});
 	}
 
@@ -704,7 +758,7 @@
 		}
 
 		$.ajax({
-			url: "http://118.190.90.167:8888/questionReport",
+			url: "http://localhost:8888/questionReport",
 			type: "post", 
 			data:JSON.stringify(reportRecord),
 			beforeSend: function (request) {
@@ -718,7 +772,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -757,7 +811,7 @@
 		}
 
 		$.ajax({
-			url: "http://118.190.90.167:8888/responseReport",
+			url: "http://localhost:8888/responseReport",
 			type: "post", 
 			data:JSON.stringify(reportRecord),
 			beforeSend: function (request) {
@@ -771,7 +825,7 @@
 				}
 			},
 			error:function(){
-				alert("服务器错误,请稍后再试");
+				alert("服务器异常,请稍后再试");
 			}
 		});
 	}
@@ -850,7 +904,7 @@
 		}
 
 		$.ajax({
-			url: "http://118.190.90.167:8888/likeResponse",
+			url: "http://localhost:8888/likeResponse",
 			type: "post", 
 			data:JSON.stringify(likeRecode),
 			beforeSend: function (request) {
@@ -862,7 +916,10 @@
 					alert(data.message);
 					window.location.reload(true);
 				}
-        	}
+        	},
+			error:function(){
+				alert("服务器异常，请稍后再试");
+			}
 		});
 	}
 
@@ -944,6 +1001,63 @@ function changePage(index){
     //pageButtons.removeAttribute("disabled");
     responsePage.pageIndex = index;
     changeQuestionPage(responsePage, responsePath);
+}
+
+//获取同类问题
+function getTheSameKindQuestion(kind){
+	var page = {
+            "pageIndex":1,
+            "count":5,
+            "keyWord":"",
+			"kind":kind,
+            "sortApproach":"sortByKindAndHeat",
+		};
+		
+		$.ajax({
+			url: "http://localhost:8888/questions",
+			type: "post", 
+			data:JSON.stringify(page),
+			beforeSend: function (request) {
+				request.setRequestHeader("token", userVO.token);
+			},
+			contentType: 'application/json;charset=utf-8',
+			success: function (data) {
+				questionPage = data.data;
+				initSameKindQuestion(questionPage.questions)
+			},
+			error:function(){
+				alert("服务器异常，请稍后再试");
+			}
+		});
+}
+
+//初始化相同样式问题列表
+function initSameKindQuestion(list){
+	list = Array.prototype.slice.call(list);
+	var questionList = document.getElementById("theSameKindQuestionList");
+	for(var i = 0; i < list.length; i++){
+		var l = document.createElement("li");
+		var h = document.createElement("h3");
+		var a = document.createElement("a");
+		var d = document.createElement("div");
+		a.className = "linktit";
+		if(list[i].title.length <= 17){
+			a.innerHTML = list[i].title;
+		}else{
+			a.innerHTML = list[i].title.substring(0,17) + "......";
+		}
+		a.setAttribute("href", "questionIndex.html?id=" + list[i].question.id);
+		if(list[i].content.length <= 40){
+			d.innerHTML = list[i].content;
+		}else{
+			d.innerHTML = list[i].content.substring(0,40) + "......";
+		}
+		d.setAttribute("style", "clolor:black");
+		questionList.appendChild(l);
+		l.appendChild(h);
+		h.appendChild(a);
+		l.appendChild(d);
+	}
 }
 </script>
 </html>

@@ -1,4 +1,4 @@
-var HOST = 'http://118.190.90.167:8888';
+var HOST = 'http://localhost:8888';
 //var HOST = '';
 
 
@@ -20,8 +20,22 @@ var Service = {
           alert(data.message);
         }
       },
-      error: function(){
-        alert("服务器异常,请稍后再试");
+      error:function(response){
+          if(response.status == 400 || response.status == 405){
+              alert("登录过期,请重新登录");
+              location.href = "login.html";
+          }else if(response.status == 401){
+              alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+              location.href = "login.html";
+          }else if(response.status == 402){
+              alert("账号被注销,请联系管理员");
+              location.href = "login.html";
+          }else if(response.status == 403){
+              alert("权限不足");
+              window.location.go(-1);
+          }else{
+              alert("服务器错误，请稍后再试");
+          }
       }
     });
   },
@@ -42,8 +56,22 @@ var Service = {
           alert(data.message);
         }
       },
-      error: function(){
-        alert("服务器异常,请稍后再试");
+      error:function(response){
+          if(response.status == 400 || response.status == 405){
+              alert("登录过期,请重新登录");
+              location.href = "login.html";
+          }else if(response.status == 401){
+              alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+              location.href = "login.html";
+          }else if(response.status == 402){
+              alert("账号被注销,请联系管理员");
+              location.href = "login.html";
+          }else if(response.status == 403){
+              alert("权限不足");
+              window.location.go(-1);
+          }else{
+              alert("服务器错误，请稍后再试");
+          }
       }
     });
   },
@@ -55,8 +83,22 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
-      error:function(){
-        alert("服务器异常，请稍后再试");
+      error:function(response){
+          if(response.status == 400 || response.status == 405){
+              alert("登录过期,请重新登录");
+              location.href = "login.html";
+          }else if(response.status == 401){
+              alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+              location.href = "login.html";
+          }else if(response.status == 402){
+              alert("账号被注销,请联系管理员");
+              location.href = "login.html";
+          }else if(response.status == 403){
+              alert("权限不足");
+              window.location.go(-1);
+          }else{
+              alert("服务器错误，请稍后再试");
+          }
       }
     })
   },
@@ -93,7 +135,7 @@ jQuery(function ($) {
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://118.190.90.167:8888/questionReports",
+    url: "http://localhost:8888/questionReports",
     loadBeforeSend: function(jqXHR) {
       jqXHR.setRequestHeader("token", userVO.token);
     },
@@ -196,7 +238,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: "http://118.190.90.167:8888/test", //nothing is saved
+    editurl: "http://localhost:8888/test", //nothing is saved
     caption: "举报问题操作",
     autowidth: true
   });

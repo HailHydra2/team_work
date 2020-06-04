@@ -1,11 +1,9 @@
-
-
 jQuery(function ($) {
   var grid_selector = "#grid-table";
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://118.190.90.167:8888/rewards",
+    url: "http://localhost:8888/rewards",
     loadonce: true,
     loadBeforeSend: function(jqXHR) {
       jqXHR.setRequestHeader("token", userVO.token);

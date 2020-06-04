@@ -2,9 +2,9 @@
 <html>
 
 <head>
-	<title>校园帮帮网-登陆</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-Type"
 		content="text/html; charset=utf-8">
+	<title>校园帮帮网-登陆</title>
 	<!-- 引入 Bootstrap -->
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -54,34 +54,34 @@
 						<div class="item">
 							<img alt="" src="pic/loginshow/pic1.jpg" />
 							<div class="carousel-caption">
-								<h4>
+								<!-- <h4>
 									密码学笔记分享
 								</h4>
 								<p>
 									这是一篇个人所作的密码学笔记，记录了一些从CSDN以及其他博客上摘录的DES加密算法相关内容，以及一些关于矩阵求逆的小技巧，需要自取......
-								</p>
+								</p> -->
 							</div>
 						</div>
 						<div class="item active">
 							<img alt="" src="pic/loginshow/pic2.jpg" />
 							<div class="carousel-caption">
-								<h4>
+								<!-- <h4>
 									考研择校指南
 								</h4>
 								<p>
 									收集了137所双一流高校以及部分一本行业强校的报录比数据与复习资料
-								</p>
+								</p> -->
 							</div>
 						</div>
 						<div class="item">
 							<img alt="" src="pic/loginshow/pic3.jpg" />
 							<div class="carousel-caption">
-								<h4>
+								<!-- <h4>
 									法硕非法学复习纲要
 								</h4>
 								<p>
 									法学非法的复习纲要，内容很齐全，附带网课视频以及上岸学长学姐的笔记和真题回忆。
-								</p>
+								</p> -->
 							</div>
 						</div>
 					</div> <a class="left carousel-control" href="#carousel-373022" data-slide="prev"><span
@@ -99,16 +99,16 @@
 						<label for="inputEmail3" class="col-sm-4 control-label">账号</label>
 						<div class="col-sm-5">
 							<input class="form-control" id="username" name="username" type="text"
-								placeholder="输入账号（9位字母与数字任意组合）" onkeyup="value=value.replace(/[\W]/g,'') "
-								onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
-								oninput="if(value.length>9) value=value.slice(0,9)" />
+								placeholder="输入账号（学号/工号）"  />
 							<span id="usernameTip" style="display:none;color:red;"></span>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="inputPassword3" class="col-sm-4 control-label">密码</label>
 						<div class="col-sm-5">
-							<input class="form-control" id="password" name="password" type="password" />
+							<input class="form-control" id="password" name="password" type="password" 
+							placeholder="输入密码（默认密码为身份证后三位）"/>
+							<span id="passwordTip" style="display:none;color:red;"></span>
 						</div>
 
 
@@ -120,7 +120,7 @@
 							</div>
 							<a class='btn btn-default ' href="forgetPwd.html">忘记密码</a>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<input type="checkbox" />记住我</label>
+							<!-- <input type="checkbox" />记住我</label> -->
 						</div>
 					</div>
 				</form>
@@ -128,24 +128,42 @@
 			</div>
 			<script src="adminInterface/assets/js/biz/isValidID.js"></script>
 			<script type="text/javascript">
-
-
+				var loginFlag;//初步判断输入数据是否合法
 				$(document).ready(function (e) {
 
 					var error = false;
 
 					$("#username").blur(function () {
 						var username = $("#username").val();
-						if (username.length < 9) {
-							showError('username', '账号位数不能少于9位！');
+						var testAccount= new RegExp("^[0-9A-Za-z]+$");
+						if (!testAccount.test(username)) {
+							if(username.length == 0){
+								showError('username', '账号不能为空');
+							}else{
+								showError('username', '账号只能由字母和数字组成');
+							}
 							error = true;
-						}
-						else {
+							loginFlag = false;//非法
+						}else {
 							$("#username").css({ "border-color": "green" });
 							$("#usernameTip").css({ "display": "none" });
+							loginFlag = true;//合法
+						}
+					});
+
+					$("#password").blur(function () {
+						var password = $("#password").val();
+						if(password.length == 0){
+							showError('password', '密码不能为空');
+							loginFlag = false;//非法
+						}else {
+							$("#password").css({ "border-color": "green" });
+							$("#passwordTip").css({ "display": "none" });
+							loginFlag = true;//合法
 						}
 					});
 				});
+					
 				function showError(formSpan, errorText) {
 					$("#" + formSpan).css({ "border-color": "red" });
 					$("#" + formSpan + "Tip").empty();
@@ -155,27 +173,30 @@
 
 
 
-				//var loginButton = document.getElementById("login");
 				$(login_btn).click(function (e) {
-					var username = $.trim($("#username").val());
+					if(loginFlag == false){//前端判断非法不发送数据至后端
+						return;
+					}
 
+					var username = $.trim($("#username").val());
 					var passwordTemp = $.trim($("#password").val());
+					if(username.length == 0){
+						showError('username', '账号不能为空');
+						return;
+					}
+					if(passwordTemp.length == 0){
+						showError("password","密码不能为空");
+						return;
+					}
 					//
 					//使用btoa函数对用户输入的passwordTemp加密成password再发给服务器
 					var password = window.btoa(passwordTemp);
 
-					// if(username == ""){
-					// 	alert("请输入用户名");
-					// 	return false;
-					// }else if(password == ""){
-					// 	alert("请输入密码");
-					// 	return false;
-					// }
 					//ajax去服务器端校验
 					var data = { "account": username, "password": password };
 					console.info(data);
 					$.ajax({
-						url: "http://118.190.90.167:8888/user",
+						url: "http://localhost:8888/user",
 						type: "post",
 						data: JSON.stringify(data),
 						contentType: 'application/json;charset=utf-8',
@@ -185,16 +206,16 @@
 								login(data.data);
 							} else if (data.code == 401) {
 								//密码错误
-								alert("密码错误");
+								showError("password","密码错误")
 							} else if (data.code == 402) {
 								//账号不存在
-								alert("账号不存在");
+								showError('username', '账号不存在');
 							} else {
 								alert("服务器错误，请稍后再试");
 							}
 						},
 						error: function (data) {
-							alert("服务器异常请稍后再试");
+							alert("服务器异常,请稍后再试");
 						}
 					});
 

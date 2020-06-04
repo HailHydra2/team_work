@@ -270,7 +270,6 @@
 																	<input type="text" id="idCard"
 																		placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
 																		class="col-xs-10 col-sm-10"
-																		oninput="value= value.replace(/[^\d|xX]/g,'')"
 																		label="身份证号" maxlength="18" />
 																	<br /><br/>
 																	<span id="idCardTip"
@@ -294,13 +293,12 @@
 														<div class="space-10"></div>
 
 														<div class="form-group">
-															<label class="col-sm-3 control-label no-padding-right"
-																for="form-field-pass1">新密码</label>
+															<label class="col-sm-3 control-label no-padding-right" for="form-field-pass1">新密码</label>
 
 															<div class="col-sm-9">
 
-																<input type="password" id="password1"
-																	placeholder="请输入新密码" />
+																<input type="password" id="password1" placeholder="请输入新密码" />
+																<span id="password1Tip" style="display:none;color:red;"></span>
 															</div>
 														</div>
 
@@ -311,8 +309,9 @@
 																for="form-field-pass2">确认新密码</label>
 
 															<div class="col-sm-9">
-																<input type="password" id="password2"
-																	placeholder="请再次输入新密码" />
+																<input type="password" id="password2" placeholder="请再次输入新密码" />
+															<span id="password2Tip" style="display:none;color:red;"></span>
+
 															</div>
 														</div>
 													</div>
@@ -462,25 +461,68 @@
 	<script src="assets/js/biz/isValidID.js"></script>
 	
 	<script type="text/javascript">
-
+		var userVO = localStorage.getExpire("userVO");
+		var changeFlag;//修改密码的标志位（前端判断输入错误不发送数据到后端）
+		if(userVO == null){
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "../login.html";
+		}
+		if(userVO.user.identity != "administrator"){
+			//管理员访问前台页面
+			alert("抱歉,您没有访问权限");
+			window.history.back(); 
+		}
 		$(document).ready(function (e) {
-
+			//获取当前登录用户
+			
 			var error = false;
 
 			$("#idCard").blur(function () {
 				var account = $("#idCard").val();
-				if (account.length < 18) {
-					showError('idCard', '身份证号码位数不能小于18位！');
+				 if( IdCardValidate(account)==false){
+					if(account.length == 0){
+						showError('idCard', '身份证不能为空');
+					}else{
+						showError('idCard', '身份证号码非法');
+					}
 					error = true;
-				}
-				else if( IdCardValidate(account)==false){
-					showError('idCard', '身份证号码非法！');
-					error = true;
-				}
-
-				else {
+					changeFlag = false;
+				}else {
 					$("#idCard").css({ "border-color": "green" });
 					$("#idCardTip").css({ "display": "none" });
+					changeFlag = true;
+				}
+			});
+
+			$("#password1").blur(function () {
+				var password = $("#password1").val();
+				 if(password.length == 0){
+					showError("password1", "新密码不能为空");
+					error = true;
+					changeFlag = false;
+				}else {
+					$("#password1").css({ "border-color": "green" });
+					$("#password1Tip").css({ "display": "none" });
+					changeFlag = true;
+				}
+			});
+
+			$("#password2").blur(function () {
+				var password2 = $("#password2").val();
+				var password1 = $("#password1").val();
+				 if(password2.length == 0){
+					showError("password2", "确认密码不能为空");
+					error = true;
+					changeFlag = false;
+				}else if(password1 != password2){
+					showError("password2","两次密码不一致");
+					error = true;
+					changeFlag = false;
+				}else {
+					$("#password2").css({ "border-color": "green" });
+					$("#password2Tip").css({ "display": "none" });
+					changeFlag = true;
 				}
 			});
 		});
@@ -497,9 +539,28 @@
 
 		//提交修改密码请求
 		function submitPwdChange() {
+			if(changeFlag == false){//前端判断输入数据错误不发送数据到后端
+				return;
+			}
 			var idCardTemp = $.trim($("#idCard").val());
 			var pwd1Temp = $.trim($("#password1").val());
 			var pwd2Temp = $.trim($("#password2").val());
+
+			if(idCardTemp.length == 0){
+				showError("idCard","身份证不能为空");
+				return;
+			}
+
+			if(pwd1Temp.length == 0){
+				showError("password1","新密码不能为空");
+				return;
+			}
+			
+			if(pwd2Temp.length == 0){
+				showError("password2","确认密码不能为空");
+				return;
+			}
+
 			var pwd1 = window.btoa(pwd1Temp);
 			var pwd2 = window.btoa(pwd2Temp);
 			var idCard = window.btoa(idCardTemp);
@@ -513,7 +574,7 @@
 			t.user.password = pwd1;
 			//提交修改
 			$.ajax({
-				url: "http://118.190.90.167:8888/user",
+				url: "http://localhost:8888/user",
 				type: "put",
 				data: JSON.stringify(t.user),
 				beforeSend: function (request) {
@@ -530,15 +591,40 @@
 						//验证失败
 						alert("抱歉，您输入的身份证信息有误，请重新输入");
 					}
-				}
+				},
+                error:function(response){
+                    if(response.status == 400 || response.status == 405){
+                        alert("登录过期,请重新登录");
+                        location.href = "login.html";
+                    }else if(response.status == 401){
+                        alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+                        location.href = "login.html";
+                    }else if(response.status == 402){
+                        alert("账号被注销,请联系管理员");
+                        location.href = "login.html";
+                    }else if(response.status == 403){
+                        alert("权限不足");
+                        window.location.go(-1);
+                    }else{
+                        alert("服务器错误，请稍后再试");
+                    }
+                }
 			});
 		}
 
 		//重置输入
 		function clearInput() {
 			document.getElementById("password1").value = "";
+			$("#password1").css({"border-color":""});
+			$("#password1Tip").css({ "display": "none" });
+
 			document.getElementById("password2").value = "";
+			$("#password2").css({"border-color":""});
+			$("#password2Tip").css({ "display": "none" });
+
 			document.getElementById("idCard").value = "";
+			$("#idCard").css({"border-color":""});
+			$("#idCardTip").css({ "display": "none" });
 		}
 	</script>
 </body>

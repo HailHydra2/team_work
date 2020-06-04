@@ -1,5 +1,5 @@
 
-var HOST = 'http://118.190.90.167:8888';
+var HOST = 'http://localhost:8888';
 //var HOST = '';
 
 
@@ -12,6 +12,26 @@ var Service = {
       beforeSend: function (request) {
         request.setRequestHeader("token", userVO.token);
       },
+      success:function(data){
+        alert(data.message);
+      },
+      error:function(response){
+          if(response.status == 400 || response.status == 405){
+              alert("登录过期,请重新登录");
+              location.href = "login.html";
+          }else if(response.status == 401){
+              alert("密码被修改,请重新登录,若非本人操作请重置密码后及时修改密码");
+              location.href = "login.html";
+          }else if(response.status == 402){
+              alert("账号被注销,请联系管理员");
+              location.href = "login.html";
+          }else if(response.status == 403){
+              alert("权限不足");
+              window.location.go(-1);
+          }else{
+              alert("服务器错误，请稍后再试");
+          }
+      }
     });
   },
   batchDelete(data) {
@@ -57,7 +77,7 @@ jQuery(function ($) {
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://118.190.90.167:8888/users",
+    url: "http://localhost:8888/users",
     loadBeforeSend: function(jqXHR) {
       jqXHR.setRequestHeader("token", userVO.token);
     },
@@ -68,7 +88,8 @@ jQuery(function ($) {
     //    mtype:"POST",
     //datatype:"local",
     height: 250,
-    colNames: [' ', '编号', '账号', '姓名','密码','身份证号','身份','电话号码'],
+    // colNames: [' ', '编号', '账号', '姓名','密码','身份证号','身份','电话号码'],
+    colNames: [' ', '编号', '账号', '姓名','身份',],
     colModel: [{
       name: 'myac',
       index: '',
@@ -90,10 +111,10 @@ jQuery(function ($) {
               var sel_id = $(grid_selector).jqGrid('getGridParam', 'selrow');
               var value = $(grid_selector).jqGrid('getCell', sel_id, 'id');
               // console.log( $(this));
-              alert(value);
+              // alert(value);
               Service.delete(value).then(function (data) {
                 //alert(value);
-                console.log(data);
+                // console.log(data);
                 $(this).jqGrid().trigger('reloadGrid');
               });
               return value;
@@ -122,30 +143,30 @@ jQuery(function ($) {
       width: 100,
       editable: true
     },
-    {
-      name: 'password',
-      index: 'password',
-      width: 100,
-      editable: true
-    },
-    {
-      name: 'idCard',
-      index: 'idCard',
-      width: 100,
-      editable: true
-    },
+    // {
+    //   name: 'password',
+    //   index: 'password',
+    //   width: 100,
+    //   editable: true
+    // },
+    // {
+    //   name: 'idCard',
+    //   index: 'idCard',
+    //   width: 100,
+    //   editable: true
+    // },
     {
       name: 'identity',
       index: 'identity',
       width: 100,
       editable: true
     },
-    {
-      name: 'phoneNum',
-      index: 'phoneNum',
-      width: 100,
-      editable: true
-    },
+    // {
+    //   name: 'phoneNum',
+    //   index: 'phoneNum',
+    //   width: 100,
+    //   editable: true
+    // },
    
     ],
     viewrecords: true,
@@ -172,7 +193,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: "http://118.190.90.167:8888/test", //nothing is saved, //nothing is saved
+    editurl: "http://localhost:8888/test", //nothing is saved, //nothing is saved
     caption: "用户信息操作",
     autowidth: true
   });
@@ -278,7 +299,7 @@ jQuery(function ($) {
              value = value.substr(1);
            }*/
           Service.batchDelete(sel_id).then(function (data) {
-            console.log(data);
+            // console.log(data);
             $(this).jqGrid().trigger('reloadGrid');
           });
           // return value;

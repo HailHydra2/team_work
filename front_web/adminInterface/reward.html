@@ -366,13 +366,20 @@
 	
 	<script src="../js/util.js"></script>
 	<script>
+		//获取当前登录用户
+		var userVO = localStorage.getExpire("userVO");
+		if (userVO == null) {
+			//登录过期
+			alert("登录过期，请重新登录");
+			window.location.href = "../login.html";
+		}
+		if(userVO.user.identity != "administrator"){
+			//管理员访问前台页面
+			alert("抱歉,您没有访问权限");
+			window.history.back(); 
+		}
 		//页面加载时启动页面
 		$(document).ready(function (e) {
-			if (userVO == null) {
-				//登录过期
-				alert("登录过期，请重新登录");
-				window.location.href = "../login.html";
-			}
 			//显示用户姓名
 			document.getElementById("userName").innerHTML = userVO.user.name;
 		});
