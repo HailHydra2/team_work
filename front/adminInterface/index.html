@@ -46,7 +46,6 @@
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 	</head>
-
 	<body>
 		<div class="navbar navbar-default" id="navbar">
 			<script type="text/javascript">
@@ -415,18 +414,24 @@
 		<script src="assets/js/ace-elements.min.js"></script>
 		<script src="assets/js/ace.min.js"></script>
 		<script src="../js/util.js"></script>
-
 		<!-- inline scripts related to this page -->
 		<script>
 			//页面加载时启动页面
 			$(document).ready(function(e) {
-				//获取当前登录用户
+
 				var userVO = localStorage.getExpire("userVO");
 				if(userVO == null){
 					//登录过期
 					alert("登录过期，请重新登录");
 					window.location.href = "../login.html";
 				}
+
+				if(userVO.user.identity != "administrator"){
+					//管理员访问前台页面
+					alert("抱歉,您没有访问权限");
+					window.history.back(); 
+				}
+
 				//显示用户姓名
 				document.getElementById("userName").innerHTML = userVO.user.name;
 			});

@@ -468,6 +468,11 @@
 			alert("登录过期，请重新登录");
 			window.location.href = "../login.html";
 		}
+		if(userVO.user.identity != "administrator"){
+			//管理员访问前台页面
+			alert("抱歉,您没有访问权限");
+			window.history.back(); 
+		}
 		$(document).ready(function (e) {
 			//获取当前登录用户
 			

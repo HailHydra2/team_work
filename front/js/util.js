@@ -30,7 +30,12 @@ function changeQuestionPage(page, path){
             updateList(page);
         },
         error:function(response){
-            alert("服务器异常，请稍后再试");
+            if(response.status == 403){
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }else{
+                alert("服务器错误，请稍后再试");
+            }
         }
     });
 }
@@ -185,6 +190,12 @@ function getBlock(){
             request.setRequestHeader("token", userVO.token);
         },
         success: function (data) {
+            var userVO = localStorage.getExpire("userVO");
+            if(userVO.user.identity == "administrator"){
+                //管理员访问前台页面
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }
             if(data.code == 200){
                 block = data.data;
                 //有临时板块
@@ -212,8 +223,8 @@ function getBlock(){
                 alert("账号被注销,请联系管理员");
                 location.href = "login.html";
             }else if(response.status == 403){
-                alert("权限不足");
-                window.location.go(-1);
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
             }else{
                 alert("服务器错误，请稍后再试");
             }
@@ -294,10 +305,7 @@ function adminExit(){
 
 //前台页面注销登录
 function exit(){
-    localStorage.setExpire("userVO",userVO,1);
-    //alert("12")
-    //window.location.href = "my";
-
+    localStorage.setExpire("userVO",null,10);
 }
 
 function changePage(index){

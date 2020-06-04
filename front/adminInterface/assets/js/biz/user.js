@@ -88,7 +88,8 @@ jQuery(function ($) {
     //    mtype:"POST",
     //datatype:"local",
     height: 250,
-    colNames: [' ', '编号', '账号', '姓名','密码','身份证号','身份','电话号码'],
+    // colNames: [' ', '编号', '账号', '姓名','密码','身份证号','身份','电话号码'],
+    colNames: [' ', '编号', '账号', '姓名','身份',],
     colModel: [{
       name: 'myac',
       index: '',
@@ -142,30 +143,30 @@ jQuery(function ($) {
       width: 100,
       editable: true
     },
-    {
-      name: 'password',
-      index: 'password',
-      width: 100,
-      editable: true
-    },
-    {
-      name: 'idCard',
-      index: 'idCard',
-      width: 100,
-      editable: true
-    },
+    // {
+    //   name: 'password',
+    //   index: 'password',
+    //   width: 100,
+    //   editable: true
+    // },
+    // {
+    //   name: 'idCard',
+    //   index: 'idCard',
+    //   width: 100,
+    //   editable: true
+    // },
     {
       name: 'identity',
       index: 'identity',
       width: 100,
       editable: true
     },
-    {
-      name: 'phoneNum',
-      index: 'phoneNum',
-      width: 100,
-      editable: true
-    },
+    // {
+    //   name: 'phoneNum',
+    //   index: 'phoneNum',
+    //   width: 100,
+    //   editable: true
+    // },
    
     ],
     viewrecords: true,

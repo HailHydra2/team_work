@@ -305,7 +305,7 @@
                                     <div class="col-sm-9">
                                         <input type="text" id="idCard" placeholder="输入身份证号码[17位数字+(1位数字|x|X)]"
                                             class="col-xs-10 col-sm-5" 
-                                            label="身份证号" maxlength="18" />
+                                            label="身份证号"/>
                                         <span id="idCardTip" style="display:none;color:red;"></span>
                                     </div>
                                 </div>
@@ -494,6 +494,11 @@
                 alert("登录过期，请重新登录");
                 window.location.href = "../login.html";
             }
+            if(userVO.user.identity != "administrator"){
+                //管理员访问前台页面
+                alert("抱歉,您没有访问权限");
+                window.history.back(); 
+            }
         $(document).ready(function (e) {
             //显示用户姓名
             document.getElementById("userName").innerHTML = userVO.user.name;
@@ -537,6 +542,7 @@
 
             $("#idCard").blur(function () {
                 var idCard = $("#idCard").val();
+                idCard = idCard.replace(/^\s*|\s*$/g,"");
                if (IdCardValidate(idCard) == false) {
                     if(idCard.length == 0){
                         showError("idCard","身份证不能为空");
@@ -572,7 +578,7 @@
             var identiy = identityOption.options[identityOption.selectedIndex].value;
             var name = nameTextBox.value;
             var idCardTemp = idCardTextBox.value;
-            
+            idCardTemp = idCardTemp.replace(/^\s*|\s*$/g,"");            
             if(account.length == 0){
                 showError("account","账号不能为空");
                 return;
@@ -699,7 +705,7 @@
         function encryption(list) {
             for (var i = 0; i < list.length; i++) {
                 var idCard = "" + list[i]["idCard"];
-                console.info(idCard);
+                idCard = idCard.replace(/^\s*|\s*$/g,"");
                 list[i]["password"] = window.btoa(idCard.slice(-3));
                 list[i]["idCard"] = window.btoa(list[i]["idCard"]);
             }

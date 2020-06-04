@@ -369,6 +369,11 @@
 				alert("登录过期，请重新登录");
 				window.location.href = "../login.html";
 			}
+			if(userVO.user.identity != "administrator"){
+				//管理员访问前台页面
+				alert("抱歉,您没有访问权限");
+				window.history.back(); 
+			}
 		//页面加载时启动页面
 		$(document).ready(function(e) {
 			//显示用户姓名
