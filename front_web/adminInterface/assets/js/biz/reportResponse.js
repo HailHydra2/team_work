@@ -1,4 +1,4 @@
-var HOST = 'http://localhost:8888';
+var HOST = 'http://118.190.90.167:8888';
 //var HOST = '';
 
 var Service = {
@@ -143,7 +143,7 @@ jQuery(function ($) {
   var pager_selector = "#grid-pager";
 
   jQuery(grid_selector).jqGrid({
-    url: "http://localhost:8888/responseReports",
+    url: "http://118.190.90.167:8888/responseReports",
     loadBeforeSend: function(jqXHR) {
       jqXHR.setRequestHeader("token", userVO.token);
     },
@@ -247,7 +247,7 @@ jQuery(function ($) {
     },
 
     //editurl: 'server.php', //nothing is saved
-    editurl: "http://localhost:8888/test", //nothing is saved
+    editurl: "http://118.190.90.167:8888/test", //nothing is saved
     caption: "举报回答操作",
     autowidth: true
   });

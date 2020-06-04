@@ -337,7 +337,7 @@
 	//本页面的问题id
 	var id = getQueryVariable("id");
 	//回复列表url
-	var responsePath = "http://localhost:8888/responses/" + id + "/" + userVO.user.id;
+	var responsePath = "http://118.190.90.167:8888/responses/" + id + "/" + userVO.user.id;
 	//回复容器
     var responseDiv = document.getElementById("responseDiv");
     //存放回复列表的div
@@ -446,7 +446,7 @@
 	//初始化问题的详细信息
 	function initQuestion(){
 		$.ajax({
-			url: "http://localhost:8888/question/" + id + "/" + userVO.user.id,
+			url: "http://118.190.90.167:8888/question/" + id + "/" + userVO.user.id,
 			type: "get", 
 			contentType: 'application/json;charset=utf-8',
 			beforeSend: function (request) {
@@ -653,7 +653,7 @@
 		};
 		
 		$.ajax({
-			url: "http://localhost:8888/response",
+			url: "http://118.190.90.167:8888/response",
 			type: "post", 
 			data:JSON.stringify(response),
 			contentType: 'application/json;charset=utf-8',
@@ -710,7 +710,7 @@
 		}
 
 		$.ajax({
-			url: "http://localhost:8888/attention",
+			url: "http://118.190.90.167:8888/attention",
 			type: "post", 
 			data:JSON.stringify(attention),
 			contentType: 'application/json;charset=utf-8',
@@ -758,7 +758,7 @@
 		}
 
 		$.ajax({
-			url: "http://localhost:8888/questionReport",
+			url: "http://118.190.90.167:8888/questionReport",
 			type: "post", 
 			data:JSON.stringify(reportRecord),
 			beforeSend: function (request) {
@@ -811,7 +811,7 @@
 		}
 
 		$.ajax({
-			url: "http://localhost:8888/responseReport",
+			url: "http://118.190.90.167:8888/responseReport",
 			type: "post", 
 			data:JSON.stringify(reportRecord),
 			beforeSend: function (request) {
@@ -904,7 +904,7 @@
 		}
 
 		$.ajax({
-			url: "http://localhost:8888/likeResponse",
+			url: "http://118.190.90.167:8888/likeResponse",
 			type: "post", 
 			data:JSON.stringify(likeRecode),
 			beforeSend: function (request) {
@@ -1014,7 +1014,7 @@ function getTheSameKindQuestion(kind){
 		};
 		
 		$.ajax({
-			url: "http://localhost:8888/questions",
+			url: "http://118.190.90.167:8888/questions",
 			type: "post", 
 			data:JSON.stringify(page),
 			beforeSend: function (request) {
