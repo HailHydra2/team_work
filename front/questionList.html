@@ -25,6 +25,14 @@
 		  padding: 0;
 		}
 		
+		.mynav li{
+			border-style: solid;
+			border-color: white;
+		}
+		/* .mynav li:hover{
+			border-bottom-color: red;
+		} */
+
 		.mynav li:not(:last-child) {
 		  margin-right: 20px;
 		}
@@ -178,8 +186,9 @@
 							<li><a href="" onclick="changeKind('生活相关')">生活相关</a></li>
 							<li><a href="" onclick="changeKind('其他问题')">其他问题</a></li>
 						</ul>
+						<div class="target" style="position:relative;"></div>
 					  </nav>
-					  <span class="target" style="position: fixed;"></span>
+					  <!-- <span class="target" style="position: fixed;"></span> -->
 				</div>
 				<!--页面主要内容容器-->
 				<div id="questionDiv">
@@ -227,13 +236,15 @@
       	var height = this.getBoundingClientRect().height;
       	var left = this.getBoundingClientRect().left + window.pageXOffset;
       	var top = this.getBoundingClientRect().top + window.pageYOffset;
-      	var color = colors[Math.floor(Math.random() * colors.length)];
-
+		var color = colors[Math.floor(Math.random() * colors.length)];
+		// console.info("width:" + width);
       	target.style.width = width + "px";
-      	target.style.height = height + "px";
-      	target.style.left = left + "px";
-      	target.style.top = top + "px";
-      	target.style.borderColor = color;
+		//   target.style.height = height + "px";
+		// console.info("left:" + left);
+		console.info(this.offsetLeft + "px");
+      	target.style.left = (this.offsetLeft-18) + "px";
+      	// target.style.top = top + "px";  
+		target.style.borderColor = color;
       	target.style.transform = "none";
     	}
   	}

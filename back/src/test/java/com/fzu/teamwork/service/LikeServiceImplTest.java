@@ -69,7 +69,7 @@ class LikeServiceImplTest {
     public void createTestData(){
         //新增用于测试的创建问题并回复点赞的用户
         user = new User();
-        user.setAccount("221701118");
+        user.setAccount("221701518");
         user.setIdentity(UserIdentity.student);
         user.setName("testZJW");
         user.setPassword(Encryptor.encrypt("314"));

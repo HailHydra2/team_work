@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
    <head>
-	    <meta charset="utf-8">
-      	<title>校园帮帮网-主页</title>
+		<meta charset="utf-8">
+		<title>校园帮帮网-主页</title>
       	<!-- 引入 Bootstrap -->
       	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -35,21 +35,29 @@
 			  text-decoration: none;
 			  padding: 7px 4px;
 			}
+			.mynav li{
+				border-style: solid;
+				border-color: white;
+			}
+			/* .mynav li:hover{
+				border-bottom-color: red;
+			} */
 			
 			.target {
-			  position: absolute;
-
-			  border-bottom: 3px solid transparent;
-			  z-index: -1;
-			  -webkit-transform: translateX(-60px);
-					  transform: translateX(-60px);
+				position: absolute;
+				border-bottom: 3px solid transparent;
+				z-index: -1;
+				-webkit-transform: translateX(-60px);
+				transform: translateX(-60px);
 			}
 			
 			.mynav a,
 			.target {
 			  -webkit-transition: all .35s ease-in-out;
 			  transition: all .35s ease-in-out;
-			}</style>
+	
+			}
+		</style>
 		
    </head>
    <body>
@@ -170,13 +178,13 @@
 				<nav class="mynav">
 					<ul>
 					  <li class="active"><a href="" onclick="changeKind('学业问答')">学业问答</a></li>
-					  <li><a href="" onclick="changeKind('就业指导')">就业指导</a></li>
+					  <li ><a href="" onclick="changeKind('就业指导')">就业指导</a></li>
 					  <li><a href="" onclick="changeKind('学习资源')">学习资源</a></li>
 					  <li><a href="" onclick="changeKind('生活相关')">生活相关</a></li>
 					  <li><a href="" onclick="changeKind('其他问题')">其他问题</a></li>
 					</ul>
-				  </nav>
-				  <span class="target" style="position:fixed;"></span>
+					<div class="target" style="position:relative;"></div>
+				</nav>
 			</div>
 			<!--页面主要内容容器-->
 			<div id="questionDiv">
@@ -224,13 +232,15 @@
       	var height = this.getBoundingClientRect().height;
       	var left = this.getBoundingClientRect().left + window.pageXOffset;
       	var top = this.getBoundingClientRect().top + window.pageYOffset;
-      	var color = colors[Math.floor(Math.random() * colors.length)];
-
+		var color = colors[Math.floor(Math.random() * colors.length)];
+		// console.info("width:" + width);
       	target.style.width = width + "px";
-      	target.style.height = height + "px";
-      	target.style.left = left + "px";
-      	target.style.top = top + "px";
-      	target.style.borderColor = color;
+		//   target.style.height = height + "px";
+		// console.info("left:" + left);
+		console.info(this.offsetLeft + "px");
+      	target.style.left = (this.offsetLeft-18) + "px";
+      	// target.style.top = top + "px";  
+		target.style.borderColor = color;
       	target.style.transform = "none";
     	}
   	}

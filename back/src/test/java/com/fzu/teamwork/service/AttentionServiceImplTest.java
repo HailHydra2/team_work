@@ -55,7 +55,7 @@ class AttentionServiceImplTest {
     public void createTestData(){
         //新增用于测试的创建问题并关注的用户
         user = new User();
-        user.setAccount("221701118");
+        user.setAccount("221701518");
         user.setIdentity(UserIdentity.student);
         user.setName("testZJW");
         user.setPassword(Encryptor.encrypt("672"));
