@@ -445,6 +445,9 @@
                 //没有临时板块
                 deleteBlockButton.className = "btn";
                 addBlockButton.className = "btn btn-info";
+                //设置文本框信息（展示当前临时板块信息）
+                blockNameTextBox.value = "";
+                blockKeyWordTextBox.value = "";
                 //设置添加、撤销按钮响应事件
                 addBlockButton.setAttribute("onclick","addBlock();");
                 deleteBlockButton.removeAttribute("onclick");
